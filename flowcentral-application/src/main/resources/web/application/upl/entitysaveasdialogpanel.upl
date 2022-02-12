@@ -1,0 +1,19 @@
+// UPL template for entity save as dialog panel
+// Copyright (c) 2019, 2021, FlowCentral Technologies.
+// All rights reserved.
+// 
+// PROPRIETARY AND CONFIDENTIAL. USE IS SUBJECT TO LICENSE TERMS.
+
+!fc-entitysaveasdialogpanel
+	dialogCaption:$m{entitysaveasdialogpanel.caption}
+    dialogBodyComponents:$c{entityFormBodyPanel}
+    dialogActionLayout:$d{!ui-vertical style:$s{width:100%;}}
+    dialogActionComponents:$c{entitySaveAsActionPanel}
+
+// Form panel
+!ui-panel:entityFormBodyPanel style:$s{width:100%;} components:$c{saveAsForm}
+!fc-miniform:saveAsForm binding:inputForm
+
+// Action panel
+!ui-panel:entitySaveAsActionPanel layout:$d{!ui-horizontal} components:$g{moreActionButtons}
+	

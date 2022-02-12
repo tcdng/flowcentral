@@ -1,0 +1,75 @@
+// UPL template for application page
+// Copyright (c) 2019, 2021, FlowCentral Technologies.
+// All rights reserved.
+// 
+// PROPRIETARY AND CONFIDENTIAL. USE IS SUBJECT TO LICENSE TERMS.
+
+!ui-document layout:$d{!ui-desktoptype2 collapsibleSidebar:true}
+    headerPanel:$c{topBanner} menuPanel:$c{menuPanel} contentPanel:$c{content}
+
+// Header    
+!ui-panel:topBanner styleClass:$e{fc-topbanner}
+	components:$c{topBannerImg navigationBand topAlert topBannerControl userImg wkspSelPanel}
+!ui-image:topBannerImg src:$s{web/images/applicationbanner.png} styleClass:$e{fc-topbannerimg}
+!ui-panel:topBannerControl layout:$d{!ui-vertical style:$s{width:100%;}} styleClass:$e{fc-topbannercontrol}
+    components:$c{upperInfoBand lowerInfoBand}
+
+!ui-image:userImg  src:$t{/images/user_large.png} styleClass:$e{fc-topuserimg}
+    binding:userPhotoGenerator
+    eventHandler:$d{!ui-event event:onclick action:$c{userDetailsAct}}
+    
+!ui-panel:topAlert styleClass:$e{fc-topalert} components:$c{alertBell} refreshEvery:20000
+!ui-bell:alertBell styleClass:$e{fc-topbell} binding:alertCount hint:$m{application.notifications}
+    eventHandler:$d{!ui-event event:onclick action:$c{userNotificationsAct}}
+
+!ui-panel:lowerInfoBand styleClass:$e{fc-userinfoband} components:$c{roleLabel clock}
+!ui-textclock:clock
+!ui-panel:upperInfoBand styleClass:$e{fc-userinfoband} components:$c{userLabel branchLabel}
+!ui-labeledtext:userLabel caption:$m{application.login.user} maxLen:24
+    binding:$j{com.flowcentraltech.flowcentral.common.constants.FlowCentralSessionAttributeConstants.USERNAME}
+!ui-labeledtext:roleLabel style:$s{cursor:pointer;} caption:$m{application.login.role} hint:$m{application.switchrole}
+    eventHandler:$d{!ui-event event:onclick action:$c{switchRoleAct}}
+    binding:$j{com.flowcentraltech.flowcentral.common.constants.FlowCentralSessionAttributeConstants.ROLEDESCRIPTION}
+!ui-labeledtext:branchLabel caption:$m{application.login.branch}
+    binding:$j{com.flowcentraltech.flowcentral.common.constants.FlowCentralSessionAttributeConstants.BRANCHDESC}
+
+!ui-panel:navigationBand styleClass:$e{fc-topnavcontrol} components:$c{switchRoleLabel logoutLabel}
+!ui-button:switchRoleLabel caption:$m{application.switchrole} styleClass:$e{fc-switchrole}
+    eventHandler:$d{!ui-event event:onclick action:$c{switchRoleAct}} debounce:false
+!ui-button:logoutLabel caption:$m{application.logout} styleClass:$e{fc-logout}
+    eventHandler:$d{!ui-event event:onclick action:$c{logoutAct}} debounce:false
+
+!ui-panel:wkspSelPanel layout:$d{!ui-horizontal cellType:middle style:$s{width:100%;}} styleClass:$e{fc-topbannerswitch}
+    components:$c{currentWkspLabel currentWkspSel}
+!ui-label:currentWkspLabel caption:$m{application.workspace.caption} styleClass:$s{fc-applicationlabel}
+!ui-select:currentWkspSel style:$s{width:220px;} list:$s{roleworkspacelist} listKey:code binding:workspaceCode
+    eventHandler:$d{!ui-event event:onchange action:$c{wkspChangeAct}}
+
+// Menu
+!ui-panel:menuPanel style:$s{height:100%;} components:$c{menuColPanel}
+!fc-appletmenu:menuColPanel searchable:true
+
+// Content
+!ui-contentpanel:content styleClass:$e{fc-content} path:$s{/application/dashboard/openPage}
+	tabbedBinding:enableMultipleTabs
+
+
+//Select user role popup
+!fc-selectrolepanel:userRoleOptionsPopup dialogCaption:$m{application.switch.role}
+    roleListBinding:userRoleList selectRolePath:$n{/switchUserRole}
+    binding:$j{com.flowcentraltech.flowcentral.common.constants.FlowCentralSessionAttributeConstants.USERROLEOPTIONS}
+    
+// Show user details popup
+!fc-userdetailspanel:userDetailsPopup dialogCaption:$m{application.user.details}
+    imageGenBinding:userPhotoGenerator
+
+// Entity select pop up
+!fc-entityselectpanel:entitySelectPopup
+    binding:$j{com.flowcentraltech.flowcentral.common.constants.FlowCentralSessionAttributeConstants.ENTITYSELECT}
+
+//Actions 
+!ui-post:wkspChangeAct path:$n{/changeWorkspace} components:$c{currentWkspSel}
+!ui-post:logoutAct path:$n{/logOut} confirm:$m{application.logout.confirm}
+!ui-post:switchRoleAct path:$n{/prepareUserRoleOptions}
+!ui-post:userNotificationsAct path:$n{/showUserNotifications}
+!ui-post:userDetailsAct path:$n{/showUserDetails}

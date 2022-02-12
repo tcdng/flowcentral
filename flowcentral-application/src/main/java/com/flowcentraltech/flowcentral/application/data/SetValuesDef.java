@@ -1,0 +1,191 @@
+/*
+ * Copyright (c) 2019, 2021, FlowCentral Technologies.
+ * All rights reserved.
+ * 
+ * PROPRIETARY AND CONFIDENTIAL. USE IS SUBJECT TO LICENSE TERMS.
+ */
+
+package com.flowcentraltech.flowcentral.application.data;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+import com.flowcentraltech.flowcentral.application.business.AppletUtilities;
+import com.flowcentraltech.flowcentral.application.business.EntitySetValuesGenerator;
+import com.flowcentraltech.flowcentral.application.business.FieldSetValueGenerator;
+import com.flowcentraltech.flowcentral.application.util.GeneratorNameParts;
+import com.flowcentraltech.flowcentral.application.util.GeneratorNameUtils;
+import com.flowcentraltech.flowcentral.common.util.LingualDateUtils;
+import com.flowcentraltech.flowcentral.configuration.constants.EntityFieldDataType;
+import com.flowcentraltech.flowcentral.configuration.constants.LingualDateType;
+import com.flowcentraltech.flowcentral.configuration.constants.LingualStringType;
+import com.flowcentraltech.flowcentral.configuration.constants.SetValueType;
+import com.tcdng.unify.core.UnifyException;
+import com.tcdng.unify.core.data.BeanValueStore;
+import com.tcdng.unify.core.data.ValueStore;
+import com.tcdng.unify.core.database.Entity;
+import com.tcdng.unify.core.util.DataUtils;
+import com.tcdng.unify.core.util.StringUtils;
+import com.tcdng.unify.core.util.StringUtils.StringToken;
+
+/**
+ * Application set values definition.
+ * 
+ * @author Lateef Ojulari
+ * @since 1.0
+ */
+public class SetValuesDef {
+
+    private List<SetValueDef> setValueList;
+
+    private final String valueGenerator;
+
+    private final String name;
+
+    private final String description;
+
+    private SetValuesDef(List<SetValueDef> setValueList, String valueGenerator, String name, String description) {
+        this.setValueList = setValueList;
+        this.valueGenerator = valueGenerator;
+        this.name = name;
+        this.description = description;
+    }
+
+    public String getValueGenerator() {
+        return valueGenerator;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public List<SetValueDef> getSetValueList() {
+        return setValueList;
+    }
+
+    public boolean isBlank() {
+        return setValueList == null || setValueList.isEmpty();
+    }
+
+    public void apply(AppletUtilities au, EntityDef entityDef, Date now, Entity inst, String trigger)
+            throws UnifyException {
+        apply(au, entityDef, now, new BeanValueStore(inst), trigger);
+    }
+
+    public void apply(AppletUtilities au, EntityDef entityDef, Date now, ValueStore valueStore, String trigger)
+            throws UnifyException {
+        if (!StringUtils.isBlank(valueGenerator)) {
+            EntitySetValuesGenerator entityValueGenerator = au.getComponent(EntitySetValuesGenerator.class,
+                    valueGenerator);
+            entityValueGenerator.generate(entityDef, valueStore, trigger);
+        }
+
+        for (SetValueDef setValueDef : setValueList) {
+            EntityFieldDef entityFieldDef = entityDef.getFieldDef(setValueDef.getFieldName());
+            EntityFieldDataType fieldType = entityFieldDef.getDataType();
+            if (entityFieldDef.isSupportSetValue()) {
+                switch (setValueDef.getType()) {
+                    case GENERATOR:
+                        String generatorName = setValueDef.getParam();
+                        String rule = null;
+                        if (GeneratorNameUtils.isFullNameWithParts(generatorName)) {
+                            GeneratorNameParts np = GeneratorNameUtils.getGeneratorNameParts(generatorName);
+                            generatorName = np.getComponentName();
+                            rule = np.getRule();
+                        }
+
+                        FieldSetValueGenerator gen = au.getComponent(FieldSetValueGenerator.class, generatorName);
+                        valueStore.store(setValueDef.getFieldName(), gen.generate(entityDef, valueStore, rule));
+                        break;
+                    case NULL:
+                        valueStore.store(setValueDef.getFieldName(), null);
+                        break;
+                    case IMMEDIATE_LINGUAL:
+                        if (EntityFieldDataType.STRING.equals(fieldType)) {
+                            LingualStringType lingType = DataUtils.convert(LingualStringType.class,
+                                    setValueDef.getParam());
+                            if (lingType != null) {
+                                valueStore.store(setValueDef.getFieldName(), lingType.value());
+                            }
+                        } else if (fieldType.isDate() || fieldType.isTimestamp()) {
+                            valueStore.store(setValueDef.getFieldName(), LingualDateUtils.getDateFromNow(now,
+                                    DataUtils.convert(LingualDateType.class, setValueDef.getParam())));
+                        }
+                        break;
+                    case IMMEDIATE_FIELD:
+                        valueStore.store(setValueDef.getFieldName(),
+                                evaluateImmediateField(valueStore, setValueDef.getParam()));
+                        break;
+                    case IMMEDIATE:
+                    default:
+                        valueStore.store(setValueDef.getFieldName(), setValueDef.getParam());
+                        break;
+                }
+            }
+        }
+    }
+
+    private Object evaluateImmediateField(ValueStore valueStore, String fieldName) throws UnifyException {
+        Object val = valueStore.retrieve(fieldName);
+        if ((val instanceof String) && ((String) val).indexOf('{') >= 0) {
+            List<StringToken> tokenList = StringUtils.breakdownParameterizedString((String) val);
+            return StringUtils.buildParameterizedString(tokenList, valueStore);
+        }
+
+        return val;
+    }
+
+    @Override
+    public String toString() {
+        return "SetValuesDef [setValueList=" + setValueList + ", valueGenerator=" + valueGenerator + ", name=" + name
+                + ", description=" + description + "]";
+    }
+
+    public static Builder newBuilder() {
+        return new Builder();
+    }
+
+    public static class Builder {
+
+        private String name;
+
+        private String description;
+
+        private String valueGenerator;
+
+        private List<SetValueDef> setValueList;
+
+        public Builder() {
+            setValueList = new ArrayList<SetValueDef>();
+        }
+
+        public Builder name(String name) {
+            this.name = name;
+            return this;
+        }
+
+        public Builder description(String description) {
+            this.description = description;
+            return this;
+        }
+
+        public Builder valueGenerator(String valueGenerator) {
+            this.valueGenerator = valueGenerator;
+            return this;
+        }
+
+        public Builder addSetValueDef(SetValueType type, String fieldName, String param) {
+            setValueList.add(new SetValueDef(type, fieldName, param));
+            return this;
+        }
+
+        public SetValuesDef build() throws UnifyException {
+            return new SetValuesDef(DataUtils.unmodifiableList(setValueList), valueGenerator, name, description);
+        }
+    }
+}

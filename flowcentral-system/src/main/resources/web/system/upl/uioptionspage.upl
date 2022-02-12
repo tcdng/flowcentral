@@ -1,0 +1,57 @@
+// UPL template for user interface options page
+// Copyright (c) 2019, 2021, FlowCentral Technologies.
+// All rights reserved.
+// 
+// PROPRIETARY AND CONFIDENTIAL. USE IS SUBJECT TO LICENSE TERMS.
+
+!ui-page caption:$m{uioptionspage.title} components:$c{basePanel}
+
+// Base panel
+!ui-panel:basePanel
+	layout:$d{!ui-vertical style:$s{width:100%;}}
+	components:$c{headerBar loginPageOptionsPanel}
+
+// Header
+!ui-panel:headerBar layout:$d{!ui-horizontal style:$s{width:100%;} cellType:bottom}
+	components:$c{systemOptionsLabel actionPanel} 
+	
+!ui-label:systemOptionsLabel styleClass:$e{fc-largelabel} caption:$m{uioptionspage.header.title}
+!ui-panel:actionPanel 
+	layout:$d{!ui-horizontal style:$s{float:right;} showCaption:true inlineCaption:true captionSuffix:$s{:} cellType:middle}
+	components:$c{saveBtn}
+!ui-button:saveBtn styleClass:$e{fc-bluebutton} caption:$m{button.save}
+	eventHandler:$d{!ui-event event:onclick action:$c{saveAct}}
+
+
+// Login page options
+!ui-panel:loginPageOptionsPanel styleClass:$e{fc-uioptions}
+	components:$c{loginPageOptionCaption loginPageOptionBodyPanel}
+!ui-label:loginPageOptionCaption styleClass:$e{label} caption:$m{uioptionspage.loginpageoption.caption}
+!ui-panel:loginPageOptionBodyPanel layout:$d{!ui-vertical style:$s{width:100%;} showCaption:true cellStyle:$s{padding:5px 2px;}}
+	components:$c{loginPageTitle loginPageSubtitle frmLoginHeaderPanel frmLoginBackPanel}
+	
+!ui-text:loginPageTitle caption:$m{uioptionspage.loginpageoption.loginpagetitle}
+	styleClass:$e{txt} binding:loginPageTitle focus:true
+!ui-text:loginPageSubtitle caption:$m{uioptionspage.loginpageoption.loginpagesubtitle}
+	styleClass:$e{txt} binding:loginPageSubtitle
+
+!ui-panel:frmLoginHeaderPanel
+ 	caption:$m{uioptionspage.loginpageoption.loginpageheaderimage}
+	components:$c{frmHeaderImgPanel headerImgClrBtn}
+!ui-panel:frmHeaderImgPanel styleClass:$e{pic} components:$c{frmHeaderImg}
+!ui-picture:frmHeaderImg style:$s{height:42px;} binding:loginHeaderImage
+!ui-button:headerImgClrBtn style:$s{margin-left:2px;vertical-align:top;} caption:$m{button.clear} staticBindingValue:$s{loginHeaderImg}
+	eventHandler:$d{!ui-event event:onclick action:$c{clearLoginImgAct}}
+
+!ui-panel:frmLoginBackPanel
+	caption:$m{uioptionspage.loginpageoption.loginpagebackimage}
+	components:$c{frmBackImgPanel backImgClrBtn}
+!ui-panel:frmBackImgPanel styleClass:$e{pic} components:$c{frmBackImg}
+!ui-picture:frmBackImg style:$s{width:300px;height:150px;} binding:loginBackImage
+!ui-button:backImgClrBtn style:$s{margin-left:2px;vertical-align:top;} caption:$m{button.clear} staticBindingValue:$s{loginBackImg}
+	eventHandler:$d{!ui-event event:onclick action:$c{clearLoginImgAct}}
+
+// Actions
+!ui-post:clearLoginImgAct path:$n{/clearLoginImage}
+!ui-post:saveAct path:$n{/saveUIOptions} components:$c{loginPageOptionBodyPanel}
+	

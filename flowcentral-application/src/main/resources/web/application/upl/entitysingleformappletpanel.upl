@@ -1,0 +1,66 @@
+// UPL template for entity single form applet panel
+// Copyright (c) 2019, 2021, FlowCentral Technologies.
+// All rights reserved.
+// 
+// PROPRIETARY AND CONFIDENTIAL. USE IS SUBJECT TO LICENSE TERMS.
+
+!fc-entitysingleformappletpanel components:$c{formPanel}
+	
+// Form
+!fc-entitysingleformpanel:formPanel binding:form
+	moreCenterComponents:$c{displayCounterLabel}
+	moreActionButtons:$f{moreActionButtons}
+	moreActionButtons:$c{saveBtn saveNextBtn saveCloseBtn}
+	moreActionButtons:$c{updateBtn updateCloseBtn submitNextBtn submitCloseBtn deleteBtn cancelBtn prevBtn nextBtn}
+	altActionButtons:$c{saveBtn saveNextBtn saveCloseBtn}
+	altActionButtons:$c{updateBtn updateCloseBtn submitNextBtn submitCloseBtn deleteBtn cancelBtn}
+!ui-label:displayCounterLabel styleClass:$e{fc-dispcounter}
+	styleClassBinding:displayItemCounterClass binding:displayItemCounter
+!ui-button:saveBtn caption:$m{button.save}
+	eventHandler:$d{!ui-event event:onclick action:$c{saveAct}}
+!ui-button:saveNextBtn caption:$m{button.savenext}
+	eventHandler:$d{!ui-event event:onclick action:$c{saveNextAct}}
+!ui-button:saveCloseBtn caption:$m{button.saveclose}
+	eventHandler:$d{!ui-event event:onclick action:$c{saveCloseAct}}
+!ui-button:submitCloseBtn caption:$m{button.submitclose}
+	eventHandler:$d{!ui-event event:onclick action:$c{submitAct}}
+!ui-button:submitNextBtn caption:$m{button.submitnext}
+	eventHandler:$d{!ui-event event:onclick action:$c{submitNextAct}}
+!ui-button:updateBtn caption:$m{button.update}
+	eventHandler:$d{!ui-event event:onclick action:$c{updateAct}}
+!ui-button:updateCloseBtn caption:$m{button.updateclose}
+	eventHandler:$d{!ui-event event:onclick action:$c{updateCloseAct}}
+!ui-button:deleteBtn caption:$m{button.delete}
+	eventHandler:$d{!ui-event event:onclick action:$c{deleteAct}}
+!ui-button:cancelBtn caption:$m{button.close}
+	eventHandler:$d{!ui-event event:onclick action:$c{navBackAct}}
+!ui-button:prevBtn symbol:$s{angle-left} hint:$m{maintain.previous.item}
+    eventHandler:$d{!ui-event event:onclick action:$c{prevAct}}
+!ui-button:nextBtn symbol:$s{angle-right} hint:$m{maintain.next.item}
+    eventHandler:$d{!ui-event event:onclick action:$c{nextAct}}
+
+// Listing Form
+!fc-listingformpanel:listingPanel binding:listingForm
+	moreActionButtons:$c{listCancelBtn listPrevBtn listNextBtn}
+!ui-button:listPrevBtn symbol:$s{angle-left} hint:$m{maintain.previous.item}
+    eventHandler:$d{!ui-event event:onclick action:$c{prevAct}}
+!ui-button:listNextBtn symbol:$s{angle-right} hint:$m{maintain.next.item}
+    eventHandler:$d{!ui-event event:onclick action:$c{nextAct}}
+!ui-button:listCancelBtn caption:$m{button.close}
+	eventHandler:$d{!ui-event event:onclick action:$c{navBackAct}}
+
+// Actions
+!ui-postcommand:navBackAct command:navBackToPrevious
+!ui-postcommand:saveAct command:save components:$c{formPanel}
+!ui-postcommand:saveNextAct command:saveAndNext components:$c{formPanel}
+!ui-postcommand:saveCloseAct command:saveAndClose components:$c{formPanel}
+!ui-postcommand:submitAct command:submit components:$c{formPanel}
+!ui-postcommand:submitNextAct command:submitAndNext components:$c{formPanel}
+!ui-postcommand:updateAct command:update components:$c{formPanel}
+!ui-postcommand:updateCloseAct command:updateAndClose components:$c{formPanel}
+!ui-postcommand:deleteAct command:delete confirm:$m{entityformappletpanel.confirm.delete}
+!ui-postcommand:prevAct command:previous
+!ui-postcommand:nextAct command:next
+!ui-postcommand:maintainAct command:maintain debounce:true
+!ui-postcommand:listingAct command:listing debounce:true
+

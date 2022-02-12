@@ -1,0 +1,145 @@
+/*
+ * Copyright (c) 2019, 2021, FlowCentral Technologies.
+ * All rights reserved.
+ * 
+ * PROPRIETARY AND CONFIDENTIAL. USE IS SUBJECT TO LICENSE TERMS.
+ */
+
+package com.flowcentraltech.flowcentral.studio.business.policies;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import com.flowcentraltech.flowcentral.application.business.ApplicationModuleService;
+import com.flowcentraltech.flowcentral.application.constants.ApplicationModuleSysParamConstants;
+import com.flowcentraltech.flowcentral.application.constants.ApplicationPrivilegeConstants;
+import com.flowcentraltech.flowcentral.application.entities.AppEntity;
+import com.flowcentraltech.flowcentral.application.entities.BaseApplicationEntity;
+import com.flowcentraltech.flowcentral.application.util.ApplicationNameUtils;
+import com.flowcentraltech.flowcentral.application.util.PrivilegeNameUtils;
+import com.flowcentraltech.flowcentral.common.business.policies.AbstractEntityActionPolicy;
+import com.flowcentraltech.flowcentral.studio.constants.StudioAppComponentType;
+import com.flowcentraltech.flowcentral.system.business.SystemModuleService;
+import com.tcdng.unify.core.UnifyException;
+import com.tcdng.unify.core.UserToken;
+import com.tcdng.unify.core.annotation.Configurable;
+
+/**
+ * Convenient abstract base class for studio entity action policies.
+ * 
+ * @author Lateef Ojulari
+ * @since 1.0
+ */
+public abstract class AbstractStudioEntityActionPolicy extends AbstractEntityActionPolicy {
+
+    @Configurable
+    private ApplicationModuleService applicationModuleService;
+
+    @Configurable
+    private SystemModuleService systemModuleService;
+
+    public void setApplicationModuleService(ApplicationModuleService applicationModuleService) {
+        this.applicationModuleService = applicationModuleService;
+    }
+
+    public void setSystemModuleService(SystemModuleService systemModuleService) {
+        this.systemModuleService = systemModuleService;
+    }
+
+    protected ApplicationModuleService getAms() {
+        return applicationModuleService;
+    }
+
+    protected SystemModuleService getSystemModuleService() {
+        return systemModuleService;
+    }
+
+    protected void registerPrivilege(String applicationName, Long applicationId, StudioAppComponentType type,
+            BaseApplicationEntity appEntity) throws UnifyException {
+        List<String> privilegeCodeList = new ArrayList<String>();
+        String privilegeCode = null;
+        boolean assignToRole = false;
+        switch (type) {
+            case APPLET:
+                privilegeCode = PrivilegeNameUtils.getAppletPrivilegeName(
+                        ApplicationNameUtils.getApplicationEntityLongName(applicationName, appEntity.getName()));
+                registerPrivilege(applicationId, ApplicationPrivilegeConstants.APPLICATION_APPLET_CATEGORY_CODE,
+                        privilegeCode, appEntity.getDescription());
+                privilegeCodeList.add(privilegeCode);
+                assignToRole = true;
+                break;
+            case CHART:
+                break;
+            case DASHBOARD:
+                privilegeCode = PrivilegeNameUtils.getDashboardPrivilegeName(
+                        ApplicationNameUtils.getApplicationEntityLongName(applicationName, appEntity.getName()));
+                registerPrivilege(applicationId, ApplicationPrivilegeConstants.APPLICATION_DASHBOARD_CATEGORY_CODE,
+                        privilegeCode, appEntity.getDescription());
+                privilegeCodeList.add(privilegeCode);
+                assignToRole = true;
+                break;
+            case ENTITY:
+                final String entityLongName = ApplicationNameUtils.getApplicationEntityLongName(applicationName,
+                        appEntity.getName());
+
+                privilegeCode = PrivilegeNameUtils.getAddPrivilegeName(entityLongName);
+                registerPrivilege(applicationId, ApplicationPrivilegeConstants.APPLICATION_ENTITY_CATEGORY_CODE,
+                        privilegeCode,
+                        getApplicationMessage("application.entity.privilege.add", appEntity.getDescription()));
+                privilegeCodeList.add(privilegeCode);
+
+                privilegeCode = PrivilegeNameUtils.getEditPrivilegeName(entityLongName);
+                registerPrivilege(applicationId, ApplicationPrivilegeConstants.APPLICATION_ENTITY_CATEGORY_CODE,
+                        privilegeCode,
+                        getApplicationMessage("application.entity.privilege.edit", appEntity.getDescription()));
+                privilegeCodeList.add(privilegeCode);
+
+                privilegeCode = PrivilegeNameUtils.getDeletePrivilegeName(entityLongName);
+                registerPrivilege(applicationId, ApplicationPrivilegeConstants.APPLICATION_ENTITY_CATEGORY_CODE,
+                        privilegeCode,
+                        getApplicationMessage("application.entity.privilege.delete", appEntity.getDescription()));
+                privilegeCodeList.add(privilegeCode);
+
+                if (((AppEntity) appEntity).getBaseType().isWorkEntityType()) {
+                    privilegeCode = PrivilegeNameUtils.getAttachPrivilegeName(entityLongName);
+                    registerPrivilege(applicationId, ApplicationPrivilegeConstants.APPLICATION_ENTITY_CATEGORY_CODE,
+                            privilegeCode,
+                            getApplicationMessage("application.entity.privilege.attach", appEntity.getDescription()));
+                    privilegeCodeList.add(privilegeCode);
+                }
+
+                assignToRole = true;
+                break;
+            case FORM:
+                break;
+            case NOTIFICATION_TEMPLATE:
+                break;
+            case REFERENCE:
+                break;
+            case REPORT_CONFIGURATION:
+                privilegeCode = PrivilegeNameUtils.getReportConfigPrivilegeName(
+                        ApplicationNameUtils.ensureLongNameReference(applicationName, appEntity.getName()));
+                registerPrivilege(applicationId, ApplicationPrivilegeConstants.APPLICATION_REPORTCONFIG_CATEGORY_CODE,
+                        privilegeCode, appEntity.getDescription());
+                break;
+            case TABLE:
+                break;
+            case WORKFLOW:
+                break;
+            default:
+                break;
+
+        }
+
+        if (assignToRole) {
+            UserToken userToken = getUserToken();
+            if (!userToken.isReservedUser() && systemModuleService.getSysParameterValue(boolean.class,
+                    ApplicationModuleSysParamConstants.ASSIGN_APPLICATIONENTITY_ONCREATE)) {
+                for (String assgnPrivilegeCode : privilegeCodeList) {
+                    assignPrivilegeToRole(userToken.getRoleCode(), assgnPrivilegeCode);
+                }
+            }
+        }
+    }
+
+}

@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<!-- Dashboard module configuration -->
+<module name="dashboard" description="$m{dashboard.module}"
+	shortCode="DSH" label="$m{dashboard.label}">
+	<!-- Applications -->
+	<applications>
+		<application name="dashboard"
+			shortDescription="$m{dashboard.short.description}"
+			longDescription="$m{dashboard.long.description}" autoInstall="true"
+			configFile="apps/dashboard-application.xml" />
+	</applications>
+
+	<!-- System Parameters -->
+</module>

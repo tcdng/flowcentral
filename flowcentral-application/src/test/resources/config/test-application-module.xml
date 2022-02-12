@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<!-- Test application module configuration -->
+<module name="test-application" description="$m{test.application.module}" shortCode="TSA" label="Test Application">
+	<!-- Applications -->
+	<applications>
+		<application name="manageProduct" shortDescription="Manage Product"
+			longDescription="Application for managing products in online store"
+			autoInstall="true" configFile="apps/test-manage-product.xml" />
+	</applications>
+
+	<!-- Privileges -->
+
+	<!-- System Parameters -->
+
+</module>

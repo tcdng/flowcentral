@@ -1,0 +1,20 @@
+// UPL template for listing form panel
+// Copyright (c) 2019, 2021, FlowCentral Technologies.
+// All rights reserved.
+// 
+// PROPRIETARY AND CONFIDENTIAL. USE IS SUBJECT TO LICENSE TERMS.
+
+!fc-listingformpanel mainForm:$c{mainFormPanel}
+
+!ui-panel:mainFormPanel styleClass:$e{formbase} layout:$d{!ui-vertical style:$s{width:100%;}}
+	components:$c{listingForm altActionPanel}
+ 
+// Header
+!fc-formlisting:listingForm binding:formListing
+
+// Alt buttons
+!ui-panel:altActionPanel styleClass:$e{fc-altactionbar} layout:$d{!ui-horizontal cellType:middle cellStyle:$s{padding-right:8px;}}
+	alternate:true components:$f{altActionButtons}
+	
+// Actions
+

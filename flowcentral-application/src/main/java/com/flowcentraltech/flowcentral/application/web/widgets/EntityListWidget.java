@@ -1,0 +1,164 @@
+/*
+ * Copyright (c) 2019, 2021, FlowCentral Technologies.
+ * All rights reserved.
+ * 
+ * PROPRIETARY AND CONFIDENTIAL. USE IS SUBJECT TO LICENSE TERMS.
+ */
+package com.flowcentraltech.flowcentral.application.web.widgets;
+
+import java.util.List;
+
+import com.flowcentraltech.flowcentral.application.data.EntityClassDef;
+import com.flowcentraltech.flowcentral.application.data.RefDef;
+import com.flowcentraltech.flowcentral.application.policies.EntityBasedFilterGenerator;
+import com.flowcentraltech.flowcentral.application.util.ApplicationNameUtils;
+import com.tcdng.unify.core.UnifyException;
+import com.tcdng.unify.core.annotation.Component;
+import com.tcdng.unify.core.annotation.UplAttribute;
+import com.tcdng.unify.core.annotation.UplAttributes;
+import com.tcdng.unify.core.criterion.Restriction;
+import com.tcdng.unify.core.data.BeanValueListStore;
+import com.tcdng.unify.core.data.Listable;
+import com.tcdng.unify.core.data.ValueStore;
+import com.tcdng.unify.core.database.Entity;
+import com.tcdng.unify.core.database.Query;
+import com.tcdng.unify.core.format.Formatter;
+import com.tcdng.unify.core.util.DataUtils;
+import com.tcdng.unify.core.util.ReflectUtils;
+import com.tcdng.unify.core.util.StringUtils;
+import com.tcdng.unify.web.ui.widget.WriteWork;
+
+/**
+ * Entity list widget.
+ * 
+ * @author Lateef Ojulari
+ * @since 1.0
+ */
+@Component("fc-entitylist")
+@UplAttributes({ @UplAttribute(name = "styleClass", type = String.class, defaultVal = "$e{ui-select}"),
+        @UplAttribute(name = "limit", type = int.class, defaultVal = "100"),
+        @UplAttribute(name = "blankOption", type = String.class),
+        @UplAttribute(name = "direct", type = boolean.class, defaultVal = "false") })
+public class EntityListWidget extends AbstractEntityListWidget {
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public WriteWork getWriteWork() throws UnifyException {
+        WriteWork work = super.getWriteWork();
+        if (work.get(WORK_RESULTLIST) == null) {
+            RefDef refDef = null;
+            EntityClassDef entityClassDef = null;
+            Restriction br = null;
+            if (isDirect()) {
+                entityClassDef = getApplicationService().getEntityClassDef(getRef(0));
+            } else {
+                refDef = getRefDef(0);
+                entityClassDef = getApplicationService().getEntityClassDef(refDef.getEntity());
+                if (refDef.isWithFilterGenerator()) {
+                    br = ((EntityBasedFilterGenerator) getComponent(refDef.getFilterGenerator()))
+                            .generate(getValueStore().getReader(), refDef.getFilterGeneratorRule());
+                } else {
+                    br = refDef.isWithFilter()
+                            ? refDef.getFilter().getRestriction(entityClassDef.getEntityDef(),
+                                    getSpecialParamProvider(), getApplicationService().getNow())
+                            : null;
+                }
+            }
+
+            Query<? extends Entity> query = null;
+            if (br != null) {
+                query = Query.ofDefaultingToAnd((Class<? extends Entity>) entityClassDef.getEntityClass(), br);
+            } else {
+                query = Query.of((Class<? extends Entity>) entityClassDef.getEntityClass());
+                query.ignoreEmptyCriteria(true);
+            }
+
+            addMoreResultRestriction(query);
+            int limit = getUplAttribute(int.class, "limit");
+            if (limit > 0) {
+                query.setLimit(limit);
+            }
+
+            String searchField = getSearchField(entityClassDef, refDef);
+            if (searchField != null) {
+                query.addOrder(searchField);
+            }
+
+            List<? extends Listable> listableList = getEntityService().listAll(query);
+            ValueStore listValueStore = null;
+
+            final String listKey = getListkey();
+            final int len = listableList.size();
+            final boolean isListFormat = refDef != null && refDef.isWithListFormat();
+            if (isListFormat) {
+                listValueStore = new BeanValueListStore(listableList);
+            }
+            
+            boolean isListKey = !StringUtils.isBlank(listKey);
+            boolean isLongName = isListKey && "longName".equals(listKey);
+            Formatter<Object> formatter = getFormatter();
+            final String[] selIdArr = new String[len];
+            final String[] lblArr = new String[len];
+            final String[] keyArr = new String[len];
+            for (int i = 0; i < len; i++) {
+                Listable listable = listableList.get(i);
+                String key = null;
+                if (isListKey) {
+                    if (isLongName) {
+                        key = ApplicationNameUtils.getApplicationEntityLongName(
+                                DataUtils.convert(String.class,
+                                        ReflectUtils.getBeanProperty(listable, "applicationName")),
+                                DataUtils.convert(String.class, ReflectUtils.getBeanProperty(listable, "name")));
+                    } else {
+                        key = DataUtils.convert(String.class, ReflectUtils.getBeanProperty(listable, listKey));
+                    }
+
+                } else {
+                    key = listable.getListKey();
+                }
+
+                String nindex = getNamingIndexedId(i);
+                selIdArr[i] = nindex;
+                keyArr[i] = key;
+
+                if (isListFormat) {
+                    lblArr[i] = StringUtils.buildParameterizedString(refDef.getListFormat(),
+                            listValueStore, i);
+                } else {
+                    if (formatter != null) {
+                        lblArr[i] = formatter.format(listable.getListDescription());
+                    } else {
+                        lblArr[i] = listable.getListDescription();
+                    }
+                }
+            }
+
+            work.set(WORK_RESULTLIST, listableList);
+            work.set(WORK_SELECTIDS, selIdArr);
+            work.set(WORK_KEYS, keyArr);
+            work.set(WORK_LABELS, lblArr);
+        }
+
+        return work;
+    }
+
+    public String getBlankOption() throws UnifyException {
+        return getUplAttribute(String.class, "blankOption");
+    }
+
+    public String getBlankOptionId() throws UnifyException {
+        return getPrefixedId("blnk_");
+    }
+
+    public String getFramePanelId() throws UnifyException {
+        return getPrefixedId("frm_");
+    }
+
+    public String getListPanelId() throws UnifyException {
+        return getPrefixedId("lst_");
+    }
+
+    protected void addMoreResultRestriction(Query<? extends Entity> query) throws UnifyException {
+
+    }
+}

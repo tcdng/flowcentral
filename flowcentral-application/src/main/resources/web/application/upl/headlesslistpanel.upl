@@ -1,0 +1,21 @@
+// UPL template for headless list panel
+// Copyright (c) 2019, 2021, FlowCentral Technologies.
+// All rights reserved.
+// 
+// PROPRIETARY AND CONFIDENTIAL. USE IS SUBJECT TO LICENSE TERMS.
+
+!fc-headlesslistpanel
+    components:$c{entitySearchPanel}
+
+// Search list
+!fc-entitysearchpanel:entitySearchPanel
+	newInstEventHandler:$d{!ui-event event:onclick action:$c{newAct}}
+	editInstEventHandler:$d{!ui-event event:onclick action:$c{assignAct}}
+	newBtnBinding:$s{headlessList}
+	editBtnBinding:$s{headlessList}
+	searchResultMarker:$j{com.flowcentraltech.flowcentral.application.web.panels.EntitySearchValueMarkerConstants.HEADLESS_LIST}
+
+// Actions
+!ui-post:newAct path:$p{/newHeadlessItem}
+!ui-post:assignAct path:$r{headlesslist.edit.actionpath}
+	

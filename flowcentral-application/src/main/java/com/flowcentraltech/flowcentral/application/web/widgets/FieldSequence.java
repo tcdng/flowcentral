@@ -1,0 +1,157 @@
+/*
+ * Copyright (c) 2019, 2021, FlowCentral Technologies.
+ * All rights reserved.
+ * 
+ * PROPRIETARY AND CONFIDENTIAL. USE IS SUBJECT TO LICENSE TERMS.
+ */
+package com.flowcentraltech.flowcentral.application.web.widgets;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.ListIterator;
+
+import com.flowcentraltech.flowcentral.application.data.EntityDef;
+import com.flowcentraltech.flowcentral.application.data.FieldSequenceDef;
+import com.flowcentraltech.flowcentral.application.data.FieldSequenceEntryDef;
+import com.tcdng.unify.core.UnifyException;
+import com.tcdng.unify.core.constant.Editable;
+import com.tcdng.unify.core.util.StringUtils;
+
+/**
+ * Field sequence object.
+ * 
+ * @author Lateef Ojulari
+ * @since 1.0
+ */
+public class FieldSequence {
+
+    private EntityDef entityDef;
+
+    private List<FieldSequenceEntry> entryList;
+
+    private List<FieldSequenceEntry> viewEntryList;
+
+    public FieldSequence(EntityDef entityDef) {
+        this(entityDef, Editable.TRUE);
+    }
+
+    public FieldSequence(EntityDef entityDef, Editable rootEditable) {
+        this.entityDef = entityDef;
+        this.entryList = new ArrayList<FieldSequenceEntry>();
+        this.entryList.add(new FieldSequenceEntry(entityDef, rootEditable.isTrue()));
+        this.viewEntryList = Collections.unmodifiableList(entryList);
+    }
+
+    public FieldSequence(EntityDef entityDef, FieldSequenceDef fieldSequenceDef) throws UnifyException {
+        this(entityDef, fieldSequenceDef, Editable.TRUE);
+    }
+
+    public FieldSequence(EntityDef entityDef, FieldSequenceDef fieldSequenceDef, Editable editable)
+            throws UnifyException {
+        this.entityDef = entityDef;
+        this.entryList = new ArrayList<FieldSequenceEntry>();
+        this.viewEntryList = Collections.unmodifiableList(entryList);
+        loadEntryList(fieldSequenceDef, editable);
+    }
+
+    public int addFieldSequenceEntry(String fieldName, String param, Editable editable) throws UnifyException {
+        FieldSequenceEntry svo = new FieldSequenceEntry(entityDef, editable.isTrue());
+        setFieldAndInputParams(svo, fieldName, param);
+        entryList.add(svo);
+        return entryList.size() - 1;
+    }
+
+    public void clear() throws UnifyException {
+        entryList.clear();
+    }
+
+    public void moveUpEntry(int index) throws UnifyException {
+        if (index > 0) {
+            FieldSequenceEntry svo = entryList.remove(index);
+            entryList.add(index - 1, svo);
+        }
+    }
+
+    public void moveDownEntry(int index) throws UnifyException {
+        if (index < entryList.size() - 2) {
+            FieldSequenceEntry svo = entryList.remove(index);
+            entryList.add(index + 1, svo);
+        }
+    }
+
+    public void removeEntry(int index) throws UnifyException {
+        entryList.remove(index);
+    }
+
+    public EntityDef getEntityDef() {
+        return entityDef;
+    }
+
+    public FieldSequenceEntry getEntry(int index) {
+        return entryList.get(index);
+    }
+
+    public List<FieldSequenceEntry> getEntryList() {
+        return viewEntryList;
+    }
+
+    public int size() {
+        return entryList.size();
+    }
+
+    public void normalize() throws UnifyException {
+        ListIterator<FieldSequenceEntry> it = entryList.listIterator();
+        int i = 0;
+        int lim = entryList.size() - 1;
+        while (it.hasNext()) {
+            FieldSequenceEntry svo = it.next();
+            svo.normalize();
+            if (!svo.isWithFieldName()) {
+                if (i < lim) {
+                    it.remove();
+                }
+            }
+            i++;
+        }
+
+        FieldSequenceEntry last = entryList.get(entryList.size() - 1);
+        if (last.isWithFieldName()) {
+            entryList.add(new FieldSequenceEntry(entityDef, true));
+        }
+    }
+
+    public FieldSequenceDef getFieldSequenceDef() throws UnifyException {
+        int lim = entryList.size() - 1;
+        if (lim > 0) {
+            FieldSequenceDef.Builder fsb = FieldSequenceDef.newBuilder();
+            for (int i = 0; i < lim; i++) {
+                FieldSequenceEntry fso = entryList.get(i);
+                if (!StringUtils.isBlank(fso.getFieldName())) {
+                    fsb.addFieldSequenceEntryDef(fso.getFieldName(), fso.getParam());
+                }
+            }
+            return fsb.build();
+        }
+
+        return null;
+    }
+
+    private void loadEntryList(FieldSequenceDef fieldSequenceDef, Editable editable) throws UnifyException {
+        if (fieldSequenceDef != null) {
+            for (FieldSequenceEntryDef fieldSequenceEntryDef : fieldSequenceDef.getFieldSequenceList()) {
+                FieldSequenceEntry fso = new FieldSequenceEntry(entityDef, editable.isTrue());
+                setFieldAndInputParams(fso, fieldSequenceEntryDef.getFieldName(), fieldSequenceEntryDef.getFormatter());
+                entryList.add(fso);
+            }
+        }
+
+        entryList.add(new FieldSequenceEntry(entityDef, editable.isTrue()));
+    }
+
+    private void setFieldAndInputParams(FieldSequenceEntry fso, String fieldName, String param) throws UnifyException {
+        fso.setFieldName(fieldName);
+        fso.setParam(param);
+        fso.normalize();
+    }
+}

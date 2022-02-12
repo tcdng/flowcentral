@@ -1,0 +1,57 @@
+<?xml version="1.0"?>
+<!-- Application module configuration -->
+<module name="application" description="$m{application.module}"
+	shortCode="APP" label="$m{application.label}">
+	<!-- Applications -->
+	<applications>
+		<application name="application"
+			shortDescription="$m{application.short.description}"
+			longDescription="$m{application.long.description}" autoInstall="true"
+			configFile="apps/application-application.xml" />
+	</applications>
+	<!-- System Parameters -->
+	<sysParameters>
+		<sysParameter code="APP-0001" defaultVal="/application"
+			description="$m{application.sysparam.defaultapplication}"
+			editor="!ui-select list:webapplicationlist" type="string" />
+		<sysParameter code="APP-0002" defaultVal="true"
+			description="$m{application.sysparam.formshowalternateactions}"
+			editor="!ui-select list:booleanlist" type="boolean" editable="true" />
+		<sysParameter code="APP-0003" defaultVal="true"
+			description="$m{application.sysparam.menusectionwithitemsonly}"
+			editor="!ui-select list:booleanlist" type="boolean" editable="true" />
+		<sysParameter code="APP-0004" defaultVal="studio"
+			description="$m{application.sysparam.studioapplicationname}"
+			editor="!ui-text" type="name" />
+		<sysParameter code="APP-0005" defaultVal="true"
+			description="$m{application.sysparam.studiomenuenabled}"
+			editor="!ui-select list:booleanlist" type="boolean" editable="true" />
+		<sysParameter code="APP-0006" defaultVal="/applicationstudio"
+			description="$m{application.sysparam.studioapplicationpath}"
+			editor="!ui-text" type="string" editable="true" />
+		<sysParameter code="APP-0007" defaultVal="import"
+			description="$m{application.sysparam.importapplicationname}"
+			editor="!ui-text" type="name" />
+		<sysParameter code="APP-0008" defaultVal="false"
+			description="$m{application.sysparam.tabbedcontent}"
+			editor="!ui-select list:booleanlist" type="boolean" editable="true" />
+		<sysParameter code="APP-0009" defaultVal="true"
+			description="$m{application.sysparam.assignapplicationentityoncreate}"
+			editor="!ui-select list:booleanlist" type="boolean" editable="true" />
+		<sysParameter code="APP-000A" defaultVal="false"
+			description="$m{application.sysparam.useformcolorscheme}"
+			editor="!ui-select list:booleanlist" type="boolean" editable="true" />
+		<sysParameter code="APP-000B" defaultVal="false"
+			description="$m{application.sysparam.tableheaderuppercase}"
+			editor="!ui-select list:booleanlist" type="boolean" editable="true" />
+		<sysParameter code="APP-000C" defaultVal="false"
+			description="$m{application.sysparam.tableheadercenter}"
+			editor="!ui-select list:booleanlist" type="boolean" editable="true" />
+		<sysParameter code="APP-000D" defaultVal="false"
+			description="$m{application.sysparam.strictformreviewmode}"
+			editor="!ui-select list:booleanlist" type="boolean" editable="true" />
+		<sysParameter code="APP-000E" defaultVal="true"
+			description="$m{application.sysparam.autosavesuggestions}"
+			editor="!ui-select list:booleanlist" type="boolean" editable="true" />
+	</sysParameters>
+</module>

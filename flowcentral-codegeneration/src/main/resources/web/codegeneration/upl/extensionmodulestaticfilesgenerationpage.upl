@@ -1,0 +1,37 @@
+// UPL template for static files generation page.
+// Copyright (c) 2019, 2021, FlowCentral Technologies.
+// All rights reserved.
+// 
+// PROPRIETARY AND CONFIDENTIAL. USE IS SUBJECT TO LICENSE TERMS.
+
+!ui-page caption:$m{extensionmodulestaticfilesgenerationpage.title} components:$c{basePanel}
+
+// Base panel
+!ui-panel:basePanel layout:$d{!ui-vertical style:$s{width:100%;}}
+	components:$c{headerBar generationPanel}
+
+// Header
+!ui-panel:headerBar layout:$d{!ui-horizontal style:$s{width:100%;} cellType:bottom}
+	components:$c{generateLabel} 
+	
+!ui-label:generateLabel styleClass:$e{fc-largelabel}
+	caption:$m{extensionmodulestaticfilesgenerationpage.header.title}
+
+// Generation panel
+!ui-panel:generationPanel styleClass:$e{fc-licenseoptions}
+	components:$c{generationCaption generationBodyPanel}
+!ui-label:generationCaption styleClass:$e{label}
+	caption:$m{extensionmodulestaticfilesgenerationpage.generationdetails.caption}
+!ui-panel:generationBodyPanel
+	layout:$d{!ui-vertical style:$s{width:100%;} showCaption:true cellStyle:$s{padding:5px 2px;}}
+	components:$c{frmBasePackage frmModuleId generateBtn}	
+!ui-name:frmBasePackage caption:$m{extensionmodulestaticfilesgeneration.form.basepackage}
+	period:true case:lower binding:basePackage required:true size:48
+!ui-select:frmModuleId caption:$m{extensionmodulestaticfilesgeneration.form.module}
+	list:$s{modulelist} blankOption:$s{} binding:moduleId required:true
+!ui-button:generateBtn styleClass:$e{fc-bluebutton} caption:$m{button.generate}
+	eventHandler:$d{!ui-event event:onclick action:$c{generateAct}}
+	
+// Actions
+!ui-post:generateAct path:$n{/generateStaticFiles} components:$c{generationBodyPanel}
+	

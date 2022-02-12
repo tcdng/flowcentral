@@ -1,0 +1,666 @@
+<?xml version="1.0"?>
+<!-- Security application -->
+<application name="security"
+	description="$m{security.short.description}" label="$m{security.label}"
+	module="security" developable="true">
+	<!-- Notification Templates -->
+	<notifTemplates>
+		<notifTemplate
+			configFile="apps/notification/user-welcome.xml" />
+		<notifTemplate
+			configFile="apps/notification/user-passwordreset.xml" />
+		<notifTemplate
+			configFile="apps/notification/user-creation-approval.xml" />
+	</notifTemplates>
+	<!-- Workflows -->
+	<workflows>
+		<workflow configFile="apps/workflow/user-creation.xml" />
+	</workflows>
+	<!-- Workflow Channels -->
+	<workflow-channels>
+		<workflow-channel name="userCreation"
+			description="$m{security.workflow.channel.usercreation}"
+			label="$m{security.workflow.channel.usercreation.label}"
+			entity="user" destination="userCreation" direction="inward" />
+	</workflow-channels>
+	<!-- Widget Types -->
+	<widgetTypes>
+		<widgetType name="userphoto"
+			description="$m{security.widgettype.userphoto}" dataType="string"
+			inputType="string"
+			editor="!fc-fileattachmentimage category:$s{work} entityName:$s{security.user} attachmentName:$s{photo}"
+			renderer="!ui-label" stretch="false" />
+	</widgetTypes>
+	<!-- Applets -->
+	<applets>
+		<applet name="manageUserGroup"
+			description="$m{security.usergroup.manage}"
+			label="$m{security.usergroup.manage.label}" icon="users"
+			type="manage_entitylist" entity="userGroup" menuAccess="true">
+			<property name="searchTable" value="userGroupTable" />
+			<property name="searchTable.new" value="true" />
+			<property name="searchTable.report" value="true" />
+			<property name="searchTable.quickFilter" value="true" />
+			<property name="createForm" value="userGroupForm" />
+			<property name="createForm.save" value="true" />
+			<property name="createForm.save.next" value="true" />
+			<property name="createForm.save.close" value="true" />
+			<property name="maintainForm" value="userGroupForm" />
+			<property name="maintainForm.update" value="true" />
+			<property name="maintainForm.delete" value="true" />
+		</applet>
+		<applet name="manageUserGroupRole"
+			description="$m{security.usergrouprole.manage}"
+			label="$m{security.usergrouprole.manage.label}"
+			type="manage_entitylist_assign" entity="userGroupRole"
+			baseField="userGroupId" assignField="roleId">
+			<property name="searchTable" value="userGroupRoleTable" />
+			<property name="searchTable.edit" value="true" />
+			<property name="assignmentPage"
+				value="userGroupRoleAssignment" />
+		</applet>
+		<applet name="manageUserGroupMember"
+			description="$m{security.usergroupmember.manage}"
+			label="$m{security.usergroupmember.manage.label}"
+			type="manage_entitylist_assign" entity="userGroupMember"
+			baseField="userGroupId" assignField="userId">
+			<property name="searchTable" value="userGroupMemberTable" />
+			<property name="searchTable.edit" value="true" />
+			<property name="assignmentPage"
+				value="userGroupMemberAssignment" />
+		</applet>
+		<applet name="manageUser"
+			description="$m{security.user.manage}"
+			label="$m{security.user.manage.label}" icon="user"
+			type="manage_entitylist" entity="user" menuAccess="true">
+			<property name="searchTable" value="userTable" />
+			<property name="searchTable.new" value="true" />
+			<property name="searchTable.report" value="true" />
+			<property name="searchTable.quickFilter" value="true" />
+			<property name="createForm" value="userForm" />
+            <property name="createForm.onCreate.state.policy" value="onCreateFormStatePolicy"/>
+			<property name="createForm.new.policy"
+				value="user-newactionpolicy" />
+			<property name="createForm.submit" value="true" />
+			<property name="createForm.submit.validate" value="true" />
+			<property name="createForm.submit.workflow.channel"
+				value="userCreation" />
+			<property name="createForm.submit.condition" value="newUser" />
+			<property name="createForm.save" value="true" />
+			<property name="createForm.save.close" value="true" />
+			<property name="maintainForm" value="userForm" />
+			<property name="maintainForm.update" value="true" />
+			<property name="maintainForm.delete" value="true" />
+			<property name="maintainForm.attachments" value="true" />
+			<property name="maintainForm.submit" value="true" />
+			<property name="maintainForm.submit.validate" value="true" />
+			<property name="maintainForm.submit.workflow.channel"
+				value="userCreation" />
+			<property name="maintainForm.submit.condition" value="newUser" />
+			<property name="baseRestriction" value="nonSystemRecords" />
+			<filter name="nonSystemRecords"
+				description="$m{common.filter.nonsystemrecords}">
+				<restriction type="greater_than" field="id" paramA="0" />
+			</filter>
+			<filter name="newUser"
+				description="$m{security.filter.newusers}">
+				<restriction type="or">
+					<restriction type="is_null" field="workflowStatus" />
+					<restriction type="equals" field="workflowStatus"
+						paramA="NEW" />
+				</restriction>
+			</filter>
+		</applet>
+		<applet name="manageUserRole"
+			description="$m{security.userrole.manage}"
+			label="$m{security.userrole.manage.label}"
+			type="manage_entitylist_assign" entity="userRole" baseField="userId"
+			assignField="roleId">
+			<property name="searchTable" value="userRoleTable" />
+			<property name="searchTable.edit" value="true" />
+			<property name="assignmentPage" value="userRoleAssignment" />
+		</applet>
+		<applet name="manageChangePassword"
+			description="$m{security.changepassword.manage}"
+			label="$m{security.changepassword.label}" icon="lock"
+			type="path_page" path="/security/changepassword/openPage"
+			menuAccess="true">
+		</applet>
+		<applet name="manageResetUser"
+			description="$m{security.userresetunlock.manage}"
+			label="$m{security.userresetunlock.manage.label}" icon="unlock"
+			type="manage_entitylist" entity="user" menuAccess="true">
+			<property name="searchTable" value="userTable" />
+			<property name="searchTable.new" value="false" />
+			<property name="searchTable.report" value="false" />
+			<property name="searchTable.quickFilter" value="true" />
+			<property name="maintainForm" value="userResetForm" />
+			<property name="maintainForm.attachments" value="false" />
+			<property name="baseRestriction" value="nonSystemRecords" />
+			<filter name="nonSystemRecords"
+				description="$m{common.filter.nonsystemrecords}">
+				<restriction type="greater_than" field="id" paramA="0" />
+			</filter>
+		</applet>
+	</applets>
+	<!-- References -->
+	<references>
+		<reference name="userGroupRef"
+			description="$m{security.usergroup.reference}" entity="userGroup"
+			searchField="description" />
+		<reference name="userRef"
+			description="$m{security.user.reference}" entity="user"
+			searchField="fullName" />
+		<reference name="userRoleRef"
+			description="$m{security.userrole.reference}" entity="userRole"
+			searchField="roleDesc" />
+		<reference name="userGroupRoleRef"
+			description="$m{security.usergrouprole.reference}"
+			entity="userGroupRole" searchField="roleDesc" />
+		<reference name="userGroupMemberRef"
+			description="$m{security.usergroupmember.reference}"
+			entity="userGroupMember" searchField="userFullName" />
+	</references>
+	<!-- Entities -->
+	<entities>
+		<entity name="userGroup" description="$m{security.usergroup}"
+			label="$m{security.usergroup.label}"
+			type="com.flowcentraltech.flowcentral.security.entities.UserGroup"
+			reportable="true" auditable="true">
+			<field name="name" label="$m{security.usergroup.name}"
+				type="string" inputWidget="application.name" maxLen="64" />
+			<field name="description"
+				label="$m{security.usergroup.description}" type="string"
+				inputWidget="application.text" maxLen="96" />
+			<field name="email" label="$m{security.usergroup.email}"
+				type="string" inputWidget="application.text" maxLen="64"
+				nullable="true" />
+			<field name="userGroupRoleList"
+				label="$m{security.usergroup.usergrouprolelist}" type="child_list"
+				references="userGroupRoleRef" />
+			<field name="userGroupMemberList"
+				label="$m{security.usergroup.usergroupmemberlist}" type="child_list"
+				references="userGroupMemberRef" />
+			<uniqueConstraint name="nameUc"
+				description="$m{security.usergroup.uc.name}" fieldList="name" />
+			<uniqueConstraint name="descUc"
+				description="$m{security.usergroup.uc.description}"
+				fieldList="description" />
+		</entity>
+		<entity name="userGroupRole"
+			description="$m{security.usergrouprole}"
+			label="$m{security.usergrouprole.label}"
+			type="com.flowcentraltech.flowcentral.security.entities.UserGroupRole">
+			<field name="userGroupId"
+				label="$m{security.usergrouprole.usergroupid}" type="ref"
+				references="userGroupRef"
+				filterLabel="$m{security.usergrouprole.usergroup}"
+				inputWidget="application.entitysearch" />
+			<field name="roleId" label="$m{security.usergrouprole.roleid}"
+				type="ref" references="organization.roleRef"
+				filterLabel="$m{security.usergrouprole.role}"
+				inputWidget="application.entitysearch" />
+			<field name="userGroupName"
+				label="$m{security.usergrouprole.usergroupname}" type="list_only"
+				key="userGroupId" property="name" />
+			<field name="userGroupDesc"
+				label="$m{security.usergrouprole.usergroupdesc}" type="list_only"
+				key="userGroupId" property="description" />
+			<field name="userGroupEmail"
+				label="$m{security.usergrouprole.usergroupemail}" type="list_only"
+				key="userGroupId" property="email" />
+			<field name="roleCode"
+				label="$m{security.usergrouprole.rolecode}" type="list_only"
+				key="roleId" property="code" />
+			<field name="roleDesc"
+				label="$m{security.usergrouprole.roledesc}" type="list_only"
+				key="roleId" property="description" />
+			<field name="departmentCode"
+				label="$m{security.usergrouprole.departmentcode}" type="list_only"
+				key="roleId" property="departmentCode" />
+			<field name="departmentDesc"
+				label="$m{security.usergrouprole.departmentdesc}" type="list_only"
+				key="roleId" property="departmentDesc" />
+			<field name="activeBefore"
+				label="$m{security.usergrouprole.roleactivebefore}" type="list_only"
+				key="roleId" property="activeBefore" />
+			<field name="activeAfter"
+				label="$m{security.usergrouprole.roleactiveafter}" type="list_only"
+				key="roleId" property="activeAfter" />
+			<uniqueConstraint name="roleUc"
+				description="$m{security.usergrouprole.uc.role}"
+				fieldList="userGroupId,roleId" />
+		</entity>
+		<entity name="userGroupMember"
+			description="$m{security.usergroupmember}"
+			label="$m{security.usergroupmember.label}"
+			type="com.flowcentraltech.flowcentral.security.entities.UserGroupMember">
+			<field name="userGroupId"
+				label="$m{security.usergroupmember.usergroupid}" type="ref"
+				references="userGroupRef"
+				filterLabel="$m{security.usergroupmember.usergroup}"
+				inputWidget="application.entitysearch" />
+			<field name="userId"
+				label="$m{security.usergroupmember.userid}" type="ref"
+				references="userRef" filterLabel="$m{security.usergroupmember.user}"
+				inputWidget="application.entitysearch" />
+			<field name="userGroupName"
+				label="$m{security.usergroupmember.usergroupname}" type="list_only"
+				key="userGroupId" property="name" />
+			<field name="userGroupDesc"
+				label="$m{security.usergroupmember.usergroupdesc}" type="list_only"
+				key="userGroupId" property="description" />
+			<field name="userGroupEmail"
+				label="$m{security.usergroupmember.usergroupemail}" type="list_only"
+				key="userGroupId" property="email" />
+			<field name="userFullName"
+				label="$m{security.usergroupmember.username}" type="list_only"
+				key="userId" property="fullName" />
+			<field name="userEmail"
+				label="$m{security.usergroupmember.useremail}" type="list_only"
+				key="userId" property="email" />
+			<field name="userBranchId"
+				label="$m{security.usergroupmember.branchid}" type="list_only"
+				key="userId" property="branchId" />
+			<field name="userBranchDesc"
+				label="$m{security.usergroupmember.branchdesc}" type="list_only"
+				key="userId" property="branchDesc" />
+			<uniqueConstraint name="userUc"
+				description="$m{security.usergroupmember.uc.user}"
+				fieldList="userGroupId,userId" />
+		</entity>
+		<entity name="user" description="$m{security.user}"
+			label="$m{security.user.label}"
+			type="com.flowcentraltech.flowcentral.security.entities.User"
+			reportable="true" auditable="true">
+			<field name="workflowStatus"
+				label="$m{security.user.workflowstatus}" type="enum_ref"
+				inputWidget="application.enumlist"
+				references="userworkflowstatuslist" />
+			<field name="workflowStatusDesc"
+				label="$m{security.user.workflowstatus.description}"
+				type="list_only" inputWidget="application.text" key="workflowStatus"
+				property="description" />
+			<field name="branchId" label="$m{security.user.branch}"
+				type="ref" inputWidget="application.entitylist"
+				references="organization.branchRef" />
+			<field name="fullName" label="$m{security.user.fullname}"
+				type="string" inputWidget="application.fullname" maxLen="96" />
+			<field name="loginId" label="$m{security.user.loginid}"
+				type="string" inputWidget="application.name" maxLen="64"
+				case="upper" />
+			<field name="password" label="$m{security.user.password}"
+				type="string" inputWidget="application.password" auditable="false"
+				reportable="false" maxLen="512" nullable="true" />
+			<field name="email" label="$m{security.user.email}"
+				type="string" inputWidget="application.text" maxLen="64" />
+			<field name="mobileNo" label="$m{security.user.mobileno}"
+				type="string" inputWidget="application.text" maxLen="64"
+				nullable="true" />
+			<field name="loginAttempts"
+				label="$m{security.user.loginattempts}" type="integer"
+				inputWidget="application.integer" />
+			<field name="loginLocked" label="$m{security.user.loginlocked}"
+				type="boolean" inputWidget="application.checkbox" />
+			<field name="changePassword"
+				label="$m{security.user.changepassword}" type="boolean"
+				inputWidget="application.checkbox" />
+			<field name="passwordExpires"
+				label="$m{security.user.passwordexpires}" type="boolean"
+				inputWidget="application.checkbox" />
+			<field name="allowMultipleLogin"
+				label="$m{security.user.allowmultiplelogin}" type="boolean"
+				inputWidget="application.checkbox" />
+			<field name="supervisor" label="$m{security.user.supervisor}"
+				type="boolean" inputWidget="application.checkbox" />
+			<field name="passwordExpiryDt"
+				label="$m{security.user.passwordexpirydt}" type="date"
+				inputWidget="application.date" />
+			<field name="lastLoginDt" label="$m{security.user.lastlogindt}"
+				type="timestamp_utc" inputWidget="application.datetime" />
+			<field name="branchCode" label="$m{security.user.branch.code}"
+				type="list_only" inputWidget="application.text" key="branchId"
+				property="code" />
+			<field name="branchDesc"
+				label="$m{security.user.branch.description}" type="list_only"
+				inputWidget="application.text" key="branchId" property="description" />
+			<field name="branchLanguageTag"
+				label="$m{security.user.branch.languagetag}" type="list_only"
+				inputWidget="application.text" key="branchId" property="languageTag" />
+			<field name="branchTimeZone"
+				label="$m{security.user.branch.timezone}" type="list_only"
+				inputWidget="application.text" key="branchId" property="timeZone" />
+			<field name="zoneCode" label="$m{security.user.zone.code}"
+				type="list_only" inputWidget="application.text" key="branchId"
+				property="code" />
+			<field name="zoneDesc"
+				label="$m{security.user.zone.description}" type="list_only"
+				inputWidget="application.text" key="branchId" property="description" />
+			<field name="plainPassword"
+				label="$m{security.user.plainpassword}" type="scratch" />
+			<field name="userRoleList" label="$m{security.user.rolelist}"
+				type="child_list" references="userRoleRef" />
+			<uniqueConstraint name="loginIdUc"
+				description="$m{security.user.uc.loginid}" fieldList="loginId" />
+			<attachment type="image" name="photo"
+				description="$m{security.user.attachment.photo}" />
+		</entity>
+		<entity name="userRole" description="$m{security.userrole}"
+			label="$m{security.userrole.label}"
+			type="com.flowcentraltech.flowcentral.security.entities.UserRole">
+			<field name="userId" label="$m{security.userrole.userid}"
+				type="ref" references="userRef"
+				filterLabel="$m{security.userrole.user}"
+				inputWidget="application.entitysearch" />
+			<field name="roleId" label="$m{security.userrole.roleid}"
+				type="ref" references="organization.roleRef"
+				filterLabel="$m{security.userrole.role}"
+				inputWidget="application.entitysearch" />
+			<field name="userName" label="$m{security.userrole.username}"
+				type="list_only" key="userId" property="fullName" />
+			<field name="userEmail" label="$m{security.userrole.useremail}"
+				type="list_only" key="userId" property="email" />
+			<field name="userMobileNo"
+				label="$m{security.userrole.usermobileno}" type="list_only"
+				key="userId" property="mobileNo" />
+			<field name="branchCode"
+				label="$m{security.userrole.branchcode}" type="list_only"
+				key="userId" property="branchCode" />
+			<field name="branchDesc"
+				label="$m{security.userrole.branchdesc}" type="list_only"
+				key="userId" property="branchDesc" />
+			<field name="supervisor"
+				label="$m{security.userrole.supervisor}" type="list_only"
+				key="userId" property="supervisor" />
+			<field name="roleCode" label="$m{security.userrole.rolecode}"
+				type="list_only" key="roleId" property="code" />
+			<field name="roleDesc" label="$m{security.userrole.roledesc}"
+				type="list_only" key="roleId" property="description" />
+			<field name="departmentCode"
+				label="$m{security.userrole.departmentcode}" type="list_only"
+				key="roleId" property="departmentCode" />
+			<field name="departmentDesc"
+				label="$m{security.userrole.departmentdesc}" type="list_only"
+				key="roleId" property="departmentDesc" />
+			<field name="activeBefore"
+				label="$m{security.userrole.roleactivebefore}" type="list_only"
+				key="roleId" property="activeBefore" />
+			<field name="activeAfter"
+				label="$m{security.userrole.roleactiveafter}" type="list_only"
+				key="roleId" property="activeAfter" />
+			<uniqueConstraint name="roleUc"
+				description="$m{security.userrole.uc.role}"
+				fieldList="userId,roleId" />
+		</entity>
+	</entities>
+	<!-- Tables -->
+	<tables>
+		<table name="userGroupTable"
+			description="$m{security.usergroup.table}"
+			label="$m{security.usergroup.table.label}" entity="userGroup"
+			itemsPerPage="20">
+			<column field="name" renderWidget="application.name"
+				widthRatio="1" linkAct="maintainAct" />
+			<column field="description" renderWidget="application.text"
+				widthRatio="1" linkAct="maintainAct" />
+			<column field="email" renderWidget="application.text"
+				widthRatio="1" />
+			<column field="createDt" renderWidget="application.datetime"
+				widthRatio="1" />
+			<column field="updateDt" renderWidget="application.datetime"
+				widthRatio="1" />
+			<column field="statusDesc" renderWidget="application.text"
+				label="$m{basestatusentity.field.label.status}" widthRatio="1" />
+		</table>
+		<table name="userGroupRoleTable"
+			description="$m{security.usergrouprole.table}"
+			label="$m{security.usergrouprole.table.label}" entity="userGroupRole"
+			itemsPerPage="20">
+			<column field="departmentDesc" renderWidget="application.text"
+				label="$m{security.usergrouprole.department}" widthRatio="1" />
+			<column field="roleDesc" renderWidget="application.text"
+				label="$m{security.usergrouprole.role}" widthRatio="1" />
+			<column field="activeBefore" renderWidget="application.time"
+				widthRatio="1" />
+			<column field="activeAfter" renderWidget="application.time"
+				widthRatio="1" />
+			<column field="updatedBy" renderWidget="application.text"
+				label="$m{security.usergrouprole.grantedby}" widthRatio="1" />
+			<column field="updateDt" renderWidget="application.datetime"
+				widthRatio="1" />
+		</table>
+		<table name="userGroupMemberTable"
+			description="$m{security.usergroupmember.table}"
+			label="$m{security.usergroupmember.table.label}"
+			entity="userGroupMember" itemsPerPage="20">
+			<column field="userFullName" renderWidget="application.text"
+				widthRatio="1" />
+			<column field="userEmail" renderWidget="application.text"
+				widthRatio="1" />
+			<column field="userBranchDesc" renderWidget="application.text"
+				label="$m{security.usergroupmember.branch}" widthRatio="1" />
+			<column field="updatedBy" renderWidget="application.text"
+				label="$m{security.usergroupmember.grantedby}" widthRatio="1" />
+			<column field="updateDt" renderWidget="application.datetime"
+				widthRatio="1" />
+		</table>
+		<table name="userTable" description="$m{security.user.table}"
+			label="$m{security.user.table.label}" entity="user" itemsPerPage="20">
+			<column field="loginId" renderWidget="application.name"
+				widthRatio="1" linkAct="maintainAct" />
+			<column field="fullName" renderWidget="application.text"
+				widthRatio="1" linkAct="maintainAct" />
+			<column field="email" renderWidget="application.text"
+				widthRatio="2" />
+			<column field="branchDesc" renderWidget="application.text"
+				label="$m{security.user.branch}" widthRatio="1" />
+			<column field="lastLoginDt"
+				renderWidget="application.datetime" widthRatio="1" />
+			<column field="statusDesc" renderWidget="application.text"
+				label="$m{basestatusentity.field.label.status}" widthRatio="1" />
+			<column field="workflowStatusDesc"
+				label="$m{security.user.workflowstatus}"
+				renderWidget="application.text" widthRatio="1" />
+			<column field="createDt" renderWidget="application.datetime"
+				widthRatio="1" />
+			<column field="updateDt" renderWidget="application.datetime"
+				widthRatio="1" />
+		</table>
+		<table name="userRoleTable"
+			description="$m{security.userrole.table}"
+			label="$m{security.userrole.table.label}" entity="userRole"
+			itemsPerPage="20">
+			<column field="departmentDesc" renderWidget="application.text"
+				label="$m{security.userrole.department}" widthRatio="1" />
+			<column field="roleDesc" renderWidget="application.text"
+				label="$m{security.userrole.role}" widthRatio="1" />
+			<column field="branchDesc" renderWidget="application.text"
+				label="$m{security.user.branch}" widthRatio="1" />
+			<column field="activeBefore" renderWidget="application.time"
+				widthRatio="1" />
+			<column field="activeAfter" renderWidget="application.time"
+				widthRatio="1" />
+			<column field="updatedBy" renderWidget="application.text"
+				label="$m{security.userrole.grantedby}" widthRatio="1" />
+			<column field="updateDt" renderWidget="application.datetime"
+				widthRatio="1" />
+		</table>
+	</tables>
+	<!-- Forms -->
+	<forms>
+		<form name="userGroupForm"
+			description="$m{security.usergroup.form}" entity="userGroup">
+			<tab name="basicDetails"
+				label="$m{security.usergroup.form.basicdetails}"
+				contentType="miniform">
+				<section name="userGroupDetails" columns="type_2">
+					<field name="name" inputWidget="application.name" column="0"
+						required="true" />
+					<field name="description" inputWidget="application.text"
+						column="0" required="true" />
+					<field name="email" inputWidget="application.text" column="1"
+						required="true" />
+					<field name="status" inputWidget="application.enumlist"
+						column="1" required="true" />
+				</section>
+			</tab>
+			<tab name="members" label="$m{security.usergroup.form.members}"
+				contentType="child_list" applet="manageUserGroupMember"
+				reference="userGroupMemberList" />
+			<tab name="roles" label="$m{security.usergroup.form.roles}"
+				contentType="child_list" applet="manageUserGroupRole"
+				reference="userGroupRoleList" />
+			<tab name="changeLog" label="$m{application.form.audit}"
+				contentType="miniform_changelog" />
+			<fieldValidationPolicy name="emailValidation"
+				description="$m{security.usergroup.form.fieldvalidationpolicy.email}"
+				fieldName="email" validator="fc-emailvalidator" />
+		</form>
+		<form name="userForm" description="$m{security.user.form}"
+			entity="user">
+			<tab name="basicDetails"
+				label="$m{security.user.form.basicdetails}" contentType="miniform">
+				<section name="userDetails" columns="type_2">
+					<field name="loginId" inputWidget="application.name"
+						column="0" required="true" />
+					<field name="fullName" inputWidget="application.fullname"
+						column="0" required="true" />
+					<field name="email" inputWidget="application.text" column="0"
+						required="true" />
+					<field name="mobileNo" inputWidget="application.name"
+						column="0" />
+					<field name="id" label="$m{security.user.form.photo}"
+						inputWidget="userphoto" column="0" />
+					<field name="workflowStatus"
+						inputWidget="application.enumlist" column="1" disabled="true"
+						required="true" />
+					<field name="status" inputWidget="application.enumlist"
+						column="1" required="true" />
+					<field name="branchId" inputWidget="application.entitylist"
+						column="1" />
+					<field name="passwordExpires"
+						inputWidget="application.checkbox" column="1" />
+					<field name="allowMultipleLogin"
+						inputWidget="application.checkbox" column="1" />
+					<field name="supervisor" inputWidget="application.checkbox"
+						column="1" />
+				</section>
+			</tab>
+			<tab name="roles" label="$m{security.user.form.roles}"
+				contentType="child_list" applet="manageUserRole"
+				reference="userRoleList" />
+			<tab name="branchDetails"
+				label="$m{security.user.form.branchdetails}" contentType="miniform"
+				disabled="true">
+				<section name="branchDetails" columns="type_2">
+					<field name="branchCode" inputWidget="application.name"
+						column="0" />
+					<field name="branchDesc" inputWidget="application.text"
+						label="$m{security.user.branch}" column="0" />
+					<field name="branchLanguageTag"
+						inputWidget="application.languagetag" column="0" />
+					<field name="branchTimeZone"
+						inputWidget="application.timezone" column="0" />
+					<field name="zoneCode" inputWidget="application.name"
+						column="1" />
+					<field name="zoneDesc" inputWidget="application.text"
+						column="1" label="$m{security.user.zone}" />
+				</section>
+			</tab>
+			<tab name="accountDetails"
+				label="$m{security.user.form.accountdetails}" contentType="miniform"
+				disabled="true">
+				<section name="accountDetails" columns="type_2">
+					<field name="lastLoginDt" inputWidget="application.datetime"
+						column="0" />
+					<field name="passwordExpiryDt"
+						inputWidget="application.datetime" column="0" />
+					<field name="loginLocked" inputWidget="application.checkbox"
+						column="1" />
+					<field name="changePassword"
+						inputWidget="application.checkbox" column="1" />
+				</section>
+			</tab>
+			<tab name="changeLog" label="$m{application.form.audit}"
+				contentType="miniform_changelog" />
+			<formStatePolicy type="ON_CREATE"
+				name="onCreateFormStatePolicy"
+				description="$m{security.user.form.statepolicy.oncreate}">
+				<setValues>
+					<setValue field="workflowStatus" type="IMMEDIATE"
+						value="NEW" />
+				</setValues>
+			</formStatePolicy>
+			<fieldValidationPolicy name="emailValidation"
+				description="$m{security.user.form.fieldvalidationpolicy.email}"
+				fieldName="email" validator="fc-emailvalidator" />
+			<fieldValidationPolicy
+				name="mobileNoValidation"
+				description="$m{security.user.form.fieldvalidationpolicy.mobileno}"
+				fieldName="mobileNo" validator="fc-mobilevalidator" />
+		</form>
+		<form name="userResetForm"
+			description="$m{security.userresetunlock.form}" entity="user">
+			<action type="button" name="resetPassword"
+				description="$m{security.userresetunlock.form.action.resetpassword}"
+				label="$m{security.userresetunlock.form.action.resetpassword.label}"
+				policy="resetpassword-actionpolicy" showOnMaintain="true" />
+			<action type="button" name="unlockUser"
+				description="$m{security.userresetunlock.form.action.unlockuser}"
+				label="$m{security.userresetunlock.form.action.unlockuser.label}"
+				policy="unlockuser-actionpolicy" showOnMaintain="true" />
+			<tab name="basicDetails"
+				label="$m{security.userresetunlock.form.basicdetails}"
+				contentType="miniform" disabled="true">
+				<section name="userDetails" columns="type_2">
+					<field name="loginId" inputWidget="application.name"
+						column="0" required="true" />
+					<field name="fullName" inputWidget="application.fullname"
+						column="0" required="true" />
+					<field name="email" inputWidget="application.text" column="0"
+						required="true" />
+					<field name="mobileNo" inputWidget="application.name"
+						column="0" />
+					<field name="id" label="$m{security.user.form.photo}"
+						inputWidget="userphoto" column="0" />
+					<field name="branchId" inputWidget="application.entitylist"
+						column="1" />
+					<field name="status" inputWidget="application.enumlist"
+						column="1" required="true" />
+					<field name="lastLoginDt" inputWidget="application.datetime"
+						column="1" />
+					<field name="passwordExpiryDt"
+						inputWidget="application.datetime" column="1" />
+					<field name="loginLocked" inputWidget="application.checkbox"
+						column="1" />
+					<field name="changePassword"
+						inputWidget="application.checkbox" column="1" />
+				</section>
+			</tab>
+		</form>
+	</forms>
+	<!-- Assignment Pages -->
+	<assignmentPages>
+		<assignmentPage name="userGroupRoleAssignment"
+			description="$m{security.usergroup.role.assignment}"
+			label="$m{security.usergroup.role.assignment}" entity="userGroupRole"
+			baseField="userGroupId" assignField="roleId"
+			assignCaption="$m{security.usergroup.role.assigned}"
+			unassignCaption="$m{security.usergroup.role.available}"
+			assignList="roleinlist" unassignList="rolenotinlist" />
+		<assignmentPage name="userGroupMemberAssignment"
+			description="$m{security.usergroup.member.assignment}"
+			label="$m{security.usergroup.member.assignment}"
+			entity="userGroupMember" baseField="userGroupId" assignField="userId"
+			assignCaption="$m{security.usergroup.member.assigned}"
+			unassignCaption="$m{security.usergroup.member.available}"
+			assignList="userinlist" unassignList="usernotinlist" />
+		<assignmentPage name="userRoleAssignment"
+			description="$m{security.user.role.assignment}"
+			label="$m{security.user.role.assignment}" entity="userRole"
+			baseField="userId" assignField="roleId"
+			assignCaption="$m{security.user.role.assigned}"
+			unassignCaption="$m{security.user.role.available}"
+			assignList="roleinlist" unassignList="rolenotinlist" />
+	</assignmentPages>
+</application>

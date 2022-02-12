@@ -1,0 +1,39 @@
+// UPL template for generate license request panel.
+// Copyright (c) 2019, 2021, FlowCentral Technologies.
+// All rights reserved.
+// 
+// PROPRIETARY AND CONFIDENTIAL. USE IS SUBJECT TO LICENSE TERMS.
+
+!fc-generatelicenserequestpanel dialogCaption:$m{system.generatelicenserequest}
+    dialogBodyComponents:$c{genBaseBodyPanel}
+    dialogActionLayout:$d{!ui-vertical style:$s{width:100%;}}
+    dialogActionComponents:$c{generateActionPanel}
+
+!ui-panel:genBaseBodyPanel layout:$d{!ui-horizontal style:$s{width:100%;}}
+    components:$c{formPanel}
+
+// Form
+!ui-formpanel:formPanel
+	layout:$d{!ui-vertical style:$s{table-layout:fixed;}}
+    formCaptionSuffix:$s{:} formColumns:1
+	formSection:$d{!ui-section components:$c{frmClientTitle frmAccountNo}}
+!ui-text:frmClientTitle styleClass:$e{fc-formfield}
+	caption:$m{system.generatelicenserequest.form.clienttitle}
+	binding:formClientTitle required:true focus:true
+!ui-text:frmAccountNo styleClass:$e{fc-formfield}
+	caption:$m{system.generatelicenserequest.form.accountno}
+	binding:formAccountNo required:true
+
+// Action panel
+!ui-panel:generateActionPanel layout:$d{!ui-horizontal} components:$c{generateBtn cancelBtn}
+!ui-button:generateBtn styleClass:$e{fc-bluebutton} caption:$m{button.generate}
+	eventHandler:$d{!ui-event event:onclick action:$c{generateLicenceReqAct}}
+!ui-button:cancelBtn styleClass:$e{ui-button-alert} caption:$m{button.cancel}
+    eventHandler:$d{!ui-event event:onclick action:$c{closeDialogAct}}
+     
+//Actions
+!ui-post:generateLicenceReqAct path:$g{generateLicenceReqPath}
+    components:$c{formPanel} validations:$c{formValidation} debounce:false
+
+// Validations
+!ui-validation:formValidation components:$c{formPanel}

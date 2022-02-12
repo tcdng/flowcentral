@@ -1,0 +1,21 @@
+// UPL template for flowcentral common utilities page controller.
+// Copyright (c) 2019, 2021, FlowCentral Technologies.
+// All rights reserved.
+// 
+// PROPRIETARY AND CONFIDENTIAL. USE IS SUBJECT TO LICENSE TERMS.
+
+!ui-page caption:$s{}
+
+//Report runner popup
+!fc-reportrunnerpanel:reportRunnerPopup generateReportPath:$n{/generateReport} closeDialogPath:$n{/closeReport}
+    binding:$j{com.flowcentraltech.flowcentral.common.constants.FlowCentralSessionAttributeConstants.REPORTOPTIONS}
+
+// Locked resource popup
+!fc-collaborationlockedresourcepanel:lockedResourcePopup 
+    binding:$j{com.flowcentraltech.flowcentral.common.constants.FlowCentralSessionAttributeConstants.LOCKED_RESOURCEOPTIONS}
+	grabLockEventHandler:$d{!ui-event event:onclick action:$c{grabLockAct}} 
+	
+     
+//Actions
+!ui-post:grabLockAct path:$n{/grabResourceLock}
+ 

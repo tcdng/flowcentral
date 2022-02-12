@@ -1,0 +1,73 @@
+// UPL template for login sequence
+// Copyright (c) 2019, 2021, FlowCentral Technologies.
+// All rights reserved.
+// 
+// PROPRIETARY AND CONFIDENTIAL. USE IS SUBJECT TO LICENSE TERMS.
+
+!ui-page caption:$m{security.application.login}
+	layout:$d{!ui-horizontal cellStyle:$s{padding:0px;} style:$s{width:100%;height:100%;} widths:$l{none 440px} heights:$l{100% 100%}}
+	components:$c{brandSection loginSection}
+
+// Brand section
+!ui-panel:brandSection style:$s{width:100%;height:100%}
+    backImageSrc:$s{/web/images/applicationloginbackground.jpg}
+
+// Login section
+!ui-panel:loginSection styleClass:$e{fc-loginsection}  style:$s{width:100%;height:100%} components:$c{loginBox}
+
+!ui-panel:loginBox styleClass:$e{fc-loginbox} layout:$d{!ui-vertical style:$s{width:100%;}}
+	components:$c{headerSection loginCaptionBox loginSequencePanel}
+
+// Header Section
+!ui-panel:headerSection styleClass:$e{fc-loginheader} components:$c{topBannerImg}
+!ui-image:topBannerImg src:$s{web/images/applicationloginbanner.png}
+	styleClass:$e{fc-loginheaderimg}
+
+// Login caption
+!ui-panel:loginCaptionBox styleClass:$e{fc-logincaptionbox} layout:$d{!ui-vertical style:$s{width:100%;}}
+	 components:$c{loginTitle loginSubTitle}
+!ui-label:loginTitle styleClass:$e{fc-logintitle} caption:$m{common.application.login.title}
+	bindingOptional:true binding:loginTitle
+!ui-label:loginSubTitle styleClass:$e{fc-loginsubtitle} caption:$m{common.application.login.subtitle}
+	bindingOptional:true binding:loginSubtitle
+
+// Login sequence
+!ui-switchpanel:loginSequencePanel styleClass:$e{fc-loginsequencebox} layout:$d{!ui-vertical style:$s{width:100%;}}
+    components:$c{loginPanel changePasswordPanel}
+
+// Login
+!ui-panel:loginPanel layout:$d{!ui-vertical style:$s{width:100%;} showCaption:true cellStyle:$s{padding:5px 5px;}}
+	components:$c{frmUserName frmUserPassword frmLoginMsg frmLoginBtn}	
+!ui-name:frmUserName caption:$m{security.application.loginid}
+	styleClass:$e{fc-logintxt} binding:userName case:upper focus:true
+    eventHandler:$d{!ui-event event:onenter action:$c{loginAct}}
+!ui-password:frmUserPassword caption:$m{security.application.password}
+	styleClass:$e{fc-logintxt} binding:password
+    eventHandler:$d{!ui-event event:onenter action:$c{loginAct}}
+!ui-label:frmLoginMsg styleClass:$e{ui-loginmsg} binding:loginMessage
+!ui-button:frmLoginBtn caption:$m{security.application.signin} styleClass:$e{fc-loginbtn}
+	eventHandler:$d{!ui-event event:onclick action:$c{loginAct}}
+
+// Change password
+!ui-panel:changePasswordPanel layout:$d{!ui-vertical style:$s{width:100%;} showCaption:true cellStyle:$s{padding:5px 5px;}}
+    components:$c{oldPassword newPassword confirmPassword pwdChangeMsg changePwdBtn cancelPwdBtn}
+!ui-password:oldPassword styleClass:$e{fc-logintxt} binding:oldPassword caption:$m{security.application.oldpassword} focus:true
+!ui-password:newPassword styleClass:$e{fc-logintxt} binding:newPassword caption:$m{security.application.newpassword}
+!ui-password:confirmPassword styleClass:$e{fc-logintxt} binding:confirmPassword caption:$m{security.application.confirmpassword}
+    eventHandler:$d{!ui-event event:onenter action:$c{changePwdAct}}
+!ui-label:pwdChangeMsg styleClass:$e{ui-loginmsg} binding:chgPwdMessage
+!ui-button:changePwdBtn caption:$m{security.application.changepassword} styleClass:$e{fc-loginbtn}
+	eventHandler:$d{!ui-event event:onclick action:$c{changePwdAct}}
+!ui-button:cancelPwdBtn caption:$m{button.cancel} styleClass:$e{fc-logincancelbtn}
+	eventHandler:$d{!ui-event event:onclick action:$c{cancelPwdAct}}
+
+// Select user role popup
+!fc-selectrolepanel:selectRolePanel dialogCaption:$m{security.application.select.role}
+    roleListBinding:userRoleList selectRolePath:$n{/selectUserRole} closeDialogPath:$n{/cancelSelectUserRole}
+
+
+// Actions
+!ui-post:changePwdAct path:$n{/changeUserPassword} components:$c{oldPassword newPassword confirmPassword}
+!ui-post:cancelPwdAct path:$n{/cancelChangeUserPassword}
+!ui-post:loginAct path:$n{/login} components:$c{loginPanel}
+       

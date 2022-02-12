@@ -1,0 +1,13 @@
+// UPL template for headless form applet panel
+// Copyright (c) 2019, 2021, FlowCentral Technologies.
+// All rights reserved.
+// 
+// PROPRIETARY AND CONFIDENTIAL. USE IS SUBJECT TO LICENSE TERMS.
+
+!fc-headlesstabsformappletpanel components:$c{headlessTabsFormPanel}
+
+// Search list
+!fc-headlesstabsformpanel:headlessTabsFormPanel binding:headlessForm
+
+// Actions
+	

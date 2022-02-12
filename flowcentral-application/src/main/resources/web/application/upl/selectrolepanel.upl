@@ -1,0 +1,29 @@
+// UPL template for select role panel
+// Copyright (c) 2019, 2021, FlowCentral Technologies.
+// All rights reserved.
+// 
+// PROPRIETARY AND CONFIDENTIAL. USE IS SUBJECT TO LICENSE TERMS.
+
+!fc-selectrolepanel
+    dialogBodyComponents:$c{roleTablePanel}
+    dialogActionComponents:$c{switchActionPanel}
+     
+!ui-tablepanel:roleTablePanel layout:$d{!ui-vertical style:$s{table-layout:fixed;width:100%;}}
+    tableBodyStyle:$s{height:220px;}
+    tableSerialNumbers:false tableBinding:$g{roleListBinding} tableColumnList:$c{roleDesc userGroupDesc}
+    tableRowSelectable:true  tableSelDependentList:$c{selRoleBtn}
+    tableWindowed:true tablePagination:false tableMultiSelect:false tableSortable:false
+
+!ui-label:roleDesc caption:$m{application.select.role.description} binding:roleDesc
+    columnStyle:$s{width:160px;}
+!ui-label:userGroupDesc caption:$m{application.select.usergroup.description} binding:userGroupDesc
+    columnStyle:$s{width:160px;}
+   
+!ui-panel:switchActionPanel layout:$d{!ui-horizontal} components:$c{selRoleBtn cancelSelRoleBtn}
+!ui-button:selRoleBtn caption:$m{button.switchrole} styleClass:$e{fc-orangebutton}
+    eventHandler:$d{!ui-event event:onclick action:$c{selRoleAct}}
+!ui-button:cancelSelRoleBtn caption:$m{button.cancel}
+    eventHandler:$d{!ui-event event:onclick action:$c{closeDialogAct}}
+    
+//Actions
+!ui-post:selRoleAct path:$g{selectRolePath}  components:$c{roleTablePanel}

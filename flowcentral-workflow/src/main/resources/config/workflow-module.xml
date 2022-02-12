@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<!-- Workflow module configuration -->
+<module name="workflow" description="$m{workflow.module}" shortCode="WRK"
+	label="$m{workflow.label}">
+	<!-- Applications -->
+	<applications>
+		<application name="workflow"
+			shortDescription="$m{workflow.short.description}"
+			longDescription="$m{workflow.long.description}" autoInstall="true"
+			configFile="apps/workflow-application.xml" />
+	</applications>
+
+	<!-- System Parameters -->
+	<sysParameters>
+		<sysParameter code="WF-0001" defaultVal="16"
+			description="$m{workflow.sysparam.processingbatchsize}"
+			editor="!ui-integer precision:2" type="number" editable="true" />
+	</sysParameters>
+</module>

@@ -1,0 +1,3788 @@
+<?xml version="1.0"?>
+<!-- Studio application -->
+<application name="studio"
+	description="$m{studio.application.short.description}"
+	label="$m{studio.application.mainlabel}" module="studio"
+	displayIndex="1000">
+	<!-- Widget Types -->
+	<widgetTypes>
+		<widgetType name="environmentdelegatelist"
+			description="$m{studio.widgettype.environmentdelegatelist}"
+			dataType="string" inputType="string"
+			editor="!ui-select list:studioenvironmentdelegatelist blankOption:$m{blank.none}"
+			renderer="!ui-label" />
+		<widgetType name="consformvalidationpolicylist"
+			description="$m{studio.widgettype.consformvalidationpolicylist}"
+			dataType="string" inputType="string"
+			editor="!ui-select list:studioconsolidatedformvalidationpolicylist listParams:$l{entity} blankOption:$m{blank.none}"
+			renderer="!ui-label" />
+		<widgetType name="consformreviewpolicylist"
+			description="$m{studio.widgettype.consformreviewpolicylist}"
+			dataType="string" inputType="string"
+			editor="!ui-select list:studioconsolidatedformreviewpolicylist listParams:$l{entity} blankOption:$m{blank.none}"
+			renderer="!ui-label" />
+		<widgetType name="consformstatepolicylist"
+			description="$m{studio.widgettype.consformstatepolicylist}"
+			dataType="string" inputType="string"
+			editor="!ui-select list:studioconsolidatedformstatepolicylist listParams:$l{entity} blankOption:$m{blank.none}"
+			renderer="!ui-label" />
+		<widgetType name="listinggeneratorlist"
+			description="$m{studio.widgettype.listinggeneratorlist}"
+			dataType="string" inputType="string"
+			editor="!ui-select list:studiolistinggeneratorlist listParams:$l{entity} blankOption:$m{blank.none}"
+			renderer="!ui-label" />
+		<widgetType name="entitymatcherlist"
+			description="$m{studio.widgettype.entitymatcherlist}"
+			dataType="string" inputType="string"
+			editor="!ui-select blankOption:$s{} list:entitymatcherlist listParams:$s{entityName}"
+			renderer="!ui-label" />
+		<widgetType name="entitysearch"
+			description="$m{studio.widgettype.entitysearch}" dataType="string"
+			inputType="string"
+			editor="!fc-entitysearch ref:$s{application.appEntityRef} listKey:$s{longName}"
+			renderer="!ui-label" />
+		<widgetType name="entityfieldwidgetlist"
+			description="$m{studio.widgettype.entityfieldwidgetlist}"
+			dataType="string" inputType="string"
+			editor="!fc-entityfieldwidgetlist typeField:$s{dataType}  blankOption:$m{blank.none}"
+			renderer="!ui-label" />
+		<widgetType name="suggestiontypelist"
+			description="$m{studio.widgettype.suggestiontypelist}"
+			dataType="string" inputType="string"
+			editor="!fc-suggestiontypelist blankOption:$m{blank.none}"
+			renderer="!ui-label" />
+		<widgetType name="entityfieldreflist"
+			description="$m{studio.widgettype.entityfieldreflist}"
+			dataType="string" inputType="string"
+			editor="!fc-entityfieldrefsearch caseInsensitive:true typeField:$s{dataType} entityName:$s{appEntityName} appName:$s{applicationName}"
+			renderer="!ui-label" />
+		<widgetType name="entitykeylist"
+			description="$m{studio.widgettype.entitykeylist}" dataType="string"
+			inputType="string"
+			editor="!ui-select list:entitykeylist listKey:$s{name} listDescription:$s{name} listParams:$l{appEntityId} blankOption:$m{blank.none}"
+			renderer="!ui-label" />
+		<widgetType name="entitypropertylist"
+			description="$m{studio.widgettype.entitypropertylist}"
+			dataType="string" inputType="string"
+			editor="!ui-select list:entitypropertylist listKey:$s{name} listDescription:$s{name} listParams:$l{dataType appEntityId key} blankOption:$m{blank.none}"
+			renderer="!ui-label" />
+		<widgetType name="applettypelist"
+			description="$m{studio.widgettype.applettypelist}" dataType="string"
+			inputType="string"
+			editor="!ui-select list:studioapplettypelist listParams:$l{configType} blankOption:$m{blank.none}"
+			renderer="!ui-label" />
+		<widgetType name="entityfielddatatypelist"
+			description="$m{studio.widgettype.entityfielddatatypelist}"
+			dataType="string" inputType="string"
+			editor="!ui-select list:studioentityfielddatatypelist listParams:$l{type} blankOption:$m{blank.none}"
+			renderer="!ui-label" />
+		<widgetType name="entitybynamelist"
+			description="$m{studio.widgettype.entitybynamelist}"
+			dataType="string" inputType="string"
+			editor="!ui-select list:studioentitybynamelist blankOption:$m{blank.none}"
+			renderer="!ui-label" />
+		<widgetType name="workentitybynamelist"
+			description="$m{studio.widgettype.workentitybynamelist}"
+			dataType="string" inputType="string"
+			editor="!ui-select list:studioworkentitybynamelist blankOption:$m{blank.none}"
+			renderer="!ui-label" />
+		<widgetType name="reportablebynamelist"
+			description="$m{studio.widgettype.reportablebynamelist}"
+			dataType="string" inputType="string"
+			editor="!ui-select list:studioreportablebynamelist blankOption:$m{blank.none}"
+			renderer="!ui-label" />
+		<widgetType name="reffiltergeneratorrulelist"
+			description="$m{studio.widgettype.reffiltergeneratorrulelist}"
+			dataType="string" inputType="string"
+			editor="!ui-select list:$s{rulelist} listParams:$l{filterGenerator} blankOption:$m{blank.none}"
+			renderer="!ui-label" />
+		<widgetType name="formlist"
+			description="$m{studio.widgettype.formlist}" dataType="long"
+			inputType="long"
+			editor="!ui-select list:studioformlist blankOption:$m{blank.none}"
+			renderer="!ui-label" />
+		<widgetType name="entityrefdesclist"
+			description="$m{studio.widgettype.entityrefdesclist}"
+			dataType="string" inputType="string"
+			editor="!ui-select list:studioentityrefdesclist listParams:$l{entity assignField} blankOption:$m{blank.none}"
+			renderer="!ui-label" />
+		<widgetType name="entityreffieldlist"
+			description="$m{studio.widgettype.entityreffieldlist}"
+			dataType="string" inputType="string"
+			editor="!ui-select list:studioentityreffieldlist listKey:$s{name} listParams:$l{entity} blankOption:$m{blank.none}"
+			renderer="!ui-label" />
+		<widgetType name="entitysearchfieldlist"
+			description="$m{studio.widgettype.entitysearchfieldlist}"
+			dataType="string" inputType="string"
+			editor="!ui-select list:studioentitysearchfieldlist listParams:$l{entity} blankOption:$m{blank.none}"
+			renderer="!ui-label" />
+		<widgetType name="entityfieldmultiselectlist"
+			description="$m{system.widgettype.entityfieldmultiselectlist}"
+			dataType="string" inputType="string"
+			editor="!ui-dropdownchecklist list:studioentityfieldlist listKey:$s{name} listParams:$l{appEntityId} columns:3"
+			renderer="!ui-label" />
+		<widgetType name="formannotationlist"
+			description="$m{studio.widgettype.formannotationlist}"
+			dataType="string" inputType="string"
+			editor="!ui-select list:studioformannotationlist listKey:$s{name} listParams:$l{id} blankOption:$m{blank.none}"
+			renderer="!ui-label" />
+		<widgetType name="formrelatedappletlist"
+			description="$m{studio.widgettype.formrelatedappletlist}"
+			dataType="string" inputType="string"
+			editor="!ui-select list:studioformrelatedappletlist listParams:$l{appFormId} blankOption:$m{blank.none}"
+			renderer="!ui-label" />
+		<widgetType name="formrelatedfieldlist"
+			description="$m{studio.widgettype.formrelatedfieldlist}"
+			dataType="string" inputType="string"
+			editor="!ui-select list:studioformrelatedfieldlist listParams:$l{appFormId applet} blankOption:$m{blank.none}"
+			renderer="!ui-label" />
+		<widgetType name="formfieldlist"
+			description="$m{studio.widgettype.formfieldlist}" dataType="string"
+			inputType="string"
+			editor="!ui-select list:studioformfieldlist listParams:$l{appFormId} blankOption:$m{blank.none}"
+			renderer="!ui-label" />
+		<widgetType name="formfieldvalidationrulelist"
+			description="$m{studio.widgettype.formfieldvalidationrulelist}"
+			dataType="string" inputType="string"
+			editor="!ui-select list:$s{rulelist} listParams:$l{validation} blankOption:$m{blank.none}"
+			renderer="!ui-label" />
+		<widgetType name="formelementlist"
+			description="$m{studio.widgettype.formelementlist}" dataType="string"
+			inputType="string"
+			editor="!ui-dropdownchecklist list:studioformelementlist listParams:$l{appFormStatePolicyId type} columns:3"
+			renderer="!ui-label" />
+		<widgetType name="formstatefieldlist"
+			description="$m{studio.widgettype.formstatefieldlist}"
+			dataType="string" inputType="string"
+			editor="!ui-dropdownchecklist list:studioformstatefieldlist listParams:$l{appFormId} columns:3"
+			renderer="!ui-label" />
+		<widgetType name="formstatetablist"
+			description="$m{studio.widgettype.formstatetablist}"
+			dataType="string" inputType="string"
+			editor="!ui-dropdownchecklist list:studioformstatetablist listParams:$l{appFormId} columns:3"
+			renderer="!ui-label" />
+		<widgetType name="formreviewtypelist"
+			description="$m{studio.widgettype.formreviewtypelist}"
+			dataType="string" inputType="string"
+			editor="!ui-dropdownchecklist list:formreviewtypelist columns:1"
+			renderer="!ui-label" />
+		<widgetType name="entitysetvaluesgenlist"
+			description="$m{studio.widgettype.entitysetvaluesgenlist}"
+			dataType="string" inputType="string"
+			editor="!ui-select list:studioentitysetvaluesgenlist listParams:$l{appFormId} blankOption:$m{blank.none}"
+			renderer="!ui-label" />
+		<widgetType name="workflowformlist"
+			description="$m{studio.widgettype.workflowformlist}"
+			dataType="string" inputType="string"
+			editor="!ui-select list:studioworkflowformlist listParams:$l{workflowId} blankOption:$m{blank.none}"
+			renderer="!ui-label" />
+		<widgetType name="wfstepnotiftempllist"
+			description="$m{studio.widgettype.wfstepnotiftempllist}"
+			dataType="string" inputType="string"
+			editor="!ui-select list:studiowfstepnotiftempllist listParams:$l{wfStepId} blankOption:$m{blank.none}"
+			renderer="!ui-label" />
+		<widgetType name="wfstepreceivefromlist"
+			description="$m{studio.widgettype.wfstepreceivefromlist}"
+			dataType="string" inputType="string"
+			editor="!ui-select list:studiowfstepreceivefromlist listParams:$l{wfStepId} blankOption:$m{blank.none}"
+			renderer="!ui-label" />
+		<widgetType name="wfsteproutetolist"
+			description="$m{studio.widgettype.wfsteproutetolist}"
+			dataType="string" inputType="string"
+			editor="!ui-select list:studiowfsteproutetolist listParams:$l{wfStepId} blankOption:$m{blank.none}"
+			renderer="!ui-label" />
+		<widgetType name="wfstepfilterlist"
+			description="$m{studio.widgettype.wfstepfilterlist}"
+			dataType="string" inputType="string"
+			editor="!ui-select list:studiowfstepfilterlist listParams:$l{wfStepId} blankOption:$m{blank.none}"
+			renderer="!ui-label" />
+		<widgetType name="wfrecipientpolicylist"
+			description="$m{studio.widgettype.wfrecipientpolicylist}"
+			dataType="string" inputType="string"
+			editor="!ui-select list:wfrecipientpolicylist blankOption:$m{blank.none}"
+			renderer="!ui-label" />
+		<widgetType name="wfrecipientnamerulelist"
+			description="$m{studio.widgettype.wfrecipientnamerulelist}"
+			dataType="string" inputType="string"
+			editor="!ui-select list:studiowfrecipientnamerulelist listParams:$l{recipientPolicy propertyOwnerId} blankOption:$m{blank.none}"
+			renderer="!ui-label" />
+		<widgetType name="wfrecipientcontactrulelist"
+			description="$m{studio.widgettype.wfrecipientcontactrulelist}"
+			dataType="string" inputType="string"
+			editor="!ui-select list:studiowfrecipientcontactrulelist listParams:$l{recipientPolicy propertyOwnerId} blankOption:$m{blank.none}"
+			renderer="!ui-label" />
+		<widgetType name="propertyapplettablelist"
+			description="$m{studio.widgettype.propertyapplettablelist}"
+			dataType="string" inputType="string"
+			editor="!ui-select list:studioapplettablelist listParams:$l{propertyOwnerId} blankOption:$m{blank.none}"
+			renderer="!ui-label" />
+		<widgetType name="propertyappletbeantablepolicylist"
+			description="$m{studio.widgettype.propertyappletbeantablepolicylist}"
+			dataType="string" inputType="string"
+			editor="!ui-select list:studioappletbeantablepolicylist listParams:$l{propertyOwnerId} blankOption:$m{blank.none}"
+			renderer="!ui-label" />
+		<widgetType name="propertyappletassignupdatepolicylist"
+			description="$m{studio.widgettype.propertyappletassignupdatepolicylist}"
+			dataType="string" inputType="string"
+			editor="!ui-select list:studioappletassignupdatepolicylist listParams:$l{propertyOwnerId} blankOption:$m{blank.none}"
+			renderer="!ui-label" />
+		<widgetType name="propertyappletformlist"
+			description="$m{studio.widgettype.propertyappletformlist}"
+			dataType="string" inputType="string"
+			editor="!ui-select list:studioappletinputformlist listParams:$l{propertyOwnerId} blankOption:$m{blank.none}"
+			renderer="!ui-label" />
+		<widgetType name="propertyappletlistformlist"
+			description="$m{studio.widgettype.propertyappletlistformlist}"
+			dataType="string" inputType="string"
+			editor="!ui-select list:studioappletlistingformlist listParams:$l{propertyOwnerId} blankOption:$m{blank.none}"
+			renderer="!ui-label" />
+		<widgetType name="appletformlist"
+			description="$m{studio.widgettype.appletformlist}" dataType="string"
+			inputType="string"
+			editor="!ui-select list:studioappletallformlist listParams:$l{appAppletId} blankOption:$m{blank.none}"
+			renderer="!ui-label" />
+		<widgetType name="propertyappletcreateformstatepolicylist"
+			description="$m{studio.widgettype.propertyappletcreateformstatepolicylist}"
+			dataType="string" inputType="string"
+			editor="!ui-select list:studioappletcreateformstatepolicylist listParams:$l{createForm} blankOption:$m{blank.none}"
+			renderer="!ui-label" />
+		<widgetType name="propertyappletloadconfiglist"
+			description="$m{studio.widgettype.propertyappletloadconfiglist}"
+			dataType="string" inputType="string"
+			editor="!ui-select list:studioappletloadconfiglist listKey:$s{name} listParams:$l{propertyOwnerId} blankOption:$m{blank.none}"
+			renderer="!ui-label" />
+		<widgetType name="facadeappletroutetoappletlist"
+			description="$m{studio.widgettype.facadeappletroutetoappletlist}"
+			dataType="string" inputType="string"
+			editor="!fc-entitysearch ref:$s{application.appAppletFacadeRef} listKey:$s{longName}"
+			renderer="!ui-label" />
+		<widgetType name="propertyroutetoappletlist"
+			description="$m{studio.widgettype.propertyroutetoappletlist}"
+			dataType="string" inputType="string"
+			editor="!ui-select list:studioappletroutetoappletlist listParams:$l{propertyOwnerId} blankOption:$m{blank.none}"
+			renderer="!ui-label" />
+		<widgetType name="propertyappletassignpagelist"
+			description="$m{studio.widgettype.propertyappletassignpagelist}"
+			dataType="string" inputType="string"
+			editor="!ui-select list:studioappletassignpagelist listParams:$l{propertyOwnerId} blankOption:$m{blank.none}"
+			renderer="!ui-label" />
+		<widgetType name="propertysingleformpanellist"
+			description="$m{studio.widgettype.propertysingleformpanellist}"
+			dataType="string" inputType="string"
+			editor="!ui-select list:studiosingleformpanellist listParams:$l{propertyOwnerId} blankOption:$m{blank.none}"
+			renderer="!ui-label" />
+		<widgetType name="propertyappletworkflowlist"
+			description="$m{studio.widgettype.propertyappletworkflowlist}"
+			dataType="string" inputType="string"
+			editor="!ui-select list:studioappletworkflowlist listParams:$l{propertyOwnerId} blankOption:$m{blank.none}"
+			renderer="!ui-label" />
+		<widgetType name="propertyappletworkflowchannellist"
+			description="$m{studio.widgettype.propertyappletworkflowlchannellist}"
+			dataType="string" inputType="string"
+			editor="!ui-select list:studioappletworkflowchannellist listParams:$l{propertyOwnerId} blankOption:$m{blank.none}"
+			renderer="!ui-label" />
+		<widgetType name="propertyappletfilterlist"
+			description="$m{studio.widgettype.propertyappletfilterlist}"
+			dataType="string" inputType="string"
+			editor="!ui-select list:studioappletfilterlist listParams:$l{propertyOwnerId} blankOption:$m{blank.none}"
+			renderer="!ui-label" />
+		<widgetType name="propertyentityactionpolicylist"
+			description="$m{studio.widgettype.propertyentityactionpolicylist}"
+			dataType="string" inputType="string"
+			editor="!ui-select list:studioentityactionpolicylist listParams:$l{propertyOwnerId} blankOption:$m{blank.none}"
+			renderer="!ui-label" />
+		<widgetType name="reportconfigfieldlist"
+			description="$m{studio.widgettype.reportconfigfieldlist}"
+			dataType="string" inputType="string"
+			editor="!ui-select list:reportconfigfieldlist listParams:$l{reportConfigurationId} blankOption:$m{blank.none}"
+			renderer="!ui-label" />
+		<widgetType name="tasklist"
+			description="$m{studio.widgettype.tasklist}" dataType="string"
+			inputType="string"
+			editor="!ui-select list:tasklist blankOption:$m{blank.none}"
+			renderer="!ui-label" />
+	</widgetTypes>
+	<!-- Applets -->
+	<applets>
+		<applet name="launchStudio"
+			description="$m{studio.application.launch}"
+			label="$m{studio.application.launch.label}" icon="rocket"
+			type="path_window" path="/applicationstudio" menuAccess="true">
+		</applet>
+		<applet name="manageAppEntityField"
+			description="$m{studio.appentityfield.manage}"
+			label="$m{studio.appentityfield.manage.label}"
+			type="manage_entitylist" entity="application.appEntityField"
+			menuAccess="false">
+			<property name="searchTable" value="appEntityFieldTable" />
+			<property name="searchTable.new" value="true" />
+			<property name="searchTable.report" value="false" />
+			<property name="searchTable.quickFilter" value="true" />
+			<property name="createForm" value="appEntityFieldForm" />
+			<property name="createForm.new.policy"
+				value="studiooncreateappentityfield-policy" />
+			<property name="createForm.save" value="true" />
+			<property name="createForm.save.next" value="true" />
+			<property name="createForm.save.close" value="true" />
+			<property name="maintainForm" value="appEntityFieldForm" />
+			<property name="maintainForm.update" value="true" />
+			<property name="maintainForm.update.policy"
+				value="studioonupdateappentityfield-policy" />
+			<property name="maintainForm.update.condition"
+				value="appEntityFieldEditable" />
+			<property name="maintainForm.delete" value="true" />
+			<property name="maintainForm.delete.policy"
+				value="studioondeleteappentityfield-policy" />
+			<property name="maintainForm.delete.condition"
+				value="appEntityFieldEditable" />
+			<filter name="appEntityFieldEditable"
+				description="$m{application.appentityfield.filter.editable}">
+				<restriction type="equals" field="type" paramA="CST" />
+			</filter>
+			<filter name="baseFieldFilter"
+				description="$m{studio.appentityfield.quickfilter.basefields}"
+				quickFilter="true">
+				<restriction type="equals" field="type" paramA="BSE" />
+			</filter>
+			<filter name="staticFieldFilter"
+				description="$m{studio.appentityfield.quickfilter.staticfields}"
+				quickFilter="true">
+				<restriction type="equals" field="type" paramA="STC" />
+			</filter>
+			<filter name="customFieldFilter"
+				description="$m{studio.appentityfield.quickfilter.customfields}"
+				quickFilter="true">
+				<restriction type="equals" field="type" paramA="CST" />
+			</filter>
+			<filter name="customFieldRefFilter"
+				description="$m{studio.appentityfield.quickfilter.customfields.ref}"
+				quickFilter="true">
+				<restriction type="and">
+					<restriction type="equals" field="type" paramA="CST" />
+					<restriction type="amongst" field="dataType"
+						paramA="RF|ER|UR|CU" />
+				</restriction>
+			</filter>
+			<filter name="customFieldDataFilter"
+				description="$m{studio.appentityfield.quickfilter.customfields.data}"
+				quickFilter="true">
+				<restriction type="and">
+					<restriction type="equals" field="type" paramA="CST" />
+					<restriction type="not_amongst" field="dataType"
+						paramA="RF|ER|UR|CU|LO|CD|CL" />
+				</restriction>
+			</filter>
+			<filter name="customFieldListFilter"
+				description="$m{studio.appentityfield.quickfilter.customfields.listonly}"
+				quickFilter="true">
+				<restriction type="and">
+					<restriction type="equals" field="type" paramA="CST" />
+					<restriction type="equals" field="dataType" paramA="LO" />
+				</restriction>
+			</filter>
+			<filter name="customFieldChildFilter"
+				description="$m{studio.appentityfield.quickfilter.customfields.child}"
+				quickFilter="true">
+				<restriction type="and">
+					<restriction type="equals" field="type" paramA="CST" />
+					<restriction type="equals" field="dataType" paramA="CD" />
+				</restriction>
+			</filter>
+			<filter name="customFieldChildListFilter"
+				description="$m{studio.appentityfield.quickfilter.customfields.childlist}"
+				quickFilter="true">
+				<restriction type="and">
+					<restriction type="equals" field="type" paramA="CST" />
+					<restriction type="equals" field="dataType" paramA="CL" />
+				</restriction>
+			</filter>
+		</applet>
+		<applet name="manageAppEntityAttachment"
+			description="$m{studio.appentityattachment.manage}"
+			label="$m{studio.appentityattachment.manage.label}"
+			type="manage_entitylist" entity="application.appEntityAttachment"
+			menuAccess="false">
+			<property name="searchTable"
+				value="appEntityAttachmentTable" />
+			<property name="searchTable.new" value="true" />
+			<property name="searchTable.report" value="false" />
+			<property name="createForm" value="appEntityAttachmentForm" />
+			<property name="createForm.save" value="true" />
+			<property name="createForm.save.next" value="true" />
+			<property name="createForm.save.close" value="true" />
+			<property name="maintainForm"
+				value="appEntityAttachmentForm" />
+			<property name="maintainForm.update" value="true" />
+			<property name="maintainForm.delete" value="true" />
+		</applet>
+		<applet name="manageAppEntityExpression"
+			description="$m{studio.appentityexpression.manage}"
+			label="$m{studio.appentityexpression.manage.label}"
+			type="manage_entitylist" entity="application.appEntityExpression"
+			menuAccess="false">
+			<property name="searchTable"
+				value="appEntityExpressionTable" />
+			<property name="searchTable.new" value="true" />
+			<property name="searchTable.report" value="false" />
+			<property name="createForm" value="appEntityExpressionForm" />
+			<property name="createForm.save" value="true" />
+			<property name="createForm.save.next" value="true" />
+			<property name="createForm.save.close" value="true" />
+			<property name="maintainForm"
+				value="appEntityExpressionForm" />
+			<property name="maintainForm.update" value="true" />
+			<property name="maintainForm.delete" value="true" />
+		</applet>
+		<applet name="manageAppEntityUniqueConstraint"
+			description="$m{studio.appentityuniqueconstraint.manage}"
+			label="$m{studio.appentityuniqueconstraint.manage.label}"
+			type="manage_entitylist"
+			entity="application.appEntityUniqueConstraint" menuAccess="false">
+			<property name="searchTable"
+				value="appEntityUniqueConstraintTable" />
+			<property name="searchTable.new" value="true" />
+			<property name="searchTable.report" value="false" />
+			<property name="createForm"
+				value="appEntityUniqueConstraintForm" />
+			<property name="createForm.save" value="true" />
+			<property name="createForm.save.next" value="true" />
+			<property name="createForm.save.close" value="true" />
+			<property name="maintainForm"
+				value="appEntityUniqueConstraintForm" />
+			<property name="maintainForm.update" value="true" />
+			<property name="maintainForm.delete" value="true" />
+		</applet>
+		<applet name="manageAppEntityIndex"
+			description="$m{studio.appentityindex.manage}"
+			label="$m{studio.appentityindex.manage.label}"
+			type="manage_entitylist" entity="application.appEntityIndex"
+			menuAccess="false">
+			<property name="searchTable" value="appEntityIndexTable" />
+			<property name="searchTable.new" value="true" />
+			<property name="searchTable.report" value="false" />
+			<property name="createForm" value="appEntityIndexForm" />
+			<property name="createForm.save" value="true" />
+			<property name="createForm.save.next" value="true" />
+			<property name="createForm.save.close" value="true" />
+			<property name="maintainForm" value="appEntityIndexForm" />
+			<property name="maintainForm.update" value="true" />
+			<property name="maintainForm.delete" value="true" />
+		</applet>
+		<applet name="manageAppEntityUpload"
+			description="$m{studio.appentityupload.manage}"
+			label="$m{studio.appentityupload.manage.label}"
+			type="manage_entitylist" entity="application.appEntityUpload"
+			menuAccess="false">
+			<property name="searchTable" value="appEntityUploadTable" />
+			<property name="searchTable.new" value="true" />
+			<property name="searchTable.report" value="false" />
+			<property name="createForm" value="appEntityUploadForm" />
+			<property name="createForm.save" value="true" />
+			<property name="createForm.save.next" value="true" />
+			<property name="createForm.save.close" value="true" />
+			<property name="maintainForm" value="appEntityUploadForm" />
+			<property name="maintainForm.update" value="true" />
+			<property name="maintainForm.delete" value="true" />
+		</applet>
+		<applet name="manageAppAppletProp"
+			description="$m{studio.appappletprop.manage}"
+			label="$m{studio.appappletprop.manage.label}"
+			type="manage_propertylist" entity="application.appAppletProp"
+			menuAccess="false">
+			<property name="propertyList.rule" value="appAppletPropRule" />
+			<property name="propertyList.update" value="true" />
+		</applet>
+		<applet name="manageAppAppletFilter"
+			description="$m{studio.appappletfilter.manage}"
+			label="$m{studio.appappletfilter.manage.label}"
+			type="manage_entitylist" entity="application.appAppletFilter"
+			menuAccess="false">
+			<property name="searchTable" value="appAppletFilterTable" />
+			<property name="searchTable.new" value="true" />
+			<property name="searchTable.edit" value="false" />
+			<property name="searchTable.report" value="false" />
+			<property name="createForm" value="appAppletFilterForm" />
+			<property name="createForm.save" value="true" />
+			<property name="createForm.save.next" value="true" />
+			<property name="createForm.save.close" value="true" />
+			<property name="maintainForm" value="appAppletFilterForm" />
+			<property name="maintainForm.update" value="true" />
+			<property name="maintainForm.delete" value="true" />
+		</applet>
+		<applet name="manageDashboardTile"
+			description="$m{studio.dashboardtile.manage}"
+			label="$m{studio.dashboardtile.manage.label}"
+			type="manage_entitylist" entity="dashboard.dashboardTile"
+			menuAccess="false">
+			<property name="searchTable" value="dashboardTileTable" />
+			<property name="searchTable.new" value="true" />
+			<property name="searchTable.edit" value="false" />
+			<property name="searchTable.report" value="false" />
+			<property name="createForm" value="dashboardTileForm" />
+			<property name="createForm.save" value="true" />
+			<property name="createForm.save.next" value="true" />
+			<property name="createForm.save.close" value="true" />
+			<property name="maintainForm" value="dashboardTileForm" />
+			<property name="maintainForm.update" value="true" />
+			<property name="maintainForm.delete" value="true" />
+		</applet>
+		<applet name="manageAppTableColumn"
+			description="$m{studio.apptablecolumn.manage}"
+			label="$m{studio.apptablecolumn.manage.label}"
+			type="manage_entitylist" entity="application.appTableColumn"
+			menuAccess="false">
+			<property name="searchTable" value="appTableColumnTable" />
+			<property name="searchTable.new" value="false" />
+			<property name="searchTable.edit" value="true" />
+			<property name="searchTable.report" value="false" />
+			<property name="createForm" value="appTableColumnForm" />
+			<property name="createForm.save" value="false" />
+			<property name="createForm.save.next" value="false" />
+			<property name="createForm.save.close" value="false" />
+			<property name="maintainForm" value="appTableColumnForm" />
+			<property name="maintainForm.update" value="false" />
+			<property name="maintainForm.delete" value="false" />
+		</applet>
+		<applet name="manageAppFormElement"
+			description="$m{studio.appformelement.manage}"
+			label="$m{studio.appformelement.manage.label}"
+			type="manage_entitylist" entity="application.appFormElement"
+			menuAccess="false">
+			<property name="searchTable" value="appFormElementTable" />
+			<property name="searchTable.new" value="false" />
+			<property name="searchTable.edit" value="true" />
+			<property name="searchTable.report" value="false" />
+			<property name="createForm" value="appFormElementForm" />
+			<property name="createForm.save" value="false" />
+			<property name="createForm.save.next" value="false" />
+			<property name="createForm.save.close" value="false" />
+			<property name="maintainForm" value="appFormElementForm" />
+			<property name="maintainForm.update" value="false" />
+			<property name="maintainForm.delete" value="false" />
+		</applet>
+		<applet name="manageAppFormAnnotation"
+			description="$m{studio.appformannotation.manage}"
+			label="$m{studio.appformannotation.manage.label}"
+			type="manage_entitylist" entity="application.appFormAnnotation"
+			menuAccess="false">
+			<property name="searchTable" value="appFormAnnotationTable" />
+			<property name="searchTable.new" value="true" />
+			<property name="searchTable.report" value="false" />
+			<property name="createForm" value="appFormAnnotationForm" />
+			<property name="createForm.save" value="true" />
+			<property name="createForm.save.next" value="true" />
+			<property name="createForm.save.close" value="true" />
+			<property name="maintainForm" value="appFormAnnotationForm" />
+			<property name="maintainForm.update" value="true" />
+			<property name="maintainForm.delete" value="true" />
+		</applet>
+		<applet name="manageAppFormAction"
+			description="$m{studio.appformaction.manage}"
+			label="$m{studio.appformaction.manage.label}"
+			type="manage_entitylist" entity="application.appFormAction"
+			menuAccess="false">
+			<property name="searchTable" value="appFormActionTable" />
+			<property name="searchTable.new" value="true" />
+			<property name="searchTable.report" value="false" />
+			<property name="createForm" value="appFormActionForm" />
+			<property name="createForm.save" value="true" />
+			<property name="createForm.save.next" value="true" />
+			<property name="createForm.save.close" value="true" />
+			<property name="maintainForm" value="appFormActionForm" />
+			<property name="maintainForm.update" value="true" />
+			<property name="maintainForm.delete" value="true" />
+		</applet>
+		<applet name="manageAppFormRelatedList"
+			description="$m{studio.appformrelatedlist.manage}"
+			label="$m{studio.appformrelatedlist.manage.label}"
+			type="manage_entitylist" entity="application.appFormRelatedList"
+			menuAccess="false">
+			<property name="searchTable" value="appFormRelatedListTable" />
+			<property name="searchTable.new" value="true" />
+			<property name="searchTable.report" value="false" />
+			<property name="createForm" value="appFormRelatedListForm" />
+			<property name="createForm.save" value="true" />
+			<property name="createForm.save.next" value="true" />
+			<property name="createForm.save.close" value="true" />
+			<property name="maintainForm" value="appFormRelatedListForm" />
+			<property name="maintainForm.update" value="true" />
+			<property name="maintainForm.delete" value="true" />
+		</applet>
+		<applet name="manageAppFormStatePolicy"
+			description="$m{studio.appformstatepolicy.manage}"
+			label="$m{studio.appformstatepolicy.manage.label}"
+			type="manage_entitylist" entity="application.appFormStatePolicy"
+			menuAccess="false">
+			<property name="searchTable" value="appFormStatePolicyTable" />
+			<property name="searchTable.new" value="true" />
+			<property name="searchTable.report" value="false" />
+			<property name="createForm" value="appFormStatePolicyForm" />
+			<property name="createForm.save" value="true" />
+			<property name="createForm.save.next" value="true" />
+			<property name="createForm.save.close" value="true" />
+			<property name="maintainForm" value="appFormStatePolicyForm" />
+			<property name="maintainForm.update" value="true" />
+			<property name="maintainForm.delete" value="true" />
+		</applet>
+		<applet name="manageAppFormSetState"
+			description="$m{studio.appformsetstate.manage}"
+			label="$m{studio.appformsetstate.manage.label}"
+			type="manage_entitylist" entity="application.appFormSetState"
+			menuAccess="false">
+			<property name="searchTable" value="appFormSetStateTable" />
+			<property name="searchTable.new" value="true" />
+			<property name="searchTable.report" value="false" />
+			<property name="createForm" value="appFormSetStateForm" />
+			<property name="createForm.save" value="true" />
+			<property name="createForm.save.next" value="true" />
+			<property name="createForm.save.close" value="true" />
+			<property name="maintainForm" value="appFormSetStateForm" />
+			<property name="maintainForm.update" value="true" />
+			<property name="maintainForm.delete" value="true" />
+		</applet>
+		<applet name="manageAppFormFieldValidationPolicy"
+			description="$m{studio.appformfieldvalidationpolicy.manage}"
+			label="$m{studio.appformfieldvalidationpolicy.manage.label}"
+			type="manage_entitylist"
+			entity="application.appFormFieldValidationPolicy" menuAccess="false">
+			<property name="searchTable"
+				value="appFormFieldValidationPolicyTable" />
+			<property name="searchTable.new" value="true" />
+			<property name="searchTable.report" value="false" />
+			<property name="createForm"
+				value="appFormFieldValidationPolicyForm" />
+			<property name="createForm.save" value="true" />
+			<property name="createForm.save.next" value="true" />
+			<property name="createForm.save.close" value="true" />
+			<property name="maintainForm"
+				value="appFormFieldValidationPolicyForm" />
+			<property name="maintainForm.update" value="true" />
+			<property name="maintainForm.delete" value="true" />
+		</applet>
+		<applet name="manageAppFormValidationPolicy"
+			description="$m{studio.appformvalidationpolicy.manage}"
+			label="$m{studio.appformvalidationpolicy.manage.label}"
+			type="manage_entitylist" entity="application.appFormValidationPolicy"
+			menuAccess="false">
+			<property name="searchTable"
+				value="appFormValidationPolicyTable" />
+			<property name="searchTable.new" value="true" />
+			<property name="searchTable.report" value="false" />
+			<property name="createForm"
+				value="appFormValidationPolicyForm" />
+			<property name="createForm.save" value="true" />
+			<property name="createForm.save.next" value="true" />
+			<property name="createForm.save.close" value="true" />
+			<property name="maintainForm"
+				value="appFormValidationPolicyForm" />
+			<property name="maintainForm.update" value="true" />
+			<property name="maintainForm.delete" value="true" />
+		</applet>
+		<applet name="manageAppFormReviewPolicy"
+			description="$m{studio.appformreviewpolicy.manage}"
+			label="$m{studio.appformreviewpolicy.manage.label}"
+			type="manage_entitylist" entity="application.appFormReviewPolicy"
+			menuAccess="false">
+			<property name="searchTable"
+				value="appFormReviewPolicyTable" />
+			<property name="searchTable.new" value="true" />
+			<property name="searchTable.report" value="false" />
+			<property name="createForm" value="appFormReviewPolicyForm" />
+			<property name="createForm.save" value="true" />
+			<property name="createForm.save.next" value="true" />
+			<property name="createForm.save.close" value="true" />
+			<property name="maintainForm"
+				value="appFormReviewPolicyForm" />
+			<property name="maintainForm.update" value="true" />
+			<property name="maintainForm.delete" value="true" />
+		</applet>
+		<applet name="manageWorkflowFilter"
+			description="$m{studio.workflowfilter.manage}"
+			label="$m{studio.workflowfilter.manage.label}"
+			type="manage_entitylist" entity="workflow.workflowFilter"
+			menuAccess="false">
+			<property name="searchTable" value="workflowFilterTable" />
+			<property name="searchTable.new" value="true" />
+			<property name="searchTable.edit" value="false" />
+			<property name="searchTable.report" value="false" />
+			<property name="createForm" value="workflowFilterForm" />
+			<property name="createForm.save" value="true" />
+			<property name="createForm.save.next" value="true" />
+			<property name="createForm.save.close" value="true" />
+			<property name="maintainForm" value="workflowFilterForm" />
+			<property name="maintainForm.update" value="true" />
+			<property name="maintainForm.delete" value="true" />
+		</applet>
+		<applet name="manageWfStep"
+			description="$m{studio.workflow.step.manage}"
+			label="$m{studio.workflow.step.manage.label}"
+			type="manage_entitylist" entity="workflow.wfStep" menuAccess="false">
+			<property name="searchTable" value="wfStepTable" />
+			<property name="searchTable.new" value="false" />
+			<property name="searchTable.edit" value="true" />
+			<property name="searchTable.report" value="false" />
+			<property name="maintainForm" value="wfStepForm" />
+			<property name="maintainForm.update" value="false" />
+			<property name="maintainForm.delete" value="false" />
+		</applet>
+		<applet name="manageWfStepRouting"
+			description="$m{studio.workflow.steprouting.manage}"
+			label="$m{studio.workflow.steprouting.manage.label}"
+			type="manage_entitylist" entity="workflow.wfStepRouting"
+			menuAccess="false">
+			<property name="searchTable" value="wfStepRoutingTable" />
+			<property name="searchTable.new" value="false" />
+			<property name="searchTable.edit" value="false" />
+			<property name="searchTable.report" value="false" />
+			<property name="maintainForm" value="wfStepRoutingForm" />
+			<property name="maintainForm.update" value="false" />
+			<property name="maintainForm.delete" value="false" />
+		</applet>
+		<applet name="manageWfStepUserAction"
+			description="$m{studio.workflow.stepuseraction.manage}"
+			label="$m{studio.workflow.stepuseraction.manage.label}"
+			type="manage_entitylist" entity="workflow.wfStepUserAction"
+			menuAccess="false">
+			<property name="searchTable" value="wfStepUserActionTable" />
+			<property name="searchTable.new" value="false" />
+			<property name="searchTable.edit" value="false" />
+			<property name="searchTable.report" value="false" />
+			<property name="maintainForm" value="wfStepUserActionForm" />
+			<property name="maintainForm.update" value="false" />
+			<property name="maintainForm.delete" value="false" />
+		</applet>
+		<applet name="manageWfStepAlert"
+			description="$m{studio.workflow.stepalert.manage}"
+			label="$m{studio.workflow.stepalert.manage.label}"
+			type="manage_entitylist" entity="workflow.wfStepAlert"
+			menuAccess="false">
+			<property name="searchTable" value="wfStepAlertTable" />
+			<property name="searchTable.new" value="false" />
+			<property name="searchTable.edit" value="false" />
+			<property name="searchTable.report" value="false" />
+			<property name="maintainForm" value="wfStepAlertForm" />
+			<property name="maintainForm.update" value="false" />
+			<property name="maintainForm.delete" value="false" />
+		</applet>
+		<applet name="manageReportColumn"
+			description="$m{studio.reportcolumn.manage}"
+			label="$m{studio.reportcolumn.manage.label}" type="manage_entitylist"
+			entity="report.reportColumn" menuAccess="false">
+			<property name="searchTable" value="reportColumnTable" />
+			<property name="searchTable.new" value="true" />
+			<property name="searchTable.edit" value="false" />
+			<property name="searchTable.report" value="false" />
+			<property name="createForm" value="reportColumnForm" />
+			<property name="createForm.save" value="true" />
+			<property name="createForm.save.next" value="true" />
+			<property name="createForm.save.close" value="true" />
+			<property name="maintainForm" value="reportColumnForm" />
+			<property name="maintainForm.update" value="true" />
+			<property name="maintainForm.delete" value="true" />
+		</applet>
+		<applet name="manageReportParameter"
+			description="$m{studio.reportparameter.manage}"
+			label="$m{studio.reportparameter.manage.label}"
+			type="manage_entitylist" entity="report.reportParameter"
+			menuAccess="false">
+			<property name="searchTable" value="reportParameterTable" />
+			<property name="searchTable.new" value="true" />
+			<property name="searchTable.edit" value="false" />
+			<property name="searchTable.report" value="false" />
+			<property name="createForm" value="reportParameterForm" />
+			<property name="createForm.save" value="true" />
+			<property name="createForm.save.next" value="true" />
+			<property name="createForm.save.close" value="true" />
+			<property name="maintainForm" value="reportParameterForm" />
+			<property name="maintainForm.update" value="true" />
+			<property name="maintainForm.delete" value="true" />
+		</applet>
+	</applets>
+	<!-- Tables -->
+	<tables>
+		<table name="switchApplicationTable"
+			description="$m{studio.application.switch.table}"
+			label="$m{studio.application.switch.table.label}"
+			entity="application.application" itemsPerPage="20">
+			<column field="moduleLabel" renderWidget="application.text"
+				widthRatio="1" label="$m{application.application.module}" />
+			<column field="name" renderWidget="application.name"
+				widthRatio="1" linkAct="dialogMaintainAct" />
+			<column field="description" renderWidget="application.text"
+				widthRatio="1" linkAct="dialogMaintainAct" />
+		</table>
+		<table name="appEntityFieldTable"
+			description="$m{studio.appentityfield.table}"
+			label="$m{studio.appentityfield.table.label}"
+			entity="application.appEntityField" itemsPerPage="20">
+			<column field="name" renderWidget="application.name"
+				widthRatio="1" linkAct="maintainAct" />
+			<column field="label" renderWidget="application.text"
+				widthRatio="1" linkAct="maintainAct" />
+			<column field="dataTypeDesc" renderWidget="application.text"
+				label="$m{application.appentityfield.datatype}" widthRatio="1" />
+			<column field="references" renderWidget="application.text"
+				widthRatio="1" />
+			<column field="nullable" renderWidget="application.text"
+				widthRatio="1" />
+			<column field="minLen" renderWidget="application.integer"
+				widthRatio="1" />
+			<column field="maxLen" renderWidget="application.integer"
+				widthRatio="1" />
+			<column field="key" renderWidget="application.text"
+				widthRatio="1" />
+			<column field="property" renderWidget="application.text"
+				widthRatio="1" />
+			<column field="typeDesc" renderWidget="application.text"
+				label="$m{application.appentityfield.type}" widthRatio="1" />
+		</table>
+		<table name="appEntityAttachmentTable"
+			description="$m{studio.appentityattachment.table}"
+			label="$m{studio.appentityattachment.table.label}"
+			entity="application.appEntityAttachment" itemsPerPage="20">
+			<column field="name" renderWidget="application.name"
+				widthRatio="1" linkAct="maintainAct" />
+			<column field="description" renderWidget="application.text"
+				widthRatio="1" linkAct="maintainAct" />
+			<column field="typeDesc" renderWidget="application.text"
+				widthRatio="1" />
+		</table>
+		<table name="appEntityExpressionTable"
+			description="$m{studio.appentityexpression.table}"
+			label="$m{studio.appentityexpression.table.label}"
+			entity="application.appEntityExpression" itemsPerPage="20">
+			<column field="name" renderWidget="application.name"
+				widthRatio="1" linkAct="maintainAct" />
+			<column field="description" renderWidget="application.text"
+				widthRatio="1" linkAct="maintainAct" />
+		</table>
+		<table name="appEntityUniqueConstraintTable"
+			description="$m{studio.appentityuniqueconstraint.table}"
+			label="$m{studio.appentityuniqueconstraint.table.label}"
+			entity="application.appEntityUniqueConstraint" itemsPerPage="20">
+			<column field="name" renderWidget="application.name"
+				widthRatio="1" linkAct="maintainAct" />
+			<column field="description" renderWidget="application.text"
+				widthRatio="1" linkAct="maintainAct" />
+			<column field="fieldList" renderWidget="application.text"
+				widthRatio="1" />
+		</table>
+		<table name="appEntityIndexTable"
+			description="$m{studio.appentityindex.table}"
+			label="$m{studio.appentityindex.table.label}"
+			entity="application.appEntityIndex" itemsPerPage="20">
+			<column field="name" renderWidget="application.name"
+				widthRatio="1" linkAct="maintainAct" />
+			<column field="description" renderWidget="application.text"
+				widthRatio="1" linkAct="maintainAct" />
+			<column field="fieldList" renderWidget="application.text"
+				widthRatio="1" />
+		</table>
+		<table name="appEntityUploadTable"
+			description="$m{studio.appentityupload.table}"
+			label="$m{studio.appentityupload.table.label}"
+			entity="application.appEntityUpload" itemsPerPage="20">
+			<column field="name" renderWidget="application.name"
+				widthRatio="1" linkAct="maintainAct" />
+			<column field="description" renderWidget="application.text"
+				widthRatio="1" linkAct="maintainAct" />
+			<column field="constraintActionDesc"
+				renderWidget="application.text"
+				label="$m{application.appentityupload.constraintaction}"
+				widthRatio="1" />
+		</table>
+		<table name="appAppletFilterTable"
+			description="$m{studio.appappletfilter.table}"
+			label="$m{studio.appappletfilter.table.label}"
+			entity="application.appAppletFilter">
+			<column field="name" renderWidget="application.name"
+				widthRatio="1" linkAct="maintainAct" />
+			<column field="description" renderWidget="application.text"
+				widthRatio="1" linkAct="maintainAct" />
+			<column field="quickFilter" renderWidget="application.text"
+				widthRatio="1" />
+			<column field="ownershipTypeDesc"
+				renderWidget="application.text"
+				label="$m{application.appappletfilter.ownershiptype}" widthRatio="1" />
+			<column field="createDt" renderWidget="application.datetime"
+				widthRatio="1" />
+			<column field="updateDt" renderWidget="application.datetime"
+				widthRatio="1" />
+		</table>
+		<table name="appTableColumnTable"
+			description="$m{studio.apptablecolumn.table}"
+			label="$m{studio.apptablecolumn.table.label}"
+			entity="application.appTableColumn">
+			<column field="field" renderWidget="application.name"
+				widthRatio="1" />
+			<column field="renderWidget" renderWidget="application.text"
+				widthRatio="1" />
+			<column field="linkAct" renderWidget="application.text"
+				widthRatio="1" />
+			<column field="widthRatio" renderWidget="application.integer"
+				widthRatio="1" />
+		</table>
+		<table name="appFormElementTable"
+			description="$m{studio.appformelement.table}"
+			label="$m{studio.appformelement.table.label}"
+			entity="application.appFormElement">
+			<column field="typeDesc" renderWidget="application.text"
+				label="$m{application.appformelement.type}" widthRatio="1" />
+			<column field="elementName" renderWidget="application.text"
+				widthRatio="1" />
+			<column field="label" renderWidget="application.text"
+				widthRatio="1" />
+			<column field="tabContentTypeDesc"
+				renderWidget="application.text"
+				label="$m{application.appformelement.tabcontenttype}" widthRatio="1" />
+			<column field="inputWidget" renderWidget="application.text"
+				widthRatio="1" />
+			<column field="visible" renderWidget="application.text"
+				widthRatio="1" />
+			<column field="editable" renderWidget="application.text"
+				widthRatio="1" />
+			<column field="disabled" renderWidget="application.text"
+				widthRatio="1" />
+		</table>
+		<table name="appFormAnnotationTable"
+			description="$m{studio.appformannotation.table}"
+			label="$m{studio.appformannotation.table.label}"
+			entity="application.appFormAnnotation">
+			<column field="name" renderWidget="application.name"
+				widthRatio="1" linkAct="maintainAct" />
+			<column field="description" renderWidget="application.text"
+				widthRatio="1" linkAct="maintainAct" />
+			<column field="html" renderWidget="application.checkbox"
+				widthRatio="1" />
+			<column field="typeDesc" renderWidget="application.text"
+				label="$m{application.appformannotation.type}" widthRatio="1" />
+		</table>
+		<table name="appFormActionTable"
+			description="$m{studio.appformaction.table}"
+			label="$m{studio.appformaction.table.label}"
+			entity="application.appFormAction">
+			<column field="name" renderWidget="application.name"
+				widthRatio="1" linkAct="maintainAct" />
+			<column field="description" renderWidget="application.text"
+				widthRatio="1" linkAct="maintainAct" />
+			<column field="label" renderWidget="application.text"
+				widthRatio="1" />
+			<column field="policy" renderWidget="application.text"
+				widthRatio="1" />
+			<column field="typeDesc" renderWidget="application.text"
+				label="$m{application.appformaction.type}" widthRatio="1" />
+		</table>
+		<table name="appFormRelatedListTable"
+			description="$m{studio.appformrelatedlist.table}"
+			label="$m{studio.appformrelatedlist.table.label}"
+			entity="application.appFormRelatedList">
+			<column field="name" renderWidget="application.name"
+				widthRatio="1" linkAct="maintainAct" />
+			<column field="description" renderWidget="application.text"
+				widthRatio="1" linkAct="maintainAct" />
+			<column field="label" renderWidget="application.text"
+				widthRatio="1" />
+			<column field="applet" renderWidget="application.text"
+				widthRatio="1" />
+		</table>
+		<table name="appFormStatePolicyTable"
+			description="$m{studio.appformstatepolicy.table}"
+			label="$m{studio.appformstatepolicy.table.label}"
+			entity="application.appFormStatePolicy">
+			<column field="name" renderWidget="application.name"
+				widthRatio="1" linkAct="maintainAct" />
+			<column field="description" renderWidget="application.text"
+				widthRatio="1" linkAct="maintainAct" />
+			<column field="typeDesc" renderWidget="application.text"
+				widthRatio="1" />
+		</table>
+		<table name="appFormSetStateTable"
+			description="$m{studio.appformsetstate.table}"
+			label="$m{studio.appformsetstate.table.label}"
+			entity="application.appFormSetState">
+			<column field="typeDesc" renderWidget="application.text"
+				widthRatio="1" label="$m{application.appformsetstate.type}" />
+			<column field="target" renderWidget="application.name"
+				widthRatio="1" linkAct="maintainAct" />
+			<column field="required" renderWidget="application.text"
+				widthRatio="1" />
+			<column field="visible" renderWidget="application.text"
+				widthRatio="1" />
+			<column field="editable" renderWidget="application.text"
+				widthRatio="1" />
+			<column field="disabled" renderWidget="application.text"
+				widthRatio="1" />
+		</table>
+		<table name="appFormFieldValidationPolicyTable"
+			description="$m{studio.appformfieldvalidationpolicy.table}"
+			label="$m{studio.appformfieldvalidationpolicy.table.label}"
+			entity="application.appFormFieldValidationPolicy">
+			<column field="name" renderWidget="application.name"
+				widthRatio="1" linkAct="maintainAct" />
+			<column field="description" renderWidget="application.text"
+				widthRatio="1" linkAct="maintainAct" />
+			<column field="fieldName" renderWidget="application.name"
+				widthRatio="1" />
+			<column field="validation" renderWidget="application.text"
+				widthRatio="1" />
+			<column field="rule" renderWidget="application.text"
+				widthRatio="1" />
+		</table>
+		<table name="appFormValidationPolicyTable"
+			description="$m{studio.appformvalidationpolicy.table}"
+			label="$m{studio.appformvalidationpolicy.table.label}"
+			entity="application.appFormValidationPolicy">
+			<column field="name" renderWidget="application.name"
+				widthRatio="1" linkAct="maintainAct" />
+			<column field="description" renderWidget="application.text"
+				widthRatio="1" linkAct="maintainAct" />
+			<column field="message" renderWidget="application.text"
+				widthRatio="1" />
+		</table>
+		<table name="appFormReviewPolicyTable"
+			description="$m{studio.appformreviewpolicy.table}"
+			label="$m{studio.appformreviewpolicy.table.label}"
+			entity="application.appFormReviewPolicy">
+			<column field="name" renderWidget="application.name"
+				widthRatio="1" linkAct="maintainAct" />
+			<column field="description" renderWidget="application.text"
+				widthRatio="1" linkAct="maintainAct" />
+			<column field="messageTypeDesc"
+				renderWidget="application.text" widthRatio="1" />
+			<column field="message" renderWidget="application.text"
+				widthRatio="1" />
+		</table>
+		<table name="workflowFilterTable"
+			description="$m{studio.workflowfilter.table}"
+			label="$m{studio.workflowfilter.table.label}"
+			entity="workflow.workflowFilter">
+			<column field="name" renderWidget="application.name"
+				widthRatio="1" linkAct="maintainAct" />
+			<column field="description" renderWidget="application.text"
+				widthRatio="1" linkAct="maintainAct" />
+			<column field="createDt" renderWidget="application.datetime"
+				widthRatio="1" />
+			<column field="updateDt" renderWidget="application.datetime"
+				widthRatio="1" />
+		</table>
+		<table name="wfStepTable"
+			description="$m{studio.workflow.step.table}"
+			label="$m{studio.workflow.step.table.label}" entity="workflow.wfStep"
+			itemsPerPage="20">
+			<column field="workflowDesc" renderWidget="application.text"
+				label="$m{workflow.step.workflow}" widthRatio="1" />
+			<column field="name" renderWidget="application.text"
+				widthRatio="1" linkAct="maintainAct" />
+			<column field="description" renderWidget="application.text"
+				widthRatio="1" linkAct="maintainAct" />
+			<column field="typeDesc" renderWidget="application.text"
+				label="$m{workflow.step.type}" widthRatio="1" />
+			<column field="priorityDesc" renderWidget="application.text"
+				label="$m{workflow.step.priority}" widthRatio="1" />
+		</table>
+		<table name="wfStepRoutingTable"
+			description="$m{studio.workflow.steprouting.table}"
+			label="$m{studio.workflow.steprouting.table.label}"
+			entity="workflow.wfStepRouting" itemsPerPage="20">
+			<column field="wfStepDesc" renderWidget="application.text"
+				label="$m{workflow.steprouting.step}" widthRatio="1" />
+			<column field="name" renderWidget="application.text"
+				widthRatio="1" linkAct="maintainAct" />
+			<column field="description" renderWidget="application.text"
+				widthRatio="1" linkAct="maintainAct" />
+			<column field="nextStepName" renderWidget="application.text"
+				widthRatio="1" />
+		</table>
+		<table name="wfStepUserActionTable"
+			description="$m{studio.workflow.stepuseraction.table}"
+			label="$m{studio.workflow.stepuseraction.table.label}"
+			entity="workflow.wfStepUserAction" itemsPerPage="20">
+			<column field="wfStepDesc" renderWidget="application.text"
+				label="$m{workflow.stepuseraction.step}" widthRatio="1" />
+			<column field="name" renderWidget="application.text"
+				widthRatio="1" linkAct="maintainAct" />
+			<column field="description" renderWidget="application.text"
+				widthRatio="1" linkAct="maintainAct" />
+			<column field="label" renderWidget="application.text"
+				widthRatio="1" />
+			<column field="nextStepName" renderWidget="application.text"
+				widthRatio="1" />
+			<column field="commentRequirementDesc"
+				renderWidget="application.text"
+				label="$m{workflow.stepuseraction.commentrequirement}"
+				widthRatio="1" />
+		</table>
+		<table name="wfStepAlertTable"
+			description="$m{studio.workflow.stepalert.table}"
+			label="$m{studio.workflow.stepalert.table.label}"
+			entity="workflow.wfStepAlert" itemsPerPage="20">
+			<column field="wfStepDesc" renderWidget="application.text"
+				label="$m{workflow.stepalert.step}" widthRatio="1" />
+			<column field="name" renderWidget="application.text"
+				widthRatio="1" linkAct="maintainAct" />
+			<column field="description" renderWidget="application.text"
+				widthRatio="1" linkAct="maintainAct" />
+			<column field="typeDesc" renderWidget="application.text"
+				label="$m{workflow.stepalert.type}" widthRatio="1" />
+			<column field="notificationTypeDesc"
+				renderWidget="application.text"
+				label="$m{workflow.stepalert.notificationtype}" widthRatio="1" />
+		</table>
+		<table name="dashboardTileTable"
+			description="$m{studio.dashboardtile.table}"
+			label="$m{studio.dashboardtile.table.label}"
+			entity="dashboard.dashboardTile">
+			<column field="name" renderWidget="application.name"
+				widthRatio="1" linkAct="maintainAct" />
+			<column field="description" renderWidget="application.text"
+				widthRatio="1" linkAct="maintainAct" />
+			<column field="typeDesc" renderWidget="application.text"
+				label="$m{dashboard.dashboardtile.type}" widthRatio="1" />
+			<column field="section" renderWidget="application.integer"
+				widthRatio="1" />
+			<column field="index" renderWidget="application.integer"
+				widthRatio="1" />
+			<column field="createDt" renderWidget="application.datetime"
+				widthRatio="1" />
+			<column field="updateDt" renderWidget="application.datetime"
+				widthRatio="1" />
+		</table>
+		<table name="reportColumnTable"
+			description="$m{studio.reportcolumn.table}"
+			label="$m{studio.reportcolumn.table.label}"
+			entity="report.reportColumn">
+			<column field="fieldName" renderWidget="application.name"
+				widthRatio="1" linkAct="maintainAct" />
+			<column field="description" renderWidget="application.text"
+				widthRatio="1" linkAct="maintainAct" />
+			<column field="type" renderWidget="application.text"
+				widthRatio="1" />
+			<column field="columnOrderDesc"
+				renderWidget="application.text" widthRatio="1"
+				label="$m{report.reportcolumn.columnorder}" />
+			<column field="horizAlignTypeDesc"
+				renderWidget="application.text" widthRatio="1"
+				label="$m{report.reportcolumn.horizaligntype}" />
+		</table>
+		<table name="reportParameterTable"
+			description="$m{studio.reportparameter.table}"
+			label="$m{studio.reportparameter.table.label}"
+			entity="report.reportParameter">
+			<column field="name" renderWidget="application.name"
+				widthRatio="1" linkAct="maintainAct" />
+			<column field="description" renderWidget="application.text"
+				widthRatio="1" linkAct="maintainAct" />
+			<column field="label" renderWidget="application.text"
+				widthRatio="1" />
+			<column field="typeDesc" renderWidget="application.text"
+				widthRatio="1" label="$m{report.reportparameter.type}" />
+		</table>
+	</tables>
+	<!-- Forms -->
+	<forms>
+		<form name="appAppletForm"
+			description="$m{studio.appapplet.form}"
+			entity="application.appApplet">
+			<action type="button" name="lockResource" symbol="lock"
+				styleClass="fc-bluebutton"
+				description="$m{studio.common.form.action.lockresource}"
+				label="$m{studio.common.form.action.lockresource.label}"
+				policy="lockresource-actionpolicy" showOnMaintain="true" />
+			<action type="button" name="unlockResource" symbol="unlock"
+				styleClass="fc-bluebutton"
+				description="$m{studio.common.form.action.unlockresource}"
+				label="$m{studio.common.form.action.unlockresource.label}"
+				policy="unlockresource-actionpolicy" showOnMaintain="true" />
+			<annotation name="staticAnnotation"
+				description="$m{studio.common.form.annotation.static}"
+				message="$m{studio.common.form.annotation.static.message}" />
+			<tab name="basicDetails"
+				label="$m{studio.appapplet.form.basicdetails}" editable="false"
+				contentType="miniform">
+				<section name="appletDetails" columns="type_2">
+					<field name="applicationId"
+						inputWidget="application.entitysearch" column="0"
+						label="$m{studio.application}" disabled="true" required="true"
+						saveAs="true" />
+					<field name="type" inputWidget="applettypelist" column="0"
+						disabled="true" switchOnChange="true" required="true" />
+					<field name="name" inputWidget="application.name" column="0"
+						required="true" saveAs="true" />
+					<field name="description" inputWidget="application.text"
+						column="0" required="true" saveAs="true" />
+					<field name="label" inputWidget="application.text" column="0"
+						required="true" />
+					<field name="configType" inputWidget="application.enumlist"
+						column="1" disabled="true" required="true" />
+					<field name="entity" inputWidget="studio.entitysearch"
+						column="1" required="true" switchOnChange="true" visible="false" />
+					<field name="baseField"
+						inputWidget="studio.entityreffieldlist" column="1" required="true"
+						visible="false" />
+					<field name="assignField"
+						inputWidget="studio.entityreffieldlist" column="1"
+						switchOnChange="true" required="true" visible="false" />
+					<field name="assignDescField"
+						inputWidget="studio.entityrefdesclist" column="1" visible="false" />
+					<field name="routeToApplet"
+						inputWidget="studio.facadeappletroutetoappletlist" column="1"
+						required="true" visible="false" />
+					<field name="path" inputWidget="application.text" column="1"
+						visible="false" />
+					<field name="displayIndex" inputWidget="application.integer"
+						column="1" />
+					<field name="menuAccess" inputWidget="application.checkbox"
+						column="1" />
+				</section>
+			</tab>
+			<tab name="properties"
+				label="$m{studio.appapplet.form.properties}"
+				contentType="property_list" applet="manageAppAppletProp"
+				reference="propList" />
+			<tab name="filters" label="$m{studio.appapplet.form.filters}"
+				contentType="child_list" applet="manageAppAppletFilter"
+				reference="filterList" />
+			<tab name="changeLog" label="$m{application.form.audit}"
+				contentType="miniform_changelog" />
+			<formValidationPolicy
+				name="entityValidationPolicy"
+				description="$m{studio.appapplet.form.formvalidationpolicy.entity}"
+				message="$m{studio.appapplet.form.formvalidationpolicy.entity.message}">
+				<errorCondition>
+					<restriction type="and">
+						<restriction type="amongst" field="type"
+							paramA="MEL|MEA|MLS|CEN|CNS|DIM" />
+						<restriction type="is_null" field="entity" />
+					</restriction>
+				</errorCondition>
+			</formValidationPolicy>
+			<formValidationPolicy
+				name="pathValidationPolicy"
+				description="$m{studio.appapplet.form.formvalidationpolicy.path}"
+				message="$m{studio.appapplet.form.formvalidationpolicy.path.message}">
+				<errorCondition>
+					<restriction type="and">
+						<restriction type="amongst" field="type"
+							paramA="PPG|PWN" />
+						<restriction type="is_null" field="path" />
+					</restriction>
+				</errorCondition>
+			</formValidationPolicy>
+			<formStatePolicy type="on_switch"
+				name="onStaticPolicy"
+				description="$m{studio.common.form.formstatepolicy.onstatic}">
+				<onCondition>
+					<restriction type="and">
+						<restriction type="is_not_null" field="id" />
+						<restriction type="equals" field="configType"
+							paramA="S" />
+					</restriction>
+				</onCondition>
+				<setStates>
+					<setState type="annotation" target="staticAnnotation"
+						visible="true" />
+				</setStates>
+			</formStatePolicy>
+			<formStatePolicy type="on_switch"
+				name="immutableFormPolicy"
+				description="$m{studio.common.form.formstatepolicy.immutable}">
+				<onCondition>
+					<restriction type="and">
+						<restriction type="is_not_null" field="id" />
+						<restriction type="not_equals" field="configType"
+							paramA="C" />
+					</restriction>
+				</onCondition>
+				<setStates>
+					<setState type="field"
+						target="name,description,entity,type,label,baseField,assignField,assignDescField"
+						disabled="true" />
+				</setStates>
+			</formStatePolicy>
+			<formStatePolicy type="on_switch"
+				name="mutableFormPolicy"
+				description="$m{studio.common.form.formstatepolicy.mutable}">
+				<onCondition>
+					<restriction type="and">
+						<restriction type="is_not_null" field="id" />
+						<restriction type="equals" field="configType"
+							paramA="C" />
+					</restriction>
+				</onCondition>
+				<setStates>
+					<setState type="tab" target="basicDetails" editable="true" />
+					<setState type="field"
+						target="name,description,entity,type,baseField,assignField"
+						editable="false" />
+				</setStates>
+			</formStatePolicy>
+			<formStatePolicy type="on_switch"
+				name="onCreatePolicy"
+				description="$m{studio.appapplet.form.formstatepolicy.oncreate}">
+				<onCondition>
+					<restriction type="is_null" field="id" />
+				</onCondition>
+				<setStates>
+					<setState type="tab" target="basicDetails" editable="true" />
+					<setState type="field" target="type" disabled="false" />
+				</setStates>
+			</formStatePolicy>
+			<formStatePolicy type="on_switch" name="entityPolicy"
+				description="$m{studio.appapplet.form.formstatepolicy.entity}">
+				<onCondition>
+					<restriction type="amongst" field="type"
+						paramA="MEL|MEA|MLS|CEN|CNS|DIM" />
+				</onCondition>
+				<setStates>
+					<setState type="field" target="entity" visible="true" />
+				</setStates>
+			</formStatePolicy>
+			<formStatePolicy type="on_switch"
+				name="entityAssignPolicy"
+				description="$m{studio.appapplet.form.formstatepolicy.entityassign}">
+				<onCondition>
+					<restriction type="equals" field="type" paramA="MEA" />
+				</onCondition>
+				<setStates>
+					<setState type="field"
+						target="baseField,assignField,assignDescField" visible="true" />
+				</setStates>
+			</formStatePolicy>
+			<formStatePolicy type="on_switch" name="facadePolicy"
+				description="$m{studio.appapplet.form.formstatepolicy.facade}">
+				<onCondition>
+					<restriction type="equals" field="type" paramA="FAC" />
+				</onCondition>
+				<setStates>
+					<setState type="field" target="routeToApplet"
+						visible="true" />
+				</setStates>
+			</formStatePolicy>
+			<formStatePolicy type="on_switch" name="pathPolicy"
+				description="$m{studio.appapplet.form.formstatepolicy.path}">
+				<onCondition>
+					<restriction type="amongst" field="type"
+						paramA="PPG|PWN" />
+				</onCondition>
+				<setStates>
+					<setState type="field" target="path" visible="true" />
+				</setStates>
+			</formStatePolicy>
+		</form>
+		<form name="appAppletFilterForm"
+			description="$m{studio.appappletfilter.form}"
+			entity="application.appAppletFilter">
+			<tab name="basicDetails"
+				label="$m{studio.appappletfilter.form.basicdetails}"
+				contentType="miniform">
+				<section name="filterDetails" columns="type_2">
+					<field name="name" inputWidget="application.name" column="0"
+						required="true" />
+					<field name="description" inputWidget="application.text"
+						column="0" required="true" />
+					<field name="ownershipType"
+						inputWidget="application.enumlist" column="1" required="true" />
+					<field name="owner" inputWidget="application.text" column="1"
+						disabled="true" />
+					<field name="preferredForm"
+						inputWidget="studio.appletformlist" column="1" />
+					<field name="quickFilter" inputWidget="application.checkbox"
+						column="1" />
+				</section>
+			</tab>
+			<tab name="condition"
+				label="$m{studio.appappletfilter.form.condition}"
+				reference="app_applet" contentType="filter_condition" />
+			<tab name="changeLog" label="$m{application.form.audit}"
+				contentType="miniform_changelog" />
+		</form>
+		<form name="appEntityForm"
+			description="$m{studio.appentity.form}"
+			entity="application.appEntity">
+			<action type="button" name="lockResource" symbol="lock"
+				styleClass="fc-bluebutton"
+				description="$m{studio.common.form.action.lockresource}"
+				label="$m{studio.common.form.action.lockresource.label}"
+				policy="lockresource-actionpolicy" showOnMaintain="true" />
+			<action type="button" name="unlockResource" symbol="unlock"
+				styleClass="fc-bluebutton"
+				description="$m{studio.common.form.action.unlockresource}"
+				label="$m{studio.common.form.action.unlockresource.label}"
+				policy="unlockresource-actionpolicy" showOnMaintain="true" />
+			<annotation name="staticAnnotation"
+				description="$m{studio.common.form.annotation.static}"
+				message="$m{studio.common.form.annotation.static.message}" />
+			<tab name="basicDetails"
+				label="$m{studio.appentity.form.basicdetails}" editable="false"
+				contentType="miniform">
+				<section name="entityDetails" columns="type_2">
+					<field name="applicationId"
+						inputWidget="application.entitysearch" column="0"
+						label="$m{studio.application}" disabled="true" required="true" />
+					<field name="name" inputWidget="application.name" column="0"
+						required="true" switchOnChange="true" />
+					<field name="description" inputWidget="application.text"
+						column="0" required="true" />
+					<field name="label" inputWidget="application.text" column="0"
+						required="true" />
+					<field name="configType" inputWidget="application.enumlist"
+						column="1" disabled="true" required="true" />
+					<field name="baseType" inputWidget="application.enumlist"
+						column="1" disabled="true" required="true" />
+					<field name="entityClass" inputWidget="application.text"
+						column="1" editable="false" required="true" />
+					<field name="tableName" inputWidget="application.text"
+						column="1" required="true" />
+					<field name="delegate" inputWidget="environmentdelegatelist"
+						column="1" />
+					<field name="auditable" inputWidget="application.checkbox"
+						column="1" />
+					<field name="reportable" inputWidget="application.checkbox"
+						column="1" />
+				</section>
+			</tab>
+			<tab name="fields" label="$m{studio.appentity.form.fields}"
+				contentType="child_list" applet="manageAppEntityField"
+				reference="fieldList" />
+			<tab name="expressions"
+				label="$m{studio.appentity.form.expressions}"
+				contentType="child_list" applet="manageAppEntityExpression"
+				reference="expressionList" />
+			<tab name="attachments"
+				label="$m{studio.appentity.form.attachments}"
+				contentType="child_list" applet="manageAppEntityAttachment"
+				reference="attachmentList" visible="false" />
+			<tab name="uniqueConstraints"
+				label="$m{studio.appentity.form.uniqueconstraints}"
+				contentType="child_list" applet="manageAppEntityUniqueConstraint"
+				reference="uniqueConstraintList" />
+			<tab name="indexes" label="$m{studio.appentity.form.indexes}"
+				contentType="child_list" applet="manageAppEntityIndex"
+				reference="indexList" />
+			<tab name="uploads" label="$m{studio.appentity.form.uploads}"
+				contentType="child_list" applet="manageAppEntityUpload"
+				reference="uploadList" />
+			<tab name="changeLog" label="$m{application.form.audit}"
+				contentType="miniform_changelog" />
+			<formStatePolicy type="on_switch"
+				name="onCreatePolicy"
+				description="$m{studio.appentity.form.formstatepolicy.oncreate}">
+				<onCondition>
+					<restriction type="is_null" field="id" />
+				</onCondition>
+				<setStates>
+					<setState type="tab" target="basicDetails" editable="true" />
+					<setState type="field" target="baseType" disabled="false" />
+				</setStates>
+				<setValues>
+					<setValue type="generator" field="entityClass"
+						value="studioentityclassname-generator" />
+				</setValues>
+			</formStatePolicy>
+			<formStatePolicy type="on_switch"
+				name="onCreateTableNamePolicy"
+				description="$m{studio.appentity.form.formstatepolicy.oncreatetablename}">
+				<onCondition>
+					<restriction type="and">
+						<restriction type="is_null" field="id" />
+						<restriction type="is_null" field="tableName" />
+					</restriction>
+				</onCondition>
+				<setValues>
+					<setValue type="generator" field="tableName"
+						value="studioentitytablename-generator" />
+				</setValues>
+			</formStatePolicy>
+			<formStatePolicy type="on_switch"
+				name="onStaticPolicy"
+				description="$m{studio.common.form.formstatepolicy.onstatic}">
+				<onCondition>
+					<restriction type="and">
+						<restriction type="is_not_null" field="id" />
+						<restriction type="equals" field="configType"
+							paramA="S" />
+					</restriction>
+				</onCondition>
+				<setStates>
+					<setState type="annotation" target="staticAnnotation"
+						visible="true" />
+				</setStates>
+			</formStatePolicy>
+			<formStatePolicy type="on_switch"
+				name="immutableFormPolicy"
+				description="$m{studio.common.form.formstatepolicy.immutable}">
+				<onCondition>
+					<restriction type="and">
+						<restriction type="is_not_null" field="id" />
+						<restriction type="not_equals" field="configType"
+							paramA="C" />
+					</restriction>
+				</onCondition>
+				<setStates>
+					<setState type="field"
+						target="name,description,label,entityClass,tableName,baseType"
+						disabled="true" />
+				</setStates>
+			</formStatePolicy>
+			<formStatePolicy type="on_switch"
+				name="mutableFormPolicy"
+				description="$m{studio.common.form.formstatepolicy.mutable}">
+				<onCondition>
+					<restriction type="and">
+						<restriction type="is_not_null" field="id" />
+						<restriction type="equals" field="configType"
+							paramA="C" />
+					</restriction>
+				</onCondition>
+				<setStates>
+					<setState type="tab" target="basicDetails" editable="true" />
+					<setState type="field" target="baseType" disabled="false" />
+					<setState type="field"
+						target="name,description,entityClass,tableName" disabled="true" />
+				</setStates>
+			</formStatePolicy>
+			<formStatePolicy type="on_switch"
+				name="attachmentPolicy"
+				description="$m{studio.appentity.form.formstatepolicy.attachment}">
+				<onCondition>
+					<restriction type="amongst" field="baseType"
+						paramA="WKE|SWK" />
+				</onCondition>
+				<setStates>
+					<setState type="tab" target="attachments" visible="true" />
+				</setStates>
+			</formStatePolicy>
+		</form>
+		<form name="appEntityFieldForm"
+			description="$m{studio.appentityfield.form}"
+			entity="application.appEntityField">
+			<annotation name="baseStaticAnnotation"
+				description="$m{studio.appentityfield.form.annotation.basestatic}"
+				message="$m{studio.appentityfield.form.annotation.basestatic.message}" />
+			<tab name="basicDetails"
+				label="$m{studio.appentityfield.form.basicdetails}"
+				contentType="miniform" editable="true">
+				<section name="entityFieldDetails" columns="type_2">
+					<field name="appEntityId"
+						inputWidget="application.entitysearch"
+						label="$m{application.appentityfield.appentity}" column="0"
+						required="true" />
+					<field name="name" inputWidget="application.javafieldname"
+						column="0" required="true" />
+					<field name="label" inputWidget="application.text" column="0"
+						required="true" />
+					<field name="dataType" inputWidget="entityfielddatatypelist"
+						column="0" required="true" switchOnChange="true" />
+					<field name="references" inputWidget="entityfieldreflist"
+						column="0" visible="false" />
+					<field name="key" inputWidget="entitykeylist" column="0"
+						visible="false" switchOnChange="true" />
+					<field name="property" inputWidget="entitypropertylist"
+						column="0" visible="false" switchOnChange="true" />
+					<field name="type" inputWidget="application.enumlist"
+						column="1" required="true" disabled="true" />
+					<field name="inputWidget" inputWidget="entityfieldwidgetlist"
+						column="1" switchOnChange="true" />
+					<field name="suggestionType" inputWidget="suggestiontypelist"
+						column="1" visible="false" required="true"/>
+					<field name="inputListKey" inputWidget="application.text"
+						column="1" visible="false" />
+					<field name="minLen" inputWidget="application.integer"
+						column="1" visible="false" />
+					<field name="maxLen" inputWidget="application.integer"
+						column="1" visible="false" />
+					<field name="precision" inputWidget="application.integer"
+						column="1" visible="false" />
+					<field name="scale" inputWidget="application.integer"
+						column="1" visible="false" />
+					<field name="autoFormat" inputWidget="application.text"
+						column="1" visible="false" />
+					<field name="defaultVal" inputWidget="application.text"
+						column="1" visible="false" />
+					<field name="nullable" inputWidget="application.checkbox"
+						column="1" visible="false" />
+					<field name="auditable" inputWidget="application.checkbox"
+						column="1" visible="false" />
+					<field name="reportable" inputWidget="application.checkbox"
+						column="1" visible="false" />
+					<field name="maintainLink" inputWidget="application.checkbox"
+						column="1" visible="false" />
+					<field name="descriptive" inputWidget="application.checkbox"
+						column="1" visible="false" />
+					<field name="basicSearch" inputWidget="application.checkbox"
+						column="1" visible="false" />
+				</section>
+			</tab>
+			<formValidationPolicy name="refValidationPolicy"
+				description="$m{studio.appentityfield.form.formvalidationpolicy.ref}"
+				message="$m{studio.appentityfield.form.formvalidationpolicy.ref.message}">
+				<errorCondition>
+					<restriction type="and">
+						<restriction type="amongst" field="dataType"
+							paramA="RF|UR|ER|EN|CD|CL|CU" />
+						<restriction type="is_null" field="references" />
+					</restriction>
+				</errorCondition>
+			</formValidationPolicy>
+			<formValidationPolicy
+				name="listOnlyValidationPolicy"
+				description="$m{studio.appentityfield.form.formvalidationpolicy.listonly}"
+				message="$m{studio.appentityfield.form.formvalidationpolicy.listonly.message}">
+				<errorCondition>
+					<restriction type="and">
+						<restriction type="equals" field="dataType"
+							paramA="LO" />
+						<restriction type="or">
+							<restriction type="is_null" field="key" />
+							<restriction type="is_null" field="property" />
+						</restriction>
+					</restriction>
+				</errorCondition>
+			</formValidationPolicy>
+			<formStatePolicy type="on_switch"
+				name="typeEditablePolicy"
+				description="$m{studio.appentityfield.form.formstatepolicy.typeeditable}">
+				<onCondition>
+					<restriction type="amongst" field="type"
+						paramA="BSE|STC" />
+				</onCondition>
+				<setStates>
+					<setState type="annotation" target="baseStaticAnnotation"
+						visible="true" />
+					<setState type="tab" target="basicDetails"
+						editable="false" />
+				</setStates>
+			</formStatePolicy>
+			<formStatePolicy type="on_switch"
+				name="refFieldPolicy"
+				description="$m{studio.appentityfield.form.formstatepolicy.reffield}">
+				<onCondition>
+					<restriction type="amongst" field="dataType"
+						paramA="RF|UR|ER|EN|CU" />
+				</onCondition>
+				<setStates>
+					<setState type="field"
+						target="references,defaultVal,nullable,basicSearch" visible="true" />
+				</setStates>
+			</formStatePolicy>
+			<formStatePolicy type="on_switch"
+				name="childFieldPolicy"
+				description="$m{studio.appentityfield.form.formstatepolicy.childfield}">
+				<onCondition>
+					<restriction type="amongst" field="dataType"
+						paramA="CD|CL|CU" />
+				</onCondition>
+				<setStates>
+					<setState type="field" target="references" visible="true" />
+				</setStates>
+			</formStatePolicy>
+			<formStatePolicy type="on_switch"
+				name="strFieldPolicy"
+				description="$m{studio.appentityfield.form.formstatepolicy.stringfield}">
+				<onCondition>
+					<restriction type="amongst" field="dataType"
+						paramA="ST|CT" />
+				</onCondition>
+				<setStates>
+					<setState type="field"
+						target="minLen,maxLen,autoFormat,defaultVal,nullable,auditable,reportable,maintainLink,descriptive,basicSearch"
+						visible="true" />
+				</setStates>
+			</formStatePolicy>
+			<formStatePolicy type="on_switch"
+				name="intFieldPolicy"
+				description="$m{studio.appentityfield.form.formstatepolicy.integerfield}">
+				<onCondition>
+					<restriction type="amongst" field="dataType"
+						paramA="LN|IN|SH" />
+				</onCondition>
+				<setStates>
+					<setState type="field"
+						target="precision,defaultVal,nullable,auditable,reportable,descriptive,basicSearch"
+						visible="true" />
+				</setStates>
+			</formStatePolicy>
+			<formStatePolicy type="on_switch"
+				name="decFieldPolicy"
+				description="$m{studio.appentityfield.form.formstatepolicy.decimalfield}">
+				<onCondition>
+					<restriction type="amongst" field="dataType"
+						paramA="DC|DB|FL" />
+				</onCondition>
+				<setStates>
+					<setState type="field"
+						target="precision,scale,defaultVal,nullable,auditable,reportable,descriptive,basicSearch"
+						visible="true" />
+				</setStates>
+			</formStatePolicy>
+			<formStatePolicy type="on_switch"
+				name="dateFieldPolicy"
+				description="$m{studio.appentityfield.form.formstatepolicy.datefield}">
+				<onCondition>
+					<restriction type="amongst" field="dataType"
+						paramA="DT|TU|TS" />
+				</onCondition>
+				<setStates>
+					<setState type="field"
+						target="defaultVal,nullable,auditable,reportable,basicSearch"
+						visible="true" />
+				</setStates>
+			</formStatePolicy>
+			<formStatePolicy type="on_switch"
+				name="boolFieldPolicy"
+				description="$m{studio.appentityfield.form.formstatepolicy.booleanfield}">
+				<onCondition>
+					<restriction type="equals" field="dataType" paramA="BL" />
+				</onCondition>
+				<setStates>
+					<setState type="field"
+						target="nullable,auditable,reportable,basicSearch" visible="true" />
+				</setStates>
+			</formStatePolicy>
+			<formStatePolicy type="on_switch"
+				name="blobFieldPolicy"
+				description="$m{studio.appentityfield.form.formstatepolicy.blobfield}">
+				<onCondition>
+					<restriction type="equals" field="dataType" paramA="BT" />
+				</onCondition>
+				<setStates>
+					<setState type="field" target="nullable" visible="true" />
+				</setStates>
+			</formStatePolicy>
+			<formStatePolicy type="on_switch"
+				name="listFieldPolicy"
+				description="$m{studio.appentityfield.form.formstatepolicy.listfield}">
+				<onCondition>
+					<restriction type="equals" field="dataType" paramA="LO" />
+				</onCondition>
+				<setStates>
+					<setState type="field"
+						target="key,property,reportable,maintainLink,descriptive,basicSearch"
+						visible="true" />
+				</setStates>
+			</formStatePolicy>
+			<formStatePolicy type="on_switch"
+				name="suggestionTypePolicy"
+				description="$m{studio.appentityfield.form.formstatepolicy.suggestiontype">
+				<onCondition>
+					<restriction type="equals" field="inputWidget"
+						paramA="application.suggestiontextsearch" />
+				</onCondition>
+				<setStates>
+					<setState type="field" target="suggestionType"
+						visible="true" />
+				</setStates>
+			</formStatePolicy>
+		</form>
+		<form name="appEntityAttachmentForm"
+			description="$m{studio.appentityattachment.form}"
+			entity="application.appEntityAttachment">
+			<annotation name="staticAnnotation"
+				description="$m{studio.common.form.annotation.static}"
+				message="$m{studio.common.form.annotation.static.message}" />
+			<tab name="basicDetails"
+				label="$m{studio.appentityattachment.form.basicdetails}"
+				contentType="miniform">
+				<section name="entityAttachmentDetails" columns="type_2">
+					<field name="appEntityId"
+						inputWidget="application.entitysearch"
+						label="$m{application.appentityattachment.appentity}" column="0"
+						required="true" />
+					<field name="name" column="0" required="true" />
+					<field name="description" column="0" required="true" />
+					<field name="configType" inputWidget="application.enumlist"
+						column="1" disabled="true" required="true" />
+					<field name="type" column="1" required="true" />
+				</section>
+			</tab>
+			<formStatePolicy type="on_switch"
+				name="onStaticPolicy"
+				description="$m{studio.common.form.formstatepolicy.onstatic}">
+				<onCondition>
+					<restriction type="and">
+						<restriction type="is_not_null" field="id" />
+						<restriction type="equals" field="configType"
+							paramA="S" />
+					</restriction>
+				</onCondition>
+				<setStates>
+					<setState type="annotation" target="staticAnnotation"
+						visible="true" />
+				</setStates>
+			</formStatePolicy>
+		</form>
+		<form name="appEntityExpressionForm"
+			description="$m{studio.appentityexpression.form}"
+			entity="application.appEntityExpression">
+			<annotation name="staticAnnotation"
+				description="$m{studio.common.form.annotation.static}"
+				message="$m{studio.common.form.annotation.static.message}" />
+			<tab name="basicDetails"
+				label="$m{studio.appentityexpression.form.basicdetails}"
+				contentType="miniform">
+				<section name="entityExpressionDetails" columns="type_2">
+					<field name="appEntityId"
+						inputWidget="application.entitysearch"
+						label="$m{application.appentityexpression.appentity}" column="0"
+						required="true" />
+					<field name="name" column="0" required="true" />
+					<field name="description" column="0" required="true" />
+					<field name="configType" inputWidget="application.enumlist"
+						column="1" disabled="true" required="true" />
+					<field name="expression" column="1" required="true" />
+				</section>
+			</tab>
+			<formStatePolicy type="on_switch"
+				name="onStaticPolicy"
+				description="$m{studio.common.form.formstatepolicy.onstatic}">
+				<onCondition>
+					<restriction type="and">
+						<restriction type="is_not_null" field="id" />
+						<restriction type="equals" field="configType"
+							paramA="S" />
+					</restriction>
+				</onCondition>
+				<setStates>
+					<setState type="annotation" target="staticAnnotation"
+						visible="true" />
+				</setStates>
+			</formStatePolicy>
+		</form>
+		<form name="appEntityUniqueConstraintForm"
+			description="$m{studio.appentityuniqueconstraint.form}"
+			entity="application.appEntityUniqueConstraint">
+			<annotation name="staticAnnotation"
+				description="$m{studio.common.form.annotation.static}"
+				message="$m{studio.common.form.annotation.static.message}" />
+			<tab name="basicDetails"
+				label="$m{studio.appentityuniqueconstraint.form.basicdetails}"
+				contentType="miniform">
+				<section name="entityUniqueConstraintDetails"
+					columns="type_2">
+					<field name="appEntityId"
+						inputWidget="application.entitysearch"
+						label="$m{application.appentityuniqueconstraint.appentity}"
+						column="0" required="true" />
+					<field name="name" column="0" required="true" />
+					<field name="description" column="0" required="true" />
+					<field name="configType" inputWidget="application.enumlist"
+						column="1" disabled="true" required="true" />
+					<field name="fieldList"
+						inputWidget="entityfieldmultiselectlist" column="1"
+						required="true" />
+				</section>
+			</tab>
+			<formStatePolicy type="on_switch"
+				name="onStaticPolicy"
+				description="$m{studio.common.form.formstatepolicy.onstatic}">
+				<onCondition>
+					<restriction type="and">
+						<restriction type="is_not_null" field="id" />
+						<restriction type="equals" field="configType"
+							paramA="S" />
+					</restriction>
+				</onCondition>
+				<setStates>
+					<setState type="annotation" target="staticAnnotation"
+						visible="true" />
+				</setStates>
+			</formStatePolicy>
+		</form>
+		<form name="appEntityIndexForm"
+			description="$m{studio.appentityindex.form}"
+			entity="application.appEntityIndex">
+			<annotation name="staticAnnotation"
+				description="$m{studio.common.form.annotation.static}"
+				message="$m{studio.common.form.annotation.static.message}" />
+			<tab name="basicDetails"
+				label="$m{studio.appentityindex.form.basicdetails}"
+				contentType="miniform">
+				<section name="entityIndexDetails" columns="type_2">
+					<field name="appEntityId"
+						inputWidget="application.entitysearch"
+						label="$m{application.appentityindex.appentity}" column="0"
+						required="true" />
+					<field name="name" column="0" required="true" />
+					<field name="description" column="0" required="true" />
+					<field name="configType" inputWidget="application.enumlist"
+						column="1" disabled="true" required="true" />
+					<field name="fieldList"
+						inputWidget="entityfieldmultiselectlist" column="1"
+						required="true" />
+				</section>
+			</tab>
+			<formStatePolicy type="on_switch"
+				name="onStaticPolicy"
+				description="$m{studio.common.form.formstatepolicy.onstatic}">
+				<onCondition>
+					<restriction type="and">
+						<restriction type="is_not_null" field="id" />
+						<restriction type="equals" field="configType"
+							paramA="S" />
+					</restriction>
+				</onCondition>
+				<setStates>
+					<setState type="annotation" target="staticAnnotation"
+						visible="true" />
+				</setStates>
+			</formStatePolicy>
+		</form>
+		<form name="appEntityUploadForm"
+			description="$m{studio.appentityupload.form}"
+			entity="application.appEntityUpload">
+			<annotation name="staticAnnotation"
+				description="$m{studio.common.form.annotation.static}"
+				message="$m{studio.common.form.annotation.static.message}" />
+			<tab name="basicDetails"
+				label="$m{studio.appentityupload.form.basicdetails}"
+				contentType="miniform">
+				<section name="entityUploadDetails" columns="type_2">
+					<field name="appEntityId"
+						inputWidget="application.entitysearch"
+						label="$m{application.appentityupload.appentity}" column="0"
+						required="true" />
+					<field name="name" column="0" required="true" />
+					<field name="description" column="0" required="true" />
+					<field name="configType" inputWidget="application.enumlist"
+						column="1" disabled="true" required="true" />
+					<field name="constraintAction" column="1" required="true" />
+				</section>
+			</tab>
+			<tab name="fieldSequence"
+				label="$m{studio.appentityupload.form.fieldsequence}"
+				reference="app_entityupload" contentType="field_sequence" />
+			<formStatePolicy type="on_switch"
+				name="onStaticPolicy"
+				description="$m{studio.common.form.formstatepolicy.onstatic}">
+				<onCondition>
+					<restriction type="and">
+						<restriction type="is_not_null" field="id" />
+						<restriction type="equals" field="configType"
+							paramA="S" />
+					</restriction>
+				</onCondition>
+				<setStates>
+					<setState type="annotation" target="staticAnnotation"
+						visible="true" />
+				</setStates>
+			</formStatePolicy>
+		</form>
+		<form name="appRefForm" description="$m{studio.appref.form}"
+			entity="application.appRef">
+			<action type="button" name="lockResource" symbol="lock"
+				styleClass="fc-bluebutton"
+				description="$m{studio.common.form.action.lockresource}"
+				label="$m{studio.common.form.action.lockresource.label}"
+				policy="lockresource-actionpolicy" showOnMaintain="true" />
+			<action type="button" name="unlockResource" symbol="unlock"
+				styleClass="fc-bluebutton"
+				description="$m{studio.common.form.action.unlockresource}"
+				label="$m{studio.common.form.action.unlockresource.label}"
+				policy="unlockresource-actionpolicy" showOnMaintain="true" />
+			<annotation name="staticAnnotation"
+				description="$m{studio.common.form.annotation.static}"
+				message="$m{studio.common.form.annotation.static.message}" />
+			<tab name="basicDetails"
+				label="$m{studio.appref.form.basicdetails}" contentType="miniform">
+				<section name="refFormDetails" columns="type_2">
+					<field name="applicationId"
+						inputWidget="application.entitysearch" column="0"
+						label="$m{studio.application}" disabled="true" required="true"
+						saveAs="true" />
+					<field name="name" inputWidget="application.name" column="0"
+						required="true" saveAs="true" />
+					<field name="description" inputWidget="application.text"
+						column="0" required="true" saveAs="true" />
+					<field name="configType" inputWidget="application.enumlist"
+						column="1" disabled="true" required="true" />
+					<field name="entity" inputWidget="studio.entitybynamelist"
+						column="1" switchOnChange="true" required="true" />
+					<field name="searchField"
+						inputWidget="studio.entitysearchfieldlist" column="1" />
+					<field name="listFormat" inputWidget="application.text"
+						column="1" />
+					<field name="filterGenerator"
+						inputWidget="application.reffiltergeneratorlist"
+						switchOnChange="true" column="1" />
+					<field name="filterGeneratorRule"
+						inputWidget="studio.reffiltergeneratorrulelist" column="1" />
+				</section>
+			</tab>
+			<tab name="filter" label="$m{studio.appref.form.filter}"
+				reference="app_ref" contentType="filter_condition" />
+			<tab name="changeLog" label="$m{application.form.audit}"
+				contentType="miniform_changelog" />
+			<formStatePolicy type="on_switch"
+				name="onStaticPolicy"
+				description="$m{studio.common.form.formstatepolicy.onstatic}">
+				<onCondition>
+					<restriction type="and">
+						<restriction type="is_not_null" field="id" />
+						<restriction type="equals" field="configType"
+							paramA="S" />
+					</restriction>
+				</onCondition>
+				<setStates>
+					<setState type="annotation" target="staticAnnotation"
+						visible="true" />
+					<setState type="tab" target="basicDetails"
+						editable="false" />
+				</setStates>
+			</formStatePolicy>
+			<formStatePolicy type="on_switch"
+				name="immutableFormPolicy"
+				description="$m{studio.common.form.formstatepolicy.immutable}">
+				<onCondition>
+					<restriction type="and">
+						<restriction type="is_not_null" field="id" />
+						<restriction type="not_equals" field="configType"
+							paramA="C" />
+					</restriction>
+				</onCondition>
+				<setStates>
+					<setState type="field"
+						target="name,description,entity,searchField" disabled="true" />
+				</setStates>
+			</formStatePolicy>
+		</form>
+		<form name="chartForm" description="$m{studio.chart.form}"
+			entity="chart.chart">
+			<action type="button" name="lockResource" symbol="lock"
+				styleClass="fc-bluebutton"
+				description="$m{studio.common.form.action.lockresource}"
+				label="$m{studio.common.form.action.lockresource.label}"
+				policy="lockresource-actionpolicy" showOnMaintain="true" />
+			<action type="button" name="unlockResource" symbol="unlock"
+				styleClass="fc-bluebutton"
+				description="$m{studio.common.form.action.unlockresource}"
+				label="$m{studio.common.form.action.unlockresource.label}"
+				policy="unlockresource-actionpolicy" showOnMaintain="true" />
+			<annotation name="staticAnnotation"
+				description="$m{studio.common.form.annotation.static}"
+				message="$m{studio.common.form.annotation.static.message}" />
+			<tab name="basicDetails"
+				label="$m{studio.chart.form.basicdetails}" contentType="miniform"
+				editable="true">
+				<section name="chartDetails" columns="type_2">
+					<field name="applicationId"
+						inputWidget="application.entitysearch" column="0"
+						label="$m{studio.application}" disabled="true" required="true"
+						saveAs="true" />
+					<field name="name" inputWidget="application.name" column="0"
+						required="true" saveAs="true" />
+					<field name="description" inputWidget="application.text"
+						column="0" required="true" saveAs="true" />
+					<field name="title" column="0" />
+					<field name="subTitle" column="0" />
+					<field name="type" column="0" required="true" />
+					<field name="paletteType" column="0" required="true" />
+					<field name="configType" inputWidget="application.enumlist"
+						column="1" disabled="true" required="true" />
+					<field name="provider" column="1" required="true"
+						switchOnChange="true" />
+					<field name="rule" column="1" />
+					<field name="width" column="1" />
+					<field name="height" column="1" />
+					<field name="stacked" column="1" />
+					<field name="smooth" column="1" />
+					<field name="showGrid" column="1" />
+					<field name="showDataLabels" column="1" />
+				</section>
+			</tab>
+			<formStatePolicy type="on_switch"
+				name="onStaticPolicy"
+				description="$m{studio.common.form.formstatepolicy.onstatic}">
+				<onCondition>
+					<restriction type="and">
+						<restriction type="is_not_null" field="id" />
+						<restriction type="equals" field="configType"
+							paramA="S" />
+					</restriction>
+				</onCondition>
+				<setStates>
+					<setState type="annotation" target="staticAnnotation"
+						visible="true" />
+					<setState type="tab" target="basicDetails"
+						editable="false" />
+				</setStates>
+			</formStatePolicy>
+			<formStatePolicy type="on_switch"
+				name="immutableFormPolicy"
+				description="$m{studio.common.form.formstatepolicy.immutable}">
+				<onCondition>
+					<restriction type="and">
+						<restriction type="is_not_null" field="id" />
+						<restriction type="not_equals" field="configType"
+							paramA="C" />
+					</restriction>
+				</onCondition>
+				<setStates>
+					<setState type="field" target="name,description,entity"
+						disabled="true" />
+				</setStates>
+			</formStatePolicy>
+		</form>
+		<form name="dashboardForm"
+			description="$m{studio.dashboard.form}" entity="dashboard.dashboard">
+			<action type="button" name="lockResource" symbol="lock"
+				styleClass="fc-bluebutton"
+				description="$m{studio.common.form.action.lockresource}"
+				label="$m{studio.common.form.action.lockresource.label}"
+				policy="lockresource-actionpolicy" showOnMaintain="true" />
+			<action type="button" name="unlockResource" symbol="unlock"
+				styleClass="fc-bluebutton"
+				description="$m{studio.common.form.action.unlockresource}"
+				label="$m{studio.common.form.action.unlockresource.label}"
+				policy="unlockresource-actionpolicy" showOnMaintain="true" />
+			<annotation name="staticAnnotation"
+				description="$m{studio.common.form.annotation.static}"
+				message="$m{studio.common.form.annotation.static.message}" />
+			<tab name="basicDetails"
+				label="$m{studio.dashboard.form.basicdetails}"
+				contentType="miniform">
+				<section name="entityDetails" columns="type_2">
+					<field name="applicationId"
+						inputWidget="application.entitysearch" column="0"
+						label="$m{studio.application}" disabled="true" required="true"
+						saveAs="true" />
+					<field name="name" inputWidget="application.name" column="0"
+						required="true" saveAs="true" />
+					<field name="description" inputWidget="application.text"
+						column="0" required="true" saveAs="true" />
+					<field name="configType" inputWidget="application.enumlist"
+						column="1" disabled="true" required="true" />
+					<field name="sections" column="1" />
+				</section>
+			</tab>
+			<tab name="tiles" label="$m{studio.dashboard.form.tiles}"
+				contentType="child_list" applet="manageDashboardTile"
+				reference="tileList" />
+			<tab name="changeLog" label="$m{application.form.audit}"
+				contentType="miniform_changelog" />
+			<formStatePolicy type="on_switch"
+				name="onStaticPolicy"
+				description="$m{studio.common.form.formstatepolicy.onstatic}">
+				<onCondition>
+					<restriction type="and">
+						<restriction type="is_not_null" field="id" />
+						<restriction type="equals" field="configType"
+							paramA="S" />
+					</restriction>
+				</onCondition>
+				<setStates>
+					<setState type="annotation" target="staticAnnotation"
+						visible="true" />
+					<setState type="tab" target="basicDetails"
+						editable="false" />
+				</setStates>
+			</formStatePolicy>
+			<formStatePolicy type="on_switch"
+				name="immutableFormPolicy"
+				description="$m{studio.common.form.formstatepolicy.immutable}">
+				<onCondition>
+					<restriction type="and">
+						<restriction type="is_not_null" field="id" />
+						<restriction type="not_equals" field="configType"
+							paramA="C" />
+					</restriction>
+				</onCondition>
+				<setStates>
+					<setState type="field" target="name,description"
+						disabled="true" />
+				</setStates>
+			</formStatePolicy>
+		</form>
+		<form name="dashboardTileForm"
+			description="$m{studio.dashboardtile.form}"
+			entity="dashboard.dashboardTile">
+			<tab name="basicDetails"
+				label="$m{studio.dashboardtile.form.basicdetails}"
+				contentType="miniform">
+				<section name="entityDetails" columns="type_2">
+					<field name="dashboardId"
+						inputWidget="application.entitysearch" column="0"
+						label="$m{dashboard.dashboardtile.dashboard}" required="true" />
+					<field name="name" column="0" required="true" />
+					<field name="description" column="0" required="true" />
+					<field name="type" column="1" required="true" />
+					<field name="chart" column="1" required="true" />
+					<field name="section" column="1" required="true" />
+					<field name="index" column="1" required="true" />
+				</section>
+			</tab>
+			<tab name="changeLog" label="$m{application.form.audit}"
+				contentType="miniform_changelog" />
+		</form>
+		<form name="notifTemplateForm"
+			description="$m{studio.notificationtemplate.form}"
+			entity="notification.notifTemplate">
+			<action type="button" name="lockResource" symbol="lock"
+				styleClass="fc-bluebutton"
+				description="$m{studio.common.form.action.lockresource}"
+				label="$m{studio.common.form.action.lockresource.label}"
+				policy="lockresource-actionpolicy" showOnMaintain="true" />
+			<action type="button" name="unlockResource" symbol="unlock"
+				styleClass="fc-bluebutton"
+				description="$m{studio.common.form.action.unlockresource}"
+				label="$m{studio.common.form.action.unlockresource.label}"
+				policy="unlockresource-actionpolicy" showOnMaintain="true" />
+			<annotation name="staticAnnotation"
+				description="$m{studio.common.form.annotation.static}"
+				message="$m{studio.common.form.annotation.static.message}" />
+			<tab name="basicDetails"
+				label="$m{studio.notificationtemplate.form.basicdetails}"
+				contentType="miniform" editable="true">
+				<section name="templateDetails" columns="type_2">
+					<field name="applicationId"
+						inputWidget="application.entitysearch" column="0"
+						label="$m{studio.application}" disabled="true" required="true"
+						saveAs="true" />
+					<field name="name" inputWidget="application.name" column="0"
+						required="true" saveAs="true" />
+					<field name="description" inputWidget="application.text"
+						column="0" required="true" saveAs="true" />
+					<field name="attachmentGenerator"
+						inputWidget="application.text" column="0" />
+					<field name="configType" inputWidget="application.enumlist"
+						column="1" disabled="true" required="true" />
+					<field name="entity" inputWidget="studio.entitybynamelist"
+						column="1" required="true" />
+					<field name="notificationType"
+						inputWidget="application.enumlist" column="1" required="true" />
+					<field name="messageFormat"
+						inputWidget="application.enumlist" column="1" required="true" />
+				</section>
+				<section name="messageDetails" columns="type_1">
+					<field name="subject" inputWidget="application.text"
+						column="0" required="true" />
+					<field name="template" inputWidget="application.textarea"
+						column="0" color="yellow" required="true" />
+				</section>
+			</tab>
+			<tab name="changeLog" label="$m{application.form.audit}"
+				contentType="miniform_changelog" />
+			<formStatePolicy type="on_switch"
+				name="onStaticPolicy"
+				description="$m{studio.common.form.formstatepolicy.onstatic}">
+				<onCondition>
+					<restriction type="and">
+						<restriction type="is_not_null" field="id" />
+						<restriction type="equals" field="configType"
+							paramA="S" />
+					</restriction>
+				</onCondition>
+				<setStates>
+					<setState type="annotation" target="staticAnnotation"
+						visible="true" />
+					<setState type="tab" target="basicDetails"
+						editable="false" />
+				</setStates>
+			</formStatePolicy>
+			<formStatePolicy type="on_switch"
+				name="immutableFormPolicy"
+				description="$m{studio.common.form.formstatepolicy.immutable}">
+				<onCondition>
+					<restriction type="and">
+						<restriction type="is_not_null" field="id" />
+						<restriction type="not_equals" field="configType"
+							paramA="C" />
+					</restriction>
+				</onCondition>
+				<setStates>
+					<setState type="field"
+						target="name,description,entity,notificationType" disabled="true" />
+				</setStates>
+			</formStatePolicy>
+		</form>
+		<form name="reportConfigForm"
+			description="$m{studio.reportconfiguration.form}"
+			entity="report.reportConfig">
+			<action type="button" name="lockResource" symbol="lock"
+				styleClass="fc-bluebutton"
+				description="$m{studio.common.form.action.lockresource}"
+				label="$m{studio.common.form.action.lockresource.label}"
+				policy="lockresource-actionpolicy" showOnMaintain="true" />
+			<action type="button" name="unlockResource" symbol="unlock"
+				styleClass="fc-bluebutton"
+				description="$m{studio.common.form.action.unlockresource}"
+				label="$m{studio.common.form.action.unlockresource.label}"
+				policy="unlockresource-actionpolicy" showOnMaintain="true" />
+			<annotation name="staticAnnotation"
+				description="$m{studio.common.form.annotation.static}"
+				message="$m{studio.common.form.annotation.static.message}" />
+			<tab name="basicDetails"
+				label="$m{studio.reportconfiguration.form.basicdetails}"
+				contentType="miniform">
+				<section name="configDetails" columns="type_2">
+					<field name="applicationId"
+						inputWidget="application.entitysearch" column="0"
+						label="$m{studio.application}" disabled="true" required="true"
+						saveAs="true" />
+					<field name="name" inputWidget="application.name" column="0"
+						required="true" saveAs="true" />
+					<field name="description" inputWidget="application.text"
+						column="0" required="true" saveAs="true" />
+					<field name="title" inputWidget="application.text" column="0"
+						required="true" />
+					<field name="template" inputWidget="application.text"
+						column="0" />
+					<field name="layout" inputWidget="application.text"
+						column="0" />
+					<field name="configType" inputWidget="application.enumlist"
+						column="1" disabled="true" required="true" />
+					<field name="reportable"
+						inputWidget="studio.reportablebynamelist" column="1"
+						required="true" />
+					<field name="processor" inputWidget="application.text"
+						column="1" />
+					<field name="showGrandFooter"
+						inputWidget="application.checkbox" column="1" />
+					<field name="invertGroupColors"
+						inputWidget="application.checkbox" column="1" />
+					<field name="landscape" inputWidget="application.checkbox"
+						column="1" />
+					<field name="underlineRows"
+						inputWidget="application.checkbox" column="1" />
+					<field name="shadeOddRows" inputWidget="application.checkbox"
+						column="1" />
+				</section>
+			</tab>
+			<tab name="columns"
+				label="$m{studio.reportconfiguration.form.columns}"
+				contentType="child_list" applet="manageReportColumn"
+				reference="columnList" />
+			<tab name="parameters"
+				label="$m{studio.reportconfiguration.form.parameters}"
+				contentType="child_list" applet="manageReportParameter"
+				reference="parameterList" />
+			<tab name="filter"
+				label="$m{studio.reportconfiguration.form.filter}"
+				reference="report_config" contentType="filter_condition" />
+			<tab name="changeLog" label="$m{application.form.audit}"
+				contentType="miniform_changelog" />
+			<formStatePolicy type="on_switch"
+				name="onStaticPolicy"
+				description="$m{studio.common.form.formstatepolicy.onstatic}">
+				<onCondition>
+					<restriction type="and">
+						<restriction type="is_not_null" field="id" />
+						<restriction type="equals" field="configType"
+							paramA="S" />
+					</restriction>
+				</onCondition>
+				<setStates>
+					<setState type="annotation" target="staticAnnotation"
+						visible="true" />
+					<setState type="tab" target="basicDetails"
+						editable="false" />
+				</setStates>
+			</formStatePolicy>
+			<formStatePolicy type="on_switch"
+				name="immutableFormPolicy"
+				description="$m{studio.common.form.formstatepolicy.immutable}">
+				<onCondition>
+					<restriction type="and">
+						<restriction type="is_not_null" field="id" />
+						<restriction type="not_equals" field="configType"
+							paramA="C" />
+					</restriction>
+				</onCondition>
+				<setStates>
+					<setState type="field"
+						target="name,description,reportable" disabled="true" />
+				</setStates>
+			</formStatePolicy>
+		</form>
+		<form name="reportColumnForm"
+			description="$m{studio.reportcolumn.form}"
+			entity="report.reportColumn">
+			<tab name="basicDetails"
+				label="$m{studio.reportcolumn.form.basicdetails}"
+				contentType="miniform">
+				<section name="basicDetails" columns="type_2">
+					<field name="reportConfigurationId"
+						inputWidget="application.entitysearch" column="0" required="true"
+						label="$m{report.reportcolumn.reportconfiguration}" />
+					<field name="fieldName"
+						inputWidget="studio.reportconfigfieldlist" column="0"
+						required="true" />
+					<field name="description" inputWidget="application.text"
+						column="0" required="true" />
+					<field name="type" inputWidget="application.text" column="0" />
+					<field name="formatter" inputWidget="application.text"
+						column="0" />
+					<field name="columnOrder" inputWidget="application.enumlist"
+						column="1" />
+					<field name="horizAlignType"
+						inputWidget="application.enumlist" column="1" />
+					<field name="width" inputWidget="application.integer"
+						column="1" />
+					<field name="group" inputWidget="application.checkbox"
+						column="1" />
+					<field name="groupOnNewPage"
+						inputWidget="application.checkbox" column="1" />
+					<field name="sum" inputWidget="application.checkbox"
+						column="1" />
+				</section>
+			</tab>
+		</form>
+		<form name="reportParameterForm"
+			description="$m{studio.reportparameter.form}"
+			entity="report.reportParameter">
+			<tab name="basicDetails"
+				label="$m{studio.reportparameter.form.basicdetails}"
+				contentType="miniform">
+				<section name="basicDetails" columns="type_2">
+					<field name="reportConfigurationId"
+						inputWidget="application.entitysearch" column="0" required="true" />
+					<field name="name" inputWidget="application.name" column="0"
+						required="true" />
+					<field name="description" inputWidget="application.text"
+						column="0" required="true" />
+					<field name="label" inputWidget="application.text" column="0"
+						required="true" />
+					<field name="type" inputWidget="application.enumlist"
+						column="1" required="true" />
+					<field name="defaultVal" inputWidget="application.text"
+						column="1" />
+					<field name="editor" inputWidget="application.text"
+						column="1" />
+					<field name="mandatory" inputWidget="application.checkbox"
+						column="1" />
+				</section>
+			</tab>
+		</form>
+		<form name="appTableForm" description="$m{studio.apptable.form}"
+			entity="application.appTable">
+			<action type="button" name="lockResource" symbol="lock"
+				styleClass="fc-bluebutton"
+				description="$m{studio.common.form.action.lockresource}"
+				label="$m{studio.common.form.action.lockresource.label}"
+				policy="lockresource-actionpolicy" showOnMaintain="true" />
+			<action type="button" name="unlockResource" symbol="unlock"
+				styleClass="fc-bluebutton"
+				description="$m{studio.common.form.action.unlockresource}"
+				label="$m{studio.common.form.action.unlockresource.label}"
+				policy="unlockresource-actionpolicy" showOnMaintain="true" />
+			<tab name="basicDetails"
+				label="$m{studio.apptable.form.basicdetails}" contentType="miniform">
+				<section name="tableDetails" columns="type_2">
+					<field name="applicationId"
+						inputWidget="application.entitysearch" column="0"
+						label="$m{studio.application}" disabled="true" required="true"
+						saveAs="true" />
+					<field name="name" inputWidget="application.name" column="0"
+						required="true" saveAs="true" />
+					<field name="description" inputWidget="application.text"
+						column="0" required="true" saveAs="true" />
+					<field name="label" inputWidget="application.text" column="0" />
+					<field name="configType" inputWidget="application.enumlist"
+						column="1" disabled="true" required="true" />
+					<field name="entity" inputWidget="studio.entitybynamelist"
+						column="1" required="true" />
+					<field name="itemsPerPage" inputWidget="application.integer"
+						column="1" />
+					<field name="sortable" inputWidget="application.checkbox"
+						column="1" />
+					<field name="serialNo" inputWidget="application.checkbox"
+						column="1" />
+					<field name="headerToUpperCase"
+						inputWidget="application.checkbox" column="1" />
+					<field name="headerCenterAlign"
+						inputWidget="application.checkbox" column="1" />
+					<field name="basicSearch" inputWidget="application.checkbox"
+						column="1" />
+				</section>
+			</tab>
+			<tab name="design" label="$m{studio.apptable.form.design}"
+				contentType="child_list" applet="manageAppTableColumn"
+				reference="columnList" editAction="/designChildItem" />
+			<tab name="changeLog" label="$m{application.form.audit}"
+				contentType="miniform_changelog" />
+			<formStatePolicy type="on_switch"
+				name="onStaticPolicy"
+				description="$m{studio.common.form.formstatepolicy.onstatic}">
+				<onCondition>
+					<restriction type="and">
+						<restriction type="is_not_null" field="id" />
+						<restriction type="equals" field="configType"
+							paramA="S" />
+					</restriction>
+				</onCondition>
+				<setStates>
+					<setState type="annotation" target="staticAnnotation"
+						visible="true" />
+					<setState type="tab" target="basicDetails"
+						editable="false" />
+				</setStates>
+			</formStatePolicy>
+			<formStatePolicy type="on_switch"
+				name="immutableFormPolicy"
+				description="$m{studio.common.form.formstatepolicy.immutable}">
+				<onCondition>
+					<restriction type="and">
+						<restriction type="is_not_null" field="id" />
+						<restriction type="not_equals" field="configType"
+							paramA="C" />
+					</restriction>
+				</onCondition>
+				<setStates>
+					<setState type="field"
+						target="name,description,entity,label" disabled="true" />
+				</setStates>
+			</formStatePolicy>
+		</form>
+		<form name="appTableColumnForm"
+			description="$m{studio.apptablecolumn.form}"
+			entity="application.appTableColumn">
+			<tab name="basicDetails"
+				label="$m{studio.apptablecolumn.form.basicdetails}"
+				contentType="miniform">
+				<section name="tableColumnDetails" columns="type_2">
+					<field name="appTableId"
+						inputWidget="application.entitysearch" column="0" required="true" />
+					<field name="field" inputWidget="application.name" column="0"
+						required="true" />
+					<field name="renderWidget" inputWidget="application.text"
+						column="0" required="true" />
+					<field name="linkAct" inputWidget="application.text"
+						column="1" />
+					<field name="widthRatio" inputWidget="application.integer"
+						column="1" />
+				</section>
+			</tab>
+		</form>
+		<form name="appFormForm" description="$m{studio.appform.form}"
+			entity="application.appForm">
+			<action type="button" name="lockResource" symbol="lock"
+				styleClass="fc-bluebutton"
+				description="$m{studio.common.form.action.lockresource}"
+				label="$m{studio.common.form.action.lockresource.label}"
+				policy="lockresource-actionpolicy" showOnMaintain="true" />
+			<action type="button" name="unlockResource" symbol="unlock"
+				styleClass="fc-bluebutton"
+				description="$m{studio.common.form.action.unlockresource}"
+				label="$m{studio.common.form.action.unlockresource.label}"
+				policy="unlockresource-actionpolicy" showOnMaintain="true" />
+			<annotation name="staticAnnotation"
+				description="$m{studio.common.form.annotation.static}"
+				message="$m{studio.common.form.annotation.static.message}" />
+			<tab name="basicDetails"
+				label="$m{studio.appform.form.basicdetails}" contentType="miniform">
+				<section name="formDetails" columns="type_2">
+					<field name="applicationId"
+						inputWidget="application.entitysearch" column="0"
+						label="$m{studio.application}" disabled="true" required="true"
+						saveAs="true" />
+					<field name="name" inputWidget="application.name" column="0"
+						required="true" saveAs="true" />
+					<field name="description" inputWidget="application.text"
+						column="0" required="true" saveAs="true" />
+					<field name="configType" inputWidget="application.enumlist"
+						column="1" disabled="true" required="true" />
+					<field name="entity" inputWidget="studio.entitybynamelist"
+						column="1" required="true" switchOnChange="true" />
+					<field name="type" inputWidget="application.enumlist"
+						column="1" required="true" switchOnChange="true" />
+					<field name="consolidatedValidation"
+						inputWidget="studio.consformvalidationpolicylist" column="1"
+						visible="false" />
+					<field name="consolidatedReview"
+						inputWidget="studio.consformreviewpolicylist" column="1"
+						visible="false" />
+					<field name="consolidatedState"
+						inputWidget="studio.consformstatepolicylist" column="1"
+						visible="false" />
+					<field name="listingGenerator"
+						inputWidget="studio.listinggeneratorlist" column="1"
+						visible="false" />
+				</section>
+			</tab>
+			<tab name="design" label="$m{studio.appform.form.design}"
+				contentType="child_list" applet="manageAppFormElement"
+				reference="elementList" editAction="/designChildItem"
+				visible="false" />
+			<tab name="annotations"
+				label="$m{studio.appform.form.annotations}" contentType="child_list"
+				applet="manageAppFormAnnotation" reference="annotationList"
+				visible="false" />
+			<tab name="actions" label="$m{studio.appform.form.actions}"
+				contentType="child_list" applet="manageAppFormAction"
+				reference="actionList" visible="false" />
+			<tab name="relatedLists"
+				label="$m{studio.appform.form.relatedlists}"
+				contentType="child_list" applet="manageAppFormRelatedList"
+				reference="relatedList" visible="false" />
+			<tab name="fieldValidationPolicies"
+				label="$m{studio.appform.form.fieldvalidationpolicies}"
+				contentType="child_list" applet="manageAppFormFieldValidationPolicy"
+				reference="fieldValidationList" visible="false" />
+			<tab name="fieldStatePolicies"
+				label="$m{studio.appform.form.fieldstatepolicies}"
+				contentType="child_list" applet="manageAppFormStatePolicy"
+				reference="fieldStateList" visible="false" />
+			<tab name="formValidationPolicies"
+				label="$m{studio.appform.form.validationpolicies}"
+				contentType="child_list" applet="manageAppFormValidationPolicy"
+				reference="formValidationList" visible="false" />
+			<tab name="formReviewPolicies"
+				label="$m{studio.appform.form.reviewpolicies}"
+				contentType="child_list" applet="manageAppFormReviewPolicy"
+				reference="formReviewList" visible="false" />
+			<tab name="changeLog" label="$m{application.form.audit}"
+				contentType="miniform_changelog" />
+			<formStatePolicy type="on_switch"
+				name="onStaticPolicy"
+				description="$m{studio.common.form.formstatepolicy.onstatic}">
+				<onCondition>
+					<restriction type="and">
+						<restriction type="is_not_null" field="id" />
+						<restriction type="equals" field="configType"
+							paramA="S" />
+					</restriction>
+				</onCondition>
+				<setStates>
+					<setState type="annotation" target="staticAnnotation"
+						visible="true" />
+					<setState type="tab" target="basicDetails"
+						editable="false" />
+				</setStates>
+			</formStatePolicy>
+			<formStatePolicy type="on_switch"
+				name="immutableFormPolicy"
+				description="$m{studio.common.form.formstatepolicy.immutable}">
+				<onCondition>
+					<restriction type="and">
+						<restriction type="is_not_null" field="id" />
+						<restriction type="not_equals" field="configType"
+							paramA="C" />
+					</restriction>
+				</onCondition>
+				<setStates>
+					<setState type="field"
+						target="name,description,entity,searchField" disabled="true" />
+				</setStates>
+			</formStatePolicy>
+			<formStatePolicy type="on_switch"
+				name="inputFormPolicy"
+				description="$m{studio.common.form.formstatepolicy.inputform}">
+				<onCondition>
+					<restriction type="equals" field="type" paramA="INP" />
+				</onCondition>
+				<setStates>
+					<setState type="field"
+						target="consolidatedValidation,consolidatedReview,consolidatedState"
+						visible="true" />
+					<setState type="tab"
+						target="design,annotations,actions,relatedLists,fieldValidationPolicies,fieldStatePolicies,formValidationPolicies,formReviewPolicies"
+						visible="true" />
+				</setStates>
+			</formStatePolicy>
+			<formStatePolicy type="on_switch"
+				name="listingFormPolicy"
+				description="$m{studio.common.form.formstatepolicy.listingform}">
+				<onCondition>
+					<restriction type="equals" field="type" paramA="LST" />
+				</onCondition>
+				<setStates>
+					<setState type="field" target="listingGenerator"
+						visible="true" />
+				</setStates>
+			</formStatePolicy>
+		</form>
+		<form name="appFormElementForm"
+			description="$m{studio.appformelement.form}"
+			entity="application.appFormElement">
+			<tab name="basicDetails"
+				label="$m{studio.appformelement.form.basicdetails}"
+				contentType="miniform">
+				<section name="formElementDetails" columns="type_2">
+					<field name="appFormId" inputWidget="studio.formlist"
+						disabled="true" column="0" required="true" />
+					<field name="type" inputWidget="application.enumlist"
+						column="0" required="true" />
+					<field name="tabContentType"
+						inputWidget="application.enumlist" column="0" required="true" />
+					<field name="label" inputWidget="application.text" column="0" />
+					<field name="tabApplet" inputWidget="application.name"
+						column="0" />
+					<field name="tabReference" inputWidget="application.name"
+						column="0" />
+					<field name="editAction" inputWidget="application.name"
+						column="0" />
+					<field name="fieldName" inputWidget="application.name"
+						column="0" />
+					<field name="inputWidget" inputWidget="application.name"
+						column="0" />
+					<field name="inputReference" inputWidget="application.name"
+						column="0" />
+					<field name="annotation" inputWidget="application.name"
+						column="0" />
+					<field name="color" inputWidget="application.enumlist"
+						column="0" />
+					<field name="sectionColumns"
+						inputWidget="application.integer" column="1" />
+					<field name="fieldColumn" inputWidget="application.integer"
+						column="1" />
+					<field name="minLen" inputWidget="application.integer"
+						column="1" />
+					<field name="maxLen" inputWidget="application.integer"
+						column="1" />
+					<field name="switchOnChange"
+						inputWidget="application.checkbox" column="1" />
+					<field name="showAnnotation"
+						inputWidget="application.checkbox" column="1" />
+					<field name="required" inputWidget="application.checkbox"
+						column="1" />
+					<field name="visible" inputWidget="application.checkbox"
+						column="1" />
+					<field name="editable" inputWidget="application.checkbox"
+						column="1" />
+					<field name="disabled" inputWidget="application.checkbox"
+						column="1" />
+				</section>
+			</tab>
+		</form>
+		<form name="appFormAnnotationForm"
+			description="$m{studio.appformannotation.form}"
+			entity="application.appFormAnnotation">
+			<tab name="basicDetails"
+				label="$m{studio.appformannotation.form.basicdetails}"
+				contentType="miniform">
+				<section name="formAnnotationDetails" columns="type_2">
+					<field name="appFormId" inputWidget="studio.formlist"
+						label="$m{application.appformelement.appform}" column="0"
+						required="true" disabled="true" />
+					<field name="name" inputWidget="application.name" column="0"
+						required="true" />
+					<field name="description" inputWidget="application.text"
+						column="0" required="true" />
+					<field name="type" inputWidget="application.enumlist"
+						column="1" required="true" />
+					<field name="html" inputWidget="application.checkbox"
+						column="1" />
+				</section>
+				<section name="messageDetails" columns="type_1">
+					<field name="message" inputWidget="application.textarea"
+						required="true" column="0" />
+				</section>
+			</tab>
+		</form>
+		<form name="appFormActionForm"
+			description="$m{studio.appformaction.form}"
+			entity="application.appFormAction">
+			<tab name="basicDetails"
+				label="$m{studio.appformaction.form.basicdetails}"
+				contentType="miniform">
+				<section name="formActionDetails" columns="type_2">
+					<field name="appFormId" inputWidget="studio.formlist"
+						label="$m{application.appformelement.appform}" column="0"
+						disabled="true" required="true" />
+					<field name="name" inputWidget="application.name" column="0"
+						required="true" />
+					<field name="description" inputWidget="application.text"
+						column="0" required="true" />
+					<field name="label" inputWidget="application.text" column="0"
+						required="true" />
+					<field name="type" inputWidget="application.enumlist"
+						column="1" required="true" />
+					<field name="policy" inputWidget="application.text"
+						column="1" required="true" />
+					<field name="orderIndex" inputWidget="application.integer"
+						required="true" column="1" />
+					<field name="showOnCreate" inputWidget="application.checkbox"
+						column="1" />
+					<field name="showOnMaintain"
+						inputWidget="application.checkbox" column="1" />
+					<field name="validateForm" inputWidget="application.checkbox"
+						column="1" />
+				</section>
+			</tab>
+		</form>
+		<form name="appFormRelatedListForm"
+			description="$m{studio.appformrelatedlist.form}"
+			entity="application.appFormRelatedList">
+			<tab name="basicDetails"
+				label="$m{studio.appformrelatedlist.form.basicdetails}"
+				contentType="miniform">
+				<section name="formRelatedListDetails" columns="type_2">
+					<field name="appFormId" inputWidget="studio.formlist"
+						label="$m{application.appformelement.appform}" column="0"
+						disabled="true" required="true" />
+					<field name="name" inputWidget="application.name" column="0"
+						required="true" />
+					<field name="description" inputWidget="application.text"
+						column="0" required="true" />
+					<field name="label" inputWidget="application.text" column="0"
+						required="true" />
+					<field name="applet"
+						inputWidget="studio.formrelatedappletlist" switchOnChange="true"
+						column="1" required="true" />
+					<field name="editAction"
+						inputWidget="studio.formrelatedfieldlist" column="1" />
+				</section>
+			</tab>
+		</form>
+		<form name="appFormStatePolicyForm"
+			description="$m{studio.appformstatepolicy.form}"
+			entity="application.appFormStatePolicy">
+			<tab name="basicDetails"
+				label="$m{studio.appformstatepolicy.form.basicdetails}"
+				contentType="miniform">
+				<section name="fieldStatePolicyDetails" columns="type_2">
+					<field name="appFormId" inputWidget="studio.formlist"
+						disabled="true" column="0" required="true"
+						label="$m{application.appformstatepolicy.appform}" />
+					<field name="name" inputWidget="application.name" column="0"
+						required="true" />
+					<field name="description" inputWidget="application.text"
+						column="0" required="true" />
+					<field name="type" inputWidget="application.enumlist"
+						switchOnChange="true" column="1" required="true" />
+					<field name="valueGenerator"
+						inputWidget="studio.entitysetvaluesgenlist" column="1" />
+					<field name="trigger" inputWidget="studio.formstatefieldlist"
+						column="1" />
+				</section>
+			</tab>
+			<tab name="onCondition"
+				label="$m{studio.appformstatepolicy.form.oncondition}"
+				reference="app_formstatepolicy" contentType="filter_condition" />
+			<tab name="setStates"
+				label="$m{studio.appformstatepolicy.form.setstates}"
+				contentType="child_list" applet="manageAppFormSetState"
+				reference="setStateList" />
+			<tab name="setValues"
+				label="$m{studio.appformstatepolicy.form.setvalues}"
+				reference="app_formstatepolicy" contentType="set_values" />
+		</form>
+		<form name="appFormSetStateForm"
+			description="$m{studio.appformsetstate.form}"
+			entity="application.appFormSetState">
+			<tab name="basicDetails"
+				label="$m{studio.appformsetstate.form.basicdetails}"
+				contentType="miniform">
+				<section name="setStateDetails" columns="type_2">
+					<field name="appFormStatePolicyId" disabled="true" column="0"
+						required="true"
+						label="$m{application.appformsetstate.appformstatepolicy}" />
+					<field name="type" inputWidget="application.enumlist"
+						switchOnChange="true" column="0" required="true" />
+					<field name="target" inputWidget="studio.formelementlist"
+						column="0" required="true" />
+					<field name="required" inputWidget="application.enumlist"
+						column="1" required="true" disabled="true" />
+					<field name="visible" inputWidget="application.enumlist"
+						column="1" required="true" disabled="true" />
+					<field name="editable" inputWidget="application.enumlist"
+						column="1" required="true" disabled="true" />
+					<field name="disabled" inputWidget="application.enumlist"
+						column="1" required="true" disabled="true" />
+				</section>
+			</tab>
+			<formStatePolicy type="on_switch"
+				name="setStateTypePolicyA"
+				description="$m{studio.appformsetstate.form.formstatepolicy.setstatetypea}">
+				<onCondition>
+					<restriction type="equals" field="type" paramA="ANO" />
+				</onCondition>
+				<setStates>
+					<setState type="field" target="visible" disabled="false" />
+				</setStates>
+			</formStatePolicy>
+			<formStatePolicy type="on_switch"
+				name="setStateTypePolicyB"
+				description="$m{studio.appformsetstate.form.formstatepolicy.setstatetypeb}">
+				<onCondition>
+					<restriction type="amongst" field="type"
+						paramA="TAB|SEC|FLD" />
+				</onCondition>
+				<setStates>
+					<setState type="field"
+						target="required,visible,editable,disabled" disabled="false" />
+				</setStates>
+			</formStatePolicy>
+		</form>
+		<form name="appFormFieldValidationPolicyForm"
+			description="$m{studio.appformfieldvalidationpolicy.form}"
+			entity="application.appFormFieldValidationPolicy">
+			<tab name="basicDetails"
+				label="$m{studio.appformfieldvalidationpolicy.form.basicdetails}"
+				contentType="miniform">
+				<section name="fieldValidationPolicyDetails"
+					columns="type_2">
+					<field name="appFormId" inputWidget="studio.formlist"
+						label="$m{application.appformelement.appform}" column="0"
+						disabled="true" required="true" />
+					<field name="name" inputWidget="application.name" column="0"
+						required="true" />
+					<field name="description" inputWidget="application.text"
+						column="0" required="true" />
+					<field name="fieldName" inputWidget="studio.formfieldlist"
+						column="1" required="true" />
+					<field name="validation"
+						inputWidget="application.formvalidatorlist" switchOnChange="true"
+						column="1" required="true" />
+					<field name="rule"
+						inputWidget="studio.formfieldvalidationrulelist" column="1" />
+				</section>
+			</tab>
+		</form>
+		<form name="appFormValidationPolicyForm"
+			description="$m{studio.appformvalidationpolicy.form}"
+			entity="application.appFormValidationPolicy">
+			<tab name="basicDetails"
+				label="$m{studio.appformvalidationpolicy.form.basicdetails}"
+				contentType="miniform">
+				<section name="formValidationPolicyDetails" columns="type_2">
+					<field name="appFormId" inputWidget="studio.formlist"
+						disabled="true" column="0" required="true"
+						label="$m{application.appformvalidationpolicy.appform}" />
+					<field name="name" inputWidget="application.name" column="0"
+						required="true" />
+					<field name="description" inputWidget="application.text"
+						column="0" required="true" />
+					<field name="target" inputWidget="studio.formstatefieldlist"
+						column="1" />
+					<field name="errorMatcher"
+						inputWidget="studio.entitymatcherlist" column="1" />
+				</section>
+				<section name="messageDetails" columns="type_1">
+					<field name="message" inputWidget="application.textarea"
+						column="0" required="true" />
+				</section>
+			</tab>
+			<tab name="errorCondition"
+				label="$m{studio.appformvalidationpolicy.form.errorcondition}"
+				reference="app_formvalidationpolicy" contentType="filter_condition" />
+		</form>
+		<form name="appFormReviewPolicyForm"
+			description="$m{studio.appformreviewpolicy.form}"
+			entity="application.appFormReviewPolicy">
+			<tab name="basicDetails"
+				label="$m{studio.appformreviewpolicy.form.basicdetails}"
+				contentType="miniform">
+				<section name="formReviewPolicyDetails" columns="type_2">
+					<field name="appFormId" inputWidget="studio.formlist"
+						disabled="true" column="0" required="true"
+						label="$m{application.appformreviewpolicy.appform}" />
+					<field name="name" inputWidget="application.name" column="0"
+						required="true" />
+					<field name="description" inputWidget="application.text"
+						column="0" required="true" />
+					<field name="formEvents"
+						inputWidget="studio.formreviewtypelist" column="1" />
+					<field name="target" inputWidget="studio.formstatetablist"
+						column="1" />
+					<field name="errorMatcher"
+						inputWidget="studio.entitymatcherlist" column="1" />
+				</section>
+				<section name="messageDetails" columns="type_2">
+					<field name="messageType" inputWidget="application.enumlist"
+						column="0" required="true" />
+					<field name="message" inputWidget="application.textarea"
+						column="1" required="true" />
+				</section>
+			</tab>
+			<tab name="errorCondition"
+				label="$m{studio.appformreviewpolicy.form.errorcondition}"
+				reference="app_formreviewpolicy" contentType="filter_condition" />
+		</form>
+		<form name="workflowForm" description="$m{studio.workflow.form}"
+			entity="workflow.workflow">
+			<action type="button" name="lockResource" symbol="lock"
+				styleClass="fc-bluebutton"
+				description="$m{studio.common.form.action.lockresource}"
+				label="$m{studio.common.form.action.lockresource.label}"
+				policy="lockresource-actionpolicy" showOnMaintain="true" />
+			<action type="button" name="unlockResource" symbol="unlock"
+				styleClass="fc-bluebutton"
+				description="$m{studio.common.form.action.unlockresource}"
+				label="$m{studio.common.form.action.unlockresource.label}"
+				policy="unlockresource-actionpolicy" showOnMaintain="true" />
+			<annotation name="staticAnnotation"
+				description="$m{studio.common.form.annotation.static}"
+				message="$m{studio.common.form.annotation.static.message}" />
+			<tab name="basicDetails"
+				label="$m{studio.workflow.form.basicdetails}" contentType="miniform"
+				editable="true">
+				<section name="workflowDetails" columns="type_2">
+					<field name="applicationId"
+						inputWidget="application.entitysearch" column="0"
+						label="$m{studio.application}" disabled="true" required="true"
+						saveAs="true" />
+					<field name="name" inputWidget="application.name" column="0"
+						required="true" saveAs="true" />
+					<field name="description" inputWidget="application.text"
+						column="0" required="true" saveAs="true" />
+					<field name="label" inputWidget="application.text" column="0"
+						required="true" />
+					<field name="configType" inputWidget="application.enumlist"
+						column="1" disabled="true" required="true" />
+					<field name="entity"
+						inputWidget="studio.workentitybynamelist" column="1"
+						required="true" />
+					<field name="descFormat" inputWidget="application.text"
+						column="1" />
+				</section>
+			</tab>
+			<tab name="design" label="$m{studio.workflow.form.design}"
+				contentType="child_list" applet="manageWfStep" reference="stepList"
+				editAction="/designChildItem" />
+			<tab name="filters" label="$m{studio.workflow.form.filters}"
+				contentType="child_list" applet="manageWorkflowFilter"
+				reference="filterList" />
+			<formStatePolicy type="on_switch"
+				name="onStaticPolicy"
+				description="$m{studio.common.form.formstatepolicy.onstatic}">
+				<onCondition>
+					<restriction type="and">
+						<restriction type="is_not_null" field="id" />
+						<restriction type="equals" field="configType"
+							paramA="S" />
+					</restriction>
+				</onCondition>
+				<setStates>
+					<setState type="annotation" target="staticAnnotation"
+						visible="true" />
+					<setState type="tab" target="basicDetails"
+						editable="false" />
+				</setStates>
+			</formStatePolicy>
+			<formStatePolicy type="on_switch"
+				name="immutableFormPolicy"
+				description="$m{studio.common.form.formstatepolicy.immutable}">
+				<onCondition>
+					<restriction type="and">
+						<restriction type="is_not_null" field="id" />
+						<restriction type="not_equals" field="configType"
+							paramA="C" />
+					</restriction>
+				</onCondition>
+				<setStates>
+					<setState type="field" target="name,description,entity"
+						disabled="true" />
+				</setStates>
+			</formStatePolicy>
+			<formStatePolicy type="on_switch"
+				name="customFormPolicy"
+				description="$m{studio.common.form.formstatepolicy.custom}">
+				<onCondition>
+					<restriction type="and">
+						<restriction type="is_not_null" field="id" />
+						<restriction type="equals" field="configType"
+							paramA="C" />
+					</restriction>
+				</onCondition>
+				<setStates>
+					<setState type="field" target="entity" disabled="true" />
+				</setStates>
+			</formStatePolicy>
+		</form>
+		<form name="workflowFilterForm"
+			description="$m{studio.workflowfilter.form}"
+			entity="workflow.workflowFilter">
+			<tab name="basicDetails"
+				label="$m{studio.workflowfilter.form.basicdetails}"
+				contentType="miniform">
+				<section name="filterDetails" columns="type_2">
+					<field name="name" inputWidget="application.name" column="0"
+						required="true" />
+					<field name="description" inputWidget="application.text"
+						column="1" required="true" />
+				</section>
+			</tab>
+			<tab name="condition"
+				label="$m{studio.workflowfilter.form.condition}"
+				reference="workflow" contentType="filter_condition" />
+			<tab name="changeLog" label="$m{application.form.audit}"
+				contentType="miniform_changelog" />
+		</form>
+		<form name="wfStepForm"
+			description="$m{studio.workflow.step.form}" entity="workflow.wfStep">
+			<tab name="basicDetails"
+				label="$m{studio.workflow.step.form.basicdetails}"
+				contentType="miniform" editable="false">
+				<section name="stepDetails" columns="type_2">
+					<field name="workflowId"
+						inputWidget="application.entitysearch" column="0"
+						label="$m{workflow.step.workflow}" disabled="true" required="true" />
+					<field name="name" inputWidget="application.name" column="0"
+						required="true" />
+					<field name="description" inputWidget="application.text"
+						column="0" required="true" />
+					<field name="label" inputWidget="application.text" column="0"
+						required="true" />
+					<field name="formName" inputWidget="studio.workflowformlist"
+						column="0" />
+					<field name="type" inputWidget="application.enumlist"
+						column="1" required="true" />
+					<field name="recordActionType"
+						inputWidget="application.enumlist" column="1" required="true"
+						visible="false" />
+					<field name="policy" column="1" required="true"
+						visible="false" />
+					<field name="rule" column="1" visible="false" />
+					<field name="priority" inputWidget="application.enumlist"
+						column="1" required="true" />
+					<field name="criticalMinutes"
+						inputWidget="application.integer" column="1" />
+					<field name="expiryMinutes" inputWidget="application.integer"
+						column="1" />
+					<field name="audit" inputWidget="application.checkbox"
+						column="1" />
+					<field name="branchOnly" inputWidget="application.checkbox"
+						column="1" />
+					<field name="includeForwarder"
+						inputWidget="application.checkbox" column="1" />
+				</section>
+			</tab>
+			<tab name="routings"
+				label="$m{studio.workflow.step.form.routings}"
+				contentType="child_list" applet="manageWfStepRouting"
+				reference="routingList" visible="false" />
+			<tab name="userActions"
+				label="$m{studio.workflow.step.form.useractions}"
+				contentType="child_list" applet="manageWfStepUserAction"
+				reference="userActionList" visible="false" />
+			<tab name="alerts" label="$m{studio.workflow.step.form.alerts}"
+				contentType="child_list" applet="manageWfStepAlert"
+				reference="alertList" visible="false" />
+			<formStatePolicy type="on_switch" name="policyPolicy"
+				description="$m{workflow.step.form.fieldstatepolicy.policy}">
+				<onCondition>
+					<restriction type="amongst" field="type" paramA="N|P" />
+				</onCondition>
+				<setStates>
+					<setState type="field" target="policy,rule" visible="true" />
+				</setStates>
+			</formStatePolicy>
+			<formStatePolicy type="on_switch"
+				name="recordActionPolicy"
+				description="$m{workflow.step.form.fieldstatepolicy.recordactiontype}">
+				<onCondition>
+					<restriction type="equals" field="type" paramA="R" />
+				</onCondition>
+				<setStates>
+					<setState type="field" target="recordActionType"
+						visible="true" />
+				</setStates>
+			</formStatePolicy>
+			<formStatePolicy type="on_switch"
+				name="routingPolicy"
+				description="$m{studio.workflow.step.form.fieldstatepolicy.routingpolicy}">
+				<onCondition>
+					<restriction type="equals" field="type" paramA="T" />
+				</onCondition>
+				<setStates>
+					<setState type="tab" target="routings" visible="true" />
+				</setStates>
+			</formStatePolicy>
+			<formStatePolicy type="on_switch"
+				name="userActionPolicy"
+				description="$m{studio.workflow.step.form.fieldstatepolicy.useractionpolicy}">
+				<onCondition>
+					<restriction type="equals" field="type" paramA="U" />
+				</onCondition>
+				<setStates>
+					<setState type="tab" target="userActions" visible="true" />
+				</setStates>
+			</formStatePolicy>
+			<formStatePolicy type="on_switch" name="alertPolicy"
+				description="$m{studio.workflow.step.form.fieldstatepolicy.alertpolicy}">
+				<onCondition>
+					<restriction type="amongst" field="type"
+						paramA="T|U|N|P|R|X" />
+				</onCondition>
+				<setStates>
+					<setState type="tab" target="alerts" visible="true" />
+				</setStates>
+			</formStatePolicy>
+		</form>
+		<form name="wfStepRoutingForm"
+			description="$m{studio.workflow.steprouting.form}"
+			entity="workflow.wfStepRouting">
+			<tab name="basicDetails"
+				label="$m{studio.workflow.steprouting.form.basicdetails}"
+				contentType="miniform" editable="false">
+				<section name="stepRoutingDetails" columns="type_2">
+					<field name="wfStepId" inputWidget="application.entitysearch"
+						column="0" label="$m{workflow.steprouting.step}" required="true" />
+					<field name="name" inputWidget="application.name" column="0"
+						required="true" />
+					<field name="description" inputWidget="application.text"
+						column="0" required="true" />
+					<field name="conditionName"
+						inputWidget="studio.wfstepfilterlist" column="1" />
+					<field name="nextStepName"
+						inputWidget="studio.wfsteproutetolist" column="1" />
+				</section>
+			</tab>
+			<tab name="routeCondition"
+				label="$m{studio.workflow.steprouting.form.oncondition}"
+				reference="wfstep_routing" contentType="filter_condition" />
+		</form>
+		<form name="wfStepUserActionForm"
+			description="$m{studio.workflow.stepuseraction.form}"
+			entity="workflow.wfStepUserAction">
+			<tab name="basicDetails"
+				label="$m{studio.workflow.stepuseraction.form.basicdetails}"
+				contentType="miniform" editable="false">
+				<section name="stepUserActionDetails" columns="type_2">
+					<field name="wfStepId" inputWidget="application.entitysearch"
+						column="0" label="$m{workflow.stepuseraction.step}"
+						required="true" />
+					<field name="name" inputWidget="application.name" column="0"
+						required="true" />
+					<field name="description" inputWidget="application.text"
+						column="0" required="true" />
+					<field name="label" inputWidget="application.text" column="0" />
+					<field name="commentRequirement"
+						inputWidget="application.enumlist" column="1" required="true" />
+					<field name="nextStepName"
+						inputWidget="studio.wfsteproutetolist" column="1" required="true" />
+					<field name="orderIndex" inputWidget="application.integer"
+						column="1" required="true" />
+					<field name="validatePage" inputWidget="application.checkbox"
+						column="1" />
+				</section>
+			</tab>
+		</form>
+		<form name="wfStepAlertForm"
+			description="$m{studio.workflow.stepalert.form}"
+			entity="workflow.wfStepAlert">
+			<tab name="basicDetails"
+				label="$m{studio.workflow.stepalert.form.basicdetails}"
+				contentType="miniform" editable="false">
+				<section name="stepAlertDetails" columns="type_2">
+					<field name="wfStepId" inputWidget="application.entitysearch"
+						column="0" label="$m{workflow.stepalert.step}" required="true" />
+					<field name="name" inputWidget="application.name" column="0"
+						required="true" />
+					<field name="description" inputWidget="application.text"
+						column="0" required="true" />
+					<field name="template"
+						inputWidget="studio.wfstepnotiftempllist" column="0"
+						required="true" />
+					<field name="recipientPolicy"
+						inputWidget="studio.wfrecipientpolicylist" column="0"
+						switchOnChange="true" />
+					<field name="recipientNameRule"
+						inputWidget="studio.wfrecipientnamerulelist" column="0" />
+					<field name="recipientContactRule"
+						inputWidget="studio.wfrecipientcontactrulelist" column="0" />
+					<field name="type" inputWidget="application.enumlist"
+						column="1" required="true" />
+					<field name="notificationType"
+						inputWidget="application.enumlist" column="1" required="true" />
+					<field name="fireOnPrevStepName"
+						inputWidget="studio.wfstepreceivefromlist" column="1" />
+					<field name="fireOnConditionName"
+						inputWidget="studio.wfstepfilterlist" column="1" />
+				</section>
+			</tab>
+			<tab name="fireOnCondition"
+				label="$m{studio.workflow.stepalert.form.oncondition}"
+				reference="wfstep_alert_fire_on" contentType="filter_condition" />
+		</form>
+	</forms>
+	<!-- Property Lists -->
+	<propertyLists>
+		<propertyList name="cenAppAppletPropList"
+			description="$m{studio.appappletprop.createentity.propertylist}">
+			<propertySet
+				label="$m{studio.appappletprop.createentity.searchproperties}">
+				<property name="page.alternateCaption"
+					description="$m{studio.appappletprop.createentity.pagealtcaption}"
+					inputWidget="application.text" />
+				<property name="page.alternateSubCaption"
+					description="$m{studio.appappletprop.createentity.pagealtsubcaption}"
+					inputWidget="application.text" />
+				<property name="assignmentPage"
+					description="$m{studio.appappletprop.createentity.assignmentpage}"
+					inputWidget="studio.propertyappletassignpagelist" />
+			</propertySet>
+			<propertySet
+				label="$m{studio.appappletprop.createentity.formproperties}">
+				<property name="createForm.new.caption"
+					description="$m{studio.appappletprop.createentity.createform.newcaption}"
+					inputWidget="application.text" />
+				<property name="createForm"
+					description="$m{studio.appappletprop.createentity.createform}"
+					inputWidget="studio.propertyappletformlist" required="false" />
+				<property name="createForm.new.policy"
+					description="$m{studio.appappletprop.createentity.createform.newpolicy}"
+					inputWidget="studio.propertyentityactionpolicylist" />
+				<property name="maintainForm"
+					description="$m{studio.appappletprop.createentity.maintainform}"
+					inputWidget="studio.propertyappletformlist" />
+				<property name="maintainForm.update.policy"
+					description="$m{studio.appappletprop.createentity.maintain.updatepolicy}"
+					inputWidget="studio.propertyentityactionpolicylist" />
+				<property name="maintainForm.saveas.policy"
+					description="$m{studio.appappletprop.createentity.maintain.saveaspolicy}"
+					inputWidget="studio.propertyentityactionpolicylist" />
+				<property name="createForm.onCreate.state.policy"
+					description="$m{studio.appappletprop.createentity.createform.formstatepolicy}"
+					inputWidget="studio.propertyappletcreateformstatepolicylist" />
+				<property name="maintainForm.update.condition"
+					description="$m{studio.appappletprop.createentity.maintain.updatecondition}"
+					inputWidget="studio.propertyappletfilterlist" />
+				<property name="maintainForm.delete.policy"
+					description="$m{studio.appappletprop.createentity.maintain.deletepolicy}"
+					inputWidget="studio.propertyentityactionpolicylist" />
+				<property name="maintainForm.delete.condition"
+					description="$m{studio.appappletprop.createentity.maintain.deletecondition}"
+					inputWidget="studio.propertyappletfilterlist" />
+				<property name="createForm.save"
+					description="$m{studio.appappletprop.createentity.createform.save}"
+					inputWidget="application.checkbox" />
+				<property name="createForm.save.next"
+					description="$m{studio.appappletprop.createentity.createform.savenext}"
+					inputWidget="application.checkbox" />
+				<property name="maintainForm.saveas"
+					description="$m{studio.appappletprop.createentity.maintainform.saveas}"
+					inputWidget="application.checkbox" />
+				<property name="maintainForm.update"
+					description="$m{studio.appappletprop.createentity.maintainform.update}"
+					inputWidget="application.checkbox" />
+				<property name="maintainForm.delete"
+					description="$m{studio.appappletprop.createentity.maintainform.delete}"
+					inputWidget="application.checkbox" />
+				<property name="maintainForm.attachments"
+					description="$m{studio.appappletprop.createentity.maintainform.attachments}"
+					inputWidget="application.checkbox" />
+			</propertySet>
+			<propertySet
+				label="$m{studio.appappletprop.createentity.workflowproperties}">
+				<property name="createForm.submit.policy"
+					description="$m{studio.appappletprop.createentity.createform.submitpolicy}"
+					inputWidget="studio.propertyentityactionpolicylist" />
+				<property name="createForm.submit.workflow.channel"
+					description="$m{studio.appappletprop.createentity.createform.submitworkflow}"
+					inputWidget="studio.propertyappletworkflowchannellist"
+					required="false" />
+				<property name="createForm.submit.condition"
+					description="$m{studio.appappletprop.manageentity.createform.submitcondition}"
+					inputWidget="studio.propertyappletfilterlist" required="false" />
+				<property name="createForm.submit"
+					description="$m{studio.appappletprop.createentity.createform.submit}"
+					inputWidget="application.checkbox" />
+				<property name="createForm.submitnext"
+					description="$m{studio.appappletprop.createentity.createform.submitnext}"
+					inputWidget="application.checkbox" />
+				<property name="createForm.submit.validate"
+					description="$m{studio.appappletprop.createentity.createform.submitvalidate}"
+					inputWidget="application.checkbox" />
+			</propertySet>
+		</propertyList>
+		<propertyList name="cnsAppAppletPropList"
+			description="$m{studio.appappletprop.createentitysingleform.propertylist}">
+			<propertySet
+				label="$m{studio.appappletprop.createentitysingleform.searchproperties}">
+				<property name="page.alternateCaption"
+					description="$m{studio.appappletprop.createentitysingleform.pagealtcaption}"
+					inputWidget="application.text" />
+				<property name="page.alternateSubCaption"
+					description="$m{studio.appappletprop.createentitysingleform.pagealtsubcaption}"
+					inputWidget="application.text" />
+				<property name="assignmentPage"
+					description="$m{studio.appappletprop.createentitysingleform.assignmentpage}"
+					inputWidget="studio.propertyappletassignpagelist" />
+			</propertySet>
+			<propertySet
+				label="$m{studio.appappletprop.createentitysingleform.formproperties}">
+				<property name="singleForm.panel"
+					description="$m{studio.appappletprop.createentitysingleform.panel}"
+					inputWidget="studio.propertysingleformpanellist" />
+				<property name="createForm.new.caption"
+					description="$m{studio.appappletprop.createentitysingleform.createform.newcaption}"
+					inputWidget="application.text" />
+				<property name="createForm.new.policy"
+					description="$m{studio.appappletprop.createentitysingleform.createform.newpolicy}"
+					inputWidget="studio.propertyentityactionpolicylist" />
+				<property name="maintainForm.update.policy"
+					description="$m{studio.appappletprop.createentitysingleform.maintain.updatepolicy}"
+					inputWidget="studio.propertyentityactionpolicylist" />
+				<property name="maintainForm.update.condition"
+					description="$m{studio.appappletprop.createentitysingleform.maintain.updatecondition}"
+					inputWidget="studio.propertyappletfilterlist" />
+				<property name="maintainForm.delete.policy"
+					description="$m{studio.appappletprop.createentitysingleform.maintain.deletepolicy}"
+					inputWidget="studio.propertyentityactionpolicylist" />
+				<property name="maintainForm.delete.condition"
+					description="$m{studio.appappletprop.createentitysingleform.maintain.deletecondition}"
+					inputWidget="studio.propertyappletfilterlist" />
+				<property name="createForm.save"
+					description="$m{studio.appappletprop.createentitysingleform.createform.save}"
+					inputWidget="application.checkbox" />
+				<property name="createForm.save.next"
+					description="$m{studio.appappletprop.createentitysingleform.createform.savenext}"
+					inputWidget="application.checkbox" />
+				<property name="maintainForm.saveas"
+					description="$m{studio.appappletprop.createentitysingleform.maintainform.saveas}"
+					inputWidget="application.checkbox" />
+				<property name="maintainForm.update"
+					description="$m{studio.appappletprop.createentitysingleform.maintainform.update}"
+					inputWidget="application.checkbox" />
+				<property name="maintainForm.delete"
+					description="$m{studio.appappletprop.createentitysingleform.maintainform.delete}"
+					inputWidget="application.checkbox" />
+			</propertySet>
+			<propertySet
+				label="$m{studio.appappletprop.createentitysingleform.workflowproperties}">
+				<property name="createForm.submit.policy"
+					description="$m{studio.appappletprop.createentitysingleform.createform.submitpolicy}"
+					inputWidget="studio.propertyentityactionpolicylist" />
+				<property name="createForm.submit.workflow.channel"
+					description="$m{studio.appappletprop.createentitysingleform.createform.submitworkflow}"
+					inputWidget="studio.propertyappletworkflowchannellist"
+					required="false" />
+				<property name="createForm.submit.condition"
+					description="$m{studio.appappletprop.manageentity.createform.submitcondition}"
+					inputWidget="studio.propertyappletfilterlist" required="false" />
+				<property name="createForm.submit"
+					description="$m{studio.appappletprop.createentitysingleform.createform.submit}"
+					inputWidget="application.checkbox" />
+				<property name="createForm.submitnext"
+					description="$m{studio.appappletprop.createentitysingleform.createform.submitnext}"
+					inputWidget="application.checkbox" />
+				<property name="createForm.submit.validate"
+					description="$m{studio.appappletprop.createentitysingleform.createform.submitvalidate}"
+					inputWidget="application.checkbox" />
+			</propertySet>
+		</propertyList>
+		<propertyList name="melAppAppletPropList"
+			description="$m{studio.appappletprop.manageentity.propertylist}">
+			<propertySet
+				label="$m{studio.appappletprop.manageentity.searchproperties}">
+				<property name="page.alternateCaption"
+					description="$m{studio.appappletprop.manageentity.pagealtcaption}"
+					inputWidget="application.text" />
+				<property name="page.alternateSubCaption"
+					description="$m{studio.appappletprop.manageentity.pagealtsubcaption}"
+					inputWidget="application.text" />
+				<property name="searchTable.new.caption"
+					description="$m{studio.appappletprop.manageentity.searchtable.newcaption}"
+					inputWidget="application.text" />
+				<property name="searchTable"
+					description="$m{studio.appappletprop.manageentity.searchtable}"
+					inputWidget="studio.propertyapplettablelist" required="true" />
+				<property name="baseRestriction"
+					description="$m{studio.appappletprop.manageentity.baserestriction}"
+					inputWidget="studio.propertyappletfilterlist" />
+				<property name="searchTable.new"
+					description="$m{studio.appappletprop.manageentity.searchtable.new}"
+					inputWidget="application.checkbox" />
+				<property name="searchTable.quickFilter"
+					description="$m{studio.appappletprop.manageentity.searchtable.quickfilter}"
+					inputWidget="application.checkbox" />
+				<property name="searchTable.actionFooter"
+					description="$m{studio.appappletprop.manageentity.searchtable.actionfooter}"
+					inputWidget="application.checkbox" />
+				<property name="searchTable.report"
+					description="$m{studio.appappletprop.manageentity.searchtable.report}"
+					inputWidget="application.checkbox" />
+			</propertySet>
+			<propertySet
+				label="$m{studio.appappletprop.manageentity.formproperties}">
+				<property name="createForm.new.caption"
+					description="$m{studio.appappletprop.createentity.createform.newcaption}"
+					inputWidget="application.text" />
+				<property name="listingForm"
+					description="$m{studio.appappletprop.manageentity.listingform}"
+					inputWidget="studio.propertyappletlistformlist" required="false" />
+				<property name="createForm"
+					description="$m{studio.appappletprop.manageentity.createform}"
+					inputWidget="studio.propertyappletformlist" required="false" />
+				<property name="createForm.new.policy"
+					description="$m{studio.appappletprop.manageentity.createform.newpolicy}"
+					inputWidget="studio.propertyentityactionpolicylist" />
+				<property name="maintainForm"
+					description="$m{studio.appappletprop.manageentity.maintainform}"
+					inputWidget="studio.propertyappletformlist" />
+				<property name="maintainForm.update.policy"
+					description="$m{studio.appappletprop.manageentity.maintain.updatepolicy}"
+					inputWidget="studio.propertyentityactionpolicylist" />
+				<property name="maintainForm.saveas.policy"
+					description="$m{studio.appappletprop.manageentity.maintain.saveaspolicy}"
+					inputWidget="studio.propertyentityactionpolicylist" />
+				<property name="createForm.onCreate.state.policy"
+					description="$m{studio.appappletprop.createentity.createform.formstatepolicy}"
+					inputWidget="studio.propertyappletcreateformstatepolicylist" />
+				<property name="maintainForm.update.condition"
+					description="$m{studio.appappletprop.manageentity.maintain.updatecondition}"
+					inputWidget="studio.propertyappletfilterlist" />
+				<property name="maintainForm.delete.policy"
+					description="$m{studio.appappletprop.manageentity.maintain.deletepolicy}"
+					inputWidget="studio.propertyentityactionpolicylist" />
+				<property name="maintainForm.delete.condition"
+					description="$m{studio.appappletprop.manageentity.maintain.deletecondition}"
+					inputWidget="studio.propertyappletfilterlist" />
+				<property name="createForm.save"
+					description="$m{studio.appappletprop.manageentity.createform.save}"
+					inputWidget="application.checkbox" />
+				<property name="createForm.save.next"
+					description="$m{studio.appappletprop.manageentity.createform.savenext}"
+					inputWidget="application.checkbox" />
+				<property name="createForm.save.close"
+					description="$m{studio.appappletprop.manageentity.createform.saveclose}"
+					inputWidget="application.checkbox" />
+				<property name="maintainForm.saveas"
+					description="$m{studio.appappletprop.manageentity.maintainform.saveas}"
+					inputWidget="application.checkbox" />
+				<property name="maintainForm.update"
+					description="$m{studio.appappletprop.manageentity.maintainform.update}"
+					inputWidget="application.checkbox" />
+				<property name="maintainForm.delete"
+					description="$m{studio.appappletprop.manageentity.maintainform.delete}"
+					inputWidget="application.checkbox" />
+				<property name="maintainForm.attachments"
+					description="$m{studio.appappletprop.manageentity.maintainform.attachments}"
+					inputWidget="application.checkbox" />
+			</propertySet>
+			<propertySet
+				label="$m{studio.appappletprop.manageentity.workflowproperties}">
+				<property name="createForm.submit.policy"
+					description="$m{studio.appappletprop.manageentity.createform.submitpolicy}"
+					inputWidget="studio.propertyentityactionpolicylist" />
+				<property name="createForm.submit.workflow.channel"
+					description="$m{studio.appappletprop.manageentity.createform.submitworkflow}"
+					inputWidget="studio.propertyappletworkflowchannellist"
+					required="false" />
+				<property name="createForm.submit.condition"
+					description="$m{studio.appappletprop.manageentity.createform.submitcondition}"
+					inputWidget="studio.propertyappletfilterlist" required="false" />
+				<property name="createForm.submit"
+					description="$m{studio.appappletprop.manageentity.createform.submit}"
+					inputWidget="application.checkbox" />
+				<property name="createForm.submitnext"
+					description="$m{studio.appappletprop.manageentity.createform.submitnext}"
+					inputWidget="application.checkbox" />
+				<property name="createForm.submit.validate"
+					description="$m{studio.appappletprop.manageentity.createform.submitvalidate}"
+					inputWidget="application.checkbox" />
+				<property name="maintainForm.submit.policy"
+					description="$m{studio.appappletprop.manageentity.maintainform.submitpolicy}"
+					inputWidget="studio.propertyentityactionpolicylist" />
+				<property name="maintainForm.submit.workflow.channel"
+					description="$m{studio.appappletprop.manageentity.maintainform.submitworkflow}"
+					inputWidget="studio.propertyappletworkflowchannellist"
+					required="false" />
+				<property name="maintainForm.submit.condition"
+					description="$m{studio.appappletprop.manageentity.maintainform.submitcondition}"
+					inputWidget="studio.propertyappletfilterlist" required="false" />
+				<property name="maintainForm.submit"
+					description="$m{studio.appappletprop.manageentity.maintainform.submit}"
+					inputWidget="application.checkbox" />
+				<property name="maintainForm.submitnext"
+					description="$m{studio.appappletprop.manageentity.maintainform.submitnext}"
+					inputWidget="application.checkbox" />
+				<property name="maintainForm.submit.validate"
+					description="$m{studio.appappletprop.manageentity.maintainform.submitvalidate}"
+					inputWidget="application.checkbox" />
+			</propertySet>
+		</propertyList>
+		<propertyList name="mlsAppAppletPropList"
+			description="$m{studio.appappletprop.manageentitysingleform.propertylist}">
+			<propertySet
+				label="$m{studio.appappletprop.manageentitysingleform.searchproperties}">
+				<property name="page.alternateCaption"
+					description="$m{studio.appappletprop.manageentitysingleform.pagealtcaption}"
+					inputWidget="application.text" />
+				<property name="page.alternateSubCaption"
+					description="$m{studio.appappletprop.manageentitysingleform.pagealtsubcaption}"
+					inputWidget="application.text" />
+				<property name="searchTable.new.caption"
+					description="$m{studio.appappletprop.manageentitysingleform.searchtable.newcaption}"
+					inputWidget="application.text" />
+				<property name="searchTable"
+					description="$m{studio.appappletprop.manageentitysingleform.searchtable}"
+					inputWidget="studio.propertyapplettablelist" required="true" />
+				<property name="baseRestriction"
+					description="$m{studio.appappletprop.manageentitysingleform.baserestriction}"
+					inputWidget="studio.propertyappletfilterlist" />
+				<property name="searchTable.new"
+					description="$m{studio.appappletprop.manageentitysingleform.searchtable.new}"
+					inputWidget="application.checkbox" />
+				<property name="searchTable.quickFilter"
+					description="$m{studio.appappletprop.manageentitysingleform.searchtable.quickfilter}"
+					inputWidget="application.checkbox" />
+				<property name="searchTable.actionFooter"
+					description="$m{studio.appappletprop.manageentitysingleform.searchtable.actionfooter}"
+					inputWidget="application.checkbox" />
+				<property name="searchTable.report"
+					description="$m{studio.appappletprop.manageentitysingleform.searchtable.report}"
+					inputWidget="application.checkbox" />
+			</propertySet>
+			<propertySet
+				label="$m{studio.appappletprop.manageentitysingleform.formproperties}">
+				<property name="singleForm.panel"
+					description="$m{studio.appappletprop.manageentitysingleform.panel}"
+					inputWidget="studio.propertysingleformpanellist" />
+				<property name="createForm.new.caption"
+					description="$m{studio.appappletprop.createentity.createform.newcaption}"
+					inputWidget="application.text" />
+				<property name="listingForm"
+					description="$m{studio.appappletprop.manageentitysingleform.listingform}"
+					inputWidget="studio.propertyappletlistformlist" required="false" />
+				<property name="createForm.new.policy"
+					description="$m{studio.appappletprop.manageentitysingleform.createform.newpolicy}"
+					inputWidget="studio.propertyentityactionpolicylist" />
+				<property name="maintainForm.update.policy"
+					description="$m{studio.appappletprop.manageentitysingleform.maintain.updatepolicy}"
+					inputWidget="studio.propertyentityactionpolicylist" />
+				<property name="maintainForm.update.condition"
+					description="$m{studio.appappletprop.manageentitysingleform.maintain.updatecondition}"
+					inputWidget="studio.propertyappletfilterlist" />
+				<property name="maintainForm.delete.policy"
+					description="$m{studio.appappletprop.manageentitysingleform.maintain.deletepolicy}"
+					inputWidget="studio.propertyentityactionpolicylist" />
+				<property name="maintainForm.delete.condition"
+					description="$m{studio.appappletprop.manageentitysingleform.maintain.deletecondition}"
+					inputWidget="studio.propertyappletfilterlist" />
+				<property name="createForm.save"
+					description="$m{studio.appappletprop.manageentitysingleform.createform.save}"
+					inputWidget="application.checkbox" />
+				<property name="createForm.save.next"
+					description="$m{studio.appappletprop.manageentitysingleform.createform.savenext}"
+					inputWidget="application.checkbox" />
+				<property name="createForm.save.close"
+					description="$m{studio.appappletprop.manageentitysingleform.createform.saveclose}"
+					inputWidget="application.checkbox" />
+				<property name="maintainForm.update"
+					description="$m{studio.appappletprop.manageentitysingleform.maintainform.update}"
+					inputWidget="application.checkbox" />
+				<property name="maintainForm.delete"
+					description="$m{studio.appappletprop.manageentitysingleform.maintainform.delete}"
+					inputWidget="application.checkbox" />
+			</propertySet>
+			<propertySet
+				label="$m{studio.appappletprop.manageentitysingleform.workflowproperties}">
+				<property name="createForm.submit.policy"
+					description="$m{studio.appappletprop.manageentitysingleform.createform.submitpolicy}"
+					inputWidget="studio.propertyentityactionpolicylist" />
+				<property name="createForm.submit.workflow.channel"
+					description="$m{studio.appappletprop.manageentitysingleform.createform.submitworkflow}"
+					inputWidget="studio.propertyappletworkflowchannellist"
+					required="false" />
+				<property name="createForm.submit.condition"
+					description="$m{studio.appappletprop.manageentitysingleform.createform.submitcondition}"
+					inputWidget="studio.propertyappletfilterlist" required="false" />
+				<property name="createForm.submit"
+					description="$m{studio.appappletprop.manageentitysingleform.createform.submit}"
+					inputWidget="application.checkbox" />
+				<property name="createForm.submitnext"
+					description="$m{studio.appappletprop.manageentitysingleform.createform.submitnext}"
+					inputWidget="application.checkbox" />
+				<property name="createForm.submit.validate"
+					description="$m{studio.appappletprop.manageentitysingleform.createform.submitvalidate}"
+					inputWidget="application.checkbox" />
+				<property name="maintainForm.submit.policy"
+					description="$m{studio.appappletprop.manageentitysingleform.maintainform.submitpolicy}"
+					inputWidget="studio.propertyentityactionpolicylist" />
+				<property name="maintainForm.submit.workflow.channel"
+					description="$m{studio.appappletprop.manageentitysingleform.maintainform.submitworkflow}"
+					inputWidget="studio.propertyappletworkflowchannellist"
+					required="false" />
+				<property name="maintainForm.submit.condition"
+					description="$m{studio.appappletprop.manageentitysingleform.maintainform.submitcondition}"
+					inputWidget="studio.propertyappletfilterlist" required="false" />
+				<property name="maintainForm.submit"
+					description="$m{studio.appappletprop.manageentitysingleform.maintainform.submit}"
+					inputWidget="application.checkbox" />
+				<property name="maintainForm.submitnext"
+					description="$m{studio.appappletprop.manageentitysingleform.maintainform.submitnext}"
+					inputWidget="application.checkbox" />
+				<property name="maintainForm.submit.validate"
+					description="$m{studio.appappletprop.manageentitysingleform.maintainform.submitvalidate}"
+					inputWidget="application.checkbox" />
+			</propertySet>
+		</propertyList>
+		<propertyList name="meaAppAppletPropList"
+			description="$m{studio.appappletprop.manageentityassign.propertylist}">
+			<propertySet
+				label="$m{studio.appappletprop.manageentity.searchproperties}">
+				<property name="searchTable"
+					description="$m{studio.appappletprop.manageentity.searchtable}"
+					inputWidget="studio.propertyapplettablelist" required="true" />
+				<property name="searchTable.edit"
+					description="$m{studio.appappletprop.manageentity.searchtable.edit}"
+					inputWidget="application.checkbox" />
+				<property name="assignmentPage"
+					description="$m{studio.appappletprop.manageentity.assignmentpage}"
+					inputWidget="studio.propertyappletassignpagelist" />
+				<property name="assignmentEntryTable"
+					description="$m{studio.appappletprop.manageentity.assignmententrytable}"
+					inputWidget="studio.propertyapplettablelist" />
+				<property name="assignmentEntryTable.policy"
+					description="$m{studio.appappletprop.manageentity.assignmententrytablepolicy}"
+					inputWidget="studio.propertyappletbeantablepolicylist" />
+				<property name="assignmentUpdatePolicy"
+					description="$m{studio.appappletprop.manageentity.assignmentupdatepolicy}"
+					inputWidget="studio.propertyappletassignupdatepolicylist" />
+			</propertySet>
+		</propertyList>
+		<propertyList name="mplAppAppletPropList"
+			description="$m{studio.appappletprop.managepropertylist.propertylist}">
+			<propertySet
+				label="$m{studio.appappletprop.managepropertylist.ruleproperties}">
+				<property name="propertyList.rule"
+					description="$m{studio.appappletprop.managepropertylist.property.rule}"
+					inputWidget="application.name" required="true" />
+				<property name="propertyList.update"
+					description="$m{studio.appappletprop.managepropertylist.property.update}"
+					inputWidget="application.checkbox" />
+			</propertySet>
+		</propertyList>
+		<propertyList name="hdlAppAppletPropList"
+			description="$m{studio.appappletprop.headlesstabs.propertylist}">
+			<propertySet
+				label="$m{studio.appappletprop.headlesstabs.properties}">
+				<property name="headlesstabs.applets"
+					description="$m{studio.appappletprop.headlesstabs.property.applets}"
+					inputWidget="application.textarea" required="true" />
+			</propertySet>
+		</propertyList>
+		<propertyList name="texAppAppletPropList"
+			description="$m{studio.appappletprop.taskexecution.propertylist}">
+			<propertySet
+				label="$m{studio.appappletprop.taskexecution.properties}">
+				<property name="taskexecution.taskName"
+					description="$m{studio.appappletprop.taskexecution.property.task}"
+					inputWidget="studio.tasklist" required="true" />
+			</propertySet>
+		</propertyList>
+		<propertyList name="impAppAppletPropList"
+			description="$m{studio.appappletprop.importdata.propertylist}">
+			<propertySet
+				label="$m{studio.appappletprop.importdata.properties}">
+				<property name="importdata.configName"
+					description="$m{studio.appappletprop.importdata.property.uploadconfigname}"
+					inputWidget="studio.propertyappletloadconfiglist" required="true" />
+				<property name="importdata.routeTo.appletName"
+					description="$m{studio.appappletprop.importdata.property.routetoapplet}"
+					inputWidget="studio.propertyroutetoappletlist" required="false" />
+			</propertySet>
+		</propertyList>
+	</propertyLists>
+
+	<!-- Property Rules -->
+	<propertyRules>
+		<propertyRule name="appAppletPropRule"
+			description="$m{studio.appapplet.propertyrule}"
+			entity="application.appApplet" choiceField="type"
+			listField="propList" propNameField="name" propValField="value"
+			ignoreCase="true">
+			<choice name="cen" val="cenAppAppletPropList" />
+			<choice name="cns" val="cnsAppAppletPropList" />
+			<choice name="mel" val="melAppAppletPropList" />
+			<choice name="mls" val="mlsAppAppletPropList" />
+			<choice name="mea" val="meaAppAppletPropList" />
+			<choice name="mpl" val="mplAppAppletPropList" />
+			<choice name="hdl" val="hdlAppAppletPropList" />
+			<choice name="tex" val="texAppAppletPropList" />
+			<choice name="dim" val="impAppAppletPropList" />
+		</propertyRule>
+	</propertyRules>
+</application>

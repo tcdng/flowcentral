@@ -1,0 +1,10 @@
+// UPL template for task execution applet page
+// Copyright (c) 2019, 2021, FlowCentral Technologies.
+// All rights reserved.
+// 
+// PROPRIETARY AND CONFIDENTIAL. USE IS SUBJECT TO LICENSE TERMS.
+
+!ui-page caption:$m{dataimportappletpage.title} components:$c{appletPanel}
+
+// Applet panel
+!fc-dataimportappletpanel:appletPanel style:$s{width:100%;height:100%;} binding:applet

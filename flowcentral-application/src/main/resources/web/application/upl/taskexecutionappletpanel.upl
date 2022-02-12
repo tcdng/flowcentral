@@ -1,0 +1,37 @@
+// UPL template for task execution applet panel
+// Copyright (c) 2019, 2021, FlowCentral Technologies.
+// All rights reserved.
+// 
+// PROPRIETARY AND CONFIDENTIAL. USE IS SUBJECT TO LICENSE TERMS.
+
+!fc-taskexecutionappletpanel components:$c{taskPanel}
+
+// Task panel
+!ui-panel:taskPanel layout:$d{!ui-vertical style:$s{width:100%;}}
+	components:$c{headerBar paramValueEntriesPanel actionPanel}
+
+// Header Bar
+!ui-panel:headerBar styleClass:$s{hdbar} layout:$d{!ui-horizontal style:$s{width:100%;}}
+	components:$c{headerLeftPanel}
+
+!ui-panel:headerLeftPanel style:$s{display:inline-block; float:left;} layout:$d{!ui-horizontal cellType:middle cellStyle:$s{padding-right:8px;}}
+	components:$c{titleBlock}
+!ui-panel:titleBlock style:$s{display:inline-block;} components:$c{title subTitle}
+!ui-label:title styleClass:$s{hdtitle} caption:$m{taskexecutionappletpanel.taskexecution.title}
+!ui-label:subTitle styleClass:$s{hdsubtitle} binding:taskTitle
+	
+// Parameter values panel
+!ui-panel:paramValueEntriesPanel layout:$d{!ui-vertical style:$s{width:100%;}}
+	components:$c{paramValueEntries}	
+!fc-paramvalues:paramValueEntries binding:paramValueEntries
+
+// Action panel
+!ui-panel:actionPanel layout:$d{!ui-horizontal style:$s{width:100%;}} components:$c{execBtn}
+!ui-button:execBtn styleClass:$e{fc-bluebutton} caption:$m{button.execute}
+	eventHandler:$d{!ui-event event:onclick action:$c{execAct}}
+
+
+// Actions
+!ui-postcommand:execAct command:executeTask components:$c{paramValueEntries}
+	confirm:$m{taskexecutionappletpanel.taskexecution.confirm}
+	

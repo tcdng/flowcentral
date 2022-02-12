@@ -1,0 +1,24 @@
+// UPL template for studio dashboard page
+// Copyright (c) 2019, 2021, FlowCentral Technologies.
+// All rights reserved.
+// 
+// PROPRIETARY AND CONFIDENTIAL. USE IS SUBJECT TO LICENSE TERMS.
+
+!ui-page caption:$m{studiodashboardpage.title} subCaption:$m{studiodashboardpage.subtitle}
+	components:$c{basePanel}
+
+// Base panel
+!ui-panel:basePanel
+
+// Switch application dialog
+!fc-switchapplicationdialogpanel:switchApplicationPopup style:$s{width:740px;}
+	dialogCaption:$m{studio.application.switch}
+	entitySearchBinding:switchApplicationSearch
+	createAppBinding:createAppForm
+	dialogMaintainPath:$n{/openApplication}
+	dialogCreateApplicationPath:$n{/createApplication}
+    closeDialogPath:$n{/cancelSwitchApplication}
+    newInstEventHandler:$d{!ui-event event:onclick action:$c{prepareNewApplicationAct}}
+
+// Actions
+!ui-post:prepareNewApplicationAct path:$n{/prepareNewApplication}

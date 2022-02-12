@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<!-- Master report module configuration -->
+<module name="report" description="$m{report.module}" shortCode="RPT"
+	label="$m{report.label}">
+	<!-- Applications -->
+	<applications>
+		<application name="report"
+			shortDescription="$m{report.short.description}"
+			longDescription="$m{report.long.description}" autoInstall="true"
+			configFile="apps/report-application.xml" />
+	</applications>
+	<!-- System Parameters -->
+	<sysParameters>
+		<sysParameter code="RPT-0001" defaultVal="web/report/templates/"
+			description="$m{report.sysparam.reporttemplatepath}" editor="!ui-text size:40"
+			type="string" editable="true"/>
+		<sysParameter code="RPT-0002" defaultVal="web/images/applicationloginbanner.png"
+			description="$m{report.sysparam.reportclientlogo}" editor="!ui-text size:40"
+			type="string" editable="true"/>
+		<sysParameter code="RPT-0003" defaultVal="dynamicreportportrait.jrxml"
+			description="$m{report.sysparam.dynamicreportportraittemplate}"
+			editor="!ui-text size:40" type="string" editable="true"/>
+		<sysParameter code="RPT-0004" defaultVal="dynamicreportlandscape.jrxml"
+			description="$m{report.sysparam.dynamicreportlandscapetemplate}"
+			editor="!ui-text size:40" type="string" editable="true"/>
+	</sysParameters>
+</module>

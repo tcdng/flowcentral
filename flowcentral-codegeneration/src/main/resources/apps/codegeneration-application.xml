@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<!-- Code generation application -->
+<application name="codegeneration"
+	description="$m{codegeneration.short.description}"
+	label="$m{codegeneration.label}" module="codegeneration">
+	<!-- Applets -->
+	<applets>
+		<applet name="generateStaticFiles"
+			description="$m{codegeneration.generateextensionmodulestaticfiles.manage}"
+			label="$m{codegeneration.generateextensionmodulestaticfiles.manage.label}" icon="lock" type="path_page"
+			path="/codegeneration/extensionmodulestaticfilesgeneration/openPage" menuAccess="false">
+		</applet>
+	</applets>
+	<!-- References -->
+	<!-- Entities -->
+	<!-- Tables -->
+	<!-- Forms -->
+</application>

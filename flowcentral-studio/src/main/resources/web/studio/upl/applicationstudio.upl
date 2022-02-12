@@ -1,0 +1,62 @@
+// UPL template for application studio page
+// Copyright (c) 2019, 2021, FlowCentral Technologies.
+// All rights reserved.
+// 
+// PROPRIETARY AND CONFIDENTIAL. USE IS SUBJECT TO LICENSE TERMS.
+
+!ui-document layout:$d{!ui-desktoptype2 collapsibleSidebar:true} caption:$m{studio.application.document}
+    headerPanel:$c{topBanner} menuPanel:$c{menuColPanel} contentPanel:$c{content}
+    favicon:$s{web/images/favicon_studio.png}
+	script:$s{web/js/fabric.min.js}
+	script:$s{web/js/flowcentral-studio-web.js}
+	styleSheet:$t{css/flowcentral-studio.css}
+	
+// Header    
+!ui-panel:topBanner styleClass:$e{fc-topbanner}
+	components:$c{topBannerImg navigationBand topBannerControl userImg topBannerSwitch}
+!ui-image:topBannerImg src:$s{web/images/applicationstudiobanner.png} styleClass:$e{fc-topbannerimg}
+!ui-panel:topBannerControl layout:$d{!ui-vertical style:$s{width:100%;}} styleClass:$e{fc-topbannercontrol}
+    components:$c{upperInfoBand lowerInfoBand}
+    
+!ui-panel:lowerInfoBand styleClass:$e{fc-userinfoband} components:$c{roleLabel clock}
+!ui-textclock:clock
+!ui-panel:upperInfoBand styleClass:$e{fc-userinfoband} components:$c{userLabel branchLabel}
+!ui-labeledtext:userLabel caption:$m{application.login.user} maxLen:24
+    binding:$j{com.flowcentraltech.flowcentral.common.constants.FlowCentralSessionAttributeConstants.USERNAME}
+!ui-labeledtext:roleLabel style:$s{cursor:pointer;} caption:$m{application.login.role} hint:$m{application.switchrole}
+    binding:$j{com.flowcentraltech.flowcentral.common.constants.FlowCentralSessionAttributeConstants.ROLEDESCRIPTION}
+!ui-labeledtext:branchLabel caption:$m{application.login.branch}
+    binding:$j{com.flowcentraltech.flowcentral.common.constants.FlowCentralSessionAttributeConstants.BRANCHDESC}
+
+!ui-image:userImg  src:$t{/images/user_large.png} styleClass:$e{fc-topuserimg}
+    binding:userPhotoGenerator
+    eventHandler:$d{!ui-event event:onclick action:$c{userDetailsAct}}
+
+!ui-panel:topBannerSwitch layout:$d{!ui-horizontal cellType:middle style:$s{width:100%;}} styleClass:$e{fc-topbannerswitch}
+    components:$c{currentAppLabel currentAppText switchAppBtn}
+!ui-label:currentAppLabel caption:$m{studio.application.caption} styleClass:$s{fc-applicationlabel}
+!ui-text:currentAppText style:$s{width:220px;} readOnly:true
+    binding:$j{com.flowcentraltech.flowcentral.studio.constants.StudioSessionAttributeConstants.CURRENT_APPLICATION_DESC}
+!ui-button:switchAppBtn caption:$m{button.switch} styleClass:$e{fc-orangebutton}
+    eventHandler:$d{!ui-event event:onclick action:$c{switchAppAct}}
+    
+
+!ui-panel:navigationBand styleClass:$e{fc-topnavcontrol} components:$c{logoutLabel}
+!ui-button:logoutLabel caption:$m{application.logout} styleClass:$e{fc-logout}
+    eventHandler:$d{!ui-event event:onclick action:$c{logoutAct}} debounce:false
+     
+// Menu
+!ui-panel:menuColPanel style:$s{height: 100%;} components:$c{studioMenuPanel}
+!fc-studiomenu:studioMenuPanel
+
+// Content
+!ui-contentpanel:content styleClass:$e{fc-content} path:$s{/applicationstudio/dashboard/openPage} tabbed:true
+    
+// Show user details popup
+!fc-userdetailspanel:userDetailsPopup dialogCaption:$m{application.user.details}
+    imageGenBinding:userPhotoGenerator
+
+//Actions 
+!ui-post:userDetailsAct path:$n{/showUserDetails}
+!ui-post:switchAppAct path:$s{/applicationstudio/dashboard/showSwitchApplication}
+!ui-post:logoutAct path:$n{/logOut} confirm:$m{application.logout.confirm}

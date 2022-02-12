@@ -1,0 +1,364 @@
+<?xml version="1.0"?>
+<!-- Notification application -->
+<application name="notification"
+	description="$m{notification.short.description}" label="$m{notification.label}"
+	module="notification">
+	<!-- Applets -->
+	<applets>
+		<applet name="manageNotifOutbox"
+			description="$m{notification.notificationoutbox.manage}"
+			label="$m{notification.notificationoutbox.manage.label}" icon="mail-bulk"
+			entity="notifOutbox" type="manage_entitylist" menuAccess="true">
+			<property name="searchTable" value="notifOutboxTable" />
+			<property name="searchTable.report" value="true" />
+			<property name="searchTable.quickFilter" value="true" />
+			<property name="maintainForm" value="notifOutboxForm" />
+		</applet>
+		<applet name="manageNotifRecipient"
+			description="$m{notification.notificationrecipient.manage}"
+			label="$m{notification.notificationrecipient.manage.label}"
+			entity="notifRecipient" type="manage_entitylist" menuAccess="false">
+			<property name="searchTable" value="notifRecipientTable" />
+		</applet>
+		<applet name="manageNotifChannel"
+			description="$m{notification.notificationchannel.manage}"
+			label="$m{notification.notificationchannel.manage.label}"
+			icon="satellite-disk" entity="notifChannel" type="manage_entitylist"
+			menuAccess="true">
+			<property name="searchTable" value="notifChannelTable" />
+			<property name="searchTable.new" value="true" />
+			<property name="searchTable.report" value="true" />
+			<property name="createForm" value="notifChannelForm" />
+			<property name="createForm.save" value="true" />
+			<property name="createForm.save.next" value="true" />
+			<property name="createForm.save.close" value="true" />
+			<property name="maintainForm" value="notifChannelForm" />
+			<property name="maintainForm.update" value="true" />
+			<property name="maintainForm.delete" value="true" />
+		</applet>
+		<applet name="manageNotifChannelProp"
+			description="$m{notification.notificationchannelprop.manage}"
+			label="$m{notification.notificationchannelprop.manage.label}"
+			entity="notifChannelProp" type="manage_propertylist">
+			<property name="propertyList.rule" value="notifChannelPropRule" />
+			<property name="propertyList.update" value="true" />
+		</applet>
+	</applets>
+	<!-- References -->
+	<references>
+		<reference name="notifOutboxRef"
+			description="$m{notification.notificationoutbox.reference}"
+			entity="notifOutbox" searchField="description" />
+		<reference name="notifRecipientRef"
+			description="$m{notification.notificationrecipient.reference}"
+			entity="notifRecipient" searchField="recipientName" />
+		<reference name="notifChannelRef"
+			description="$m{notification.notificationchannel.reference}"
+			entity="notifChannel" searchField="description" />
+		<reference name="notifChannelPropRef"
+			description="$m{notification.notificationchannelprop.reference}"
+			entity="notifChannelProp" searchField="name" />
+		<reference name="notifTemplateRef"
+			description="$m{notification.notificationtemplate.reference}"
+			entity="notifTemplate" searchField="name" />
+	</references>
+	<!-- Entities -->
+	<entities>
+		<entity name="notifOutbox"
+			description="$m{notification.notificationoutbox}"
+			label="$m{notification.notificationoutbox.label}"
+			type="com.flowcentraltech.flowcentral.notification.entities.NotificationOutbox">
+			<field name="type" label="$m{notification.notificationoutbox.type}"
+				type="enum_ref" references="notificationtypelist"
+				inputWidget="application.enumlist" />
+			<field name="status" label="$m{notification.notificationoutbox.status}"
+				type="enum_ref" references="notificationoutboxstatuslist"
+				inputWidget="application.enumlist" />
+			<field name="subject"
+				label="$m{notification.notificationoutbox.subject}" type="string"
+				inputWidget="application.text"  maxLen="96" descriptive="true"/>
+			<field name="attempts"
+				label="$m{notification.notificationoutbox.attempts}" type="integer"
+				inputWidget="application.integer" />
+			<field name="expiryDt"
+				label="$m{notification.notificationoutbox.expirydt}" type="timestamp_utc"
+				inputWidget="application.datetime" nullable="true" />
+			<field name="nextAttemptDt"
+				label="$m{notification.notificationoutbox.nextattemptdt}"
+				type="timestamp_utc" inputWidget="application.datetime" />
+			<field name="sentDt" label="$m{notification.notificationoutbox.sentdt}"
+				type="timestamp_utc" inputWidget="application.datetime" nullable="true" />
+			<field name="statusDesc"
+				label="$m{notification.notificationoutbox.statusdesc}" type="list_only"
+				key="status" property="description" />
+			<field name="typeDesc"
+				label="$m{notification.notificationoutbox.typedesc}" type="list_only"
+				key="type" property="description" />
+			<field name="notificationRecipientList"
+				label="$m{notification.notificationoutbox.recipients}" type="child_list"
+				references="notifRecipientRef" />
+		</entity>
+		<entity name="notifRecipient"
+			description="$m{notification.notificationrecipient}"
+			label="$m{notification.notificationrecipient.label}"
+			type="com.flowcentraltech.flowcentral.notification.entities.NotificationRecipient">
+			<field name="notificationId"
+				label="$m{notification.notificationrecipient.notificationid}" type="ref"
+				references="notifOutboxRef" />
+			<field name="type" label="$m{notification.notificationrecipient.type}"
+				type="enum_ref" references="notificationrecipienttypelist"
+				inputWidget="application.enumlist" />
+			<field name="recipientName"
+				label="$m{notification.notificationrecipient.recipientname}" type="string" maxLen="64" />
+			<field name="recipientContact"
+				label="$m{notification.notificationrecipient.recipientcontact}"
+				type="string"  maxLen="96"/>
+			<field name="typeDesc"
+				label="$m{notification.notificationrecipient.typedesc}" type="list_only"
+				key="type" property="description" />
+		</entity>
+		<entity name="notifChannel"
+			description="$m{notification.notificationchannel}"
+			label="$m{notification.notificationchannel.label}"
+			type="com.flowcentraltech.flowcentral.notification.entities.NotificationChannel"
+			reportable="true" auditable="true">
+			<field name="notificationType"
+				label="$m{notification.notificationchannel.type}" type="enum_ref"
+				references="notificationtypelist" inputWidget="application.enumlist" />
+			<field name="name" label="$m{notification.notificationchannel.name}"
+				type="string" inputWidget="application.name" maxLen="48" />
+			<field name="description"
+				label="$m{notification.notificationchannel.description}" type="string"
+				inputWidget="application.text" maxLen="64" />
+			<field name="senderName"
+				label="$m{notification.notificationchannel.sendername}" type="string"
+				inputWidget="application.text"  maxLen="64"/>
+			<field name="senderContact"
+				label="$m{notification.notificationchannel.sendercontact}" type="string"
+				inputWidget="application.text" maxLen="96" />
+			<field name="notificationTypeDesc"
+				label="$m{notification.notificationchannel.typedesc}" type="list_only"
+				key="notificationType" property="description" />
+			<field name="notificationChannelPropList"
+				label="$m{notification.notificationchannel.settings}" type="child_list"
+				references="notifChannelPropRef" />
+			<uniqueConstraint name="typeUc"
+				description="$m{notification.notificationchannel.uc.type}"
+				fieldList="notificationType" />
+			<uniqueConstraint name="nameUc"
+				description="$m{notification.notificationchannel.uc.name}" fieldList="name" />
+			<uniqueConstraint name="descUc"
+				description="$m{notification.notificationchannel.uc.description}"
+				fieldList="description" />
+		</entity>
+		<entity name="notifChannelProp"
+			description="$m{notification.notificationchannelprop}"
+			label="$m{notification.notificationchannelprop.label}"
+			type="com.flowcentraltech.flowcentral.notification.entities.NotificationChannelProp">
+			<field name="notificationChannelId"
+				label="$m{notification.notificationchannelprop.notificationchannelid}"
+				type="ref" references="notifChannelRef" inputWidget="application.entitylist" />
+			<field name="name"
+				label="$m{notification.notificationchannelprop.name}" type="string" maxLen="128" />
+			<field name="value"
+				label="$m{notification.notificationchannelprop.value}" type="string" maxLen="256" />
+			<field name="notificationChannelDesc"
+				label="$m{notification.notificationchannelprop.notificationchanneldesc}"
+				type="list_only" key="notificationChannelId" property="description" />
+			<uniqueConstraint name="nameUc"
+				description="$m{notification.notificationchannelprop.uc.name}"
+				fieldList="notificationChannelId,name" />
+		</entity>
+		<entity name="notifTemplate"
+			description="$m{notification.notificationtemplate}"
+			label="$m{notification.notificationtemplate.label}"
+			type="com.flowcentraltech.flowcentral.notification.entities.NotificationTemplate">
+			<field name="notificationType"
+				label="$m{notification.notificationtemplate.type}" type="enum_ref"
+				references="notificationtypelist" inputWidget="application.enumlist" />
+			<field name="messageFormat"
+				label="$m{notification.notificationtemplate.format}" type="enum_ref"
+				references="notifmessageformatlist" inputWidget="application.enumlist" />
+			<field name="entity"
+				label="$m{notification.notificationtemplate.entity}" type="string"  maxLen="128"/>
+			<field name="subject"
+				label="$m{notification.notificationtemplate.subject}" type="string" maxLen="128" />
+			<field name="template"
+				label="$m{notification.notificationtemplate.template}" type="clob" rows="8"/>
+			<field name="attachmentGenerator"
+				label="$m{notification.notificationtemplate.attachmentgenerator}"
+				type="string" maxLen="64" />
+			<field name="notificationTypeDesc"
+				label="$m{notification.notificationtemplate.typedesc}" type="list_only"
+				key="notificationType" property="description" />
+			<field name="messageFormatDesc"
+				label="$m{notification.notificationtemplate.formatdesc}" type="list_only"
+				key="messageFormat" property="description" />
+		</entity>
+	</entities>
+	<!-- Tables -->
+	<tables>
+		<table name="notifOutboxTable"
+			description="$m{notification.notificationoutbox.table}"
+			label="$m{notification.notificationoutbox.table.label}" entity="notifOutbox"
+			itemsPerPage="20">
+			<column field="typeDesc" renderWidget="application.text"
+				label="$m{notification.notificationoutbox.type}" widthRatio="2" />
+			<column field="subject" renderWidget="application.text"
+				widthRatio="3" linkAct="maintainAct" />
+			<column field="attempts" renderWidget="application.integer"
+				widthRatio="2" />
+			<column field="createDt" renderWidget="application.datetime"
+				widthRatio="2" />
+			<column field="nextAttemptDt" renderWidget="application.datetime"
+				widthRatio="2" />
+			<column field="sentDt" renderWidget="application.datetime"
+				widthRatio="2" />
+			<column field="statusDesc" renderWidget="application.text"
+				label="$m{notification.notificationoutbox.status}" widthRatio="1" />
+		</table>
+		<table name="notifRecipientTable"
+			description="$m{notification.notificationrecipient.table}"
+			label="$m{notification.notificationrecipient.table.label}"
+			entity="notifRecipient" itemsPerPage="20">
+			<column field="typeDesc" renderWidget="application.text"
+				label="$m{notification.notificationrecipient.type}" widthRatio="1" />
+			<column field="recipientName" renderWidget="application.text"
+				widthRatio="1" />
+			<column field="recipientContact" renderWidget="application.text"
+				widthRatio="1" />
+		</table>
+		<table name="notifChannelTable"
+			description="$m{notification.notificationchannel.table}"
+			label="$m{notification.notificationchannel.table.label}"
+			entity="notifChannel" itemsPerPage="20">
+			<column field="notificationTypeDesc"
+				renderWidget="application.text"
+				label="$m{notification.notificationchannel.type}" widthRatio="1" />
+			<column field="name" renderWidget="application.name"
+				widthRatio="1" />
+			<column field="description" renderWidget="application.text"
+				widthRatio="1" linkAct="maintainAct" />
+			<column field="senderName" renderWidget="application.text"
+				widthRatio="1" />
+			<column field="senderContact" renderWidget="application.text"
+				widthRatio="1" />
+			<column field="createDt" renderWidget="application.datetime"
+				widthRatio="1" />
+			<column field="updateDt" renderWidget="application.datetime"
+				widthRatio="1" />
+			<column field="statusDesc" renderWidget="application.text"
+				label="$m{notification.notificationchannel.status}" widthRatio="1" />
+		</table>
+	</tables>
+	<!-- Forms -->
+	<forms>
+		<form name="notifOutboxForm"
+			description="$m{notification.notificationoutbox.form}" entity="notifOutbox">
+			<tab name="basicDetails"
+				label="$m{notification.notificationoutbox.form.basicdetails}"
+				contentType="miniform">
+				<section name="outboxDetails" columns="type_2">
+					<field name="type" inputWidget="application.enumlist" column="0"
+						required="true" />
+					<field name="subject" inputWidget="application.text" column="0"
+						required="true" />
+					<field name="attempts" inputWidget="application.integer" column="0"
+						required="true" />
+					<field name="expiryDt" inputWidget="application.datetime" column="1" />
+					<field name="nextAttemptDt" inputWidget="application.datetime"
+						column="1" />
+					<field name="sentDt" inputWidget="application.datetime" column="1" />
+					<field name="status" inputWidget="application.enumlist" column="1"
+						required="true" />
+				</section>
+			</tab>
+			<tab name="recipients"
+				label="$m{notification.notificationoutbox.recipients}"
+				contentType="child_list" applet="manageNotifRecipient"
+				reference="notificationRecipientList" />
+			<tab name="attachments"
+				label="$m{notification.notificationoutbox.attachments}"
+				contentType="attachmentlist" />
+		</form>
+		<form name="notifChannelForm"
+			description="$m{notification.notificationchannel.form}" entity="notifChannel">
+			<tab name="basicDetails"
+				label="$m{notification.notificationchannel.form.basicdetails}"
+				contentType="miniform">
+				<section name="channelDetails" columns="type_2">
+					<field name="notificationType" inputWidget="application.enumlist"
+						column="0" required="true" switchOnChange="true" />
+					<field name="name" inputWidget="application.name" column="0"
+						required="true" />
+					<field name="description" inputWidget="application.text"
+						column="0" required="true" />
+					<field name="senderName" inputWidget="application.text"
+						column="1" required="true" />
+					<field name="senderContact" inputWidget="application.text"
+						column="1" required="true" />
+					<field name="status" inputWidget="application.enumlist" column="1"
+						required="true" />
+				</section>
+			</tab>
+			<tab name="settings"
+				label="$m{notification.notificationchannel.form.settings}"
+				contentType="property_list" applet="manageNotifChannelProp"
+				reference="notificationChannelPropList" />
+			<tab name="changeLog" label="$m{application.form.audit}"
+				contentType="miniform_changelog" />
+		</form>
+	</forms>
+	<!-- Property Lists -->
+	<propertyLists>
+		<propertyList name="notifChannelPropList"
+			description="$m{notification.notificationchannel.propertylist}">
+			<propertySet
+				label="$m{notification.notificationchannel.properties.connection}">
+				<property name="host.address"
+					description="$m{notification.notificationchannel.property.hostaddress}"
+					inputWidget="application.text" required="true" />
+				<property name="host.port"
+					description="$m{notification.notificationchannel.property.hostport}"
+					inputWidget="application.integer" required="true" />
+				<property name="host.securitytype"
+					description="$m{notification.notificationchannel.property.securitytype}"
+					references="networksecuritytypelist" inputWidget="application.enumlist"
+					required="false" />
+			</propertySet>
+			<propertySet
+				label="$m{notification.notificationchannel.properties.authentication}">
+				<property name="host.username"
+					description="$m{notification.notificationchannel.property.username}"
+					inputWidget="application.wildname" required="false" />
+				<property name="host.password"
+					description="$m{notification.notificationchannel.property.password}"
+					inputWidget="application.password" required="false" mask="true"
+					encrypt="true" />
+			</propertySet>
+			<propertySet
+				label="$m{notification.notificationchannel.properties.transmission}">
+				<property name="transmission.maxbatchsize"
+					description="$m{notification.notificationchannel.property.maxbatchsize}"
+					inputWidget="application.integer" required="false" />
+				<property name="transmission.maximumtries"
+					description="$m{notification.notificationchannel.property.maximumtries}"
+					inputWidget="application.integer" required="false" />
+				<property name="transmission.retryminutes"
+					description="$m{notification.notificationchannel.property.retryminutes}"
+					inputWidget="application.integer" required="false" />
+			</propertySet>
+		</propertyList>
+	</propertyLists>
+	<!-- Property Rules -->
+	<propertyRules>
+		<propertyRule name="notifChannelPropRule"
+			description="$m{notification.notificationchannel.propertyrule}"
+			entity="notifChannel" choiceField="notificationType"
+			listField="notificationChannelPropList" propNameField="name"
+			propValField="value" ignoreCase="true">
+			<choice name="eml" val="notifChannelPropList" />
+			<choice name="sms" val="notifChannelPropList" />
+		</propertyRule>
+	</propertyRules>
+</application>

@@ -1,0 +1,18 @@
+// UPL template for workflow step routings CRUD panel
+// Copyright (c) 2019, 2021, FlowCentral Technologies.
+// All rights reserved.
+// 
+// PROPRIETARY AND CONFIDENTIAL. USE IS SUBJECT TO LICENSE TERMS.
+
+!fc-wfsteproutingscrudpanel
+	tableComponents:$c{nameLabel descLabel}
+	formSection:$d{!ui-section components:$c{frmName frmDesc frmConditionName frmNextStepName}}
+!ui-label:nameLabel styleClass:$e{fc-formfield} caption:$m{wfsteproutingscrudpanel.name} binding:name
+!ui-label:descLabel styleClass:$e{fc-formfield} caption:$m{wfsteproutingscrudpanel.description} binding:description
+!ui-name:frmName styleClass:$e{fc-formfield} caption:$m{wfsteproutingscrudpanel.name} size:32 binding:name required:true focus:true
+!ui-text:frmDesc styleClass:$e{fc-formfield} caption:$m{wfsteproutingscrudpanel.description} size:32 binding:description required:true
+!ui-select:frmConditionName styleClass:$e{fc-formfield} caption:$m{wfsteproutingscrudpanel.condition}
+	list:$s{studioworkflowfilterlist} listParamType:$s{PANEL} listParams:$l{workflowId} blankOption:$s{}
+	binding:conditionName
+!ui-text:frmNextStepName styleClass:$e{fc-formfield} caption:$m{wfstepuseractionscrudpanel.nextstepname} size:32
+	binding:nextStepName

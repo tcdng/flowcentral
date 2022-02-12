@@ -1,0 +1,18 @@
+// UPL template for studio workflow applet panel
+// Copyright (c) 2019, 2021, FlowCentral Technologies.
+// All rights reserved.
+// 
+// PROPRIETARY AND CONFIDENTIAL. USE IS SUBJECT TO LICENSE TERMS.
+
+!fc-studioworkflowappletpanel
+
+// Workflow Editor Page
+!fc-workfloweditorpagepanel:workflowEditorPagePanel binding:workflowEditorPage
+	moreActionButtons:$c{saveDesignCloseBtn closeDesignBtn}
+!ui-button:saveDesignCloseBtn caption:$m{button.saveclose}
+	eventHandler:$d{!ui-event event:onclick action:$c{saveDesignCloseAct}}
+!ui-button:closeDesignBtn caption:$m{button.close}
+	eventHandler:$d{!ui-event event:onclick action:$c{navBackAct}}
+
+// Actions
+!ui-postcommand:saveDesignCloseAct command:saveDesignAndClose components:$c{workflowEditorPagePanel}

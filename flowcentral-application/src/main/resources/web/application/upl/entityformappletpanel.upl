@@ -1,0 +1,120 @@
+// UPL template for entity form applet panel
+// Copyright (c) 2019, 2021, FlowCentral Technologies.
+// All rights reserved.
+// 
+// PROPRIETARY AND CONFIDENTIAL. USE IS SUBJECT TO LICENSE TERMS.
+
+!fc-entityformappletpanel components:$c{formPanel assignmentPanel}
+	frmActionsHandler:$d{!ui-event event:onclick action:$c{formActionAct}}
+	
+// Form
+!fc-headerwithtabsformpanel:formPanel binding:form
+	moreCenterComponents:$c{displayCounterLabel}
+	moreActionButtons:$f{moreActionButtons}
+	moreActionButtons:$c{formAttachmentBtn frmActionBtns saveAsBtn saveBtn saveNextBtn saveCloseBtn}
+	moreActionButtons:$c{updateBtn updateCloseBtn submitNextBtn submitCloseBtn deleteBtn cancelBtn prevBtn nextBtn}
+	altActionButtons:$c{saveBtn saveNextBtn saveCloseBtn}
+	altActionButtons:$c{updateBtn updateCloseBtn submitNextBtn submitCloseBtn deleteBtn cancelBtn}
+	moreMemoryComponents:$c{focusMemory tabMemory}
+	switchOnChangeEventHandler:$d{!ui-event event:onchange action:$c{switchOnChangeAct}}
+!ui-hidden:focusMemory binding:focusWidgetId	
+!ui-hidden:tabMemory binding:tabWidgetId	
+!ui-label:displayCounterLabel styleClass:$e{fc-dispcounter}
+	styleClassBinding:displayItemCounterClass binding:displayItemCounter
+!ui-button:formAttachmentBtn caption:$m{button.attachments.param} captionParamBinding:attachmentCount
+	eventHandler:$d{!ui-event event:onclick action:$c{showAttachmentAct}}
+!ui-button:saveBtn caption:$m{button.save}
+	eventHandler:$d{!ui-event event:onclick action:$c{saveAct}}
+!ui-button:saveNextBtn caption:$m{button.savenext}
+	eventHandler:$d{!ui-event event:onclick action:$c{saveNextAct}}
+!ui-button:saveCloseBtn caption:$m{button.saveclose}
+	eventHandler:$d{!ui-event event:onclick action:$c{saveCloseAct}}
+!ui-button:saveAsBtn caption:$m{button.saveas.ellipsis}
+	eventHandler:$d{!ui-event event:onclick action:$c{prepareEntitySaveAsAct}}
+!ui-button:submitCloseBtn caption:$m{button.submit}
+	eventHandler:$d{!ui-event event:onclick action:$c{submitAct}}
+!ui-button:submitNextBtn caption:$m{button.submitnext}
+	eventHandler:$d{!ui-event event:onclick action:$c{submitNextAct}}
+!ui-button:updateBtn caption:$m{button.update}
+	eventHandler:$d{!ui-event event:onclick action:$c{updateAct}}
+!ui-button:updateCloseBtn caption:$m{button.updateclose}
+	eventHandler:$d{!ui-event event:onclick action:$c{updateCloseAct}}
+!ui-button:deleteBtn caption:$m{button.delete}
+	eventHandler:$d{!ui-event event:onclick action:$c{deleteAct}}
+!ui-button:cancelBtn caption:$m{button.close}
+	eventHandler:$d{!ui-event event:onclick action:$c{navBackAct}}
+!ui-button:prevBtn symbol:$s{angle-left} hint:$m{maintain.previous.item}
+    eventHandler:$d{!ui-event event:onclick action:$c{prevAct}}
+!ui-button:nextBtn symbol:$s{angle-right} hint:$m{maintain.next.item}
+    eventHandler:$d{!ui-event event:onclick action:$c{nextAct}}
+!fc-formactionbuttons:frmActionBtns binding:formActionDefList
+    eventHandler:$f{frmActionsHandler}
+
+// Listing Form
+!fc-listingformpanel:listingPanel binding:listingForm
+	moreCenterComponents:$c{listDisplayCounterLabel}
+	moreActionButtons:$c{listFrmActionBtns}
+	moreActionButtons:$c{listCancelBtn listPrevBtn listNextBtn}
+	altActionButtons:$c{listCancelBtn}
+!ui-label:listDisplayCounterLabel styleClass:$e{fc-dispcounter}
+	styleClassBinding:displayItemCounterClass binding:displayItemCounter
+!ui-button:listPrevBtn symbol:$s{angle-left} hint:$m{maintain.previous.item}
+    eventHandler:$d{!ui-event event:onclick action:$c{prevAct}}
+!ui-button:listNextBtn symbol:$s{angle-right} hint:$m{maintain.next.item}
+    eventHandler:$d{!ui-event event:onclick action:$c{nextAct}}
+!ui-button:listCancelBtn caption:$m{button.close}
+	eventHandler:$d{!ui-event event:onclick action:$c{navBackAct}}
+!fc-formactionbuttons:listFrmActionBtns binding:formActionDefList
+    eventHandler:$f{frmActionsHandler}
+
+// Assignment Page
+!fc-assignmentpagepanel:assignmentPanel binding:assignmentPage
+	moreActionButtons:$c{saveAssignCloseBtn closeAssignBtn}
+	switchOnChangeEventHandler:$d{!ui-event event:onchange action:$c{assnSwitchOnChangeAct}}
+!ui-button:saveAssignCloseBtn caption:$m{button.saveclose}
+	eventHandler:$d{!ui-event event:onclick action:$c{saveAssignCloseAct}}
+!ui-button:closeAssignBtn caption:$m{button.close}
+	eventHandler:$d{!ui-event event:onclick action:$c{navBackAct}}
+
+// Edit Property List
+!fc-editpropertylistpanel:editPropertyListPanel binding:editPropertyList
+	moreActionButtons:$c{savePropListCloseBtn closePropListBtn}
+!ui-button:savePropListCloseBtn caption:$m{button.saveclose}
+	eventHandler:$d{!ui-event event:onclick action:$c{savePropListCloseAct}}
+!ui-button:closePropListBtn caption:$m{button.close}
+	eventHandler:$d{!ui-event event:onclick action:$c{navBackAct}}
+
+// Save As Panel
+!fc-entitysaveasdialogpanel:entitySaveAsPanel binding:entitySaveAs
+	moreActionButtons:$c{entitySaveAsBtn cancelEntitySaveAsBtn}
+!ui-button:entitySaveAsBtn styleClass:$e{fc-bluebutton} caption:$m{button.save}
+	eventHandler:$d{!ui-event event:onclick action:$c{entitySaveAsAct}}
+!ui-button:cancelEntitySaveAsBtn caption:$m{button.cancel}
+	eventHandler:$d{!ui-event event:onclick action:$c{cancelEntitySaveAsAct}}
+
+// Actions
+!ui-postcommand:showAttachmentAct command:showFormFileAttachments
+!ui-postcommand:navBackAct command:navBackToPrevious
+!ui-postcommand:switchOnChangeAct command:formSwitchOnChange components:$c{formPanel}
+	refresh:$c{formPanel.formBodyPanel}
+!ui-postcommand:assnSwitchOnChangeAct command:assignSwitchOnChange components:$c{assignmentPanel}
+	refresh:$c{assignmentPanel.assignmentBodyPanel}
+!ui-postcommand:saveAct command:save components:$c{formPanel}
+!ui-postcommand:saveNextAct command:saveAndNext components:$c{formPanel}
+!ui-postcommand:saveCloseAct command:saveAndClose components:$c{formPanel}
+!ui-postcommand:submitAct command:submit components:$c{formPanel}
+!ui-postcommand:submitNextAct command:submitAndNext components:$c{formPanel}
+!ui-postcommand:updateAct command:update components:$c{formPanel}
+!ui-postcommand:updateCloseAct command:updateAndClose components:$c{formPanel}
+!ui-postcommand:deleteAct command:delete confirm:$m{entityformappletpanel.confirm.delete}
+!ui-postcommand:prevAct command:previous
+!ui-postcommand:nextAct command:next
+!ui-postcommand:formActionAct command:performFormAction components:$c{formPanel}
+!ui-postcommand:maintainAct command:maintain debounce:true
+!ui-postcommand:listingAct command:listing debounce:true
+!ui-postcommand:saveAssignCloseAct command:saveAssignAndClose components:$c{assignmentPanel}
+!ui-postcommand:savePropListCloseAct command:savePropListAndClose components:$c{editPropertyListPanel}
+!ui-postcommand:prepareEntitySaveAsAct command:prepareSaveEntityAs
+!ui-postcommand:entitySaveAsAct command:saveEntityAs components:$c{entitySaveAsPanel}
+!ui-postcommand:cancelEntitySaveAsAct command:cancelSaveEntityAs
+

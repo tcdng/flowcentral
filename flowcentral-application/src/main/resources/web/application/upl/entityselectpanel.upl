@@ -1,0 +1,29 @@
+// UPL template for entity select panel
+// Copyright (c) 2019, 2021, FlowCentral Technologies.
+// All rights reserved.
+// 
+// PROPRIETARY AND CONFIDENTIAL. USE IS SUBJECT TO LICENSE TERMS.
+
+!fc-entityselectpanel layout:$d{!ui-vertical}
+	components:$c{searchFilterPanel searchResultPanel footerActionPanel}
+	
+// Search filter panel
+!ui-panel:searchFilterPanel styleClass:$s{filall} layout:$d{!ui-horizontal style:$s{width:100%;}}
+	components:$c{filterInput}
+	
+!ui-text:filterInput caption:$m{entityselectpanel.filter} binding:filter focus:true
+    eventHandler:$d{!ui-event event:oninput action:$c{filterAct}}
+
+// Search result panel
+!ui-panel:searchResultPanel layout:$d{!ui-vertical style:$s{width:100%;}} components:$c{searchResultTbl}
+!fc-entitytable:searchResultTbl binding:entityTable valueMarker:$f{searchResultMarker}
+
+// Footer action panel
+!ui-panel:footerActionPanel styleClass:$e{footer} layout:$d{!ui-horizontal} components:$c{cancelBtn clearBtn}
+!ui-button:cancelBtn caption:$m{button.cancel}
+!ui-button:clearBtn caption:$m{button.clear}
+
+// Actions
+!ui-postcommand:filterAct command:search components:$c{filterInput}
+	 refresh:$c{searchResultPanel}
+

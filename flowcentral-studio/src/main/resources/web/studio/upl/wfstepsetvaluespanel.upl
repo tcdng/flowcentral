@@ -1,0 +1,24 @@
+// UPL template for workflow set values panel
+// Copyright (c) 2019, 2021, FlowCentral Technologies.
+// All rights reserved.
+// 
+// PROPRIETARY AND CONFIDENTIAL. USE IS SUBJECT TO LICENSE TERMS.
+
+!fc-wfstepsetvaluespanel
+	dialogCaptionBinding:title
+	dialogBodyLayout:$d{!ui-horizontal style:$s{width:100%;}}
+    dialogBodyComponents:$c{setValuesPanel}
+    dialogActionLayout:$d{!ui-horizontal style:$s{width:100%;}}
+    dialogActionComponents:$c{dialogActionPanel}
+
+!ui-panel:setValuesPanel style:$s{width:100%;}
+	layout:$d{!ui-vertical style:$s{width:100%;} showCaption:true captionSuffix:$s{:} inlineCaption:true}
+	components:$c{setValues}
+!fc-setvalues:setValues caption:$m{wfstepsetvaluespanel.values} binding:entries
+
+!ui-panel:dialogActionPanel layout:$d{!ui-horizontal} components:$c{applyBtn cancelBtn}
+!ui-button:applyBtn caption:$m{button.apply}
+	eventHandler:$f{dialogApplyEventHandler}
+!ui-button:cancelBtn caption:$m{button.cancel}
+    eventHandler:$f{dialogCancelEventHandler}
+    

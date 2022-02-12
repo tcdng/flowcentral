@@ -1,0 +1,20 @@
+// UPL template for property list panel
+// Copyright (c) 2019, 2021, FlowCentral Technologies.
+// All rights reserved.
+// 
+// PROPRIETARY AND CONFIDENTIAL. USE IS SUBJECT TO LICENSE TERMS.
+
+!fc-propertylistpanel layout:$d{!ui-vertical style:$s{width:100%;}}
+    components:$c{formMessages propertySearchPanel}
+    
+// Messages
+!fc-formmessages:formMessages binding:messages
+
+// Search list
+!fc-propertysearchpanel:propertySearchPanel
+	editInstEventHandler:$d{!ui-event event:onclick action:$c{managePropAct}}
+	editBtnBinding:$s{childTabIndex}
+
+// Actions
+!ui-post:managePropAct path:$p{/manageProperties}
+	

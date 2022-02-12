@@ -1,0 +1,144 @@
+/*
+ * Copyright (c) 2019, 2021, FlowCentral Technologies.
+ * All rights reserved.
+ * 
+ * PROPRIETARY AND CONFIDENTIAL. USE IS SUBJECT TO LICENSE TERMS.
+ */
+package com.flowcentraltech.flowcentral.application.data;
+
+import com.flowcentraltech.flowcentral.application.util.ApplicationNameUtils;
+import com.tcdng.unify.core.UnifyException;
+
+/**
+ * Assignment page definition.
+ * 
+ * @author Lateef Ojulari
+ * @since 1.0
+ */
+public class AssignmentPageDef extends BaseApplicationEntityDef {
+
+    private String label;
+
+    private String entity;
+
+    private String updatePolicy;
+
+    private String baseField;
+
+    private String assignField;
+
+    private String filterCaption1;
+
+    private String filterCaption2;
+
+    private String filterList1;
+
+    private String filterList2;
+
+    private String assignCaption;
+
+    private String unassignCaption;
+
+    private String assignList;
+
+    private String unassignList;
+
+    private String ruleDescField;
+
+    public AssignmentPageDef(String longName, String description, Long id, long version, String label, String entity,
+            String updatePolicy, String baseField, String assignField, String filterCaption1, String filterCaption2,
+            String filterList1, String filterList2, String assignCaption, String unassignCaption, String assignList,
+            String unassignList, String ruleDescField) throws UnifyException {
+        super(ApplicationNameUtils.getApplicationEntityNameParts(longName), description, id, version);
+        this.label = label;
+        this.entity = entity;
+        this.updatePolicy = updatePolicy;
+        this.baseField = baseField;
+        this.assignField = assignField;
+        this.filterCaption1 = filterCaption1;
+        this.filterCaption2 = filterCaption2;
+        this.filterList1 = filterList1;
+        this.filterList2 = filterList2;
+        this.assignCaption = assignCaption;
+        this.unassignCaption = unassignCaption;
+        this.assignList = assignList;
+        this.unassignList = unassignList;
+        this.ruleDescField = ruleDescField;
+    }
+
+    public String getLabel() {
+        return label;
+    }
+
+    public String getEntity() {
+        return entity;
+    }
+
+    public String getUpdatePolicy() {
+        return updatePolicy;
+    }
+
+    public String getBaseField() {
+        return baseField;
+    }
+
+    public String getAssignField() {
+        return assignField;
+    }
+
+    public String getFilterCaption1() {
+        return filterCaption1;
+    }
+
+    public boolean isWithFilterCaption1() {
+        return filterCaption1 != null;
+    }
+
+    public String getFilterCaption2() {
+        return filterCaption2;
+    }
+
+    public boolean isWithFilterCaption2() {
+        return filterCaption2 != null;
+    }
+
+    public String getFilterList1() {
+        return filterList1;
+    }
+
+    public boolean isWithFilterList1() {
+        return filterList1 != null;
+    }
+
+    public String getFilterList2() {
+        return filterList2;
+    }
+
+    public boolean isWithFilterList2() {
+        return filterList2 != null;
+    }
+
+    public String getAssignCaption() {
+        return assignCaption;
+    }
+
+    public String getUnassignCaption() {
+        return unassignCaption;
+    }
+
+    public String getAssignList() {
+        return assignList;
+    }
+
+    public String getUnassignList() {
+        return unassignList;
+    }
+
+    public String getRuleDescField() {
+        return ruleDescField;
+    }
+
+    public boolean isWithRuleDesc() {
+        return ruleDescField != null;
+    }
+}

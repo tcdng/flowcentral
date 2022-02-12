@@ -1,0 +1,234 @@
+/*
+ * Copyright (c) 2019, 2021, FlowCentral Technologies.
+ * All rights reserved.
+ * 
+ * PROPRIETARY AND CONFIDENTIAL. USE IS SUBJECT TO LICENSE TERMS.
+ */
+
+package com.flowcentraltech.flowcentral.workflow.data;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import com.flowcentraltech.flowcentral.application.data.AppletDef;
+import com.flowcentraltech.flowcentral.application.data.BaseApplicationEntityDef;
+import com.flowcentraltech.flowcentral.application.data.EntityClassDef;
+import com.flowcentraltech.flowcentral.application.data.EntityDef;
+import com.flowcentraltech.flowcentral.application.data.FilterDef;
+import com.flowcentraltech.flowcentral.application.util.ApplicationEntityNameParts;
+import com.flowcentraltech.flowcentral.application.util.ApplicationNameUtils;
+import com.flowcentraltech.flowcentral.common.entities.WorkEntity;
+import com.tcdng.unify.core.UnifyException;
+import com.tcdng.unify.core.util.DataUtils;
+import com.tcdng.unify.core.util.StringUtils.StringToken;
+
+/**
+ * Workflow definition.
+ * 
+ * @author Lateef Ojulari
+ * @since 1.0
+ */
+public class WfDef extends BaseApplicationEntityDef {
+
+    private EntityClassDef entityClassDef;
+
+    private Map<String, WfStepDef> steps;
+
+    private WfStepDef startStepDef;
+
+    private WfStepDef errorStepDef;
+
+    private List<AppletDef> appletList;
+
+    private Map<String, FilterDef> filterDefMap;
+
+    private List<StringToken> descFormat;
+
+    private WfDef(EntityClassDef entityClassDef, WfStepDef startStepDef, WfStepDef errorStepDef,
+            Map<String, WfStepDef> steps, Map<String, FilterDef> filterDefMap, List<StringToken> descFormat,
+            ApplicationEntityNameParts nameParts, String description, Long id, long version) {
+        super(nameParts, description, id, version);
+        this.entityClassDef = entityClassDef;
+        this.startStepDef = startStepDef;
+        this.errorStepDef = errorStepDef;
+        this.steps = steps;
+        this.filterDefMap = filterDefMap;
+        this.descFormat = descFormat;
+    }
+
+    public EntityClassDef getEntityClassDef() {
+        return entityClassDef;
+    }
+
+    public EntityDef getEntityDef() {
+        return entityClassDef.getEntityDef();
+    }
+
+    public WfStepDef getStartStepDef() {
+        return startStepDef;
+    }
+
+    public WfStepDef getErrorStepDef() {
+        return errorStepDef;
+    }
+
+    public List<StringToken> getDescFormat() {
+        return descFormat;
+    }
+
+    public boolean isWithDescFormat() {
+        return !descFormat.isEmpty();
+    }
+
+    public boolean isCompatible(WorkEntity inst) {
+        if (inst != null) {
+            return entityClassDef.getEntityClass().getName().equals(inst.getClass().getName());
+        }
+
+        return false;
+    }
+
+    public String getEntity() {
+        return entityClassDef.getEntityDef().getLongName();
+    }
+
+    public AppletDef getAppletDef(String wfStepName) {
+        return getWfStepDef(wfStepName).getAppletDef();
+    }
+
+    public List<AppletDef> getAppletDefs() {
+        if (appletList == null) {
+            appletList = new ArrayList<AppletDef>();
+            for (WfStepDef wfStepDef : steps.values()) {
+                if (wfStepDef.isWithApplet()) {
+                    appletList.add(wfStepDef.getAppletDef());
+                }
+            }
+
+            if (appletList.isEmpty()) {
+                appletList = Collections.emptyList();
+            }
+        }
+
+        return appletList;
+    }
+
+    public WfStepDef getWfStepDef(String name) {
+        WfStepDef wfStepDef = steps.get(name);
+        if (wfStepDef == null) {
+            throw new RuntimeException("Step with name [" + name + "] is unknown for workflow [" + getName() + "].");
+        }
+
+        return wfStepDef;
+    }
+
+    public boolean isFilter(String name) {
+        return filterDefMap.containsKey(name);
+    }
+
+    public FilterDef getFilterDef(String name) {
+        FilterDef filterDef = filterDefMap.get(name);
+        if (filterDef == null) {
+            throw new RuntimeException(
+                    "Filter with name [" + name + "] is unknown for workflow definition [" + getName() + "].");
+        }
+
+        return filterDef;
+    }
+
+    public static Builder newBuilder(EntityClassDef entityClassDef, List<StringToken> descFormat, String longName,
+            String description, Long id, long version) {
+        return new Builder(entityClassDef, descFormat, longName, description, id, version);
+    }
+
+    public static class Builder {
+
+        private EntityClassDef entityClassDef;
+
+        private Map<String, WfStepDef> steps;
+
+        private Map<String, FilterDef> filterDefMap;
+
+        private WfStepDef startStepDef;
+
+        private WfStepDef errorStepDef;
+
+        private List<StringToken> descFormat;
+
+        private String longName;
+
+        private String description;
+
+        private Long id;
+
+        private long version;
+
+        public Builder(EntityClassDef entityClassDef, List<StringToken> descFormat, String longName, String description,
+                Long id, long version) {
+            this.entityClassDef = entityClassDef;
+            this.descFormat = descFormat;
+            this.longName = longName;
+            this.description = description;
+            this.id = id;
+            this.version = version;
+            this.steps = new HashMap<String, WfStepDef>();
+            this.filterDefMap = new HashMap<String, FilterDef>();
+        }
+
+        public Builder addWfStepDef(WfStepDef stepDef) {
+            if (steps == null) {
+                steps = new HashMap<String, WfStepDef>();
+            }
+
+            if (steps.containsKey(stepDef.getName())) {
+                throw new RuntimeException(
+                        "Step with name [" + stepDef.getName() + "] already exists in this workflow.");
+            }
+
+            if (stepDef.isStart()) {
+                if (startStepDef != null) {
+                    throw new RuntimeException("Start step already exists in this workflow.");
+                }
+
+                startStepDef = stepDef;
+            }
+
+            if (stepDef.isError()) {
+                if (errorStepDef != null) {
+                    throw new RuntimeException("Error step already exists in this workflow.");
+                }
+
+                errorStepDef = stepDef;
+            }
+
+            steps.put(stepDef.getName(), stepDef);
+            return this;
+        }
+
+        public Builder addFilterDef(FilterDef filterDef) {
+            if (filterDefMap.containsKey(filterDef.getName())) {
+                throw new RuntimeException(
+                        "Filter with name [" + filterDef.getName() + "] already exists in this definition.");
+            }
+
+            filterDefMap.put(filterDef.getName(), filterDef);
+            return this;
+        }
+
+        public WfDef build() throws UnifyException {
+            if (startStepDef == null) {
+                throw new RuntimeException("Workflow has no start step.");
+            }
+
+            if (errorStepDef == null) {
+                throw new RuntimeException("Workflow has no error step.");
+            }
+
+            return new WfDef(entityClassDef, startStepDef, errorStepDef, DataUtils.unmodifiableMap(steps), filterDefMap,
+                    descFormat, ApplicationNameUtils.getApplicationEntityNameParts(longName), description, id, version);
+        }
+    }
+}

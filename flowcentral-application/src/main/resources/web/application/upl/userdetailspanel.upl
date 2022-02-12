@@ -1,0 +1,26 @@
+// UPL template for user details panel
+// Copyright (c) 2019, 2021, FlowCentral Technologies.
+// All rights reserved.
+// 
+// PROPRIETARY AND CONFIDENTIAL. USE IS SUBJECT TO LICENSE TERMS.
+
+!fc-userdetailspanel dialogBodyComponents:$c{userDetailsPanel}
+    dialogActionComponents:$c{}
+     
+!ui-panel:userDetailsPanel layout:$d{!ui-horizontal}
+    components:$c{userImg detailsPanel}
+
+!ui-image:userImg src:$t{/images/user_large.png} styleClass:$e{fc-userdtlimg}
+    binding:$g{imageGenBinding}
+
+!ui-panel:detailsPanel style:$s{margin-left:4px;} layout:$d{!ui-vertical}
+    components:$c{userLabel roleLabel branchLabel}
+!ui-labeledtext:userLabel styleClass:$e{fc-userdtltext} caption:$m{application.login.user}
+    binding:$j{com.flowcentraltech.flowcentral.common.constants.FlowCentralSessionAttributeConstants.USERNAME}
+!ui-labeledtext:roleLabel styleClass:$e{fc-userdtltext} caption:$m{application.login.role}
+    binding:$j{com.flowcentraltech.flowcentral.common.constants.FlowCentralSessionAttributeConstants.ROLEDESCRIPTION}
+!ui-labeledtext:branchLabel styleClass:$e{fc-userdtltext} caption:$m{application.login.branch}
+    binding:$j{com.flowcentraltech.flowcentral.common.constants.FlowCentralSessionAttributeConstants.BRANCHDESC}
+   
+!ui-button:cancelBtn caption:$m{button.cancel}
+    eventHandler:$d{!ui-event event:onclick action:$c{closeDialogAct}}

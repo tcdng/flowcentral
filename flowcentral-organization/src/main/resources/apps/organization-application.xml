@@ -1,0 +1,540 @@
+<?xml version="1.0"?>
+<!-- Organization application -->
+<application name="organization"
+	description="$m{organization.short.description}" label="$m{organization.label}"
+	module="organization" developable="true">
+	<!-- Applets -->
+	<applets>
+		<applet name="manageBranch"
+			description="$m{organization.branch.manage}"
+			label="$m{organization.branch.manage.label}" icon="site-map"
+			type="manage_entitylist" entity="branch" menuAccess="true">
+			<property name="searchTable" value="branchTable" />
+			<property name="searchTable.new" value="true" />
+			<property name="searchTable.report" value="true" />
+			<property name="searchTable.quickFilter" value="true" />
+			<property name="createForm" value="branchForm" />
+			<property name="createForm.save" value="true" />
+			<property name="createForm.save.next" value="true" />
+			<property name="createForm.save.close" value="true" />
+			<property name="maintainForm" value="branchForm" />
+			<property name="maintainForm.update" value="true" />
+			<property name="maintainForm.delete" value="true" />
+		</applet>
+		<applet name="manageDepartment"
+			description="$m{organization.department.manage}"
+			label="$m{organization.department.manage.label}" icon="door-open"
+			type="manage_entitylist" entity="department" menuAccess="true">
+			<property name="searchTable" value="departmentTable" />
+			<property name="searchTable.new" value="true" />
+			<property name="searchTable.report" value="true" />
+			<property name="searchTable.quickFilter" value="true" />
+			<property name="createForm" value="departmentForm" />
+			<property name="createForm.save" value="true" />
+			<property name="createForm.save.next" value="true" />
+			<property name="createForm.save.close" value="true" />
+			<property name="maintainForm" value="departmentForm" />
+			<property name="maintainForm.update" value="true" />
+			<property name="maintainForm.delete" value="true" />
+		</applet>
+		<applet name="manageRole" description="$m{organization.role.manage}"
+			label="$m{organization.role.manage.label}" icon="user-tag"
+			type="manage_entitylist" entity="role" menuAccess="true">
+			<property name="searchTable" value="roleTable" />
+			<property name="searchTable.new" value="true" />
+			<property name="searchTable.report" value="true" />
+			<property name="searchTable.quickFilter" value="true" />
+			<property name="createForm" value="roleForm" />
+			<property name="createForm.save" value="true" />
+			<property name="createForm.save.next" value="true" />
+			<property name="createForm.save.close" value="true" />
+			<property name="maintainForm" value="roleForm" />
+			<property name="maintainForm.update" value="true" />
+			<property name="maintainForm.delete" value="true" />
+		</applet>
+		<applet name="manageRolePrivilege"
+			description="$m{organization.roleprivilege.manage}"
+			label="$m{organization.roleprivilege.manage.label}" type="manage_entitylist_assign"
+			entity="rolePrivilege" baseField="roleId" assignField="privilegeId">
+			<property name="searchTable" value="rolePrivilegeTable" />
+			<property name="searchTable.edit" value="true" />
+			<property name="assignmentPage" value="rolePrivilegeAssignment" />
+		</applet>
+		<applet name="manageZone" description="$m{organization.zone.manage}"
+			label="$m{organization.zone.manage.label}" icon="globe-africa"
+			type="manage_entitylist" entity="zone" menuAccess="true">
+			<property name="searchTable" value="zoneTable" />
+			<property name="searchTable.new" value="true" />
+			<property name="searchTable.report" value="true" />
+			<property name="searchTable.quickFilter" value="true" />
+			<property name="createForm" value="zoneForm" />
+			<property name="createForm.save" value="true" />
+			<property name="createForm.save.next" value="true" />
+			<property name="createForm.save.close" value="true" />
+			<property name="maintainForm" value="zoneForm" />
+			<property name="maintainForm.update" value="true" />
+			<property name="maintainForm.delete" value="true" />
+		</applet>
+		<applet name="loadZoneData"
+			description="$m{organization.zone.importdata}"
+			label="$m{organization.zone.importdata.label}" icon="file-import"
+			type="data_import" entity="zone" menuAccess="true">
+			<property name="importdata.configName" value="zoneUpload" />
+			<property name="importdata.routeTo.appletName" value="manageZone" />
+		</applet>
+		<applet name="loadBranchData"
+			description="$m{organization.branch.importdata}"
+			label="$m{organization.branch.importdata.label}" icon="file-import"
+			type="data_import" entity="branch" menuAccess="true">
+			<property name="importdata.configName" value="branchUpload" />
+			<property name="importdata.routeTo.appletName" value="manageBranch" />
+		</applet>
+	</applets>
+	<!-- References -->
+	<references>
+		<reference name="zoneRef"
+			description="$m{organization.zone.reference}" entity="zone"
+			searchField="description" />
+		<reference name="departmentRef"
+			description="$m{organization.department.reference}" entity="department"
+			searchField="description" />
+		<reference name="branchRef"
+			description="$m{organization.branch.reference}" entity="branch"
+			searchField="description" />
+		<reference name="roleRef"
+			description="$m{organization.role.reference}" entity="role"
+			searchField="description" />
+		<reference name="rolePrivilegeRef"
+			description="$m{organization.roleprivilege.reference}" entity="rolePrivilege"
+			searchField="description" />
+		<reference name="privilegeCategoryRef"
+			description="$m{organization.privilegecategory.reference}"
+			entity="privilegeCategory" searchField="description" />
+		<reference name="privilegeRef"
+			description="$m{organization.privilege.reference}" entity="privilege"
+			searchField="description" />
+	</references>
+	<!-- Entities -->
+	<entities>
+		<entity name="branch" description="$m{organization.branch}"
+			label="$m{organization.branch.label}"
+			type="com.flowcentraltech.flowcentral.organization.entities.Branch" auditable="true"
+			reportable="true">
+			<field name="zoneId" label="$m{organization.branch.zoneid}" type="ref"
+				filterLabel="$m{organization.branch.zone}"
+				inputWidget="application.entitylist" references="zoneRef" />
+			<field name="code" label="$m{organization.branch.code}" type="string"
+				inputWidget="application.name"  maxLen="16"/>
+			<field name="description" label="$m{organization.branch.description}"
+				type="string" inputWidget="application.text" maxLen="64" />
+			<field name="sortCode" label="$m{organization.branch.sortcode}"
+				type="string" inputWidget="application.text" maxLen="32" nullable="true"/>
+			<field name="headOffice" label="$m{organization.branch.headoffice}"
+				type="boolean" inputWidget="application.checkbox" />
+			<field name="zoneCode" label="$m{organization.branch.zone.code}"
+				type="list_only" key="zoneId" property="code" />
+			<field name="zoneDesc" label="$m{organization.branch.zone.description}"
+				type="list_only" key="zoneId" property="description" />
+			<field name="languageTag"
+				label="$m{organization.branch.zone.languagetag}" type="list_only"
+				key="zoneId" property="languageTag" />
+			<field name="timeZone" label="$m{organization.branch.zone.timezone}"
+				type="list_only" key="zoneId" property="timeZone" />
+			<uniqueConstraint name="codeUc"
+				description="$m{organization.branch.uc.code}" fieldList="code" />
+			<uniqueConstraint name="descUc"
+				description="$m{organization.branch.uc.description}" fieldList="description" />
+			<uniqueConstraint name="sortCodeUc"
+				description="$m{organization.branch.uc.sortcode}" fieldList="sortCode" />
+			<upload name="branchUpload"
+				description="$m{organization.branch.upload.branchupload}"
+				onConstraint="update">
+				<fieldSequence>
+					<entry field="zoneCode" />
+					<entry field="code" />
+					<entry field="description" />
+					<entry field="sortCode" />
+				</fieldSequence>
+			</upload>
+		</entity>
+		<entity name="department" description="$m{organization.department}"
+			label="$m{organization.department.label}"
+			type="com.flowcentraltech.flowcentral.organization.entities.Department"
+			auditable="true" reportable="true">
+			<field name="code" label="$m{organization.department.code}"
+				type="string" inputWidget="application.name" maxLen="16" />
+			<field name="description"
+				label="$m{organization.department.description}" type="string"
+				inputWidget="application.text" maxLen="64" />
+			<uniqueConstraint name="codeUc"
+				description="$m{organization.department.uc.code}" fieldList="code" />
+			<uniqueConstraint name="descUc"
+				description="$m{organization.department.uc.description}"
+				fieldList="description" />
+		</entity>
+		<entity name="privilegeCategory"
+			description="$m{organization.privilegecategory}"
+			label="$m{organization.privilegecategory.label}"
+			type="com.flowcentraltech.flowcentral.organization.entities.PrivilegeCategory"
+			auditable="true" reportable="true">
+			<field name="code" label="$m{organization.privilegecategory.code}"
+				type="string" inputWidget="application.name" maxLen="64" />
+			<field name="description"
+				label="$m{organization.privilegecategory.description}" type="string"
+				inputWidget="application.text" maxLen="96" />
+			<uniqueConstraint name="codeUc"
+				description="$m{organization.privilegecategory.uc.code}" fieldList="code" />
+			<uniqueConstraint name="descUc"
+				description="$m{organization.privilegecategory.uc.description}"
+				fieldList="description" />
+		</entity>
+		<entity name="privilege" description="$m{organization.privilege}"
+			label="$m{organization.privilege.label}"
+			type="com.flowcentraltech.flowcentral.organization.entities.Privilege">
+			<field name="applicationId"
+				label="$m{organization.privilege.applicationid}" type="ref"
+				references="application.applicationRef"
+				filterLabel="$m{organization.privilege.application}"
+				inputWidget="application.entitylist" />
+			<field name="privilegeCategoryId"
+				label="$m{organization.privilege.privilegecategoryid}" type="ref"
+				references="privilegeCategoryRef"
+				filterLabel="$m{organization.privilege.privilegecategory}"
+				inputWidget="application.entitylist" />
+			<field name="code" label="$m{organization.privilege.code}"
+				type="string" inputWidget="application.name" maxLen="64" />
+			<field name="description"
+				label="$m{organization.privilege.description}" type="string"
+				inputWidget="application.text" maxLen="96" />
+			<field name="applicationName" label="$m{organization.privilege.applicationname}"
+				type="list_only" key="applicationId" property="name" />
+			<field name="applicationDesc" label="$m{organization.privilege.applicationdesc}"
+				type="list_only" key="applicationId" property="description" />
+			<field name="privilegeCatCode" label="$m{organization.privilege.privilegecatcode}"
+				type="list_only" key="privilegeCategoryId" property="code" />
+			<field name="privilegeCatDesc" label="$m{organization.privilege.privilegecatdesc}"
+				type="list_only" key="privilegeCategoryId" property="description" />
+			<uniqueConstraint name="codeUc"
+				description="$m{organization.privilege.uc.code}" fieldList="code" />
+		</entity>
+		<entity name="role" description="$m{organization.role}"
+			label="$m{organization.role.label}"
+			type="com.flowcentraltech.flowcentral.organization.entities.Role" auditable="true"
+			reportable="true">
+			<field name="departmentId" label="$m{organization.role.departmentid}"
+				type="ref" references="departmentRef"
+				filterLabel="$m{organization.role.department}"
+				inputWidget="application.entitylist" />
+			<field name="code" label="$m{organization.role.code}" type="string"
+				inputWidget="application.name"  maxLen="16" />
+			<field name="description" label="$m{organization.role.description}"
+				type="string" inputWidget="application.text" maxLen="64"  />
+			<field name="activeAfter" label="$m{organization.role.activeafter}"
+				type="timestamp_utc" inputWidget="application.time" />
+			<field name="activeBefore" label="$m{organization.role.activebefore}"
+				type="timestamp_utc" inputWidget="application.time" />
+			<field name="email" label="$m{organization.role.email}" type="string" maxLen="64"  />
+			<field name="dashboardCode" label="$m{organization.role.dashboard}"
+				type="string" maxLen="64"  nullable="true" />
+			<field name="departmentCode"
+				label="$m{organization.role.department.code}" type="list_only"
+				key="departmentId" property="code" />
+			<field name="departmentDesc"
+				label="$m{organization.role.department.description}" type="list_only"
+				key="departmentId" property="description" />
+			<field name="privilegeList" label="$m{organization.role.privileges}"
+				type="child_list" references="rolePrivilegeRef" />
+			<uniqueConstraint name="codeUc"
+				description="$m{organization.role.uc.code}" fieldList="code" />
+			<uniqueConstraint name="descUc"
+				description="$m{organization.role.uc.description}" fieldList="description" />
+		</entity>
+		<entity name="rolePrivilege"
+			description="$m{organization.roleprivilege}"
+			label="$m{organization.roleprivilege.label}"
+			type="com.flowcentraltech.flowcentral.organization.entities.RolePrivilege">
+			<field name="roleId" label="$m{organization.roleprivilege.roleid}"
+				filterLabel="$m{organization.roleprivilege.role}" type="ref"
+				references="roleRef" inputWidget="application.entitysearch" />
+			<field name="privilegeId"
+				label="$m{organization.roleprivilege.privilegeid}" type="ref"
+				references="privilegeRef" inputWidget="application.entitysearch" />
+			<field name="roleCode" label="$m{organization.roleprivilege.rolecode}"
+				type="list_only" key="roleId" property="code" />
+			<field name="roleDesc" label="$m{organization.roleprivilege.roledesc}"
+				type="list_only" key="roleId" property="description" />
+			<field name="privilegeCode"
+				label="$m{organization.roleprivilege.privilegecode}" type="list_only"
+				key="privilegeId" property="code" />
+			<field name="privilegeDesc"
+				label="$m{organization.roleprivilege.privilegedesc}" type="list_only"
+				key="privilegeId" property="description" />
+			<field name="privilegeCategoryId"
+				label="$m{organization.roleprivilege.privilegecatid}" type="list_only"
+				key="privilegeId" property="privilegeCategoryId"
+				filterLabel="$m{organization.roleprivilege.privilegecat}"
+				references="privilegeCategoryRef" inputWidget="application.entitylist" />
+			<field name="privilegeCatCode"
+				label="$m{organization.roleprivilege.privilegecatcode}" type="list_only"
+				key="privilegeId" property="privilegeCatCode" />
+			<field name="privilegeCatDesc"
+				label="$m{organization.roleprivilege.privilegecatdesc}" type="list_only"
+				key="privilegeId" property="privilegeCatDesc" />
+			<field name="applicationId"
+				label="$m{organization.roleprivilege.applicationid}" type="list_only"
+				key="privilegeId" property="applicationId"
+				filterLabel="$m{organization.roleprivilege.application}"
+				references="application.applicationRef" inputWidget="application.entitylist" />
+			<field name="applicationName"
+				label="$m{organization.roleprivilege.applicationcode}" type="list_only"
+				key="privilegeId" property="applicationName" />
+			<field name="applicationDesc"
+				label="$m{organization.roleprivilege.applicationdesc}" type="list_only"
+				key="privilegeId" property="applicationDesc" />
+			<uniqueConstraint name="privilegeUc"
+				description="$m{organization.roleprivilege.uc.privilege}"
+				fieldList="roleId,privilegeId" />
+		</entity>
+		<entity name="zone" description="$m{organization.zone}"
+			label="$m{organization.zone.label}"
+			type="com.flowcentraltech.flowcentral.organization.entities.Zone" auditable="true"
+			reportable="true">
+			<field name="code" label="$m{organization.zone.code}" type="string"
+				inputWidget="application.name" maxLen="16"  />
+			<field name="description" label="$m{organization.zone.description}"
+				type="string" inputWidget="application.text" maxLen="64"  />
+			<field name="languageTag" label="$m{organization.zone.languagetag}"
+				type="string" inputWidget="application.languagetag" maxLen="64"  nullable="true" />
+			<field name="timeZone" label="$m{organization.zone.timezone}"
+				type="string" inputWidget="application.timezone" maxLen="64"  nullable="true" />
+			<uniqueConstraint name="codeUc"
+				description="$m{organization.zone.uc.code}" fieldList="code" />
+			<uniqueConstraint name="descUc"
+				description="$m{organization.zone.uc.description}" fieldList="description" />
+			<upload name="zoneUpload"
+				description="$m{organization.zone.upload.zoneupload}" onConstraint="update">
+				<fieldSequence>
+					<entry field="code" />
+					<entry field="description" />
+				</fieldSequence>
+			</upload>
+		</entity>
+	</entities>
+	<!-- Tables -->
+	<tables>
+		<table name="branchTable" description="$m{organization.branch.table}"
+			label="$m{organization.branch.table.label}" entity="branch" itemsPerPage="20">
+			<column field="code" renderWidget="application.name"
+				widthRatio="1" linkAct="maintainAct" />
+			<column field="description" renderWidget="application.text"
+				widthRatio="1" linkAct="maintainAct" />
+			<column field="sortCode" renderWidget="application.text"
+				widthRatio="1" />
+			<column field="zoneDesc" renderWidget="application.text"
+				label="$m{organization.branch.zone}" widthRatio="1" />
+			<column field="statusDesc" renderWidget="application.text"
+				label="$m{basestatusentity.field.label.status}" widthRatio="1" />
+			<column field="createDt" renderWidget="application.datetime"
+				widthRatio="1" />
+			<column field="updateDt" renderWidget="application.datetime"
+				widthRatio="1" />
+		</table>
+		<table name="departmentTable"
+			description="$m{organization.department.table}"
+			label="$m{organization.department.table.label}" entity="department"
+			itemsPerPage="20">
+			<column field="code" renderWidget="application.name"
+				widthRatio="1" linkAct="maintainAct" />
+			<column field="description" renderWidget="application.text"
+				widthRatio="1" linkAct="maintainAct" />
+			<column field="statusDesc" renderWidget="application.text"
+				label="$m{basestatusentity.field.label.status}" widthRatio="1" />
+			<column field="createDt" renderWidget="application.datetime"
+				widthRatio="1" />
+			<column field="updateDt" renderWidget="application.datetime"
+				widthRatio="1" />
+		</table>
+		<table name="roleTable" description="$m{organization.role.table}"
+			label="$m{organization.role.table.label}" entity="role" itemsPerPage="20">
+			<column field="code" renderWidget="application.name"
+				widthRatio="1" linkAct="maintainAct" />
+			<column field="description" renderWidget="application.text"
+				widthRatio="1" linkAct="maintainAct" />
+			<column field="departmentDesc" renderWidget="application.text"
+				label="$m{organization.role.department}" widthRatio="1" />
+			<column field="activeAfter" renderWidget="application.time"
+				widthRatio="1" />
+			<column field="activeBefore" renderWidget="application.time"
+				widthRatio="1" />
+			<column field="statusDesc" renderWidget="application.text"
+				label="$m{basestatusentity.field.label.status}" widthRatio="1" />
+			<column field="createDt" renderWidget="application.datetime"
+				widthRatio="1" />
+			<column field="updateDt" renderWidget="application.datetime"
+				widthRatio="1" />
+		</table>
+		<table name="rolePrivilegeTable"
+			description="$m{organization.roleprivilege.table}"
+			label="$m{organization.roleprivilege.table.label}" entity="rolePrivilege"
+			itemsPerPage="20">
+			<column field="applicationDesc" renderWidget="application.text"
+				label="$m{organization.roleprivilege.application}" widthRatio="1" />
+			<column field="privilegeCatDesc" renderWidget="application.text"
+				label="$m{organization.roleprivilege.privilegecat}" widthRatio="1" />
+			<column field="privilegeDesc" renderWidget="application.text"
+				label="$m{organization.roleprivilege.privilege}" widthRatio="1" />
+			<column field="updatedBy" renderWidget="application.text"
+				label="$m{organization.roleprivilege.grantedby}" widthRatio="1" />
+			<column field="updateDt" renderWidget="application.datetime"
+				widthRatio="1" />
+		</table>
+		<table name="zoneTable" description="$m{organization.zone.table}"
+			label="$m{organization.zone.table.label}" entity="zone" itemsPerPage="20">
+			<column field="code" renderWidget="application.name"
+				widthRatio="1" linkAct="maintainAct" />
+			<column field="description" renderWidget="application.text"
+				widthRatio="1" linkAct="maintainAct" />
+			<column field="languageTag" renderWidget="application.text"
+				widthRatio="1" />
+			<column field="timeZone" renderWidget="application.text"
+				widthRatio="1" />
+			<column field="statusDesc" renderWidget="application.text"
+				label="$m{basestatusentity.field.label.status}" widthRatio="1" />
+			<column field="createDt" renderWidget="application.datetime"
+				widthRatio="1" />
+			<column field="updateDt" renderWidget="application.datetime"
+				widthRatio="1" />
+		</table>
+	</tables>
+	<!-- Forms -->
+	<forms>
+		<form name="branchForm" description="$m{organization.branch.form}"
+			entity="branch">
+			<tab name="basicDetails"
+				label="$m{organization.branch.form.basicdetails}" contentType="miniform">
+				<section name="branchDetails" columns="type_2">
+					<field name="zoneId" inputWidget="application.entitylist" column="0"
+						label="$m{organization.branch.zone}" required="true" />
+					<field name="code" inputWidget="application.name" column="0"
+						required="true" />
+					<field name="description" inputWidget="application.text"
+						column="0" required="true" />
+					<field name="sortCode" inputWidget="application.name" column="1" />
+					<field name="headOffice" inputWidget="application.checkbox"
+						column="1" />
+					<field name="status" inputWidget="application.enumlist" column="1"
+						required="true" />
+				</section>
+			</tab>
+			<tab name="zoneDetails" label="$m{organization.branch.form.zonedetails}"
+				contentType="miniform" disabled="true">
+				<section name="zoneDetails" columns="type_2">
+					<field name="zoneCode" inputWidget="application.name" column="0" />
+					<field name="zoneDesc" inputWidget="application.text" column="0"
+						label="$m{organization.branch.zone}" />
+					<field name="languageTag" inputWidget="application.languagetag"
+						column="1" />
+					<field name="timeZone" inputWidget="application.timezone" column="1" />
+				</section>
+			</tab>
+			<tab name="changeLog" label="$m{application.form.audit}"
+				contentType="miniform_changelog" />
+		</form>
+		<form name="departmentForm"
+			description="$m{organization.department.form}" entity="department">
+			<tab name="basicDetails"
+				label="$m{organization.department.form.basicdetails}" contentType="miniform">
+				<section name="departmentDetails" columns="type_2">
+					<field name="code" inputWidget="application.name" column="0"
+						required="true" />
+					<field name="description" inputWidget="application.text"
+						column="0" required="true" />
+					<field name="status" inputWidget="application.enumlist" column="1"
+						required="true" />
+				</section>
+			</tab>
+			<tab name="changeLog" label="$m{application.form.audit}"
+				contentType="miniform_changelog" />
+			<relatedList name="relRole"
+				description="$m{organization.department.form.related.role.description}"
+				label="$m{organization.department.form.related.role.label}"
+				applet="manageRole" />
+		</form>
+		<form name="roleForm" description="$m{organization.role.form}"
+			entity="role">
+			<tab name="basicDetails" label="$m{organization.role.form.basicdetails}"
+				contentType="miniform">
+				<section name="roleDetails" columns="type_2">
+					<field name="departmentId"
+						label="$m{organization.role.department}" column="0" required="true" />
+					<field name="code" inputWidget="application.name" column="0"
+						required="true" />
+					<field name="description" inputWidget="application.text"
+						column="0" required="true" />
+					<field name="email" inputWidget="application.text" column="0" />
+					<field name="activeAfter" inputWidget="application.time" column="1" />
+					<field name="activeBefore" inputWidget="application.time" column="1" />
+					<field name="dashboardCode" inputWidget="application.text"
+						column="1" />
+					<field name="status" inputWidget="application.enumlist" column="1"
+						required="true" />
+				</section>
+			</tab>
+			<tab name="privileges" label="$m{organization.role.form.privileges}"
+				contentType="child_list" applet="manageRolePrivilege"
+				reference="privilegeList" />
+			<tab name="departmentDetails"
+				label="$m{organization.role.form.departmentdetails}" contentType="miniform"
+				disabled="true">
+				<section name="departmentDetails" columns="type_2">
+					<field name="departmentCode" inputWidget="application.name"
+						column="0" />
+					<field name="departmentDesc" inputWidget="application.text"
+						label="$m{organization.role.department}" column="1" />
+				</section>
+			</tab>
+			<tab name="changeLog" label="$m{application.form.audit}"
+				contentType="miniform_changelog" />
+			<fieldValidationPolicy name="emailValidation"
+				description="$m{organization.role.form.fieldvalidationpolicy.email}"
+				fieldName="email" validator="fc-emailvalidator" />
+		</form>
+		<form name="zoneForm" description="$m{organization.zone.form}"
+			entity="zone">
+			<tab name="basicDetails" label="$m{organization.zone.form.basicdetails}"
+				contentType="miniform">
+				<section name="zoneDetails" columns="type_2">
+					<field name="code" inputWidget="application.name" column="0"
+						required="true" />
+					<field name="description" inputWidget="application.text"
+						column="0" required="true" />
+					<field name="languageTag" inputWidget="application.languagetag"
+						column="1" />
+					<field name="timeZone" inputWidget="application.timezone" column="1" />
+					<field name="status" inputWidget="application.enumlist" column="1"
+						required="true" />
+				</section>
+			</tab>
+			<tab name="changeLog" label="$m{application.form.audit}"
+				contentType="miniform_changelog" />
+			<relatedList name="relBranch"
+				description="$m{organization.zone.form.related.branch.description}"
+				label="$m{organization.zone.form.related.branch.label}"
+				applet="manageBranch" />
+		</form>
+	</forms>
+	<!-- Assignment Pages -->
+	<assignmentPages>
+		<assignmentPage name="rolePrivilegeAssignment"
+			description="$m{organization.role.privilege.assignment}"
+			label="$m{organization.role.privilege.assignment}" entity="rolePrivilege"
+			commitPolicy = "roleprivilge-assignmentcommitpolicy"
+			baseField="roleId" assignField="privilegeId"
+			filterCaption1="$m{organization.role.privilege.category}"
+			filterCaption2="$m{organization.role.privilege.application}"
+			filterList1="privilegecategorylist" filterList2="applicationlist"
+			assignCaption="$m{organization.role.privilege.assigned}"
+			unassignCaption="$m{organization.role.privilege.available}"
+			assignList="privilegeinlist" unassignList="privilegenotinlist" />
+	</assignmentPages>
+</application>

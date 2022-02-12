@@ -1,0 +1,36 @@
+// UPL template for child panel
+// Copyright (c) 2019, 2021, FlowCentral Technologies.
+// All rights reserved.
+// 
+// PROPRIETARY AND CONFIDENTIAL. USE IS SUBJECT TO LICENSE TERMS.
+
+!fc-childpanel layout:$d{!ui-vertical style:$s{width:100%;} cellStyle:$s{padding:0px;}}
+	components:$c{formMessages headerBar childFormPanel}
+
+// Messages
+!fc-formmessages:formMessages binding:messages
+
+// Header Bar
+!ui-panel:headerBar styleClass:$s{hdbar} layout:$d{!ui-horizontal style:$s{width:100%;}}
+	components:$c{headerLeftPanel}
+
+!ui-panel:headerLeftPanel style:$s{display:inline-block; float:left;} layout:$d{!ui-horizontal cellType:middle cellStyle:$s{padding-right:8px;}}
+	components:$c{titleBlock createBtn editBtn viewBtn}
+!ui-panel:titleBlock style:$s{display:inline-block;} components:$c{title subTitle}
+!ui-label:title styleClass:$s{hdtitle} binding:entitySubTitle
+!ui-label:subTitle styleClass:$s{hdsubtitle} binding:entityTitle
+!ui-button:createBtn styleClass:$e{fc-bluebutton} caption:$m{button.create}
+	eventHandler:$d{!ui-event event:onclick action:$c{createAct}} binding:$s{childTabIndex}
+!ui-button:editBtn styleClass:$e{fc-bluebutton} caption:$m{button.edit.ellipsis}
+	eventHandler:$d{!ui-event event:onclick action:$c{editAct}} binding:$s{childTabIndex}
+!ui-button:viewBtn styleClass:$e{fc-bluebutton} caption:$m{button.view.ellipsis}
+	eventHandler:$d{!ui-event event:onclick action:$c{editAct}} binding:$s{childTabIndex}
+
+// Form
+!ui-panel:childFormPanel components:$c{childMiniForm}
+!fc-miniform:childMiniForm binding:childForm
+
+// Actions
+!ui-post:createAct path:$p{/newChildItem}
+!ui-post:editAct path:$p{/editChildItem}
+	

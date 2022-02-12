@@ -1,0 +1,26 @@
+// UPL template for review wizard work items applet panel
+// Copyright (c) 2019, 2021, FlowCentral Technologies.
+// All rights reserved.
+// 
+// PROPRIETARY AND CONFIDENTIAL. USE IS SUBJECT TO LICENSE TERMS.
+
+!fc-reviewwizardworkitemsappletpanel components:$c{entitySearchPanel}
+	moreActionButtons:$c{prevStepBtn nextStepBtn}
+
+// Search list
+!fc-entitysearchpanel:entitySearchPanel binding:entitySearch
+	newInstEventHandler:$d{!ui-event event:onclick action:$c{newAct}}
+	searchResultMarker:$j{com.flowcentraltech.flowcentral.application.web.panels.EntitySearchValueMarkerConstants.DEFAULT_LIST}
+
+// Previous/Next
+!ui-button:prevStepBtn caption:$m{button.previous}
+	eventHandler:$d{!ui-event event:onclick action:$c{prevStepAct}}
+!ui-button:nextStepBtn caption:$m{button.next}
+	eventHandler:$d{!ui-event event:onclick action:$c{nextStepAct}}
+
+// Actions
+!ui-postcommand:newAct command:newInst
+!ui-postcommand:decisionAct command:maintain debounce:true
+!ui-postcommand:prevStepAct command:previousStep
+!ui-postcommand:nextStepAct command:nextStep components:$c{formPanel}
+

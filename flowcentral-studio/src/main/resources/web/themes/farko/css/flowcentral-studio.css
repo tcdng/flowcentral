@@ -1,0 +1,192 @@
+/*
+ * Copyright (c) 2019, 2021, FlowCentral Technologies.
+ * All rights reserved.
+ * 
+ * PROPRIETARY AND CONFIDENTIAL. USE IS SUBJECT TO LICENSE TERMS.
+ */
+
+/* flowCentral studio CSS */
+
+/* CRUD dialog */
+.fc-cruddialog {}
+.fc-cruddialog .ui-table .twin {border: none;}
+.fc-cruddialog .ui-table .teven {background-color: #f8f8f8;}
+.fc-cruddialog .ui-table .thframe {background-color: #ffffff;}
+.fc-cruddialog .ui-table .thead {background-color: transparent;}
+.fc-cruddialog .ui-table .thead th {font-weight: bold;border-right: none;}
+.fc-cruddialog .ui-table .ttable {border: none;}
+.fc-cruddialog .ui-table .ttable td {height:24px; padding: 8px 2px;border: none;border-top: 1px solid #e8e8e8;border-bottom: 1px solid #e8e8e8;}
+.fc-cruddialog .ui-table .tbody {overflow: auto;}
+.fc-cruddialog .ui-table .tsel { background-color: #e2ecff;}
+
+/* Top Banner */
+.fc-topbannerswitch {float: right;margin-right: 40px;}
+
+/* Tab sheet */
+.fc-tabsheet .tactive {border-top: 3px solid #e36209;}
+
+/* Studio */
+.fc-applicationlabel {color: #a0a0a0; font-size:16px;}
+
+/* Studio Menu */
+.fc-studiomenu {height: 100%; max-height: calc(100vh - 40px) !important; background-color: #24303f; color:#ffffff;font-size: 11px;}
+.fc-studiomenu .mheader {height: 24px;background-color: #3e4a59;}
+.fc-studiomenu .mheader span {display: block;padding:6px 12px; font-weight:bold;color:#d9d9d9;font-size: 10px;}
+.fc-studiomenu .mbody {height: calc(100vh - 62px) !important;max-height: calc(100vh - 62px) !important;overflow-y:scroll;}
+.fc-studiomenu .menucatbar {background-color: #14202f;width: 68px;}
+.fc-studiomenu .menucat {width: 80px; padding: 6px 2px 6px 8px; box-sizing: border-box; cursor:pointer;}
+.fc-studiomenu .menucat:hover {background-color: #3e4a59;}
+.fc-studiomenu .menucat .symcat {display:block;padding: 4px;font-size: 16px;}
+.fc-studiomenu .menucat .labelcat {display:block;font-size: 10px;font-style: italic;word-wrap: break-word;}
+.fc-studiomenu .activecat {}
+.fc-studiomenu .menucatcap {margin: 0px 4px; padding: 2px 4px;color: #b0b0b0; font-size: 10px;}
+.fc-studiomenu .menu {}
+.fc-studiomenu .menu ul {list-style-type: none;}
+.fc-studiomenu .menu li {padding:8px; cursor:pointer;}
+.fc-studiomenu .menu li:hover {background-color: #3e4a59;}
+.fc-studiomenu .menu span {}
+
+/** Table Editor */
+.fc-tableeditor {height:100%;}
+.fc-tableeditor .fields {height:100%;}
+.fc-tableeditor .fields .hdr {position:-webkit-sticky; position:sticky; top:0px; left:0px; padding:4px;background-color:#505965;
+	text-align:center;color:#ffffff;font-weight:bold;}
+.fc-tableeditor .fields .bdy {background-color:#f0f0f0;border: solid 1px #c8c8c8;height:100%;overflow-y:scroll;max-height:calc(100vh - 172px);}
+.fc-tableeditor .fields .fld {border: solid 1px #909090;box-sizing: border-box; background-color:#ffffff; margin:4px 4px; padding:4px;cursor:grab;}
+.fc-tableeditor .fields .fld span {font-weight:bold; color:#404040;pointer-events:none;}
+.fc-tableeditor .design {height:100%;}
+.fc-tableeditor .designbase {display:flex;flex-wrap:nowrap;padding:16px;height: 360px; width: 100%; box-sizing: border-box; overflow-x: auto;}
+.fc-tableeditor .drag {position:fixed;zIndex:400;opacity:0.7;}
+.fc-tableeditor .slot {display:inline-block;height:260px;padding:2px;margin:0px 2px;box-sizing: border-box;border: solid 1px #909090; background-color:#f3f3f3;}
+.fc-tableeditor .slothdr {border-bottom: solid 1px #909090;background-color:#505965;
+	 font-weight:bold; color:#ffffff; font-size:7pt;}
+.fc-tableeditor .slotcap {display:inline-block; width: 86px; cursor:grab;}
+.fc-tableeditor .slotcap span {display:block; text-align:center;margin:2px 4px;white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+.fc-tableeditor .slotact {display:inline-block; width:30px;text-align: right;white-space: nowrap; overflow: hidden;text-overflow: ellipsis; margin: 2px 0px;}
+.fc-tableeditor .actbtn {padding:2px 2px; min-height:14px; min-width:14px; color:#ffffff; font-size:8px;cursor: pointer;}
+.fc-tableeditor .itm {width:110px; margin:2px; padding: 2px 1px;font-size:6pt;}
+.fc-tableeditor .itmlabel {display:block; font-weight:bold; color:#000000;white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+.fc-tableeditor .itmval {display:block; color:#404040;white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+
+.fc-tableeditor .placeslot {display:inline-block; box-sizing: border-box; width:122px; min-width:122px; height:184px;
+	margin:0px 2px;border: dashed 2px #8090f0;background-color:#b7c1f6;color:#8090f0;}
+.fc-tableeditor .placeslot .plus {display:block; margin-top:20px; font-weight:bold; font-size:20pt; text-align:center;}
+.fc-tableeditor .placeslot .label {display:block; margin:4px 8px; font-weight:bold; text-align:center;}
+
+.tabletabsheet {height: calc(100% - 32px);}
+.tabletabsheet .tbody {height:100%;}
+
+/** Table preview panel */
+.fc-tablepreviewpanel {}
+.fc-tablepreviewpanel .hdbar {background-color: #e3e7ea;}
+
+/** Table editor page panel */
+.fc-tableeditorpagepanel {height:100%;}
+.fc-tableeditorpagepanel .hdbar {background-color: #e3e7ea;}
+.fc-tableeditorpagepanel .hdtitle {display: block;font-weight:bold;}
+.fc-tableeditorpagepanel .hdsubtitle {display: block;font-size:8pt;}
+.fc-tableeditorpagepanel .editcollabel {width: 100px; white-space: nowrap;overflow: hidden;text-overflow: ellipsis;}				
+
+/** Form Editor */
+.fc-formeditor {height:100%;}
+.fc-formeditor .fields {height:100%;}
+.fc-formeditor .fields .hdr {position:-webkit-sticky; position:sticky; top:0px; left:0px; padding:4px;background-color:#505965;
+	text-align:center;color:#ffffff;font-weight:bold;}
+.fc-formeditor .fields .bdy {background-color:#f0f0f0;border: solid 1px #c8c8c8;height:100%;overflow-y:scroll;max-height:calc(100vh - 172px);}
+.fc-formeditor .fields .fld {display:none;border: solid 1px #909090; background-color:#ffffff; margin:4px 4px; padding:4px;cursor:grab;}
+.fc-formeditor .fields .fld span {font-weight:bold; color:#404040;pointer-events:none;}
+.fc-formeditor .design {height:100%;}
+.fc-formeditor .designbase {display:block;padding:4px;width: 100%;box-sizing: border-box;height:100%;overflow-y:scroll;max-height:calc(100vh - 172px);}
+.fc-formeditor .drag {position:fixed;zIndex:400;opacity:0.7;}
+.fc-formeditor .grab {cursor:grab;}
+
+.fc-formeditor .tab {display:block;min-height:80px;box-sizing: border-box;padding:2px;margin-bottom:8px; background-color:#ffffff;border: solid 1px #c8c8c8;}
+.fc-formeditor .tabhdr {border-bottom: solid 1px #909090;background-color:#505965;
+	 font-weight:bold; color:#ffffff; font-size:8pt;}	 
+.fc-formeditor .secdesign {display:block;padding:4px 4px 4px 20px;min-height:80px;box-sizing: border-box;}
+.fc-formeditor .secdesignz {background-color: #f0f0f0;}
+.fc-formeditor .sec {display:block;min-height:80px;box-sizing: border-box;padding:2px;margin-bottom:8px; background-color:#ffffff;border: solid 1px #c8c8c8;}
+.fc-formeditor .sechdr {border-bottom: solid 1px #909090;background-color:#666E79;
+	 font-weight:bold; color:#ffffff; font-size:8pt;}
+.fc-formeditor .elcap {display:inline-block; width: calc(100% - 220px);}
+.fc-formeditor .elcap span {display:block; text-align:left;margin:2px 4px;white-space:nowrap; overflow:hidden; text-overflow:ellipsis;pointer-events:none;}
+.fc-formeditor .elact {display:inline-block; width:220px;text-align: right;white-space: nowrap; overflow: hidden;text-overflow: ellipsis; margin: 2px 0px;}
+.fc-formeditor .txtbtn {background-color:transparent;font-size:9px; font-weight:bolder; color:#ffffff;padding:0px 2px;
+	margin-right:4px; min-height:14px; min-width:14px; border:none; border-bottom:1px solid #ffffff; cursor: pointer !important;}
+.fc-formeditor .actbtn {color:#ffffff; padding:2px 2px; min-height:14px; min-width:14px; font-size:10px; cursor: pointer !important;}
+
+.fc-formeditor .placetab {display:block; box-sizing: border-box; height:72px;
+	margin:2px;border: dashed 2px #8090f0;background-color:#b7c1f6;color:#8090f0;}
+.fc-formeditor .placetab .plus {display:block; margin-top:10px; font-weight:bold; font-size:20pt; text-align:center;}
+.fc-formeditor .placetab .label {display:block; margin:4px 8px; font-weight:bold; text-align:center;}
+
+.fc-formeditor .flddesign {display:block;padding:4px;min-height:80px;box-sizing: border-box;}
+.fc-formeditor .fld {display:block;padding:2px; margin-bottom:4px; box-sizing: border-box; background-color:#ffffff;border: solid 1px #c8c8c8;}
+.fc-formeditor .fldhdr {font-weight:bold; font-size:8pt;}
+.fc-formeditor .fldcap {display: inline-block; background-color: #efefef; color: #404040; width: calc(100% - 48px); border: 1px solid #dfdfdf;}
+.fc-formeditor .fldcap span {display:block; text-align:left;margin:2px 4px;white-space:nowrap; overflow:hidden; text-overflow:ellipsis;pointer-events:none;}
+.fc-formeditor .fldcapz {width:100%;box-sizing: border-box;}
+.fc-formeditor .fldact {display:inline-block; width:42px;text-align: right;white-space: nowrap; overflow: hidden;text-overflow: ellipsis; margin: 2px 0px;}
+.fc-formeditor .fldbtn {color:#404040; padding:2px 2px; min-height:14px; min-width:14px; font-size:10px; cursor: pointer !important;}
+
+.fc-formeditor .placefield {display:block; box-sizing: border-box; height:28px;
+	margin:2px;border: dashed 2px #8090f0;background-color:#b7c1f6;color:#8090f0;}
+.fc-formeditor .placefield .plus {display:block; margin-top:1px; font-weight:bold; font-size:4pt; text-align:center;}
+.fc-formeditor .placefield .label {display:block; margin:1px 2px; font-weight:bold; font-size:6pt; text-align:center;}
+
+.formtabsheet {height: calc(100% - 32px);}
+.formtabsheet .tbody {height:100%;}
+
+/** Form preview panel */
+.fc-formpreviewpanel {}
+.fc-formpreviewpanel .hdbar {background-color: #e3e7ea;}
+.fc-formpreviewpanel .cltabsection {width:100%;margin-top:10px; padding:10px; box-sizing: border-box;}
+
+/** Form editor page panel */
+.fc-formeditorpagepanel {height:100%;}
+.fc-formeditorpagepanel .hdbar {background-color: #e3e7ea;}
+.fc-formeditorpagepanel .hdtitle {display: block;font-weight:bold;}
+.fc-formeditorpagepanel .hdsubtitle {display: block;font-size:8pt;}
+.fc-formeditorpagepanel .editlabel {width: 120px; white-space: nowrap;overflow: hidden;text-overflow: ellipsis;vertical-align: middle;}	
+
+.fc-formtabeditorpanel {}
+
+.fc-formsectioneditorpanel {}			
+
+.fc-editortitle {color:#ffffff; background-color: #24303f;font-size:8pt; padding: 4px; font-weight: bold;}
+
+/* Studio application component applet panel*/
+.fc-studioappcomponentappletpanel {}
+
+/* Switch application dialog panel */
+.fc-switchapplicationdialogpanel {}	
+.fc-switchapplicationdialogpanel .createtitle {display: block;font-weight:bold; padding: 4px 4px; color: #24303f;
+	background-color: #f2f2f2; margin-bottom: 8px; font-size: 16px; font-weight: normal;}
+
+/** Workflow Editor */
+.fc-workfloweditor {height:100%;}
+.fc-workfloweditor .tools .hdr {position:-webkit-sticky; position:sticky; top:0px; left:0px; padding:4px;background-color:#6f6f6f;
+	text-align:center;color:#ffffff;font-weight:bold;}
+.fc-workfloweditor .tools .bdy {background-color:#f0f0f0;border: solid 1px #c8c8c8; height:100%; overflow-y:auto;}
+.fc-workfloweditor .tools .item {border: solid 1px #909090;box-sizing: border-box; background-color:#ffffff; margin:4px 4px; padding:4px;cursor:grab;}
+.fc-workfloweditor .tools .item span {font-weight:bold; color:#404040;pointer-events:none;}
+.fc-workfloweditor .tools .symcat {display:block;padding: 4px;font-size: 16px;}
+.fc-workfloweditor .tools .labelcat {display:block;font-size: 10px;font-style: italic;word-wrap: break-word;}
+.fc-workfloweditor .design {height:100%;max-height: calc(100vh - 134px)}
+.fc-workfloweditor .designbase {display:block;padding:4px;width: 100%;height:100%;box-sizing: border-box;}
+.fc-workfloweditor .drag {position:fixed;zIndex:400;opacity:0.7;}
+.fc-workfloweditor .canvas {}
+
+/** Form editor page panel */
+.fc-workfloweditorpagepanel {height:100%;}
+.fc-workfloweditorpagepanel .hdbar {background-color: #e3e7ea;}
+.fc-workfloweditorpagepanel .hdtitle {display: block;font-weight:bold;}
+.fc-workfloweditorpagepanel .hdsubtitle {display: block;font-size:8pt;}
+.fc-workfloweditorpagepanel .editlabel {width: 120px; white-space: nowrap;overflow: hidden;text-overflow: ellipsis;vertical-align: middle;}	
+
+.fc-wfstepeditpanel {}
+
+.fc-wfstepuseractionscrudpanel {width:720px;}
+
+.fc-wfstepsetvaluespanel {width:580px;}
+.fc-wfstepsetvaluespanel .llabelinl {vertical-align:top;}

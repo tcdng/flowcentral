@@ -1,0 +1,62 @@
+// UPL template for licensing page.
+// Copyright (c) 2019, 2021, FlowCentral Technologies.
+// All rights reserved.
+// 
+// PROPRIETARY AND CONFIDENTIAL. USE IS SUBJECT TO LICENSE TERMS.
+
+!ui-page caption:$m{licensingpage.title} components:$c{basePanel}
+
+// Base panel
+!ui-panel:basePanel layout:$d{!ui-vertical style:$s{width:100%;}} components:$c{headerBar licensingPanel}
+
+// Header
+!ui-panel:headerBar layout:$d{!ui-horizontal style:$s{width:100%;} cellType:bottom}
+	components:$c{licensingLabel actionPanel} 
+	
+!ui-label:licensingLabel styleClass:$e{fc-largelabel} caption:$m{licensingpage.header.title}
+!ui-panel:actionPanel layout:$d{!ui-horizontal style:$s{float:right;} cellType:middle}
+	components:$c{licenceRequestBtn loadLicenceBtn}
+!ui-button:licenceRequestBtn styleClass:$e{fc-bluebutton} caption:$m{button.licenserequest}
+	eventHandler:$d{!ui-event event:onclick action:$c{licenseRequestAct}}
+!ui-button:loadLicenceBtn styleClass:$e{fc-greenbutton} caption:$m{button.loadlicense}
+	eventHandler:$d{!ui-event event:onclick action:$c{loadLicenseAct}}
+
+// Licensing panel
+!ui-panel:licensingPanel styleClass:$e{fc-licenseoptions} components:$c{licensingCaption licensingBodyPanel}
+!ui-label:licensingCaption styleClass:$e{label} caption:$m{licensingpage.licensingdetails.caption}
+!ui-panel:licensingBodyPanel layout:$d{!ui-vertical style:$s{width:100%;} showCaption:true cellStyle:$s{padding:5px 2px;}}
+	components:$c{licensingType licensingClientTitle licenseEntryPanel}	
+!ui-text:licensingType caption:$m{licensingpage.licensingdetails.type}
+	styleClass:$e{txt} binding:type readOnly:true
+!ui-text:licensingClientTitle caption:$m{licensingpage.licensingdetails.clienttitle}
+	styleClass:$e{txt} binding:clientTitle readOnly:true
+     
+!ui-tablepanel:licenseEntryPanel styleClass:$e{fc-tablepanel} layout:$d{!ui-vertical style:$s{table-layout:fixed;width:100%;}}
+    tableSerialNumbers:true tableSerialNumberSymbol:$s{} tableBinding:entryList
+    tableColumnList:$c{featureCode featureDesc issueDate expiryDate capacity status}
+ 	tableRowSelectable:false tableWindowed:false tablePagination:false tableMultiSelect:false tableSortable:false
+!ui-label:featureCode caption:$m{licensingpage.licensingdetails.code} binding:featureCode
+    columnStyle:$s{width:160px;}
+!ui-label:featureDesc caption:$m{licensingpage.licensingdetails.description} binding:featureDesc
+    columnStyle:$s{width:160px;}
+!ui-label:issueDate caption:$m{licensingpage.licensingdetails.issuedate} binding:issueDate
+    columnStyle:$s{width:160px;} formatter:$d{!fixeddatetimeformat pattern:$s{yyyy-MM-dd HH:mm:ss}}
+!ui-label:expiryDate caption:$m{licensingpage.licensingdetails.expirydate} binding:expiryDate
+    columnStyle:$s{width:160px;} formatter:$d{!fixeddatetimeformat pattern:$s{yyyy-MM-dd HH:mm:ss}}
+!ui-label:capacity caption:$m{licensingpage.licensingdetails.capacity} binding:capacity
+    columnStyle:$s{width:160px;text-align:right;}
+!ui-listlabel:status caption:$m{licensingpage.licensingdetails.status} binding:status
+    list:$s{licensestatuslist} columnStyle:$s{width:160px;}
+
+// Generate license request popup
+!fc-generatelicenserequestpanel:generateRequestPopup
+	generateLicenceReqPath:$n{/generateLicenseRequest}
+
+// Load license popup
+!fc-loadlicensepanel:loadLicensePopup
+	loadLicenceReqPath:$n{/loadLicense}
+	
+// Actions
+!ui-post:licenseRequestAct path:$n{/prepareGenerateLicenseRequest}
+!ui-post:loadLicenseAct path:$n{/prepareLoadLicense}
+	

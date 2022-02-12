@@ -1,0 +1,30 @@
+// UPL template for property search panel
+// Copyright (c) 2019, 2021, FlowCentral Technologies.
+// All rights reserved.
+// 
+// PROPRIETARY AND CONFIDENTIAL. USE IS SUBJECT TO LICENSE TERMS.
+
+!fc-propertysearchpanel layout:$d{!ui-vertical}
+	components:$c{headerBar searchResultTbl}
+
+// Header Bar
+!ui-panel:headerBar styleClass:$s{hdbar} layout:$d{!ui-horizontal style:$s{width:100%;}}
+	components:$c{headerLeftPanel}
+	
+!ui-panel:headerLeftPanel style:$s{display:inline-block; float:left;}
+	layout:$d{!ui-horizontal cellType:middle cellStyle:$s{padding-right:8px;}}
+	components:$c{titleBlock editBtn viewBtn}
+!ui-panel:titleBlock style:$s{display:inline-block;} components:$c{title subTitle}
+!ui-label:title styleClass:$s{hdtitle} binding:entityTitle
+!ui-label:subTitle styleClass:$s{hdsubtitle} binding:entitySubTitle
+!ui-button:editBtn styleClass:$e{fc-bluebutton} caption:$m{button.edit.ellipsis}
+	eventHandler:$f{editInstEventHandler} binding:$f{editBtnBinding}
+!ui-button:viewBtn styleClass:$e{fc-bluebutton} caption:$m{button.view.ellipsis}
+	eventHandler:$f{editInstEventHandler} binding:$f{editBtnBinding}
+
+// Search result panel
+!ui-panel:searchResultPanel layout:$d{!ui-vertical style:$s{width:100%;}} components:$c{searchResultTbl}
+!fc-beantable:searchResultTbl binding:beanTable
+
+// Actions
+

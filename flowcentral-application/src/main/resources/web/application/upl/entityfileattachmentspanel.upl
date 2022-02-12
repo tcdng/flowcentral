@@ -1,0 +1,21 @@
+// UPL template for entity file attachment panel
+// Copyright (c) 2019, 2021, FlowCentral Technologies.
+// All rights reserved.
+// 
+// PROPRIETARY AND CONFIDENTIAL. USE IS SUBJECT TO LICENSE TERMS.
+
+!fc-entityfileattachmentspanel
+    dialogCaption:$m{entityfileattachmentspanel.title}
+    dialogBodyComponents:$c{attachmentsPanel}
+    dialogActionComponents:$c{closeBtn}
+    fileAttachmentHandler:$j{com.flowcentraltech.flowcentral.application.constants.ApplicationModuleNameConstants.WORKENTITY_FILE_ATTACHMENTS_HANDLER}
+    closeEventHandler:$d{!ui-event event:onclick action:$c{closeDialogAct}}
+
+// Attachments panel
+!ui-panel:attachmentsPanel styleClass:$e{abody} components:$c{frmAttachmentList}
+!ui-fileattachment:frmAttachmentList binding:fileAttachmentsInfo
+    handler:$f{fileAttachmentHandler}
+
+// Action components
+!ui-button:closeBtn styleClass:$e{ui-button-alert} caption:$m{button.done}
+    eventHandler:$f{closeEventHandler}

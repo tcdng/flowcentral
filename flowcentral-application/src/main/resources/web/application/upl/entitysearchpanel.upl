@@ -1,0 +1,143 @@
+// UPL template for entity search panel
+// Copyright (c) 2019, 2021, FlowCentral Technologies.
+// All rights reserved.
+// 
+// PROPRIETARY AND CONFIDENTIAL. USE IS SUBJECT TO LICENSE TERMS.
+
+!fc-entitysearchpanel layout:$d{!ui-vertical}
+	components:$c{headerBar searchFilterPanel searchEntriesPanel searchResultPanel footerActionPanel}
+
+// Header Bar
+!ui-panel:headerBar styleClass:$s{hdbar} layout:$d{!ui-horizontal style:$s{width:100%;}}
+	components:$c{headerLeftPanel headerRightPanel}
+	
+!ui-panel:headerLeftPanel style:$s{display:inline-block; float:left;} layout:$d{!ui-horizontal cellType:middle cellStyle:$s{padding-right:8px;}}
+	components:$c{titleBlock newBtn editBtn viewBtn quickFilterBlock}
+!ui-panel:titleBlock style:$s{display:inline-block;} components:$c{title subTitle}
+!ui-label:title styleClass:$s{hdtitle} binding:entitySubTitle
+!ui-label:subTitle styleClass:$s{hdsubtitle} binding:entityTitle
+!ui-button:newBtn styleClass:$e{fc-bluebutton}
+	caption:$m{button.new} captionBinding:entityNewLabel
+	eventHandler:$f{newInstEventHandler} binding:$f{newBtnBinding}
+!ui-button:editBtn styleClass:$e{fc-bluebutton} caption:$m{button.edit.ellipsis}
+	eventHandler:$f{editInstEventHandler} binding:$f{editBtnBinding}
+!ui-button:viewBtn styleClass:$e{fc-bluebutton} caption:$m{button.view.ellipsis}
+	eventHandler:$f{editInstEventHandler} binding:$f{editBtnBinding}
+!ui-panel:quickFilterBlock layout:$d{!ui-horizontal cellType:middle} components:$c{quickFilterTitle quickFilter}
+!ui-label:quickFilterTitle caption:$m{entitysearchpanel.quickfilter}
+!ui-select:quickFilter list:$s{appletquickfilterlist} blankOption:$s{}
+	listParams:$l{appAppletId} binding:appAppletFilterId ignoreParentState:true
+    eventHandler:$d{!ui-event event:onchange action:$c{quickFilterAct}}
+
+!ui-panel:headerRightPanel style:$s{display:inline-block; float:right;} layout:$d{!ui-horizontal cellType:middle}
+	components:$c{reportBtn refreshBtn fastBackBtn backBtn displayStart paginationLabel forwardBtn fastForwardBtn}
+!ui-button:reportBtn styleClass:$e{fc-greenbutton} caption:$m{button.report}
+	eventHandler:$f{reportEventHandler}
+!ui-button:refreshBtn caption:$m{button.refresh}
+	eventHandler:$d{!ui-event event:onclick action:$c{refreshAct}}
+!ui-symbol:fastBackBtn symbol:$s{backward-fast} hint:$m{pagination.firstpage}
+	ignoreParentState:true
+    eventHandler:$d{!ui-event event:onclick action:$c{fastBackAct}}
+!ui-symbol:backBtn symbol:$s{backward} hint:$m{pagination.previouspage}
+	ignoreParentState:true
+    eventHandler:$d{!ui-event event:onclick action:$c{backAct}}
+!ui-integer:displayStart binding:displayStart size:5 readOnly:true
+!ui-label:paginationLabel binding:paginationLabel
+!ui-symbol:forwardBtn symbol:$s{forward} hint:$m{pagination.nextpage}
+	ignoreParentState:true
+    eventHandler:$d{!ui-event event:onclick action:$c{forwardAct}}
+!ui-symbol:fastForwardBtn symbol:$s{forward-fast} hint:$m{pagination.lastpage}
+	ignoreParentState:true
+    eventHandler:$d{!ui-event event:onclick action:$c{fastForwardAct}}
+
+// Search entries panel
+!ui-panel:searchEntriesPanel styleClass:$s{filall} layout:$d{!ui-horizontal style:$s{width:100%;}  widths:$l{100% none}}
+	components:$c{searchEntriesBody switchToAdvanced}
+
+//!ui-panel:searchEntriesHeader layout:$d{!ui-horizontal style:$s{width:100%; text-align:right;}} 	
+//	components:$c{switchToAdvanced}
+!ui-label:switchToAdvanced styleClass:$s{filswitch} caption:$s{Switch to Advanced}
+    eventHandler:$d{!ui-event event:onclick action:$c{switchToAdvancedAct}}
+
+!ui-panel:searchEntriesBody layout:$d{!ui-horizontal style:$s{width:100%;} widths:$l{85% none}}
+	components:$c{searchEntries searchEntriesAction}
+!fc-search:searchEntries binding:searchEntries
+!ui-panel:searchEntriesAction style:$s{padding-left:8px;} layout:$d{!ui-horizontal}
+	components:$c{searchBtn clearBtn}
+!ui-button:searchBtn caption:$m{button.search}
+    eventHandler:$d{!ui-event event:onclick action:$c{searchAct}}
+!ui-button:clearBtn caption:$m{button.clear}
+    eventHandler:$d{!ui-event event:onclick action:$c{clearAct}}
+	
+// Search filter panel
+!ui-panel:searchFilterPanel styleClass:$s{filall} layout:$d{!ui-vertical style:$s{width:100%;}}
+	components:$c{searchFilterHeader searchFilterBody}
+	
+!ui-panel:searchFilterHeader layout:$d{!ui-horizontal style:$s{width:100%;} widths:$l{none 100% 128px}}
+	components:$c{toggleFilterBtn filterTrnBlock switchToBasic}
+!ui-symbol:toggleFilterBtn styleClass:$e{filbtn} symbol:$s{filter}
+    eventHandler:$d{!ui-event event:onclick action:$c{toggleFilterAct}}
+!ui-panel:filterTrnBlock style:$s{display:inline-block;} components:$c{baseFilterTranslation filterTranslation}
+!ui-label:baseFilterTranslation styleClass:$s{filbasetxt} binding:baseFilterTranslation
+!ui-label:filterTranslation styleClass:$s{filtxt} binding:entityFilterTranslation
+!ui-label:switchToBasic styleClass:$s{filswitch} caption:$s{Switch to Basic}
+    eventHandler:$d{!ui-event event:onclick action:$c{switchToBasicAct}}
+	
+!ui-panel:searchFilterBody styleClass:$s{filbody} layout:$d{!ui-vertical style:$s{width:100%;}}
+	components:$c{searchFilterActions saveFilterPanel searchFilter}
+
+!ui-panel:searchFilterActions styleClass:$s{filact} layout:$d{!ui-horizontal}
+	components:$c{runFilterBtn openSaveFilterBtn tackFilterBtn}
+!ui-button:runFilterBtn styleClass:$e{filactbtn} caption:$m{button.run}
+    eventHandler:$d{!ui-event event:onclick action:$c{runFilterAct}}
+!ui-button:openSaveFilterBtn styleClass:$e{filactbtn} caption:$m{button.save.ellipsis}
+    eventHandler:$d{!ui-event event:onclick action:$c{openSaveFilterAct}}
+!ui-button:tackFilterBtn styleClass:$e{filactbtn} symbol:$s{thumbtack}
+    eventHandler:$d{!ui-event event:onclick action:$c{tackFilterAct}}
+    
+!ui-panel:saveFilterPanel styleClass:$s{filsave}
+	layout:$d{!ui-horizontal styleClass:$s{savebar} showCaption:true inlineCaption:true captionSuffix:$s{:} cellType:middle}
+	components:$c{saveFilterName saveFilterDesc	saveFilterScope saveFilterBtn cancelSaveBtn}
+!ui-name:saveFilterName	caption:$m{entitysearchpanel.savefilter.name} binding:saveFilterName focus:true maxLen:64
+!ui-text:saveFilterDesc	caption:$m{entitysearchpanel.savefilter.description} size:32 maxLen:96 binding:saveFilterDesc
+!ui-radiobuttons:saveFilterScope caption:$m{entitysearchpanel.savefilter.scope} binding:saveFilterScope
+	list:$s{ownershiptypelist} flow:true
+!ui-button:saveFilterBtn styleClass:$e{filactbtn} caption:$m{button.save}
+    eventHandler:$d{!ui-event event:onclick action:$c{saveFilterAct}}
+!ui-button:cancelSaveBtn styleClass:$e{filactbtn} caption:$m{button.cancel}
+    eventHandler:$d{!ui-event event:onclick action:$c{cancelSaveFilterAct}}
+   
+!fc-filter:searchFilter binding:entityFilter
+
+// Search result panel
+!ui-panel:searchResultPanel layout:$d{!ui-vertical style:$s{width:100%;}} components:$c{searchResultTbl}
+!fc-entitytable:searchResultTbl binding:entityTable multiSelect:true valueMarker:$f{searchResultMarker}
+
+// Footer action panel
+!ui-panel:footerActionPanel styleClass:$e{footer} layout:$d{!ui-horizontal} components:$c{tblActionSel applyTblActionBtn}
+!ui-select:tblActionSel styleClass:$e{footersel} list:$s{tableactionlist} listKey:$s{policy} blankOption:$m{select.apply.toselected}
+	listParams:$l{appTableId} binding:appTableActionPolicy
+!ui-button:applyTblActionBtn caption:$m{button.applyaction}
+    eventHandler:$d{!ui-event event:onclick action:$c{applyTableAct}}
+
+// Actions
+!ui-postcommand:switchToBasicAct command:switchToBasicSearch
+!ui-postcommand:switchToAdvancedAct command:switchToAdvancedSearch
+!ui-postcommand:fastBackAct command:fastBack
+!ui-postcommand:backAct command:back
+!ui-postcommand:forwardAct command:forward
+!ui-postcommand:fastForwardAct command:fastForward
+!ui-postcommand:toggleFilterAct command:toggleFilter refresh:$c{searchFilterPanel}
+!ui-postcommand:refreshAct command:refresh
+!ui-postcommand:searchAct command:search components:$c{searchEntries}
+!ui-postcommand:clearAct command:clear
+!ui-postcommand:runFilterAct command:runFilter components:$c{searchFilter}
+!ui-postcommand:tackFilterAct command:tackFilter refresh:$c{searchFilterBody} components:$c{searchFilter}
+!ui-postcommand:quickFilterAct command:applyQuickFilter components:$c{quickFilter}
+	refresh:$c{headerBar searchFilterPanel searchResultPanel} pushSrc:true
+!ui-postcommand:openSaveFilterAct command:openSaveFilter refresh:$c{searchFilterBody} components:$c{searchFilter}
+!ui-postcommand:saveFilterAct command:saveFilter refresh:$c{headerLeftPanel searchFilterBody}
+	components:$c{saveFilterPanel searchFilter}
+!ui-postcommand:cancelSaveFilterAct command:cancelSaveFilter refresh:$c{searchFilterBody}
+!ui-postcommand:applyTableAct command:applyTableAction refresh:$c{searchResultPanel} components:$c{searchResultTbl tblActionSel}
+

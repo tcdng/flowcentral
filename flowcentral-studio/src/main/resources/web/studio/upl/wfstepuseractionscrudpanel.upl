@@ -1,0 +1,22 @@
+// UPL template for workflow step user actions CRUD panel
+// Copyright (c) 2019, 2021, FlowCentral Technologies.
+// All rights reserved.
+// 
+// PROPRIETARY AND CONFIDENTIAL. USE IS SUBJECT TO LICENSE TERMS.
+
+!fc-wfstepuseractionscrudpanel
+	tableComponents:$c{nameLabel descLabel}
+	formSection:$d{!ui-section components:$c{frmName frmDesc frmLabel frmNextStepName frmComment frmValidatePage frmForwarderPreferred}}
+!ui-label:nameLabel caption:$m{wfstepuseractionscrudpanel.name} binding:name
+!ui-label:descLabel caption:$m{wfstepuseractionscrudpanel.description} binding:description
+!ui-name:frmName caption:$m{wfstepuseractionscrudpanel.name} size:32 binding:name required:true focus:true
+!ui-text:frmDesc caption:$m{wfstepuseractionscrudpanel.description} size:32 binding:description required:true
+!ui-text:frmLabel caption:$m{wfstepuseractionscrudpanel.label}
+	binding:label required:true
+!ui-text:frmNextStepName caption:$m{wfstepuseractionscrudpanel.nextstepname} size:32
+	binding:nextStepName
+!ui-select:frmComment caption:$m{wfstepuseractionscrudpanel.commentrequirement}
+	list:$s{requirementtypelist} blankOption:$s{} binding:commentRequirement required:true
+!ui-checkbox:frmValidatePage caption:$m{wfstepuseractionscrudpanel.validatepage} layoutCaption:true binding:validatePage
+!ui-checkbox:frmForwarderPreferred caption:$m{wfstepuseractionscrudpanel.forwarderpreferred} layoutCaption:true binding:forwarderPreferred
+	

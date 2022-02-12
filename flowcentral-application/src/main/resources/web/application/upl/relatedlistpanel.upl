@@ -1,0 +1,21 @@
+// UPL template for related list panel
+// Copyright (c) 2019, 2021, FlowCentral Technologies.
+// All rights reserved.
+// 
+// PROPRIETARY AND CONFIDENTIAL. USE IS SUBJECT TO LICENSE TERMS.
+
+!fc-relatedlistpanel
+    components:$c{entitySearchPanel}
+
+// Search list
+!fc-entitysearchpanel:entitySearchPanel
+	newInstEventHandler:$d{!ui-event event:onclick action:$c{newAct}}
+	editInstEventHandler:$d{!ui-event event:onclick action:$c{assignAct}}
+	newBtnBinding:$s{relatedList}
+	editBtnBinding:$s{relatedList}
+	searchResultMarker:$j{com.flowcentraltech.flowcentral.application.web.panels.EntitySearchValueMarkerConstants.RELATED_LIST}
+
+// Actions
+!ui-post:newAct path:$p{/newRelatedItem}
+!ui-post:assignAct path:$r{relatedlist.edit.actionpath}
+	

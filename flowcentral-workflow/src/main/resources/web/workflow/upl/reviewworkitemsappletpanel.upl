@@ -1,0 +1,16 @@
+// UPL template for review work items applet panel
+// Copyright (c) 2019, 2021, FlowCentral Technologies.
+// All rights reserved.
+// 
+// PROPRIETARY AND CONFIDENTIAL. USE IS SUBJECT TO LICENSE TERMS.
+
+!fc-reviewworkitemsappletpanel components:$c{entitySearchPanel}
+	frmActionsHandler:$d{!ui-event event:onclick action:$c{userActionAct}}
+
+// Search list
+!fc-entitysearchpanel:entitySearchPanel binding:entitySearch
+	searchResultMarker:$j{com.flowcentraltech.flowcentral.application.web.panels.EntitySearchValueMarkerConstants.DEFAULT_LIST}
+
+// Actions
+!ui-postcommand:decisionAct command:maintain debounce:true
+!ui-postcommand:userActionAct command:performUserAction components:$c{formPanel}

@@ -1,0 +1,398 @@
+/*
+ * Copyright (c) 2019, 2021, FlowCentral Technologies.
+ * All rights reserved.
+ * 
+ * PROPRIETARY AND CONFIDENTIAL. USE IS SUBJECT TO LICENSE TERMS.
+ */
+
+package com.flowcentraltech.flowcentral.application.web.panels.applet;
+
+import com.flowcentraltech.flowcentral.application.constants.AppletPropertyConstants;
+import com.flowcentraltech.flowcentral.application.constants.ApplicationModuleSysParamConstants;
+import com.flowcentraltech.flowcentral.application.data.AppletDef;
+import com.flowcentraltech.flowcentral.application.data.EntityDef;
+import com.flowcentraltech.flowcentral.application.web.data.AppletContext;
+import com.flowcentraltech.flowcentral.application.web.data.FormContext;
+import com.flowcentraltech.flowcentral.application.web.panels.AbstractForm.EvaluationMode;
+import com.flowcentraltech.flowcentral.application.web.panels.EntitySingleForm;
+import com.flowcentraltech.flowcentral.common.business.ApplicationPrivilegeManager;
+import com.flowcentraltech.flowcentral.common.business.policies.EntityActionResult;
+import com.flowcentraltech.flowcentral.common.entities.WorkEntity;
+import com.flowcentraltech.flowcentral.system.business.SystemModuleService;
+import com.tcdng.unify.core.UnifyException;
+import com.tcdng.unify.core.annotation.Configurable;
+import com.tcdng.unify.core.annotation.UplBinding;
+import com.tcdng.unify.core.database.Entity;
+import com.tcdng.unify.core.util.StringUtils;
+import com.tcdng.unify.web.annotation.Action;
+import com.tcdng.unify.web.constant.ResultMappingConstants;
+import com.tcdng.unify.web.ui.widget.data.Hint.MODE;
+
+/**
+ * Convenient abstract base panel for entity single form applet panels.
+ * 
+ * @author Lateef Ojulari
+ * @since 1.0
+ */
+@UplBinding("web/application/upl/entitysingleformappletpanel.upl")
+public abstract class AbstractEntitySingleFormAppletPanel extends AbstractAppletPanel {
+
+    @Configurable
+    protected ApplicationPrivilegeManager applicationPrivilegeManager;
+
+    @Configurable
+    private SystemModuleService systemModuleService;
+
+    public final void setApplicationPrivilegeManager(ApplicationPrivilegeManager applicationPrivilegeManager) {
+        this.applicationPrivilegeManager = applicationPrivilegeManager;
+    }
+
+    public final void setSystemModuleService(SystemModuleService systemModuleService) {
+        this.systemModuleService = systemModuleService;
+    }
+
+    @Override
+    public void switchState() throws UnifyException {
+        super.switchState();
+
+        final AbstractEntitySingleFormApplet applet = getEntityFormApplet();
+        applet.ensureRootAppletStruct();
+
+        final AppletDef _appletDef = applet.getRootAppletDef();
+        final AppletContext appCtx = applet.getCtx();
+        final AbstractEntitySingleFormApplet.ViewMode viewMode = applet.getMode();
+        final EntityDef _entityDef = applet.getEntityDef();
+        final String roleCode = getUserToken().getRoleCode();
+        final EntitySingleForm form = applet.getForm();
+        final Entity inst = form != null ? (Entity) form.getFormBean() : null;
+        final boolean isInWorkflow = inst instanceof WorkEntity && ((WorkEntity) inst).isInWorkflow();
+        appCtx.setInWorkflow(isInWorkflow);
+
+        final boolean isContextEditable = appCtx.isContextEditable();
+        boolean enableUpdate = false;
+        boolean enableDelete = false;
+        boolean enableCreate = false;
+        boolean enableCreateSubmit = false;
+        boolean enableUpdateSubmit = false;
+        if (viewMode.isCreateForm()) {
+            enableCreate = isContextEditable
+                    && applicationPrivilegeManager.isRoleWithPrivilege(roleCode, _entityDef.getAddPrivilege());
+            enableCreateSubmit = applet
+                    .formBeanMatchAppletPropertyCondition(AppletPropertyConstants.CREATE_FORM_SUBMIT_CONDITION);
+        } else if (viewMode.isMaintainForm()) {
+            enableUpdate = isContextEditable
+                    && _appletDef.getPropValue(boolean.class, AppletPropertyConstants.MAINTAIN_FORM_UPDATE,
+                            false)
+                    && applicationPrivilegeManager.isRoleWithPrivilege(roleCode, _entityDef.getEditPrivilege())
+                    && applet.formBeanMatchAppletPropertyCondition(
+                            AppletPropertyConstants.MAINTAIN_FORM_UPDATE_CONDITION);
+            enableDelete = !isInWorkflow && isContextEditable
+                    && _appletDef.getPropValue(boolean.class, AppletPropertyConstants.MAINTAIN_FORM_DELETE,
+                            false)
+                    && applicationPrivilegeManager.isRoleWithPrivilege(roleCode, _entityDef.getDeletePrivilege())
+                    && applet.formBeanMatchAppletPropertyCondition(
+                            AppletPropertyConstants.MAINTAIN_FORM_DELETE_CONDITION);
+            enableUpdateSubmit = !isInWorkflow && applet
+                    .formBeanMatchAppletPropertyCondition(AppletPropertyConstants.MAINTAIN_FORM_SUBMIT_CONDITION);
+        }
+
+        if (viewMode.isInForm()) {
+            boolean showAlternateFormActions = systemModuleService.getSysParameterValue(boolean.class,
+                    ApplicationModuleSysParamConstants.SHOW_FORM_ALTERNATE_ACTIONS);
+            setVisible("formPanel.altActionPanel", showAlternateFormActions);
+        }
+
+        if (form != null) {
+            form.clearDisplayItem();
+            if (appCtx.isInWorkflow() && !appCtx.isReview()) {
+                form.setDisplayItemCounterClass("fc-dispcounterorange");
+                form.setDisplayItemCounter(resolveSessionMessage("$m{entityformapplet.form.inworkflow.viewonly}"));
+            }
+        }
+
+        switch (viewMode) {
+            case MAINTAIN_FORM_SCROLL:
+                switchContent("formPanel");
+                setVisible("cancelBtn", true);
+                setVisible("saveBtn", false);
+                setVisible("saveNextBtn", false);
+                setVisible("saveCloseBtn", false);
+                setVisible("submitCloseBtn", enableUpdateSubmit && _appletDef.getPropValue(boolean.class,
+                        AppletPropertyConstants.MAINTAIN_FORM_SUBMIT, false));
+                setVisible("submitNextBtn", enableUpdateSubmit && _appletDef.getPropValue(boolean.class,
+                        AppletPropertyConstants.MAINTAIN_FORM_SUBMIT_NEXT, false));
+                setVisible("prevBtn", true);
+                setVisible("nextBtn", true);
+                setDisabled("prevBtn", !applet.isPrevNav());
+                setDisabled("nextBtn", !applet.isNextNav());
+                setVisible("updateBtn", enableUpdate);
+                setVisible("updateCloseBtn", enableUpdate);
+                setVisible("deleteBtn", enableDelete);
+
+                setVisible("displayCounterLabel", true);
+                if (!form.isWithDisplayItemCounter()) {
+                    form.setDisplayItemCounter(applet.getDisplayItemCounter());
+                }
+                setEditable("formPanel", enableUpdate);
+                break;
+            case MAINTAIN_PRIMARY_FORM_NO_SCROLL:
+                switchContent("formPanel");
+                setVisible("cancelBtn", true);
+                setVisible("saveBtn", false);
+                setVisible("saveNextBtn", false);
+                setVisible("saveCloseBtn", false);
+                setVisible("submitCloseBtn", false);
+                setVisible("submitNextBtn", false);
+                setVisible("prevBtn", false);
+                setVisible("nextBtn", false);
+                setVisible("displayCounterLabel", false);
+                setVisible("updateBtn", enableUpdate);
+                setVisible("updateCloseBtn", enableUpdate);
+                setVisible("deleteBtn", enableDelete);
+                setEditable("formPanel", enableUpdate);
+                break;
+            case MAINTAIN_FORM:
+                switchContent("formPanel");
+                setVisible("cancelBtn", true);
+                setVisible("saveBtn", false);
+                setVisible("saveNextBtn", false);
+                setVisible("saveCloseBtn", false);
+                setVisible("submitCloseBtn", enableUpdateSubmit && _appletDef.getPropValue(boolean.class,
+                        AppletPropertyConstants.MAINTAIN_FORM_SUBMIT, false));
+                setVisible("submitNextBtn", enableUpdateSubmit && _appletDef.getPropValue(boolean.class,
+                        AppletPropertyConstants.MAINTAIN_FORM_SUBMIT_NEXT, false));
+                setVisible("prevBtn", false);
+                setVisible("nextBtn", false);
+                setVisible("displayCounterLabel", false);
+                setVisible("updateBtn", enableUpdate);
+                setVisible("updateCloseBtn", enableUpdate);
+                setVisible("deleteBtn", enableDelete);
+                setEditable("formPanel", enableUpdate);
+                break;
+            case NEW_PRIMARY_FORM:
+                enableCreate = true;
+            case NEW_FORM:
+                switchContent("formPanel");
+                setVisible("cancelBtn", true);
+                final boolean allowSaveAndNext = true;
+                if (enableCreate) {
+                    setVisible("saveBtn", _appletDef.getPropValue(boolean.class,
+                            AppletPropertyConstants.CREATE_FORM_SAVE, false));
+                    setVisible("saveNextBtn", allowSaveAndNext && _appletDef.getPropValue(boolean.class,
+                            AppletPropertyConstants.CREATE_FORM_SAVE_NEXT, false));
+                    setVisible("saveCloseBtn", _appletDef.getPropValue(boolean.class,
+                            AppletPropertyConstants.CREATE_FORM_SAVE_CLOSE, false));
+                    setVisible("submitCloseBtn", enableCreateSubmit && _appletDef.getPropValue(boolean.class,
+                            AppletPropertyConstants.CREATE_FORM_SUBMIT, false));
+                    setVisible("submitNextBtn", enableCreateSubmit && _appletDef.getPropValue(boolean.class,
+                            AppletPropertyConstants.CREATE_FORM_SUBMIT_NEXT, false));
+                } else {
+                    setVisible("saveBtn", false);
+                    setVisible("saveNextBtn", false);
+                    setVisible("saveCloseBtn", false);
+                    setVisible("submitCloseBtn", false);
+                    setVisible("submitNextBtn", false);
+                }
+
+                setVisible("prevBtn", false);
+                setVisible("nextBtn", false);
+                setVisible("displayCounterLabel", false);
+                setVisible("updateBtn", false);
+                setVisible("updateCloseBtn", false);
+                setVisible("deleteBtn", false);
+                setEditable("formPanel", true);
+                break;
+            case SEARCH:
+            default:
+                break;
+        }
+    }
+
+    @Action
+    public void newInst() throws UnifyException {
+        getEntityFormApplet().newEntityInst();
+    }
+
+    @Action
+    public void navBackToPrevious() throws UnifyException {
+        AbstractEntitySingleFormApplet applet = getEntityFormApplet();
+        if (applet.getMode().isPrimary()) {
+            setCommandResultMapping(ResultMappingConstants.CLOSE);
+            return;
+        }
+
+        applet.navBackToPrevious();
+    }
+
+    @Action
+    public void navBackToSearch() throws UnifyException {
+        getEntityFormApplet().navBackToSearch();
+    }
+
+    @Action
+    public void save() throws UnifyException {
+        FormContext ctx = evaluateCurrentFormContext(EvaluationMode.CREATE);
+        if (!ctx.isWithFormErrors()) {
+            EntityActionResult entityActionResult = getEntityFormApplet().saveNewInst();
+            entityActionResult.setSuccessHint("$m{entityformapplet.new.success.hint}");
+            handleEntityActionResult(entityActionResult, ctx.getEntityName());
+        }
+    }
+
+    @Action
+    public void saveAndNext() throws UnifyException {
+        FormContext ctx = evaluateCurrentFormContext(EvaluationMode.CREATE);
+        if (!ctx.isWithFormErrors()) {
+            EntityActionResult entityActionResult = getEntityFormApplet().saveNewInstAndNext();
+            entityActionResult.setSuccessHint("$m{entityformapplet.new.success.hint}");
+            handleEntityActionResult(entityActionResult, ctx.getEntityName());
+        }
+    }
+
+    @Action
+    public void saveAndClose() throws UnifyException {
+        FormContext ctx = evaluateCurrentFormContext(EvaluationMode.CREATE);
+        if (!ctx.isWithFormErrors()) {
+            EntityActionResult entityActionResult = getEntityFormApplet().saveNewInstAndClose();
+            entityActionResult.setSuccessHint("$m{entityformapplet.new.success.hint}");
+            handleEntityActionResult(entityActionResult, ctx.getEntityName());
+        }
+    }
+
+    @Action
+    public void submit() throws UnifyException {
+        final AbstractEntitySingleFormApplet applet = getEntityFormApplet();
+        final EvaluationMode evalMode = applet.getMode().isMaintainForm()
+                ? EvaluationMode.getUpdateMode(applet.getRootAppletProp(boolean.class,
+                        AppletPropertyConstants.MAINTAIN_FORM_SUBMIT_VALIDATE, false))
+                : EvaluationMode.getCreateMode(applet.getRootAppletProp(boolean.class,
+                        AppletPropertyConstants.CREATE_FORM_SUBMIT_VALIDATE, false));
+        FormContext ctx = evaluateCurrentFormContext(evalMode);
+        if (!ctx.isWithFormErrors()) {
+            EntityActionResult entityActionResult = applet.submitInst();
+            entityActionResult.setSuccessHint("$m{entityformapplet.submit.success.hint}");
+            handleEntityActionResult(entityActionResult, ctx.getEntityName());
+        }
+    }
+
+    @Action
+    public void submitAndNext() throws UnifyException {
+        final AbstractEntitySingleFormApplet applet = getEntityFormApplet();
+        final EvaluationMode evalMode = applet.getMode().isMaintainForm()
+                ? EvaluationMode.getUpdateMode(applet.getRootAppletProp(boolean.class,
+                        AppletPropertyConstants.MAINTAIN_FORM_SUBMIT_VALIDATE, false))
+                : EvaluationMode.getCreateMode(applet.getRootAppletProp(boolean.class,
+                        AppletPropertyConstants.CREATE_FORM_SUBMIT_VALIDATE, false));
+        FormContext ctx = evaluateCurrentFormContext(evalMode);
+        if (!ctx.isWithFormErrors()) {
+            EntityActionResult entityActionResult = getEntityFormApplet().submitInstAndNext();
+            entityActionResult.setSuccessHint("$m{entityformapplet.submit.success.hint}");
+            handleEntityActionResult(entityActionResult, ctx.getEntityName());
+        }
+    }
+
+    @Action
+    public void update() throws UnifyException {
+        FormContext ctx = evaluateCurrentFormContext(EvaluationMode.UPDATE);
+        if (!ctx.isWithFormErrors()) {
+            EntityActionResult entityActionResult = getEntityFormApplet().updateInst();
+            entityActionResult.setSuccessHint("$m{entityformapplet.update.success.hint}");
+            handleEntityActionResult(entityActionResult, ctx.getEntityName());
+        }
+    }
+
+    @Action
+    public void updateAndClose() throws UnifyException {
+        FormContext ctx = evaluateCurrentFormContext(EvaluationMode.UPDATE);
+        if (!ctx.isWithFormErrors()) {
+            EntityActionResult entityActionResult = getEntityFormApplet().updateInstAndClose();
+            entityActionResult.setSuccessHint("$m{entityformapplet.update.success.hint}");
+            handleEntityActionResult(entityActionResult, ctx.getEntityName());
+        }
+    }
+
+    @Action
+    public void delete() throws UnifyException {
+        FormContext ctx = evaluateCurrentFormContext(EvaluationMode.DELETE);
+        if (!ctx.isWithFormErrors()) {
+            EntityActionResult entityActionResult = getEntityFormApplet().deleteInst();
+            entityActionResult.setSuccessHint("$m{entityformapplet.delete.success.hint}");
+            handleEntityActionResult(entityActionResult, ctx.getEntityName());
+        }
+    }
+
+    @Action
+    public void previous() throws UnifyException {
+        getEntityFormApplet().previousInst();
+    }
+
+    @Action
+    public void next() throws UnifyException {
+        getEntityFormApplet().nextInst();
+    }
+
+    @Action
+    public void maintain() throws UnifyException {
+        String[] po = StringUtils.charSplit(getRequestTarget(String.class), ':');
+        int mIndex = Integer.parseInt(po[1]);
+        getEntityFormApplet().maintainInst(mIndex);
+    }
+
+    private void handleEntityActionResult(EntityActionResult entityActionResult, String entityName)
+            throws UnifyException {
+        if (entityActionResult.isRefreshMenu()) {
+            refreshApplicationMenu();
+        }
+
+        if (entityActionResult.isWithResultPath()) {
+            commandPost(entityActionResult.getResultPath());
+        } else if (entityActionResult.isWithTaskResult()) {
+            fireEntityActionResultTask(entityActionResult);
+        } else if (entityActionResult.isCloseView()) {
+            getEntityFormApplet().navBackToPrevious();
+        } else if (entityActionResult.isClosePage()) {
+            setCommandResultMapping(ResultMappingConstants.CLOSE);
+        }
+
+        String successHint = entityActionResult.getSuccessHint();
+        if (!StringUtils.isBlank(successHint)) {
+            formHintSuccess(successHint, entityName);
+        }
+    }
+
+    private void fireEntityActionResultTask(EntityActionResult entityActionResult) throws UnifyException {
+        // TODO Set success and failure path
+        launchTaskWithMonitorBox(entityActionResult.getResultTaskSetup(), entityActionResult.getResultTaskCaption());
+    }
+
+    protected AbstractEntitySingleFormApplet getEntityFormApplet() throws UnifyException {
+        return getValue(AbstractEntitySingleFormApplet.class);
+    }
+
+    protected FormContext evaluateCurrentFormContext(EvaluationMode evaluationMode) throws UnifyException {
+        return evaluateCurrentFormContext(getEntityFormApplet().getForm().getCtx(), evaluationMode);
+    }
+
+    private FormContext evaluateCurrentFormContext(FormContext ctx, EvaluationMode evaluationMode)
+            throws UnifyException {
+        // TODO Evaluate errors
+        // AbstractEntitySingleFormApplet applet = getEntityFormApplet();
+        final boolean isWithFieldErrors = ctx.isWithFieldErrors();
+        // End
+
+        if (isWithFieldErrors) {
+            hintUser(MODE.ERROR, "$m{entityformapplet.formvalidation.error.hint}");
+        }
+
+        return ctx;
+    }
+
+    private void formHintSuccess(String messageKey, String entityName) throws UnifyException {
+        if (!StringUtils.isBlank(entityName)) {
+            hintUser(messageKey, StringUtils.capitalizeFirstLetter(entityName));
+        } else {
+            hintUser(messageKey);
+        }
+    }
+
+}

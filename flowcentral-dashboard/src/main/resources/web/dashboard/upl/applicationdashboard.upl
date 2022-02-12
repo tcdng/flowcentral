@@ -1,0 +1,33 @@
+// UPL template for application dashboard page
+// Copyright (c) 2019, 2021, FlowCentral Technologies.
+// All rights reserved.
+// 
+// PROPRIETARY AND CONFIDENTIAL. USE IS SUBJECT TO LICENSE TERMS.
+
+!ui-page caption:$m{applicationdashboard.title} components:$c{basePanel}
+
+// Base panel
+!ui-panel:basePanel layout:$d{!ui-vertical style:$s{width:100%;}} components:$c{dashboardHeaderPanel dashboardSlatePanel}
+
+// Control
+!ui-panel:dashboardHeaderPanel layout:$d{!ui-horizontal style:$s{width:100%;} cellType:bottom} components:$c{dashboardLabel actionPanel} 
+	
+!ui-label:dashboardLabel styleClass:$e{fc-largelabel} caption:$m{applicationdashboard.dashboard}
+!ui-panel:actionPanel 
+	layout:$d{!ui-horizontal style:$s{float:right;} showCaption:true inlineCaption:true captionSuffix:$s{:} cellType:middle}
+	components:$c{dashboardSelect refreshBtn}
+
+!ui-select:dashboardSelect list:roledashboardslist binding:selDashboard
+    eventHandler:$d{!ui-event event:onchange action:$c{switchDashboardAct}}
+!ui-button:refreshBtn styleClass:$e{fc-bluebutton}
+	caption:$m{button.refresh}
+    eventHandler:$d{!ui-event event:onclick action:$c{refreshDashboardAct}}
+	
+
+// Slate
+!ui-panel:dashboardSlatePanel style:$s{width:100%;} components:$c{dashboardSlate}
+!fc-dashboardslate:dashboardSlate binding:dashboardSlate
+
+// Actions
+!ui-post:refreshDashboardAct  path:$n{/refreshSlate} 
+!ui-post:switchDashboardAct  path:$n{/loadDashboardSlate} components:$c{dashboardSelect}

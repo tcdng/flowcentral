@@ -1,0 +1,38 @@
+// UPL template for workflow editor page panel
+// Copyright (c) 2019, 2021, FlowCentral Technologies.
+// All rights reserved.
+// 
+// PROPRIETARY AND CONFIDENTIAL. USE IS SUBJECT TO LICENSE TERMS.
+
+!fc-workfloweditorpagepanel layout:$d{!ui-vertical style:$s{width:100%;height:100%;} heights:$l{none 100%}}
+	components:$c{headerBar workflowEditorBodyPanel}
+
+// Workflow editor panel
+!ui-panel:workflowEditorBodyPanel style:$s{height:100%;}
+	layout:$d{!ui-vertical style:$s{width:100%;height:100%} heights:$l{100%}} components:$c{workflowEditor}
+!fc-workfloweditor:workflowEditor binding:workflowEditor
+
+// Detached panels
+!fc-wfstepcreationpanel:createStepPanel binding:workflowEditor dialogFormBinding:editStep
+	dialogCreateCommand:createStep dialogCaptionBinding:dialogTitle
+	refreshOnCreate:$c{workflowEditorBodyPanel}
+!fc-wfstepeditpanel:editStepPanel binding:workflowEditor dialogFormBinding:editStep
+	dialogCaptionBinding:dialogTitle refreshOnApply:$c{workflowEditorBodyPanel}
+!fc-wfstepsetvaluespanel:stepSetValuesPanel binding:workflowEditor.setValuesInfo
+	dialogApplyEventHandler:$d{!ui-event event:onclick action:$c{applySetValuesAct}}
+	dialogCancelEventHandler:$d{!ui-event event:onclick action:$c{cancelSetValuesAct}}
+!fc-wfstepalertscrudpanel:stepAlertsCrudPanel binding:workflowEditor.alertsCrudInfo
+	dialogCancelEventHandler:$d{!ui-event event:onclick action:$c{updateStepAct}}
+!fc-wfsteproutingscrudpanel:stepRoutingsCrudPanel binding:workflowEditor.routingsCrudInfo
+	dialogCancelEventHandler:$d{!ui-event event:onclick action:$c{updateStepAct}}
+!fc-wfstepuseractionscrudpanel:stepUserActionsCrudPanel binding:workflowEditor.userActionsCrudInfo
+	dialogCancelEventHandler:$d{!ui-event event:onclick action:$c{updateStepAct}}
+
+// Actions
+!ui-postcommand:updateStepAct command:updateStepDesign
+	components:$c{workflowEditorBodyPanel} refresh:$c{workflowEditorBodyPanel}
+!ui-postcommand:saveDesignAct command:saveDesign components:$c{workflowEditorBodyPanel}
+!ui-postcommand:applySetValuesAct command:applySetValues
+	components:$c{stepSetValuesPanel} refresh:$c{workflowEditorBodyPanel}
+!ui-postcommand:cancelSetValuesAct command:cancelSetValues refresh:$c{workflowEditorBodyPanel}
+

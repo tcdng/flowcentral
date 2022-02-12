@@ -1,0 +1,723 @@
+<?xml version="1.0"?>
+<!-- Master system application -->
+<application name="system"
+	description="$m{system.short.description}" label="$m{system.label}"
+	module="system">
+	<!-- Widget Types -->
+	<widgetTypes>
+		<widgetType name="sysparamvalue"
+			description="$m{system.widgettype.sysparamvalue}" dataType="string"
+			inputType="string" editor="!ui-dynamic descriptorBinding:editor"
+			renderer="!ui-label" />
+		<widgetType name="schedulabletasklist"
+			description="$m{system.widgettype.schedulabletasklist}" dataType="string"
+			inputType="string"
+			editor="!ui-select list:schedulabletasklist blankOption:$m{blank.none}"
+			renderer="!ui-label" />
+		<widgetType name="weekdayschecklist"
+			description="$m{system.widgettype.weekdayschecklist}" dataType="string"
+			inputType="string"
+			editor="!ui-dropdownchecklist list:dayinweeklist selectAllOption:$m{system.scheduledtask.selectalldays}"
+			renderer="!ui-label" />
+		<widgetType name="dayschecklist"
+			description="$m{system.widgettype.dayschecklist}" dataType="string"
+			inputType="string"
+			editor="!ui-dropdownchecklist list:dayinmonthlist columns:7 selectAllOption:$m{system.scheduledtask.selectalldays}"
+			renderer="!ui-label" />
+		<widgetType name="monthschecklist"
+			description="$m{system.widgettype.monthschecklist}" dataType="string"
+			inputType="string"
+			editor="!ui-dropdownchecklist list:monthinyearlist columns:3 selectAllOption:$m{system.scheduledtask.selectallmonths}"
+			renderer="!ui-label" />
+	</widgetTypes>
+	<!-- Applets -->
+	<applets>
+		<applet name="manageModule" description="$m{system.module.manage}"
+			label="$m{system.module.manage.label}" icon="cubes" type="manage_entitylist"
+			entity="module" menuAccess="true">
+			<property name="searchTable" value="moduleTable" />
+			<property name="searchTable.report" value="true" />
+			<property name="maintainForm" value="moduleForm" />
+		</applet>
+		<applet name="manageModuleApp"
+			description="$m{system.moduleapp.manage}"
+			label="$m{system.moduleapp.manage.label}" type="manage_entitylist"
+			entity="moduleApp">
+			<property name="searchTable" value="moduleAppTable" />
+			<property name="maintainForm" value="moduleAppForm" />
+		</applet>
+		<applet name="manageSysParam"
+			description="$m{system.systemparameter.manage}"
+			label="$m{system.systemparameter.manage.label}" icon="cogs"
+			type="manage_entitylist" entity="sysParam" menuAccess="true">
+			<property name="searchTable" value="sysParamTable" />
+			<property name="searchTable.report" value="true" />
+			<property name="searchTable.quickFilter" value="true" />
+			<property name="maintainForm" value="sysParamForm" />
+			<property name="maintainForm.update" value="true" />
+			<property name="maintainForm.update.policy"
+				value="sysparam-updateactionpolicy" />
+			<property name="maintainForm.update.condition"
+				value="sysParamEditable" />
+			<filter name="sysParamEditable"
+				description="$m{system.systemparameter.filter.editable}">
+				<restriction type="equals" field="editable" paramA="true" />
+			</filter>
+			<filter name="sysParamSystemNumber"
+				description="$m{system.systemparameter.filter.number}" quickFilter="true">
+				<restriction type="equals" field="type" paramA="N"/>
+			</filter>
+			<filter name="sysParamSystemName"
+				description="$m{system.systemparameter.filter.name}" quickFilter="true">
+				<restriction type="equals" field="type" paramA="M"/>
+			</filter>
+			<filter name="sysParamSystemContact"
+				description="$m{system.systemparameter.filter.contact}" quickFilter="true">
+				<restriction type="equals" field="type" paramA="C"/>
+			</filter>
+			<filter name="sysParamSystemString"
+				description="$m{system.systemparameter.filter.string}" quickFilter="true">
+				<restriction type="equals" field="type" paramA="S"/>
+			</filter>
+			<filter name="sysParamSystemFlag"
+				description="$m{system.systemparameter.filter.flag}" quickFilter="true">
+				<restriction type="equals" field="type" paramA="B"/>
+			</filter>
+		</applet>
+		<applet name="manageScheduledTask"
+			description="$m{system.scheduledtask.manage}"
+			label="$m{system.scheduledtask.manage.label}" icon="clock"
+			type="manage_entitylist" entity="scheduledTask" menuAccess="true">
+			<property name="searchTable" value="scheduledTaskTable" />
+			<property name="searchTable.new" value="true" />
+			<property name="searchTable.report" value="true" />
+			<property name="searchTable.quickFilter" value="true" />
+			<property name="createForm" value="scheduledTaskForm" />
+			<property name="createForm.save" value="true" />
+			<property name="createForm.save.next" value="true" />
+			<property name="createForm.save.close" value="true" />
+			<property name="maintainForm" value="scheduledTaskForm" />
+			<property name="maintainForm.update" value="true" />
+			<property name="maintainForm.delete" value="true" />
+		</applet>
+		<applet name="manageScheduledTaskHist"
+			description="$m{system.scheduledtaskhist.manage}"
+			label="$m{system.scheduledtaskhist.manage.label}" icon="history"
+			type="manage_entitylist" entity="scheduledTaskHist" menuAccess="true">
+			<property name="searchTable" value="scheduledTaskHistTable" />
+			<property name="searchTable.new" value="false" />
+			<property name="searchTable.report" value="true" />
+			<property name="searchTable.quickFilter" value="true" />
+			<property name="maintainForm" value="scheduledTaskHistForm" />
+			<property name="maintainForm.update" value="false" />
+			<property name="maintainForm.delete" value="false" />
+		</applet>
+		<applet name="manageCredential"
+			description="$m{system.credential.manage}"
+			label="$m{system.credential.manage.label}" icon="key"
+			type="manage_entitylist" entity="credential" menuAccess="true">
+			<property name="searchTable" value="credentialTable" />
+			<property name="searchTable.new" value="true" />
+			<property name="searchTable.report" value="true" />
+			<property name="createForm" value="credentialForm" />
+			<property name="createForm.save" value="true" />
+			<property name="createForm.save.next" value="true" />
+			<property name="createForm.save.close" value="true" />
+			<property name="maintainForm" value="credentialForm" />
+			<property name="maintainForm.update" value="true" />
+			<property name="maintainForm.delete" value="true" />
+		</applet>
+		<applet name="manageDownloadLog"
+			description="$m{system.downloadlog.manage}"
+			label="$m{system.downloadlog.manage.label}" icon="logs"
+			type="manage_entitylist" entity="downloadLog" menuAccess="true">
+			<property name="searchTable" value="downloadLogTable" />
+			<property name="searchTable.report" value="true" />
+			<property name="maintainForm" value="downloadLogForm" />
+		</applet>
+		<applet name="manageUIOptions" description="$m{system.uioptions.manage}"
+			label="$m{system.uioptions.label}" icon="cog" type="path_page"
+			path="/system/uioptions/openPage" menuAccess="true">
+		</applet>
+		<applet name="manageLicensing" description="$m{system.licensing.manage}"
+			label="$m{system.licensing.label}" icon="credit-card" type="path_page"
+			path="/system/licensing/openPage" menuAccess="true">
+		</applet>
+		<applet name="manageEnvironmentVariable"
+			description="$m{system.environmentvariable.manage}"
+			label="$m{system.environmentvariable.manage.label}" icon="cog"
+			type="manage_entitylist" entity="environmentVariable" menuAccess="true">
+			<property name="searchTable" value="environmentVariableTable" />
+			<property name="searchTable.new" value="true" />
+			<property name="searchTable.report" value="true" />
+			<property name="createForm" value="environmentVariableForm" />
+			<property name="createForm.save" value="true" />
+			<property name="createForm.save.next" value="true" />
+			<property name="createForm.save.close" value="true" />
+			<property name="maintainForm" value="environmentVariableForm" />
+			<property name="maintainForm.update" value="true" />
+			<property name="maintainForm.delete" value="true" />
+		</applet>
+		<applet menuAccess="true"
+			routeToApplet="application.manageSuggestion" type="FACADE"
+			description="$m{system.suggestion.manage}"
+			label="$m{system.suggestion.manage.label}"
+			name="manageSuggestion" />
+	</applets>
+	<!-- References -->
+	<references>
+		<reference name="moduleRef"
+			description="$m{system.module.reference}" entity="module"
+			searchField="description" />
+		<reference name="scheduledTaskRef"
+			description="$m{system.scheduledtask.reference}" entity="scheduledTask"
+			searchField="description" />
+		<reference name="scheduledTaskHistRef"
+			description="$m{system.scheduledtaskhist.reference}"
+			entity="scheduledTaskHist" searchField="scheduledTaskDesc" />
+		<reference name="credentialRef"
+			description="$m{system.credential.reference}" entity="credential"
+			searchField="description" />
+		<reference name="downloadLogRef"
+			description="$m{system.downloadlog.reference}" entity="downloadLog"
+			searchField="description" />
+		<reference name="environmentVariableRef"
+			description="$m{system.environmentvariable.reference}" entity="environmentVariable"
+			searchField="description" />
+	</references>
+	<!-- Entities -->
+	<entities>
+		<entity name="module" description="$m{system.module.module}"
+			label="$m{system.module.label}"
+			type="com.flowcentraltech.flowcentral.system.entities.Module" auditable="true"
+			reportable="true">
+			<field name="name" label="$m{system.module.name}" type="string"
+				inputWidget="application.name"  maxLen="32" />
+			<field name="description" label="$m{system.module.description}"
+				type="string" inputWidget="application.text"  maxLen="196" />
+			<field name="label" label="$m{system.module.label.field}" type="string"
+				inputWidget="application.text" maxLen="64"  />
+			<field name="shortCode" label="$m{system.module.shortcode}"
+				type="string" inputWidget="application.name"  maxLen="16" />
+			<uniqueConstraint name="nameUc"
+				description="$m{system.module.uc.name}" fieldList="name" />
+			<uniqueConstraint name="descUc"
+				description="$m{system.module.uc.description}" fieldList="description" />
+		</entity>
+		<entity name="moduleApp" description="$m{system.moduleapp}"
+			label="$m{system.moduleapp.label}"
+			type="com.flowcentraltech.flowcentral.system.entities.ModuleApp">
+			<field name="moduleId" label="$m{system.moduleapp.module}" type="ref"
+				references="moduleRef" inputWidget="application.entitylist" />
+			<field name="name" label="$m{system.moduleapp.name}" type="string"
+				inputWidget="application.name" maxLen="64"  />
+			<field name="shortDescription"
+				label="$m{system.moduleapp.shortdescription}" type="string"
+				inputWidget="application.text" maxLen="96"  />
+			<field name="longDescription"
+				label="$m{system.moduleapp.longdescription}" type="string"
+				inputWidget="application.text" maxLen="256"  />
+			<field name="configFile" label="$m{system.moduleapp.configfile}"
+				type="string" inputWidget="application.text" maxLen="128"  />
+			<field name="autoInstall" label="$m{system.moduleapp.autoinstall}"
+				type="boolean" inputWidget="application.checkbox" />
+			<field name="moduleName" label="$m{system.moduleapp.modulename}"
+				type="list_only" key="moduleId" property="name" />
+			<field name="moduleDesc" label="$m{system.moduleapp.moduledesc}"
+				type="list_only" key="moduleId" property="description" />
+			<field name="moduleLabel" label="$m{system.moduleapp.modulelabel}"
+				type="list_only" key="moduleId" property="label" />
+			<field name="moduleShortCode"
+				label="$m{system.moduleapp.moduleshortcode}" type="list_only" key="moduleId"
+				property="shortCode" />
+			<uniqueConstraint name="nameUc"
+				description="$m{system.moduleapp.uc.name}" fieldList="name" />
+			<uniqueConstraint name="descUc"
+				description="$m{system.moduleapp.uc.description}"
+				fieldList="shortDescription" />
+		</entity>
+		<entity name="sysParam" description="$m{system.systemparameter}"
+			label="$m{system.systemparameter.label}"
+			type="com.flowcentraltech.flowcentral.system.entities.SystemParameter" auditable="true"
+			reportable="true">
+			<field name="moduleId" label="$m{system.systemparameter.moduleid}"
+				type="ref" references="moduleRef"
+				filterLabel="$m{system.systemparameter.module}"
+				inputWidget="application.entitylist" />
+			<field name="type" label="$m{system.systemparameter.type}"
+				type="enum_ref" references="sysparamtypelist"
+				inputWidget="application.enumlist" />
+			<field name="code" label="$m{system.systemparameter.code}"
+				type="string" inputWidget="application.name"  maxLen="32" />
+			<field name="description"
+				label="$m{system.systemparameter.description}" type="string"
+				inputWidget="application.text" maxLen="196"  />
+			<field name="value" label="$m{system.systemparameter.value}"
+				type="string" inputWidget="sysparamvalue" maxLen="256"  nullable="true" />
+			<field name="defaultValue"
+				label="$m{system.systemparameter.defaultvalue}" type="string"  maxLen="256" nullable="true"/>
+			<field name="editor" label="$m{system.systemparameter.editor}"
+				type="string" maxLen="256"  />
+			<field name="control" label="$m{system.systemparameter.control}"
+				type="boolean" inputWidget="application.booleanlist" />
+			<field name="editable" label="$m{system.systemparameter.editable}"
+				type="boolean" inputWidget="application.booleanlist" />
+			<field name="moduleName" label="$m{system.systemparameter.modulename}"
+				type="list_only" key="moduleId" property="name" />
+			<field name="moduleDesc" label="$m{system.systemparameter.moduledesc}"
+				type="list_only" key="moduleId" property="description" />
+			<field name="moduleLabel"
+				label="$m{system.systemparameter.modulelabel}" type="list_only"
+				key="moduleId" property="label" />
+			<field name="moduleShortCode"
+				label="$m{system.systemparameter.moduleshortcode}" type="list_only"
+				key="moduleId" property="shortCode" />
+			<field name="typeDesc" label="$m{system.systemparameter.typedesc}"
+				type="list_only" key="type" property="description" />
+			<uniqueConstraint name="codeUc"
+				description="$m{system.systemparameter.uc.code}" fieldList="code" />
+			<uniqueConstraint name="descUc"
+				description="$m{system.systemparameter.uc.description}"
+				fieldList="description" />
+		</entity>
+		<entity name="scheduledTask" description="$m{system.scheduledtask}"
+			label="$m{system.scheduledtask.label}"
+			type="com.flowcentraltech.flowcentral.system.entities.ScheduledTask" auditable="true"
+			reportable="true">
+			<field name="description" label="$m{system.scheduledtask.description}"
+				type="string" inputWidget="application.text" maxLen="64"  />
+			<field name="taskName" label="$m{system.scheduledtask.taskname}"
+				type="string" inputWidget="schedulabletasklist"  maxLen="32" />
+			<field name="startTime" label="$m{system.scheduledtask.starttime}"
+				type="timestamp_utc" inputWidget="application.time" />
+			<field name="endTime" label="$m{system.scheduledtask.endtime}"
+				type="timestamp_utc" inputWidget="application.timeclearable" nullable="true" />
+			<field name="nextExecutionOn"
+				label="$m{system.scheduledtask.nextexecutionon}" type="timestamp_utc"
+				inputWidget="application.datetime" />
+			<field name="lastExecutionOn"
+				label="$m{system.scheduledtask.lastexecutionon}" type="timestamp_utc"
+				inputWidget="application.datetime" nullable="true" />
+			<field name="frequency" label="$m{system.scheduledtask.frequency}"
+				type="string" inputWidget="application.period"  maxLen="32" nullable="true" />
+			<field name="weekdays" label="$m{system.scheduledtask.weekdays}"
+				type="string" inputWidget="weekdayschecklist" maxLen="128"  nullable="true" />
+			<field name="days" label="$m{system.scheduledtask.days}" type="string"
+				inputWidget="dayschecklist" maxLen="128"  nullable="true" />
+			<field name="months" label="$m{system.scheduledtask.months}"
+				type="string" inputWidget="monthschecklist" maxLen="128"  nullable="true" />
+			<uniqueConstraint name="descUc"
+				description="$m{system.scheduledtask.uc.description}"
+				fieldList="description" />
+		</entity>
+		<entity name="scheduledTaskHist"
+			description="$m{system.scheduledtaskhist}"
+			label="$m{system.scheduledtaskhist.label}"
+			type="com.flowcentraltech.flowcentral.system.entities.ScheduledTaskHist"
+			auditable="true" reportable="true">
+			<field name="scheduledTaskId"
+				label="$m{system.scheduledtaskhist.scheduledtaskid}" type="ref"
+				references="scheduledTaskRef"
+				filterLabel="$m{system.scheduledtaskhist.scheduledtask}"
+				inputWidget="application.entitylist" />
+			<field name="taskStatus" label="$m{system.scheduledtaskhist.status}"
+				type="enum_ref" references="taskstatuslist"
+				inputWidget="application.enumlist" />
+			<field name="startedOn" label="$m{system.scheduledtaskhist.startedon}"
+				type="timestamp_utc" inputWidget="application.datetime" />
+			<field name="finishedOn" label="$m{system.scheduledtask.finishedon}"
+				type="timestamp_utc" inputWidget="application.datetime" nullable="true" />
+			<field name="errorMsg" label="$m{system.scheduledtaskhist.errormsg}"
+				type="string" inputWidget="application.textarea" maxLen="512" nullable="true"  />
+			<field name="scheduledTaskDesc"
+				label="$m{system.scheduledtaskhist.scheduledtaskdesc}" type="list_only"
+				inputWidget="application.text" key="scheduledTaskId"
+				property="description" />
+			<field name="taskName" label="$m{system.scheduledtaskhist.taskname}"
+				type="list_only" inputWidget="application.text" key="scheduledTaskId"
+				property="taskName" />
+			<field name="taskStatusDesc"
+				label="$m{system.scheduledtaskhist.taskstatusdesc}" type="list_only"
+				inputWidget="application.text" key="taskStatus" property="description" />
+		</entity>
+		<entity name="credential" description="$m{system.credential}"
+			label="$m{system.credential.label}"
+			type="com.flowcentraltech.flowcentral.system.entities.Credential" auditable="true"
+			reportable="true">
+			<field name="name" label="$m{system.credential.name}" type="string"
+				inputWidget="application.name" maxLen="64"  />
+			<field name="description" label="$m{system.credential.description}"
+				type="string" inputWidget="application.text"  maxLen="128" />
+			<field name="userName" label="$m{system.credential.username}"
+				type="string" maxLen="64"  />
+			<field name="password" label="$m{system.credential.password}"
+				type="string" maxLen="512"  />
+			<uniqueConstraint name="nameUc"
+				description="$m{system.credential.uc.name}" fieldList="name" />
+			<uniqueConstraint name="descUc"
+				description="$m{system.credential.uc.description}" fieldList="description" />
+		</entity>
+		<entity name="downloadLog" description="$m{system.downloadlog}"
+			label="$m{system.downloadlog.label}"
+			type="com.flowcentraltech.flowcentral.system.entities.DownloadLog"
+			auditable="true" reportable="true">
+			<field name="resourceName" label="$m{system.downloadlog.resourcename}"
+				type="string" inputWidget="application.name" maxLen="128" />
+			<field name="remoteAddress" label="$m{system.downloadlog.remoteaddress}"
+				type="string" inputWidget="application.text" maxLen="64" />
+			<field name="remoteHost" label="$m{system.downloadlog.remotehost}"
+				type="string" maxLen="96" nullable="true" />
+		</entity>
+		<entity name="environmentVariable" description="$m{system.environmentvariable}"
+			label="$m{system.environmentvariable.label}"
+			type="com.flowcentraltech.flowcentral.system.entities.EnvironmentVariable" auditable="true"
+			reportable="true">
+			<field name="name" label="$m{system.environmentvariable.name}" type="string"
+				inputWidget="application.name" maxLen="64"  />
+			<field name="description" label="$m{system.environmentvariable.description}"
+				type="string" inputWidget="application.text"  maxLen="128" />
+			<field name="variable" label="$m{system.environmentvariable.variable}"
+				type="string" maxLen="1024"  />
+			<uniqueConstraint name="nameUc"
+				description="$m{system.environmentvariable.uc.name}" fieldList="name" />
+			<uniqueConstraint name="descUc"
+				description="$m{system.environmentvariable.uc.description}" fieldList="description" />
+		</entity>
+	</entities>
+	<!-- Tables -->
+	<tables>
+		<table name="moduleTable" description="$m{system.module.table}"
+			label="$m{system.module.table.label}" entity="module" itemsPerPage="20">
+			<column field="name" renderWidget="application.text"
+				widthRatio="1" linkAct="maintainAct" />
+			<column field="description" renderWidget="application.text"
+				widthRatio="1" linkAct="maintainAct" />
+			<column field="label" renderWidget="application.text"
+				widthRatio="1" />
+			<column field="shortCode" renderWidget="application.text"
+				widthRatio="1" />
+			<column field="createDt" renderWidget="application.datetime"
+				widthRatio="1" />
+			<column field="updateDt" renderWidget="application.datetime"
+				widthRatio="1" />
+		</table>
+		<table name="moduleAppTable" description="$m{system.moduleapp.table}"
+			label="$m{system.moduleapp.table.label}" entity="moduleApp" itemsPerPage="20">
+			<column field="moduleLabel" renderWidget="application.text"
+				widthRatio="1" />
+			<column field="name" renderWidget="application.text"
+				widthRatio="1" />
+			<column field="shortDescription" renderWidget="application.text"
+				widthRatio="1" />
+			<column field="longDescription" renderWidget="application.text"
+				widthRatio="1" />
+			<column field="configFile" renderWidget="application.text"
+				widthRatio="1" />
+			<column field="autoInstall" renderWidget="application.checkbox"
+				widthRatio="1" />
+			<column field="createDt" renderWidget="application.datetime"
+				widthRatio="1" />
+			<column field="updateDt" renderWidget="application.datetime"
+				widthRatio="1" />
+		</table>
+		<table name="sysParamTable"
+			description="$m{system.systemparameter.table}"
+			label="$m{system.systemparameter.table.label}" entity="sysParam"
+			itemsPerPage="20" sortHistory="2">
+			<column field="moduleLabel" renderWidget="application.text"
+				label="$m{system.systemparameter.module}" widthRatio="1" />
+			<column field="code" renderWidget="application.text"
+				widthRatio="1" linkAct="maintainAct" />
+			<column field="description" renderWidget="application.text"
+				widthRatio="1" linkAct="maintainAct" />
+			<column field="typeDesc" renderWidget="application.text"
+				label="$m{system.systemparameter.type}" widthRatio="1" />
+			<column field="value" renderWidget="application.text"
+				widthRatio="1" />
+			<column field="updatedBy" renderWidget="application.name"
+				widthRatio="1" />
+			<column field="updateDt" renderWidget="application.datetime"
+				widthRatio="1" />
+			<quickFilter name="systemFlagsFilter"
+				description="$m{system.systemparameter.table.quickfilter.systemflags}">
+				<restriction type="equals" field="type" paramA="B" />
+			</quickFilter>
+		</table>
+		<table name="scheduledTaskTable"
+			description="$m{system.scheduledtask.table}"
+			label="$m{system.scheduledtask.table.label}" entity="scheduledTask"
+			itemsPerPage="20">
+			<column field="description" renderWidget="application.text"
+				widthRatio="1" linkAct="maintainAct" />
+			<column field="taskName" renderWidget="application.text"
+				widthRatio="1" />
+			<column field="startTime" renderWidget="application.time"
+				widthRatio="1" />
+			<column field="endTime" renderWidget="application.time" widthRatio="1" />
+			<column field="nextExecutionOn" renderWidget="application.datetime"
+				widthRatio="1" />
+			<column field="lastExecutionOn" renderWidget="application.datetime"
+				widthRatio="1" />
+			<column field="statusDesc" renderWidget="application.text"
+				label="$m{basestatusentity.field.label.status}" widthRatio="1" />
+		</table>
+		<table name="scheduledTaskHistTable"
+			description="$m{system.scheduledtaskhist.table}"
+			label="$m{system.scheduledtaskhist.table.label}" entity="scheduledTaskHist"
+			itemsPerPage="20">
+			<column field="scheduledTaskDesc" renderWidget="application.text"
+				widthRatio="1" linkAct="maintainAct" />
+			<column field="taskName" renderWidget="application.text"
+				widthRatio="1" />
+			<column field="startedOn" renderWidget="application.datetime"
+				widthRatio="1" />
+			<column field="finishedOn" renderWidget="application.datetime"
+				widthRatio="1" />
+			<column field="taskStatusDesc" renderWidget="application.text"
+				label="$m{basestatusentity.field.label.status}" widthRatio="1" />
+		</table>
+		<table name="credentialTable" description="$m{system.credential.table}"
+			label="$m{system.credential.table.label}" entity="credential"
+			itemsPerPage="20">
+			<column field="name" renderWidget="application.text"
+				widthRatio="1" linkAct="maintainAct" />
+			<column field="description" renderWidget="application.text"
+				widthRatio="1" linkAct="maintainAct" />
+			<column field="createDt" renderWidget="application.datetime"
+				widthRatio="1" />
+			<column field="updateDt" renderWidget="application.datetime"
+				widthRatio="1" />
+		</table>
+		<table name="downloadLogTable" description="$m{system.downloadlog.table}"
+			label="$m{system.downloadlog.table.label}" entity="downloadLog"
+			itemsPerPage="20">
+			<column field="resourceName" renderWidget="application.text"
+				widthRatio="1" linkAct="maintainAct" />
+			<column field="remoteAddress" renderWidget="application.text"
+				widthRatio="1"/>
+			<column field="remoteHost" renderWidget="application.text"
+				widthRatio="1"/>
+			<column field="createDt" renderWidget="application.datetime"
+				widthRatio="1" />
+			<column field="updateDt" renderWidget="application.datetime"
+				widthRatio="1" />
+		</table>
+		<table name="environmentVariableTable" description="$m{system.environmentvariable.table}"
+			label="$m{system.environmentvariable.table.label}" entity="environmentVariable"
+			itemsPerPage="20">
+			<column field="name" renderWidget="application.text"
+				widthRatio="1" linkAct="maintainAct" />
+			<column field="description" renderWidget="application.text"
+				widthRatio="1" linkAct="maintainAct" />
+			<column field="variable" renderWidget="application.text"
+				widthRatio="1" />
+			<column field="createDt" renderWidget="application.datetime"
+				widthRatio="1" />
+			<column field="updateDt" renderWidget="application.datetime"
+				widthRatio="1" />
+		</table>
+	</tables>
+	<!-- Forms -->
+	<forms>
+		<form name="moduleForm" description="$m{system.module.form}"
+			entity="module">
+			<tab name="basicDetails" label="$m{system.module.form.basicdetails}"
+				contentType="miniform">
+				<section name="details1" columns="type_2">
+					<field name="name" inputWidget="application.name" column="0"
+						required="true" />
+					<field name="description" inputWidget="application.text"
+						column="0" required="true" />
+					<field name="shortCode" inputWidget="application.name"
+						column="1" required="true" />
+					<field name="label" inputWidget="application.text" column="1"
+						required="true" />
+				</section>
+			</tab>
+			<tab name="changeLog" label="$m{application.form.audit}"
+				contentType="miniform_changelog" />
+			<relatedList name="relSysParam"
+				description="$m{system.module.form.related.systemparameter.description}"
+				label="$m{system.module.form.related.systemparameter.label}"
+				applet="manageSysParam" />
+			<relatedList name="relModuleApp"
+				description="$m{system.module.form.related.moduleapp.description}"
+				label="$m{system.module.form.related.moduleapp.label}"
+				applet="manageModuleApp" />
+		</form>
+		<form name="moduleAppForm" description="$m{system.moduleapp.form}"
+			entity="moduleApp">
+			<tab name="basicDetails" label="$m{system.moduleapp.form.basicdetails}"
+				contentType="miniform">
+				<section name="details1" columns="type_2">
+					<field name="moduleId" inputWidget="application.entitylist"
+						column="0" required="true" />
+					<field name="name" inputWidget="application.name" column="0"
+						required="true" />
+					<field name="shortDescription" inputWidget="application.text"
+						column="0" required="true" />
+					<field name="autoInstall" inputWidget="application.checkbox"
+						column="1" />
+				</section>
+				<section name="details2" columns="type_1">
+					<field name="longDescription" inputWidget="application.text"
+						column="0" required="true" />
+					<field name="configFile" inputWidget="application.text"
+						column="0" required="true" />
+				</section>
+			</tab>
+			<tab name="changeLog" label="$m{application.form.audit}"
+				contentType="miniform_changelog" />
+		</form>
+		<form name="sysParamForm" description="$m{system.systemparameter.form}"
+			entity="sysParam">
+			<annotation name="headerAnnotation"
+				description="$m{system.systemparameter.form.annotation.header}"
+				message="$m{system.systemparameter.form.annotation.header.message}" />
+			<annotation type="warning" name="valueAnnotation"
+				description="$m{system.systemparameter.form.annotation.value}"
+				message="$m{system.systemparameter.form.annotation.value.message}" />
+			<tab name="basicDetails"
+				label="$m{system.systemparameter.form.basicdetails}" contentType="miniform">
+				<section name="sysParamDetails" columns="type_2">
+					<field name="moduleId" inputWidget="application.entitylist"
+						column="0" required="true" editable="false"
+						label="$m{system.systemparameter.module}" />
+					<field name="code" inputWidget="application.name" column="0"
+						required="true" editable="false" />
+					<field name="description" inputWidget="application.text"
+						column="0" required="true" editable="false" />
+					<field name="value" inputWidget="sysparamvalue" column="1"
+						editable="false" required="true" />
+				</section>
+			</tab>
+			<tab name="changeLog" label="$m{application.form.audit}"
+				contentType="miniform_changelog" />
+			<formStatePolicy type="on_switch" name="valueEditPolicy"
+				description="$m{system.systemparameter.form.fieldstatepolicy.valueeditpolicy}">
+				<onCondition>
+					<restriction type="equals" field="editable" paramA="true" />
+				</onCondition>
+				<setStates>
+					<setState type="annotation" target="valueAnnotation" visible="true"/>
+					<setState type="field" target="value" editable="true"/>
+				</setStates>
+			</formStatePolicy>
+			<formStatePolicy type="on_switch" name="valueNonEditPolicy"
+				description="$m{system.systemparameter.form.fieldstatepolicy.valuenoneditpolicy}">
+				<onCondition>
+					<restriction type="equals" field="editable" paramA="false" />
+				</onCondition>
+				<setStates>
+					<setState type="annotation" target="headerAnnotation" visible="true"/>
+				</setStates>
+			</formStatePolicy>
+		</form>
+		<form name="scheduledTaskForm"
+			description="$m{system.scheduledtask.form}" entity="scheduledTask">
+			<tab name="basicDetails"
+				label="$m{system.scheduledtask.form.basicdetails}" contentType="miniform">
+				<section name="scheduledTaskDetails" columns="type_2">
+					<field name="taskName" column="0" required="true"
+						switchOnChange="true" />
+					<field name="description" column="0" required="true" />
+					<field name="startTime" column="0" required="true" />
+					<field name="endTime" column="0" />
+					<field name="frequency" column="1" />
+					<field name="weekdays" column="1" />
+					<field name="days" column="1" />
+					<field name="months" column="1" />
+					<field name="status" column="1" required="true" />
+				</section>
+			</tab>
+			<tab name="paramValues" label="$m{system.scheduledtask.form.parameters}"
+				reference="scheduledtask-paramconfigprovider" contentType="param_values" />
+			<tab name="executionDetails"
+				label="$m{system.scheduledtask.form.executiondetails}"
+				contentType="miniform" disabled="true">
+				<section name="executionDetails" columns="type_2">
+					<field name="nextExecutionOn" inputWidget="application.datetimetext"
+						column="0" />
+					<field name="lastExecutionOn" inputWidget="application.datetimetext"
+						column="1" />
+				</section>
+			</tab>
+			<tab name="changeLog" label="$m{application.form.audit}"
+				contentType="miniform_changelog" />
+		</form>
+		<form name="scheduledTaskHistForm"
+			description="$m{system.scheduledtaskhist.form}" entity="scheduledTaskHist">
+			<tab name="basicDetails"
+				label="$m{system.scheduledtaskhist.form.basicdetails}"
+				contentType="miniform">
+				<section name="scheduledTaskHistDetails" columns="type_2">
+					<field name="scheduledTaskId" column="0" required="true" />
+					<field name="startedOn" column="0" required="true" />
+					<field name="finishedOn" column="0" required="false" />
+					<field name="taskStatus" column="1" required="true" />
+				</section>
+				<section name="errorDetails" columns="type_1">
+					<field name="errorMsg" column="0" />
+				</section>
+			</tab>
+			<tab name="taskDetails"
+				label="$m{system.scheduledtaskhist.form.taskdetails}" contentType="miniform"
+				disabled="true">
+				<section name="taskDetails" columns="type_2">
+					<field name="scheduledTaskDesc" column="0" />
+					<field name="taskName" column="1" />
+				</section>
+			</tab>
+		</form>
+		<form name="credentialForm" description="$m{system.credential.form}"
+			entity="credential">
+			<tab name="basicDetails" label="$m{system.credential.form.basicdetails}"
+				contentType="miniform">
+				<section name="credentialDetails" columns="type_2">
+					<field name="name" inputWidget="application.name" column="0"
+						required="true" />
+					<field name="description" inputWidget="application.text"
+						column="0" required="true" />
+					<field name="userName" inputWidget="application.name" column="1" required="true" />
+					<field name="password" inputWidget="application.password" column="1" />
+				</section>
+			</tab>
+			<tab name="changeLog" label="$m{application.form.audit}"
+				contentType="miniform_changelog" />
+		</form>
+		<form name="downloadLogForm" description="$m{system.downloadlog.form}"
+			entity="downloadLog">
+			<tab name="basicDetails" label="$m{system.downloadlog.form.basicdetails}"
+				contentType="miniform">
+				<section name="downloadDetails" columns="type_1">
+					<field name="resourceName" inputWidget="application.text" column="0"
+						required="true" />
+					<field name="remoteAddress" inputWidget="application.text"
+						column="0" required="true" />
+					<field name="remoteHost" inputWidget="application.text"
+						column="0"/>
+				</section>
+			</tab>
+			<tab name="changeLog" label="$m{application.form.audit}"
+				contentType="miniform_changelog" />
+		</form>
+		<form name="environmentVariableForm" description="$m{system.environmentvariable.form}"
+			entity="environmentVariable">
+			<tab name="basicDetails" label="$m{system.environmentvariable.form.basicdetails}"
+				contentType="miniform">
+				<section name="basicDetails" columns="type_2">
+					<field name="name" inputWidget="application.name" column="0"
+						required="true" />
+					<field name="description" inputWidget="application.text"
+						column="1" required="true" />
+				</section>
+				<section name="variable" columns="type_1">
+					<field name="variable" inputWidget="application.textarea" column="0" 
+						required="true" />
+				</section>
+			</tab>
+			<tab name="changeLog" label="$m{application.form.audit}"
+				contentType="miniform_changelog" />
+		</form>
+	</forms>
+</application>

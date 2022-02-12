@@ -1,0 +1,34 @@
+// UPL template for workflow alerts actions CRUD panel
+// Copyright (c) 2019, 2021, FlowCentral Technologies.
+// All rights reserved.
+// 
+// PROPRIETARY AND CONFIDENTIAL. USE IS SUBJECT TO LICENSE TERMS.
+
+!fc-wfstepalertscrudpanel
+	tableComponents:$c{nameLabel descLabel}
+	formSection:$d{!ui-section components:$c{frmNotificationType frmName frmDesc frmTemplate
+		frmFireOnPrevStepName frmFireOnConditionName frmRecipientPolicy frmRecipientNameRule frmRecipientContactRule frmType}}
+!ui-label:nameLabel styleClass:$e{fc-formfield} caption:$m{wfstepalertscrudpanel.name} binding:name
+!ui-label:descLabel styleClass:$e{fc-formfield} caption:$m{wfstepalertscrudpanel.description} binding:description
+!ui-name:frmName styleClass:$e{fc-formfield} caption:$m{wfstepalertscrudpanel.name} size:32 binding:name required:true focus:true
+!ui-text:frmDesc styleClass:$e{fc-formfield} caption:$m{wfstepalertscrudpanel.description} size:32 binding:description required:true
+!ui-select:frmTemplate styleClass:$e{fc-formfield} caption:$m{wfstepalertscrudpanel.template}
+	list:$s{wfeditnotiftemplatelist} listParamType:$s{PANEL} listParams:$l{entityName} blankOption:$s{}
+	binding:template required:true 
+!ui-select:frmFireOnPrevStepName styleClass:$e{fc-formfield} caption:$m{wfstepalertscrudpanel.fireonprevstepname}
+	list:$s{wfeditprevsteplist} listParamType:$s{PANEL} listParams:$l{prevStepList} blankOption:$s{}
+	binding:fireOnPrevStepName
+!ui-select:frmFireOnConditionName styleClass:$e{fc-formfield} caption:$m{wfstepalertscrudpanel.fireoncondition}
+	list:$s{studioworkflowfilterlist} listParamType:$s{PANEL} listParams:$l{workflowId} blankOption:$s{}
+	binding:fireOnConditionName
+!ui-select:frmRecipientPolicy styleClass:$e{fc-formfield} caption:$m{wfstepalertscrudpanel.recipientpolicy} binding:recipientPolicy
+	list:$s{wfrecipientpolicylist} blankOption:$s{}
+	eventHandler:$d{!ui-event event:onchange action:$c{switchAct}}
+!ui-select:frmRecipientNameRule styleClass:$e{fc-formfield} caption:$m{wfstepalertscrudpanel.recipientnamerule} binding:recipientNameRule
+	list:$s{wfrecipientnamerulelist} blankOption:$s{} listParamType:$s{PANEL} listParams:$l{entityName recipientPolicy}
+!ui-select:frmRecipientContactRule styleClass:$e{fc-formfield} caption:$m{wfstepalertscrudpanel.recipientcontactrule} binding:recipientContactRule
+	list:$s{wfrecipientcontactrulelist} blankOption:$s{} listParamType:$s{PANEL} listParams:$l{entityName recipientPolicy}
+!ui-select:frmNotificationType styleClass:$e{fc-formfield} caption:$m{wfstepalertscrudpanel.notificationtype}
+	list:$s{notificationtypelist} blankOption:$s{} binding:notificationType required:true
+!ui-select:frmType styleClass:$e{fc-formfield} caption:$m{wfstepalertscrudpanel.type}
+	list:$s{wfalerttypelist} blankOption:$s{} binding:type required:true

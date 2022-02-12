@@ -1,0 +1,18 @@
+// UPL template for manage entity list single form applet panel
+// Copyright (c) 2019, 2021, FlowCentral Technologies.
+// All rights reserved.
+// 
+// PROPRIETARY AND CONFIDENTIAL. USE IS SUBJECT TO LICENSE TERMS.
+
+!fc-manageentitylistsingleformappletpanel components:$c{entitySearchPanel}
+
+// Search list
+!fc-entitysearchpanel:entitySearchPanel binding:entitySearch
+	newInstEventHandler:$d{!ui-event event:onclick action:$c{newAct}}
+	reportEventHandler:$d{!ui-event event:onclick action:$c{reportAct}}
+	searchResultMarker:$j{com.flowcentraltech.flowcentral.application.web.panels.EntitySearchValueMarkerConstants.DEFAULT_LIST}
+
+// Actions
+!ui-postcommand:newAct command:newInst
+!ui-postcommand:reportAct command:prepareGenerateReport
+	

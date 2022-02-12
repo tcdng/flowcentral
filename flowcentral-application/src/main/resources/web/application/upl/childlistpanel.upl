@@ -1,0 +1,24 @@
+// UPL template for child list panel
+// Copyright (c) 2019, 2021, FlowCentral Technologies.
+// All rights reserved.
+// 
+// PROPRIETARY AND CONFIDENTIAL. USE IS SUBJECT TO LICENSE TERMS.
+
+!fc-childlistpanel layout:$d{!ui-vertical style:$s{width:100%;} cellStyle:$s{padding:0px;}}
+	components:$c{formMessages entitySearchPanel}
+
+// Messages
+!fc-formmessages:formMessages binding:messages
+
+// Search list
+!fc-entitysearchpanel:entitySearchPanel
+	newInstEventHandler:$d{!ui-event event:onclick action:$c{newAct}}
+	editInstEventHandler:$d{!ui-event event:onclick action:$c{assignAct}}
+	newBtnBinding:$s{childTabIndex}
+	editBtnBinding:$s{childTabIndex}
+	searchResultMarker:$j{com.flowcentraltech.flowcentral.application.web.panels.EntitySearchValueMarkerConstants.CHILD_LIST}
+
+// Actions
+!ui-post:newAct path:$p{/newChildListItem}
+!ui-post:assignAct path:$r{childlist.edit.actionpath}
+	

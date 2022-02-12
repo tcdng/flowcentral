@@ -1,0 +1,50 @@
+// UPL template for form tab editor panel
+// Copyright (c) 2019, 2021, FlowCentral Technologies.
+// All rights reserved.
+// 
+// PROPRIETARY AND CONFIDENTIAL. USE IS SUBJECT TO LICENSE TERMS.
+
+!fc-formfieldeditorpanel
+    dialogBodyComponents:$c{formPanel}
+    dialogActionLayout:$d{!ui-horizontal style:$s{width:100%;}}
+    dialogActionComponents:$c{dialogActionPanel}
+	
+//Form   
+!ui-formpanel:formPanel
+	layout:$d{!ui-vertical style:$s{table-layout:fixed;}}
+    formCaptionSuffix:$s{:} formBinding:$g{dialogFormBinding} formColumns:2
+	formSection:$d{!ui-section components:$c{frmName frmColumn frmLabel frmInputWidget frmInputReference
+		frmColor frmSwitchOnChange frmRequired frmVisible frmEditable frmDisabled}}
+!ui-text:frmName styleClass:$e{fc-formfield} caption:$m{formeditor.field.name} binding:name required:true focus:true
+!ui-integer:frmColumn styleClass:$e{fc-formfield} caption:$m{formeditor.field.column} binding:column
+!ui-text:frmLabel styleClass:$e{fc-formfield} caption:$m{formeditor.field.label} binding:label maxLen:64
+!ui-select:frmInputWidget styleClass:$e{fc-formfield} caption:$m{formeditor.field.inputwidget} binding:inputWidget
+	list:studioentityfieldwidgetlist blankOption:$s{} listParams:$l{entity name dataType}
+!ui-select:frmInputReference styleClass:$e{fc-formfield} caption:$m{formeditor.field.inputreference} binding:reference
+	list:studioentityfieldinputreflist blankOption:$s{} listParams:$l{entity name dataType}	
+!ui-select:frmColor styleClass:$e{fc-formfield} caption:$m{formeditor.field.color}
+	list:widgetcolorlist blankOption:$s{} binding:color
+!ui-checkbox:frmSwitchOnChange caption:$m{formeditor.field.switchonchange} binding:switchOnChange layoutCaption:true
+!ui-checkbox:frmRequired caption:$m{formeditor.field.required} binding:required layoutCaption:true
+!ui-checkbox:frmVisible caption:$m{formeditor.field.visible} binding:visible layoutCaption:true
+!ui-checkbox:frmEditable caption:$m{formeditor.field.editable} binding:editable layoutCaption:true
+!ui-checkbox:frmDisabled caption:$m{formeditor.field.disabled} binding:disabled layoutCaption:true
+
+// Action buttons
+!ui-panel:dialogActionPanel layout:$d{!ui-horizontal} components:$c{addBtn applyBtn cancelBtn}
+!ui-button:addBtn caption:$m{button.add} styleClass:$e{fc-bluebutton}
+	eventHandler:$d{!ui-event event:onclick action:$c{addAct}}
+!ui-button:applyBtn caption:$m{button.apply} styleClass:$e{fc-bluebutton}
+	eventHandler:$d{!ui-event event:onclick action:$c{applyAct}}
+!ui-button:cancelBtn caption:$m{button.cancel}
+    eventHandler:$d{!ui-event event:onclick action:$c{closeDialogAct}}
+
+//Actions
+!ui-postcommand:applyAct command:apply components:$c{formPanel}
+    validations:$c{formValidation} refresh:$f{refreshOnApply}
+!ui-postcommand:addAct command:add components:$c{formPanel}
+    validations:$c{formValidation} refresh:$f{refreshOnApply}
+
+
+// Validations
+!ui-validation:formValidation components:$c{formPanel}

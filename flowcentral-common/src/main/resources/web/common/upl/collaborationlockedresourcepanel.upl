@@ -1,0 +1,30 @@
+// UPL template for user details panel
+// Copyright (c) 2019, 2021, FlowCentral Technologies.
+// All rights reserved.
+// 
+// PROPRIETARY AND CONFIDENTIAL. USE IS SUBJECT TO LICENSE TERMS.
+
+!fc-collaborationlockedresourcepanel dialogCaption:$m{common.lockedresource}
+	dialogBodyComponents:$c{userDetailsPanel}
+    dialogActionLayout:$d{!ui-vertical style:$s{width:100%;}}
+    dialogActionComponents:$c{lockActionPanel}
+     
+!ui-panel:userDetailsPanel layout:$d{!ui-horizontal} components:$c{userImg detailsPanel}
+
+!ui-image:userImg src:$t{/images/user_large.png} styleClass:$e{fc-resdtlimg}
+    binding:requestUserPhotoGenerator
+
+!ui-panel:detailsPanel style:$s{margin-left:4px;} layout:$d{!ui-vertical}
+    components:$c{userLabel lockedOnLabel branchLabel}
+!ui-labeledtext:userLabel styleClass:$e{fc-resdtltext} caption:$m{common.lockedresource.username}
+    binding:lockedByUserName
+!ui-labeledtext:lockedOnLabel styleClass:$e{fc-resdtltext} caption:$m{common.lockedresource.lockedon}
+    binding:lockedOn
+!ui-labeledtext:branchLabel styleClass:$e{fc-resdtltext} caption:$m{common.lockedresource.branch}
+    binding:lockedByUserBranch
+   
+!ui-panel:lockActionPanel layout:$d{!ui-horizontal} components:$c{grabLockBtn cancelBtn}
+!ui-button:grabLockBtn styleClass:$e{fc-orangebutton} caption:$m{button.grablock}
+	eventHandler:$g{grabLockEventHandler}
+!ui-button:cancelBtn caption:$m{button.cancel}
+    eventHandler:$d{!ui-event event:onclick action:$c{closeDialogAct}}

@@ -1,0 +1,56 @@
+// UPL template for workflow step creation panel
+// Copyright (c) 2019, 2021, FlowCentral Technologies.
+// All rights reserved.
+// 
+// PROPRIETARY AND CONFIDENTIAL. USE IS SUBJECT TO LICENSE TERMS.
+
+!fc-wfstepcreationpanel
+    dialogBodyComponents:$c{formPanel}
+    dialogActionLayout:$d{!ui-horizontal style:$s{width:100%;}}
+    dialogActionComponents:$c{dialogActionPanel}
+
+//Form   
+!ui-formpanel:formPanel
+	layout:$d{!ui-vertical style:$s{table-layout:fixed;}}
+    formCaptionSuffix:$s{:} formBinding:$g{dialogFormBinding} formColumns:1
+	formSection:$d{!ui-section components:$c{frmType frmName frmDesc frmLabel frmAppletName frmBinaryConditionName frmReadOnlyConditionName frmPolicy frmRule
+		frmActionType}}
+
+!ui-select:frmType styleClass:$e{fc-formfield} caption:$m{wfstepcreationpanel.type}
+	list:$s{wfsteptypelist} blankOption:$s{} binding:type required:true
+!ui-name:frmName styleClass:$e{fc-formfield} caption:$m{wfstepcreationpanel.name} size:32 binding:name required:true focus:true
+!ui-text:frmDesc styleClass:$e{fc-formfield} caption:$m{wfstepcreationpanel.description} size:32 binding:description required:true
+!ui-text:frmLabel styleClass:$e{fc-formfield} caption:$m{wfstepcreationpanel.label} binding:label required:true
+!ui-select:frmAppletName styleClass:$e{fc-formfield} caption:$m{wfstepeditpanel.applet} listParams:$l{entityName}
+	list:$s{studioentityappletlist} blankOption:$s{} binding:appletName required:true
+!ui-select:frmBinaryConditionName styleClass:$e{fc-formfield} caption:$m{wfstepeditpanel.binarycondition}
+	list:$s{studioworkflowfilterlist} listParams:$l{workflowId} blankOption:$s{}
+	binding:binaryConditionName required:true
+!ui-select:frmReadOnlyConditionName styleClass:$e{fc-formfield} caption:$m{wfstepeditpanel.readonlycondition}
+	list:$s{studioworkflowfilterlist} listParams:$l{workflowId} blankOption:$s{}
+	binding:readOnlyConditionName
+!ui-select:frmPolicy styleClass:$e{fc-formfield} caption:$m{wfstepeditpanel.policy}
+	list:$s{wfsteppolicylist} listParams:$l{type} blankOption:$s{}
+	binding:policy required:true
+	eventHandler:$d{!ui-event event:onchange action:$c{switchAct}}
+!ui-select:frmRule styleClass:$e{fc-formfield} caption:$m{wfstepeditpanel.rule}
+	list:$s{rulelist} listParams:$l{policy} blankOption:$s{}
+	binding:rule
+!ui-select:frmActionType styleClass:$e{fc-formfield} caption:$m{wfstepeditpanel.recordactiontype}
+	list:$s{recordactiontypelist} blankOption:$s{} binding:recordActionType required:true
+
+// Action buttons
+!ui-panel:dialogActionPanel layout:$d{!ui-horizontal} components:$c{createBtn cancelBtn}
+!ui-button:createBtn caption:$m{button.create} styleClass:$e{fc-bluebutton}
+	eventHandler:$d{!ui-event event:onclick action:$c{createAct}}
+!ui-button:cancelBtn caption:$m{button.cancel}
+    eventHandler:$d{!ui-event event:onclick action:$c{closeDialogAct}}
+
+//Actions
+!ui-postcommand:switchAct components:$c{formPanel}  refresh:$c{formPanel}
+!ui-postcommand:createAct command:$g{dialogCreateCommand} target:$s{PARENT}
+	components:$c{formPanel} validations:$c{formValidation} refresh:$f{refreshOnCreate}
+
+// Validations
+!ui-validation:formValidation components:$c{formPanel}
+	

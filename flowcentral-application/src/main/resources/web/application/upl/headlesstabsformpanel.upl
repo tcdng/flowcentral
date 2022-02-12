@@ -1,0 +1,17 @@
+// UPL template for headless tabs form panel
+// Copyright (c) 2019, 2021, FlowCentral Technologies.
+// All rights reserved.
+// 
+// PROPRIETARY AND CONFIDENTIAL. USE IS SUBJECT TO LICENSE TERMS.
+
+!fc-headlesstabsformpanel components:$c{mainFormPanel}
+
+!ui-panel:mainFormPanel styleClass:$e{formbase} layout:$d{!ui-vertical style:$s{width:100%;}}
+	components:$c{headerlessListPanel}
+
+!ui-panel:headerlessListPanel styleClass:$s{tabsection} layout:$d{!ui-vertical style:$s{width:100%;}}
+	components:$c{headlessTabSheet}
+!fc-tabsheet:headlessTabSheet binding:headlessTabSheet
+
+// Actions
+

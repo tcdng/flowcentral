@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<!-- Test system module configuration -->
+<module name="test" description="Test Module" label="Test Module" shortCode="TST">
+	<!-- Privileges -->
+
+	<!-- System Parameters -->
+	<sysParameters>
+		<sysParameter code="TESTSYS0001" defaultVal="FlowCentral"
+			description="$m{system.sysparam.test.applicationname}" editor="!ui-text"
+			type="string" editable="false" preference="false" />
+		<sysParameter code="TESTSYS0002" defaultVal="Company Name"
+			description="$m{system.sysparam.test.companyname}" editor="!ui-text"
+			type="string" editable="false" preference="true" />
+		<sysParameter code="TESTSYS0003" defaultVal="32"
+			description="$m{system.sysparam.test.maximumusers}" editor="!ui-integer size:8 precision:4"
+			type="number" editable="false" preference="true" />
+	</sysParameters>
+</module>

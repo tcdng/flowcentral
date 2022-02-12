@@ -1,0 +1,10 @@
+// UPL template for workflow step user actions CRUD panel
+// Copyright (c) 2019, 2021, FlowCentral Technologies.
+// All rights reserved.
+// 
+// PROPRIETARY AND CONFIDENTIAL. USE IS SUBJECT TO LICENSE TERMS.
+
+!fc-studiodialogcrudpanel styleClass:$e{fc-cruddialog}
+    dialogCancelCaption:$m{button.close}
+    dialogTableSerialNumbers:true
+//    dialogCancelEventHandler:$d{!ui-event event:onclick action:$c{closeDialogAct}}

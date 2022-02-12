@@ -1,0 +1,10 @@
+// UPL template for table preview panel
+// Copyright (c) 2019, 2021, FlowCentral Technologies.
+// All rights reserved.
+// 
+// PROPRIETARY AND CONFIDENTIAL. USE IS SUBJECT TO LICENSE TERMS.
+
+!fc-tablepreviewpanel layout:$d{!ui-vertical}
+	components:$c{searchResultTbl}
+
+!fc-entitytable:searchResultTbl binding:entityTable multiSelect:true valueMarker:$f{searchResultMarker}

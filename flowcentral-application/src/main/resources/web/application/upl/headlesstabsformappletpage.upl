@@ -1,0 +1,11 @@
+// UPL template for healess tabs form applet page
+// Copyright (c) 2019, 2021, FlowCentral Technologies.
+// All rights reserved.
+// 
+// PROPRIETARY AND CONFIDENTIAL. USE IS SUBJECT TO LICENSE TERMS.
+
+!ui-page caption:$m{headlesstabsformpage.title} components:$c{appletPanel}
+	captionBinding:altCaption subCaptionBinding:altSubCaption
+
+// Applet panel
+!fc-headlesstabsformappletpanel:appletPanel style:$s{width:100%;height:100%;} binding:applet

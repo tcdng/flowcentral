@@ -1,0 +1,27 @@
+// UPL template for table column editor panel
+// Copyright (c) 2019, 2021, FlowCentral Technologies.
+// All rights reserved.
+// 
+// PROPRIETARY AND CONFIDENTIAL. USE IS SUBJECT TO LICENSE TERMS.
+
+!fc-tablecolumneditorpanel layout:$d{!ui-vertical}
+	components:$c{titleBar editValuePanel editActPanel}
+!ui-label:titleBar styleClass:$e{fc-editortitle} caption:$s{Edit Column}
+!ui-panel:editValuePanel
+	layout:$d{!ui-vertical showCaption:true inlineCaption:true inlineCaptionClass:$s{editcollabel} captionSuffix:$s{:}}
+	components:$c{editValField editValLabel editValLink editValWidget editValWidth editValSwitch editValDisabled editValEditable editValSortable}
+!ui-text:editValField caption:$m{tableeditor.field} maxLen:64 style:$s{width:160px;}
+!ui-text:editValLabel caption:$m{tableeditor.label} maxLen:64 style:$s{width:160px;}
+!ui-select:editValLink caption:$m{tableeditor.link} list:linkacttypelist blankOption:$s{}
+!ui-select:editValWidget caption:$m{tableeditor.widget} list:studiowidgetslist
+!ui-integer:editValWidth caption:$m{tableeditor.widthratio} precision:2 style:$s{width:160px;}
+!ui-checkbox:editValSwitch caption:$m{tableeditor.switchonchange} layoutCaption:true
+!ui-checkbox:editValDisabled caption:$m{tableeditor.disabled} layoutCaption:true
+!ui-checkbox:editValEditable caption:$m{tableeditor.editable} layoutCaption:true
+!ui-checkbox:editValSortable caption:$m{tableeditor.sortable} layoutCaption:true
+
+!ui-panel:editActPanel layout:$d{!ui-horizontal}
+	components:$c{editApplyBtn editCancelBtn}
+!ui-button:editApplyBtn caption:$m{button.apply} styleClass:$e{fc-bluebutton}
+!ui-button:editCancelBtn caption:$m{button.cancel}
+

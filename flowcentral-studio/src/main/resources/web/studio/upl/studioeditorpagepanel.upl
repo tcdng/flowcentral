@@ -1,0 +1,31 @@
+// UPL template for studio editor page panel
+// Copyright (c) 2019, 2021, FlowCentral Technologies.
+// All rights reserved.
+// 
+// PROPRIETARY AND CONFIDENTIAL. USE IS SUBJECT TO LICENSE TERMS.
+
+!fc-studioeditorpagepanel
+
+// Header Bar
+!ui-panel:headerBar styleClass:$s{hdbar} layout:$d{!ui-horizontal style:$s{width:100%;} widths:$l{35% none 35%}}
+	components:$c{headerLeftPanel headerCenterPanel headerRightPanel}
+	
+!ui-panel:headerLeftPanel style:$s{width:100%;}
+	layout:$d{!ui-horizontal style:$s{width:100%;} cellType:middle cellStyle:$s{padding-right:8px;}}
+	components:$c{titleBlock}
+!fc-formbreadcrumbs:titleBlock binding:breadCrumbs
+
+!ui-panel:headerCenterPanel style:$s{display:inline-block; width:100%;}
+	layout:$d{!ui-horizontal style:$s{width:100%;} cellType:middle  cellStyle:$s{text-align:center;}}
+	components:$c{displayCounterLabel}
+!ui-label:displayCounterLabel styleClass:$e{fc-dispcounter}
+	styleClassBinding:displayItemCounterClass binding:displayItemCounter
+
+!ui-panel:headerRightPanel style:$s{display:inline-block; float:right;}
+	layout:$d{!ui-horizontal cellType:middle cellStyle:$s{padding-right:8px;}}
+	components:$c{saveBtn}
+	components:$f{moreActionButtons}
+
+!ui-button:saveBtn caption:$m{button.save}
+	eventHandler:$d{!ui-event event:onclick action:$c{saveDesignAct}}
+

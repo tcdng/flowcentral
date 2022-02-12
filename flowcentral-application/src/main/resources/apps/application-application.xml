@@ -1,0 +1,1324 @@
+<?xml version="1.0"?>
+<!-- Application application -->
+<application name="application"
+	description="$m{application.short.description}"
+	label="$m{application.label}" module="application">
+	<!-- Widget Types -->
+	<widgetTypes>
+		<widgetType name="integer" listOption="true"
+			description="$m{application.widgettype.integer}" dataType="integer"
+			inputType="integer"
+			editor="!ui-integer precision:%s useGrouping:true"
+			renderer="!ui-label formatter:$d{!integerformat precision:%s useGrouping:true} style:$s{text-align:right;}" />
+		<widgetType name="integerformatless" listOption="true"
+			description="$m{application.widgettype.integerformatless}" dataType="integer"
+			inputType="integer"
+			editor="!ui-integer precision:%s"
+			renderer="!ui-label formatter:$d{!integerformat precision:%s} style:$s{text-align:right;}" />
+		<widgetType name="onetotenlist" listOption="true"
+			description="$m{application.widgettype.onetotenlist}" dataType="integer"
+			inputType="integer"
+			editor="!ui-select list:onetotenlist blankOption:$m{blank.none}"
+			renderer="!ui-label" />
+		<widgetType name="pastyearlist" listOption="true"
+			description="$m{application.widgettype.pastyearlist}" dataType="integer"
+			inputType="integer"
+			editor="!ui-select list:pastyearlist listParams:$l{1970}  listParamType:$s{immediate} blankOption:$m{blank.none}"
+			renderer="!ui-label" />
+		<widgetType name="decimal" listOption="true"
+			description="$m{application.widgettype.decimal}" dataType="double"
+			inputType="double"
+			editor="!ui-decimal precision:%s scale:%s useGrouping:true strictFormat:true"
+			renderer="!ui-label formatter:$d{!decimalformat precision:%s scale:%s useGrouping:true} style:$s{text-align:right;}" />
+		<widgetType name="amount" listOption="true"
+			description="$m{application.widgettype.amount}" dataType="decimal"
+			inputType="decimal"
+			editor="!ui-decimal precision:%s scale:%s useGrouping:true strictFormat:true"
+			renderer="!ui-label formatter:$d{!decimalformat precision:%s scale:%s useGrouping:true} style:$s{text-align:right;}" />
+		<widgetType name="amountwhole" listOption="true"
+			description="$m{application.widgettype.amountwhole}" dataType="decimal"
+			inputType="decimal"
+			editor="!ui-decimal precision:%s useGrouping:true strictFormat:true"
+			renderer="!ui-label formatter:$d{!decimalformat precision:%s useGrouping:true} style:$s{text-align:right;}" />
+		<widgetType name="postingentry" listOption="true"
+			description="$m{application.widgettype.postingentry}" dataType="double"
+			inputType="double"
+			editor="!ui-debitcredit precision:%s scale:%s useGrouping:true negativeCredit:false"
+			renderer="!ui-debitcreditlabel negativeCredit:false formatter:$d{!decimalformat precision:%s scale:%s useGrouping:true} style:$s{text-align:right;}" />
+		<widgetType name="postingentryneg" listOption="true"
+			description="$m{application.widgettype.postingentryneg}" dataType="double"
+			inputType="double"
+			editor="!ui-debitcredit precision:%s scale:%s useGrouping:true negativeCredit:true"
+			renderer="!ui-debitcreditlabel negativeCredit:true formatter:$d{!decimalformat precision:%s scale:%s useGrouping:true} style:$s{text-align:right;}" />
+		<widgetType name="postingdebitonly" listOption="true"
+			description="$m{application.widgettype.postingdebit}" dataType="double"
+			inputType="double"
+			editor="!ui-debitcredit precision:%s scale:%s useGrouping:true negativeCredit:true type:$s{debit}"
+			renderer="!ui-debitcreditlabel negativeCredit:true formatter:$d{!decimalformat precision:%s scale:%s useGrouping:true} style:$s{text-align:right;}" />
+		<widgetType name="postingdebitonlyneg" listOption="true"
+			description="$m{application.widgettype.postingdebitneg}" dataType="double"
+			inputType="double"
+			editor="!ui-debitcredit precision:%s scale:%s useGrouping:true negativeCredit:false type:$s{debit}"
+			renderer="!ui-debitcreditlabel negativeCredit:false formatter:$d{!decimalformat precision:%s scale:%s useGrouping:true} style:$s{text-align:right;}" />
+		<widgetType name="postingcreditonly" listOption="true"
+			description="$m{application.widgettype.postingcredit}" dataType="double"
+			inputType="double"
+			editor="!ui-debitcredit precision:%s scale:%s useGrouping:true negativeCredit:false type:$s{credit}"
+			renderer="!ui-debitcreditlabel negativeCredit:false formatter:$d{!decimalformat precision:%s scale:%s useGrouping:true} style:$s{text-align:right;}" />
+		<widgetType name="postingcreditonlyneg" listOption="true"
+			description="$m{application.widgettype.postingcreditneg}" dataType="double"
+			inputType="double"
+			editor="!ui-debitcredit precision:%s scale:%s useGrouping:true negativeCredit:true type:$s{credit}"
+			renderer="!ui-debitcreditlabel negativeCredit:true formatter:$d{!decimalformat precision:%s scale:%s useGrouping:true} style:$s{text-align:right;}" />
+		<widgetType name="name" listOption="true"
+			description="$m{application.widgettype.name}" dataType="string"
+			inputType="string" editor="!ui-name minLen:%s maxLen:%s case:$s{%s}"
+			renderer="!ui-label" />
+		<widgetType name="namewithupper" listOption="true"
+			description="$m{application.widgettype.namewithupper}" dataType="string"
+			inputType="string" editor="!ui-name minLen:%s maxLen:%s case:$s{%s}"
+			renderer="!ui-label" />
+		<widgetType name="series" listOption="true"
+			description="$m{application.widgettype.series}" dataType="string"
+			inputType="string"
+			editor="!ui-series minLen:%s maxLen:%s case:$s{%s}"
+			renderer="!ui-label" />
+		<widgetType name="fullname" listOption="true"
+			description="$m{application.widgettype.fullname}" dataType="string"
+			inputType="string"
+			editor="!ui-fullname minLen:%s maxLen:%s case:$s{%s}"
+			renderer="!ui-label" />
+		<widgetType name="fullnamewithspecial" listOption="true"
+			description="$m{application.widgettype.fullnamewithspecial}"
+			dataType="string" inputType="string"
+			editor="!ui-fullname minLen:%s maxLen:%s case:$s{%s} special:true"
+			renderer="!ui-label" />
+		<widgetType name="alphanumeric" listOption="true"
+			description="$m{application.widgettype.alphanumeric}"
+			dataType="string" inputType="string"
+			editor="!ui-alphanumeric minLen:%s maxLen:%s case:$s{%s}"
+			renderer="!ui-label" />
+		<widgetType name="alphanumericwithupper" listOption="true"
+			description="$m{application.widgettype.alphanumericwithupper}"
+			dataType="string" inputType="string"
+			editor="!ui-alphanumeric minLen:%s maxLen:%s case:$s{%s}"
+			renderer="!ui-label" />
+		<widgetType name="alphanumericwithspace" listOption="true"
+			description="$m{application.widgettype.alphanumericwithspace}"
+			dataType="string" inputType="string"
+			editor="!ui-alphanumeric minLen:%s maxLen:%s case:$s{%s} space:true"
+			renderer="!ui-label" />
+		<widgetType name="alphanumericwithspaceupper" listOption="true"
+			description="$m{application.widgettype.alphanumericwithspaceupper}"
+			dataType="string" inputType="string"
+			editor="!ui-alphanumeric minLen:%s maxLen:%s case:$s{%s} space:true"
+			renderer="!ui-label" />
+		<widgetType name="alphanumericwithspecial"
+			listOption="true"
+			description="$m{application.widgettype.alphanumericwithspecial}"
+			dataType="string" inputType="string"
+			editor="!ui-alphanumeric minLen:%s maxLen:%s case:$s{%s} space:true special:true"
+			renderer="!ui-label" />
+		<widgetType name="alphanumericwithspecialcamel"
+			listOption="true"
+			description="$m{application.widgettype.alphanumericwithspecialcamel}"
+			dataType="string" inputType="string"
+			editor="!ui-alphanumeric minLen:%s maxLen:%s case:$s{%s} space:true special:true"
+			renderer="!ui-label" />
+		<widgetType name="alphanumericwithspecialupper"
+			listOption="true"
+			description="$m{application.widgettype.alphanumericwithspecialupper}"
+			dataType="string" inputType="string"
+			editor="!ui-alphanumeric minLen:%s maxLen:%s case:$s{%s} space:true special:true"
+			renderer="!ui-label" />
+		<widgetType name="integertext" listOption="true"
+			description="$m{application.widgettype.integertext}"
+			dataType="string" inputType="string"
+			editor="!ui-integertext minLen:%s maxLen:%s" renderer="!ui-label" />
+		<widgetType name="text" listOption="true"
+			description="$m{application.widgettype.text}" dataType="string"
+			inputType="string" editor="!ui-text minLen:%s maxLen:%s case:$s{%s}"
+			renderer="!ui-label" />
+		<widgetType name="textwithupper" listOption="true"
+			description="$m{application.widgettype.textwithupper}" dataType="string"
+			inputType="string" editor="!ui-text minLen:%s maxLen:%s case:$s{%s}"
+			renderer="!ui-label" />
+		<widgetType name="textarea" listOption="true"
+			description="$m{application.widgettype.textarea}" dataType="string"
+			inputType="string" editor="!ui-textarea minLen:%s maxLen:%s rows:3"
+			renderer="!ui-label" />
+		<widgetType name="textareamedium" listOption="true"
+			description="$m{application.widgettype.textareamedium}" dataType="string"
+			inputType="string" editor="!ui-textarea minLen:%s maxLen:%s rows:6"
+			renderer="!ui-label" />
+		<widgetType name="textarealarge" listOption="true"
+			description="$m{application.widgettype.textarealarge}" dataType="string"
+			inputType="string" editor="!ui-textarea minLen:%s maxLen:%s rows:12"
+			renderer="!ui-label" />
+		<widgetType name="password" listOption="true"
+			description="$m{application.widgettype.password}" dataType="string"
+			inputType="string" editor="!ui-password minLen:%s maxLen:%s"
+			renderer="!ui-label" />
+		<widgetType name="wildname" listOption="true"
+			description="$m{application.widgettype.wildname}" dataType="string"
+			inputType="string"
+			editor="!ui-name minLen:%s maxLen:%s case:$s{%s} special:true"
+			renderer="!ui-label" />
+		<widgetType name="email" listOption="true"
+			description="$m{application.widgettype.email}" dataType="string"
+			inputType="string" editor="!ui-text minLen:%s maxLen:%s case:$s{%s}"
+			renderer="!ui-label" />
+		<widgetType name="emailset" listOption="true"
+			description="$m{application.widgettype.emailset}" dataType="string"
+			inputType="string" editor="!ui-text minLen:%s maxLen:%s case:$s{%s}"
+			renderer="!ui-label" />
+		<widgetType name="mobile" listOption="true"
+			description="$m{application.widgettype.mobile}" dataType="string"
+			inputType="string"
+			editor="!ui-integertext acceptPlus:true minLen:%s maxLen:%s"
+			renderer="!ui-label" />
+		<widgetType name="mobileset" listOption="true"
+			description="$m{application.widgettype.mobileset}" dataType="string"
+			inputType="string" editor="!ui-text minLen:%s maxLen:%s case:$s{%s}"
+			renderer="!ui-label" />
+		<widgetType name="domain" listOption="true"
+			description="$m{application.widgettype.domain}" dataType="string"
+			inputType="string" editor="!ui-text minLen:%s maxLen:%s case:$s{%s}"
+			renderer="!ui-label" />
+		<widgetType name="website" listOption="true"
+			description="$m{application.widgettype.website}" dataType="string"
+			inputType="string" editor="!ui-text minLen:%s maxLen:%s case:$s{%s}"
+			renderer="!ui-label" />
+		<widgetType name="javafieldname" listOption="true"
+			description="$m{application.widgettype.javafieldname}"
+			dataType="string" inputType="string"
+			editor="!ui-name minLen:%s maxLen:%s underscore:true dollar:true"
+			renderer="!ui-label" />
+		<widgetType name="checkbox" listOption="true"
+			description="$m{application.widgettype.checkbox}" dataType="boolean"
+			inputType="boolean" editor="!ui-checkbox" renderer="!ui-label"
+			stretch="false" />
+		<widgetType name="booleanlist" listOption="true"
+			description="$m{application.widgettype.booleanlist}"
+			dataType="boolean" inputType="boolean"
+			editor="!ui-select list:booleanlist blankOption:$m{blank.none}"
+			renderer="!ui-label" />
+		<widgetType name="lingualdatetypelist"
+			description="$m{application.widgettype.lingualdatetypelist}"
+			dataType="boolean" inputType="boolean"
+			editor="!ui-select list:lingualdatetypelist blankOption:$m{blank.none}"
+			renderer="!ui-label" />
+		<widgetType name="lingualstringtypelist"
+			description="$m{application.widgettype.lingualstringtypelist}"
+			dataType="String" inputType="String"
+			editor="!ui-select list:lingualstringtypelist blankOption:$m{blank.none}"
+			renderer="!ui-label" />
+		<widgetType name="enumlist"
+			description="$m{application.widgettype.enumeration}"
+			dataType="string" inputType="string"
+			editor="!ui-select list:$s{%s} blankOption:$m{blank.none}"
+			renderer="!ui-label" />
+		<widgetType name="entitylist"
+			description="$m{application.widgettype.entitylist}" dataType="string"
+			inputType="string"
+			editor="!fc-entitylist ref:$s{%s} listKey:$s{%s} blankOption:$m{blank.none}"
+			renderer="!ui-label" />
+		<widgetType name="workappentitylist"
+			description="$m{application.widgettype.workappentitylist}"
+			dataType="string" inputType="string"
+			editor="!fc-workappentitylist listKey:$s{%s} blankOption:$m{blank.none}"
+			renderer="!ui-label" />
+		<widgetType name="entityselect"
+			description="$m{application.widgettype.entityselect}"
+			dataType="string" inputType="string"
+			editor="!fc-entityselect ref:$s{%s} listKey:$s{%s}"
+			renderer="!ui-label" />
+		<widgetType name="entitysearch"
+			description="$m{application.widgettype.entitysearch}"
+			dataType="string" inputType="string"
+			editor="!fc-entitysearch ref:$s{%s} listKey:$s{%s}"
+			renderer="!ui-label" />
+		<widgetType name="caseentitysearch"
+			description="$m{application.widgettype.caseentitysearch}"
+			dataType="string" inputType="string"
+			editor="!fc-entitysearch caseInsensitive:false ref:$s{%s} listKey:$s{%s}"
+			renderer="!ui-label" />
+		<widgetType name="workappentitysearch"
+			description="$m{application.widgettype.workappentitysearch}"
+			dataType="string" inputType="string"
+			editor="!fc-workappentitysearch listKey:$s{%s}" renderer="!ui-label" />
+		<widgetType name="appworkappentitylist"
+			description="$m{application.widgettype.appworkappentitylist}"
+			dataType="string" inputType="string"
+			editor="!ui-select list:appworkappentitylist listParams:$l{applicationId} blankOption:$m{blank.none}"
+			renderer="!ui-label" />
+		<widgetType name="yearEnd" listOption="true"
+			description="$m{application.widgettype.yearend}" dataType="date"
+			inputType="date"
+			editor="!ui-yearend"
+			renderer="!ui-label formatter:$d{!fixeddatetimeformat pattern:$s{dd/MM}}" />
+		<widgetType name="date" listOption="true"
+			description="$m{application.widgettype.date}" dataType="date"
+			inputType="date"
+			editor="!ui-date formatter:$d{!fixeddatetimeformat pattern:$s{yyyy-MM-dd}}"
+			renderer="!ui-label formatter:$d{!fixeddatetimeformat pattern:$s{yyyy-MM-dd}}" />
+		<widgetType name="datefuture" listOption="true"
+			description="$m{application.widgettype.datefuture}" dataType="date"
+			inputType="date"
+			editor="!ui-date type:future formatter:$d{!fixeddatetimeformat pattern:$s{yyyy-MM-dd}}"
+			renderer="!ui-label formatter:$d{!fixeddatetimeformat pattern:$s{yyyy-MM-dd}}" />
+		<widgetType name="datepast" listOption="true"
+			description="$m{application.widgettype.datepast}" dataType="date"
+			inputType="date"
+			editor="!ui-date type:past formatter:$d{!fixeddatetimeformat pattern:$s{yyyy-MM-dd}}"
+			renderer="!ui-label formatter:$d{!fixeddatetimeformat pattern:$s{yyyy-MM-dd}}" />
+		<widgetType name="datetext"
+			description="$m{application.widgettype.datetext}" dataType="date"
+			inputType="date"
+			editor="!ui-text formatter:$d{!fixeddatetimeformat pattern:$s{yyyy-MM-dd}}"
+			renderer="!ui-label formatter:$d{!fixeddatetimeformat pattern:$s{yyyy-MM-dd}}" />
+		<widgetType name="datetime" listOption="true"
+			description="$m{application.widgettype.datetime}"
+			dataType="timestamp_utc" inputType="datetime"
+			editor="!ui-date formatter:$d{!fixeddatetimeformat pattern:$s{yyyy-MM-dd}}"
+			renderer="!ui-label formatter:$d{!fixeddatetimeformat pattern:$s{yyyy-MM-dd HH:mm:ss}}" />
+		<widgetType name="datetimetext"
+			description="$m{application.widgettype.datetimetext}"
+			dataType="timestamp_utc" inputType="datetime"
+			editor="!ui-text formatter:$d{!fixeddatetimeformat pattern:$s{yyyy-MM-dd HH:mm:ss}}"
+			renderer="!ui-label formatter:$d{!fixeddatetimeformat pattern:$s{yyyy-MM-dd HH:mm:ss}}" />
+		<widgetType name="time" listOption="true"
+			description="$m{application.widgettype.time}" dataType="date"
+			inputType="datetime" editor="!ui-time"
+			renderer="!ui-label formatter:$d{!fixeddatetimeformat pattern:$s{HH:mm:ss}}" />
+		<widgetType name="timeclearable"
+			description="$m{application.widgettype.timeclearable}"
+			dataType="date" inputType="datetime" editor="!ui-time clearable:true"
+			renderer="!ui-label formatter:$d{!fixeddatetimeformat pattern:$s{HH:mm:ss}}" />
+		<widgetType name="timetext"
+			description="$m{application.widgettype.timetext}" dataType="date"
+			inputType="datetime"
+			editor="!ui-label formatter:$d{!fixeddatetimeformat pattern:$s{HH:mm:ss}}"
+			renderer="!ui-label formatter:$d{!fixeddatetimeformat pattern:$s{HH:mm:ss}}" />
+		<widgetType name="languagetag"
+			description="$m{application.widgettype.languagetag}"
+			dataType="string" inputType="string"
+			editor="!ui-select list:$s{javalocalelist} blankOption:$m{blank.none}"
+			renderer="!ui-label" />
+		<widgetType name="timezone"
+			description="$m{application.widgettype.timezone}" dataType="string"
+			inputType="string"
+			editor="!ui-select list:$s{javatimezonelist} blankOption:$m{blank.none}"
+			renderer="!ui-label" />
+		<widgetType name="formvalidatorlist"
+			description="$m{application.widgettype.formvalidatorlist}"
+			dataType="string" inputType="string"
+			editor="!ui-select list:formvalidatorlist blankOption:$m{blank.none}"
+			renderer="!ui-label" />
+		<widgetType name="reffiltergeneratorlist"
+			description="$m{application.widgettype.reffiltergeneratorlist}"
+			dataType="string" inputType="string"
+			editor="!ui-select list:reffiltergeneratorlist blankOption:$m{blank.none}"
+			renderer="!ui-label" />
+		<widgetType name="progressbar"
+			description="$m{application.widgettype.progressbar}"
+			dataType="integer" inputType="integer" editor="!fc-progressbar"
+			renderer="!fc-progressbar" />
+		<widgetType name="period"
+			description="$m{application.widgettype.period}" dataType="string"
+			inputType="string" editor="!ui-period" renderer="!ui-period" />
+		<widgetType name="fileattachmenttypelist"
+			description="$m{application.widgettype.fileattachmenttypelist}"
+			dataType="string" inputType="string"
+			editor="!ui-select list:fileattachmenttypelistblankOption:$m{blank.none}"
+			renderer="!ui-label" />
+		<widgetType name="fileupload"
+			description="$m{application.widgettype.fileupload}" dataType="string"
+			inputType="string"
+			editor="!ui-fileuploadview handler:$s{refblob-fileuploadviewhandler} category:$s{%s} parentCategory:$s{%s} parentFieldName:$s{%s}"
+			renderer="!ui-label" />
+		<widgetType name="suggestiontextsearch" listOption="true"
+			description="$m{application.widgettype.suggestiontextsearch}" dataType="string"
+			inputType="string"
+			editor="!fc-suggestiontextsearch styleClass:$e{fc-entitysearch} type:$s{%s}"
+			renderer="!ui-label" />
+	</widgetTypes>
+	<!-- Applets -->
+	<applets>
+		<applet name="manageSuggestion"
+			description="$m{application.appsuggestion.manage}"
+			label="$m{application.appsuggestion.manage.label}" icon="ellipsis-h"
+			type="manage_entitylist" entity="appSuggestion" menuAccess="false">
+			<property name="searchTable" value="suggestionTable" />
+			<property name="searchTable.new" value="true" />
+			<property name="searchTable.report" value="true" />
+			<property name="searchTable.quickFilter" value="true" />
+			<property name="createForm" value="suggestionForm" />
+			<property name="createForm.save" value="true" />
+			<property name="createForm.save.next" value="true" />
+			<property name="createForm.save.close" value="true" />
+			<property name="maintainForm" value="suggestionForm" />
+			<property name="maintainForm.update" value="true" />
+			<property name="maintainForm.delete" value="true" />
+		</applet>
+	</applets>	
+	<!-- References -->
+	<references>
+		<reference name="applicationRef"
+			description="$m{application.application.reference}"
+			entity="application" searchField="description" />
+		<reference name="appAppletRef"
+			description="$m{application.appapplet.reference}" entity="appApplet"
+			searchField="description" />
+		<reference name="appAppletFacadeRef"
+			description="$m{application.appappletfacade.reference}"
+			entity="appApplet" searchField="description">
+			<filter>
+				<restriction type="not_amongst" field="type"
+					paramA="FAC|SAC" />
+			</filter>
+		</reference>
+		<reference name="appAppletPropRef"
+			description="$m{application.appappletprop.reference}"
+			entity="appAppletProp" searchField="name" />
+		<reference name="appAppletFilterRef"
+			description="$m{application.appappletfilter.reference}"
+			entity="appAppletFilter" searchField="description" />
+		<reference name="appEntityRef"
+			description="$m{application.appentity.reference}" entity="appEntity"
+			searchField="description" />
+		<reference name="appEntityFieldRef"
+			description="$m{application.appentityfield.reference}"
+			entity="appEntityField" searchField="description" />
+		<reference name="appEntityAttachmentRef"
+			description="$m{application.appentityattachment.reference}"
+			entity="appEntityAttachment" searchField="description" />
+		<reference name="appEntityExpressionRef"
+			description="$m{application.appentityexpression.reference}"
+			entity="appEntityExpression" searchField="description" />
+		<reference name="appEntityUniqueConstraintRef"
+			description="$m{application.appentityuniqueconstraint.reference}"
+			entity="appEntityUniqueConstraint" searchField="description" />
+		<reference name="appEntityIndexRef"
+			description="$m{application.appentityindex.reference}"
+			entity="appEntityIndex" searchField="description" />
+		<reference name="appEntityUploadRef"
+			description="$m{application.appentityupload.reference}"
+			entity="appEntityUpload" searchField="description" />
+		<reference name="appRefRef"
+			description="$m{application.appref.reference}" entity="appRef"
+			searchField="description" />
+		<reference name="appFilterRef"
+			description="$m{application.appfilter.reference}" entity="appFilter"
+			searchField="description" />
+		<reference name="appFieldSequenceRef"
+			description="$m{application.appfieldsequence.reference}"
+			entity="appFieldSequence" searchField="description" />
+		<reference name="appSetValuesRef"
+			description="$m{application.appsetvalues.reference}"
+			entity="appSetValues" searchField="description" />
+		<reference name="appTableRef"
+			description="$m{application.apptable.reference}" entity="appTable"
+			searchField="description" />
+		<reference name="appTableColumnRef"
+			description="$m{application.apptablecolumn.reference}"
+			entity="appTableColumn" searchField="field" />
+		<reference name="appFormRef"
+			description="$m{application.appform.reference}" entity="appForm"
+			searchField="description" />
+		<reference name="appFormElementRef"
+			description="$m{application.appformelement.reference}"
+			entity="appFormElement" searchField="label" />
+		<reference name="appFormAnnotationRef"
+			description="$m{application.appformannotation.reference}"
+			entity="appFormAnnotation" searchField="description" />
+		<reference name="appFormActionRef"
+			description="$m{application.appformaction.reference}"
+			entity="appFormAction" searchField="description" />
+		<reference name="appFormRelatedListRef"
+			description="$m{application.appformrelatedlist.reference}"
+			entity="appFormRelatedList" searchField="description" />
+		<reference name="appFormStatePolicyRef"
+			description="$m{application.appformstatepolicy.reference}"
+			entity="appFormStatePolicy" searchField="description" />
+		<reference name="appFormSetStateRef"
+			description="$m{application.appformsetstate.reference}"
+			entity="appFormSetState" searchField="target" />
+		<reference name="appFormFieldValidationPolicyRef"
+			description="$m{application.appformfieldvalidationpolicy.reference}"
+			entity="appFormFieldValidationPolicy" searchField="fieldName" />
+		<reference name="appFormValidationPolicyRef"
+			description="$m{application.appformvalidationpolicy.reference}"
+			entity="appFormValidationPolicy" searchField="message" />
+		<reference name="appFormReviewPolicyRef"
+			description="$m{application.appformreviewpolicy.reference}"
+			entity="appFormReviewPolicy" searchField="message" />
+		<reference name="appWidgetTypeRef"
+			description="$m{application.appwidgettype.reference}"
+			entity="appWidgetType" searchField="description" />
+		<reference name="appSuggestionTypeRef"
+			description="$m{application.appsuggestiontype.reference}"
+			entity="appSuggestionType" searchField="description" />
+		<reference name="appSuggestionRef"
+			description="$m{application.appsuggestion.reference}"
+			entity="appSuggestion" searchField="suggestion" />
+	</references>
+	<!-- Entities -->
+	<entities>
+		<entity name="application"
+			description="$m{application.application}"
+			label="$m{application.application.label}"
+			type="com.flowcentraltech.flowcentral.application.entities.Application">
+			<field name="moduleId"
+				label="$m{application.application.module}" type="ref"
+				references="system.moduleRef" inputWidget="application.entitylist" />
+			<field name="label" label="$m{application.application.label}"
+				type="string" />
+			<field name="displayIndex"
+				label="$m{application.application.displayindex}" type="integer" />
+			<field name="developable"
+				label="$m{application.application.developable}" type="boolean" />
+			<field name="moduleName"
+				label="$m{application.application.modulename}" type="list_only"
+				key="moduleId" property="name" />
+			<field name="moduleDesc"
+				label="$m{application.application.moduledesc}" type="list_only"
+				key="moduleId" property="description" />
+			<field name="moduleLabel"
+				label="$m{application.application.modulelabel}" type="list_only"
+				key="moduleId" property="label" />
+			<uniqueConstraint name="nameUc"
+				description="$m{application.application.uc.name}" fieldList="name" />
+			<uniqueConstraint name="descUc"
+				description="$m{application.application.uc.description}"
+				fieldList="description" />
+		</entity>
+		<entity name="appApplet"
+			description="$m{application.appapplet}"
+			label="$m{application.appapplet.label}"
+			type="com.flowcentraltech.flowcentral.application.entities.AppApplet">
+			<field name="type" label="$m{application.appapplet.type}"
+				type="enum_ref" references="applettypelist"
+				inputWidget="application.enumlist" />
+			<field name="label" label="$m{application.appapplet.label}"
+				type="string" />
+			<field name="entity" label="$m{application.appapplet.entity}"
+				type="string" />
+			<field name="routeToApplet"
+				label="$m{application.appapplet.routetoapplet}" type="string"
+				nullable="true" />
+			<field name="path" label="$m{application.appapplet.path}"
+				type="string" nullable="true" />
+			<field name="baseField"
+				label="$m{application.appapplet.basefield}" type="string"
+				nullable="true" />
+			<field name="assignField"
+				label="$m{application.appapplet.assignfield}" type="string"
+				nullable="true" />
+			<field name="assignDescField"
+				label="$m{application.appapplet.assigndescfield}" type="string"
+				nullable="true" />
+			<field name="menuAccess"
+				label="$m{application.appapplet.menuaccess}" type="boolean" />
+			<field name="displayIndex"
+				label="$m{application.appapplet.displayindex}" type="integer" />
+			<field name="typeDesc"
+				label="$m{application.appapplet.typedesc}" type="list_only"
+				key="type" property="description" />
+			<field name="propList"
+				label="$m{application.appapplet.properties}" type="child_list"
+				references="appAppletPropRef" />
+			<field name="filterList"
+				label="$m{application.appapplet.filters}" type="child_list"
+				references="appAppletFilterRef" />
+			<uniqueConstraint name="nameUc"
+				description="$m{application.appapplet.uc.name}" fieldList="name" />
+			<uniqueConstraint name="descUc"
+				description="$m{application.appapplet.uc.description}"
+				fieldList="description" />
+		</entity>
+		<entity name="appAppletProp"
+			description="$m{application.appappletprop}"
+			label="$m{application.appappletprop.label}"
+			type="com.flowcentraltech.flowcentral.application.entities.AppAppletProp">
+			<field name="appAppletId"
+				label="$m{application.appappletprop.appappletid}" type="ref"
+				references="appAppletRef" inputWidget="application.entitylist" />
+			<field name="name" label="$m{application.appappletprop.name}"
+				type="string" />
+			<field name="value" label="$m{application.appappletprop.value}"
+				type="string" />
+			<uniqueConstraint name="nameUc"
+				description="$m{application.appappletprop.uc.name}"
+				fieldList="appAppletId,name" />
+		</entity>
+		<entity name="appAppletFilter"
+			description="$m{application.appappletfilter}"
+			label="$m{application.appappletfilter.label}"
+			type="com.flowcentraltech.flowcentral.application.entities.AppAppletFilter">
+			<field name="appAppletId"
+				label="$m{application.appappletfilter.appappletid}" type="ref"
+				references="appAppletRef" inputWidget="application.entitylist" />
+			<field name="ownershipType"
+				label="$m{application.appappletfilter.ownershiptype}"
+				type="enum_ref" references="ownershiptypelist"
+				inputWidget="application.enumlist" />
+			<field name="owner"
+				label="$m{application.appappletfilter.owner}" type="string"
+				nullable="true" />
+			<field name="preferredForm"
+				label="$m{application.appappletfilter.preferredform}" type="string"
+				nullable="true" />
+			<field name="quickFilter"
+				label="$m{application.appappletfilter.quickfilter}" type="boolean" />
+			<field name="ownershipTypeDesc"
+				label="$m{application.appappletfilter.ownershiptypedesc}"
+				type="list_only" key="ownershipType" property="description" />
+			<field name="filter"
+				label="$m{application.appappletfilter.filter}" type="child"
+				category="applet" references="appFilterRef" />
+			<uniqueConstraint name="nameUc"
+				description="$m{application.appappletfilter.uc.name}"
+				fieldList="appAppletId,name" />
+			<uniqueConstraint name="descUc"
+				description="$m{application.appappletfilter.uc.description}"
+				fieldList="appAppletId,description" />
+		</entity>
+		<entity name="appEntity"
+			description="$m{application.appentity}"
+			label="$m{application.appentity.label}"
+			type="com.flowcentraltech.flowcentral.application.entities.AppEntity">
+			<field name="baseType"
+				label="$m{application.appentity.basetype}" type="enum_ref"
+				references="entitybasetypelist" inputWidget="application.enumlist" />
+			<field name="label"
+				label="$m{application.appentity.labelfield}" type="string" />
+			<field name="entityClass"
+				label="$m{application.appentity.entityclass}" type="string" />
+			<field name="tableName"
+				label="$m{application.appentity.tablename}" type="string" />
+			<field name="delegate"
+				label="$m{application.appentity.delegate}" type="string" nullable="true"/>
+			<field name="auditable"
+				label="$m{application.appentity.auditable}" type="boolean" />
+			<field name="reportable"
+				label="$m{application.appentity.reportable}" type="boolean" />
+			<field name="baseTypeDesc"
+				label="$m{application.appentity.basetypedesc}" type="list_only"
+				key="baseType" property="description" />
+			<field name="fieldList"
+				label="$m{application.appentity.fields}" type="child_list"
+				references="appEntityFieldRef" />
+			<field name="attachmentList"
+				label="$m{application.appentity.attachments}" type="child_list"
+				references="appEntityAttachmentRef" />
+			<field name="expressionList"
+				label="$m{application.appentity.expressions}" type="child_list"
+				references="appEntityExpressionRef" />
+			<field name="uniqueConstraintList"
+				label="$m{application.appentity.uniqueconstraints}"
+				type="child_list" references="appEntityUniqueConstraintRef" />
+			<field name="indexList"
+				label="$m{application.appentity.indexes}" type="child_list"
+				references="appEntityIndexRef" />
+			<field name="uploadList"
+				label="$m{application.appentity.uploads}" type="child_list"
+				references="appEntityUploadRef" />
+			<uniqueConstraint name="nameUc"
+				description="$m{application.appentity.uc.name}" fieldList="name" />
+			<uniqueConstraint name="descUc"
+				description="$m{application.appentity.uc.description}"
+				fieldList="description" />
+		</entity>
+		<entity name="appEntityField"
+			description="$m{application.appentityfield}"
+			label="$m{application.appentityfield.field.label}"
+			type="com.flowcentraltech.flowcentral.application.entities.AppEntityField">
+			<field name="appEntityId"
+				label="$m{application.appentityfield.appentityid}" type="ref"
+				references="appEntityRef" inputWidget="application.entitylist" />
+			<field name="dataType"
+				label="$m{application.appentityfield.datatype}" type="enum_ref"
+				references="entityfielddatatypelist"
+				inputWidget="application.enumlist" />
+			<field name="type" label="$m{application.appentityfield.type}"
+				type="enum_ref" references="entityfieldtypelist"
+				inputWidget="application.enumlist" />
+			<field name="name" label="$m{application.appentityfield.name}"
+				type="string" inputWidget="application.name" />
+			<field name="label"
+				label="$m{application.appentityfield.label}" type="string" />
+			<field name="references"
+				label="$m{application.appentityfield.references}" type="string"
+				nullable="true" />
+			<field name="key" label="$m{application.appentityfield.key}"
+				type="string" nullable="true" />
+			<field name="property"
+				label="$m{application.appentityfield.property}" type="string"
+				nullable="true" />
+			<field name="inputWidget"
+				label="$m{application.appentityfield.inputwidget}" type="string"
+				nullable="true" />
+			<field name="suggestionType"
+				label="$m{application.appentityfield.suggestiontype}" type="string"
+				nullable="true" />
+			<field name="inputListKey"
+				label="$m{application.appentityfield.inputlistkey}" type="string"
+				nullable="true" />
+			<field name="autoFormat"
+				label="$m{application.appentityfield.autoformat}" type="string"
+				nullable="true" />
+			<field name="defaultVal"
+				label="$m{application.appentityfield.defaultval}" type="string"
+				nullable="true" />
+			<field name="rows" label="$m{application.appentityfield.rows}"
+				type="integer" nullable="true" />
+			<field name="columns"
+				label="$m{application.appentityfield.columns}" type="integer"
+				nullable="true" />
+			<field name="minLen"
+				label="$m{application.appentityfield.minlen}" type="integer"
+				nullable="true" />
+			<field name="maxLen"
+				label="$m{application.appentityfield.maxlen}" type="integer"
+				nullable="true" />
+			<field name="precision"
+				label="$m{application.appentityfield.precision}" type="integer"
+				nullable="true" />
+			<field name="scale"
+				label="$m{application.appentityfield.scale}" type="integer"
+				nullable="true" />
+			<field name="nullable"
+				label="$m{application.appentityfield.nullable}" type="boolean" />
+			<field name="auditable"
+				label="$m{application.appentityfield.auditable}" type="boolean" />
+			<field name="reportable"
+				label="$m{application.appentityfield.reportable}" type="boolean" />
+			<field name="descriptive"
+				label="$m{application.appentityfield.descriptive}" type="boolean" />
+			<field name="maintainLink"
+				label="$m{application.appentityfield.maintainlink}" type="boolean" />
+			<field name="basicSearch"
+				label="$m{application.appentityfield.basicsearch}" type="boolean" />
+			<field name="appEntityName"
+				label="$m{application.appentityfield.appentityname}"
+				type="list_only" key="appEntityId" property="name" />
+			<field name="applicationName"
+				label="$m{application.appentityfield.applicationname}"
+				type="list_only" key="appEntityId" property="applicationName" />
+			<field name="dataTypeDesc"
+				label="$m{application.appentityfield.datatypedesc}" type="list_only"
+				key="dataType" property="description" />
+			<field name="typeDesc"
+				label="$m{application.appentityfield.typedesc}" type="list_only"
+				key="type" property="description" />
+		</entity>
+		<entity name="appEntityAttachment"
+			description="$m{application.appentityattachment}"
+			label="$m{application.appentityattachment.label}"
+			type="com.flowcentraltech.flowcentral.application.entities.AppEntityAttachment">
+			<field name="appEntityId"
+				label="$m{application.appentityattachment.appentityid}" type="ref"
+				references="appEntityRef" inputWidget="application.entitylist" />
+			<field name="type"
+				label="$m{application.appentityattachment.type}" type="enum_ref"
+				references="fileattachmenttypelist"
+				inputWidget="application.enumlist" />
+			<field name="typeDesc"
+				label="$m{application.appentityattachment.typedesc}"
+				type="list_only" key="type" property="description" />
+		</entity>
+		<entity name="appEntityExpression"
+			description="$m{application.appentityexpression}"
+			label="$m{application.appentityexpression.label}"
+			type="com.flowcentraltech.flowcentral.application.entities.AppEntityExpression">
+			<field name="appEntityId"
+				label="$m{application.appentityexpression.appentityid}" type="ref"
+				references="appEntityRef" inputWidget="application.entitylist" />
+			<field name="expression"
+				label="$m{application.appentityexpression.expression}" type="string"
+				inputWidget="application.textarea" />
+		</entity>
+		<entity name="appEntityUniqueConstraint"
+			description="$m{application.appentityuniqueconstraint}"
+			label="$m{application.appentityuniqueconstraint.label}"
+			type="com.flowcentraltech.flowcentral.application.entities.AppEntityUniqueConstraint">
+			<field name="appEntityId"
+				label="$m{application.appentityuniqueconstraint.appentityid}"
+				type="ref" references="appEntityRef"
+				inputWidget="application.entitylist" />
+			<field name="fieldList"
+				label="$m{application.appentityuniqueconstraint.fields}"
+				type="string" />
+		</entity>
+		<entity name="appEntityIndex"
+			description="$m{application.appentityindex}"
+			label="$m{application.appentityindex.label}"
+			type="com.flowcentraltech.flowcentral.application.entities.AppEntityIndex">
+			<field name="appEntityId"
+				label="$m{application.appentityindex.appentityid}" type="ref"
+				references="appEntityRef" inputWidget="application.entitylist" />
+			<field name="fieldList"
+				label="$m{application.appentityindex.fields}" type="string" />
+		</entity>
+		<entity name="appEntityUpload"
+			description="$m{application.appentityupload}"
+			label="$m{application.appentityupload.label}"
+			type="com.flowcentraltech.flowcentral.application.entities.AppEntityUpload">
+			<field name="appEntityId"
+				label="$m{application.appentityupload.appentityid}" type="ref"
+				references="appEntityRef" inputWidget="application.entitylist" />
+			<field name="constraintAction"
+				label="$m{application.appentityupload.constraintaction}"
+				type="enum_ref" references="constraintactionlist"
+				inputWidget="application.enumlist" />
+			<field name="constraintActionDesc"
+				label="$m{application.appentityupload.constraintactiondesc}"
+				type="list_only" key="constraintAction" property="description" />
+			<field name="fieldSequence"
+				label="$m{application.appentityupload.fieldsequence}" type="child"
+				category="table" references="appFieldSequenceRef" />
+		</entity>
+		<entity name="appRef" description="$m{application.appref}"
+			label="$m{application.appref.label}"
+			type="com.flowcentraltech.flowcentral.application.entities.AppRef">
+			<field name="entity" label="$m{application.appref.entity}"
+				type="string" />
+			<field name="searchField"
+				label="$m{application.appref.searchfield}" type="string"
+				nullable="true" />
+			<field name="listFormat"
+				label="$m{application.appref.listformat}" type="string"
+				nullable="true" />
+			<field name="filterGenerator"
+				label="$m{application.appref.filtergenerator}" type="string"
+				nullable="true" />
+			<field name="filterGeneratorRule"
+				label="$m{application.appref.filtergeneratorrule}" type="string"
+				nullable="true" />
+			<field name="filter" label="$m{application.appref.filter}"
+				type="string" nullable="true" />
+			<uniqueConstraint name="nameUc"
+				description="$m{application.appref.uc.name}"
+				fieldList="applicationId,name" />
+			<uniqueConstraint name="descUc"
+				description="$m{application.appref.uc.description}"
+				fieldList="applicationId,description" />
+		</entity>
+		<entity name="appFilter"
+			description="$m{application.appfilter}"
+			label="$m{application.appfilter.label}"
+			type="com.flowcentraltech.flowcentral.application.entities.AppFilter">
+			<field name="entityInstId"
+				label="$m{application.appfilter.entityinstid}"
+				type="foster_parent_id" />
+			<field name="entity" label="$m{application.appfilter.entity}"
+				type="foster_parent_type" />
+			<field name="category"
+				label="$m{application.appfilter.category}" type="category_column" />
+			<field name="definition"
+				label="$m{application.appfilter.definition}" type="string" />
+		</entity>
+		<entity name="appFieldSequence"
+			description="$m{application.appfieldsequence}"
+			label="$m{application.appfieldsequence.label}"
+			type="com.flowcentraltech.flowcentral.application.entities.AppFieldSequence">
+			<field name="entityInstId"
+				label="$m{application.appfieldsequence.entityinstid}"
+				type="foster_parent_id" />
+			<field name="entity"
+				label="$m{application.appfieldsequence.entity}"
+				type="foster_parent_type" />
+			<field name="category"
+				label="$m{application.appfieldsequence.category}"
+				type="category_column" />
+			<field name="definition"
+				label="$m{application.appfieldsequence.definition}" type="string" />
+		</entity>
+		<entity name="appSetValues"
+			description="$m{application.appsetvalues}"
+			label="$m{application.appsetvalues.label}"
+			type="com.flowcentraltech.flowcentral.application.entities.AppSetValues">
+			<field name="entityInstId"
+				label="$m{application.appsetvalues.entityinstid}"
+				type="foster_parent_type" />
+			<field name="entity"
+				label="$m{application.appsetvalues.entity}"
+				type="foster_parent_type" />
+			<field name="category"
+				label="$m{application.appsetvalues.category}" type="category_column" />
+			<field name="definition"
+				label="$m{application.appsetvalues.definition}" type="string" />
+		</entity>
+		<entity name="appTable" description="$m{application.apptable}"
+			label="$m{application.apptable.label}"
+			type="com.flowcentraltech.flowcentral.application.entities.AppTable">
+			<field name="entity" label="$m{application.apptable.entity}"
+				type="string" />
+			<field name="label" label="$m{application.apptable.label}"
+				type="string" />
+			<field name="sortable"
+				label="$m{application.apptable.sortable}" type="boolean" />
+			<field name="serialNo"
+				label="$m{application.apptable.serialno}" type="boolean" />
+			<field name="headerToUpperCase"
+				label="$m{application.apptable.headertouppercase}" type="boolean" />
+			<field name="headerCenterAlign"
+				label="$m{application.apptable.headercenteralign}" type="boolean" />
+			<field name="basicSearch"
+				label="$m{application.apptable.basicsearch}" type="boolean" />
+			<field name="itemsPerPage"
+				label="$m{application.apptable.itemsperpage}" type="integer" />
+			<field name="columnList"
+				label="$m{application.apptable.columns}" type="child_list"
+				references="appTableColumnRef" />
+			<uniqueConstraint name="nameUc"
+				description="$m{application.apptable.uc.name}"
+				fieldList="applicationId,name" />
+			<uniqueConstraint name="descUc"
+				description="$m{application.apptable.uc.description}"
+				fieldList="applicationId,description" />
+		</entity>
+		<entity name="appTableColumn"
+			description="$m{application.apptablecolumn}"
+			label="$m{application.apptablecolumn.label}"
+			type="com.flowcentraltech.flowcentral.application.entities.AppTableColumn">
+			<field name="appTableId"
+				label="$m{application.apptablecolumn.apptableid}" type="ref"
+				references="appTableRef" inputWidget="application.entitylist" />
+			<field name="field"
+				label="$m{application.apptablecolumn.field}" type="string" />
+			<field name="renderWidget"
+				label="$m{application.apptablecolumn.renderwidget}" type="string" />
+			<field name="linkAct"
+				label="$m{application.apptablecolumn.linkact}" type="string"
+				nullable="true" />
+			<field name="widthRatio"
+				label="$m{application.apptablecolumn.widthratio}" type="integer" />
+			<uniqueConstraint name="fieldUc"
+				description="$m{application.apptablecolumn.uc.field}"
+				fieldList="appTableId,field" />
+		</entity>
+		<entity name="appForm" description="$m{application.appform}"
+			label="$m{application.appform.label}"
+			type="com.flowcentraltech.flowcentral.application.entities.AppForm">
+			<field name="type"
+				label="$m{application.appform.type}" type="enum_ref"
+				references="formtypelist"
+				inputWidget="application.enumlist" />
+			<field name="entity" label="$m{application.appform.entity}"
+				type="string" />
+			<field name="consolidatedValidation" label="$m{application.appform.consolidatedvalidation}"
+				type="string" nullable="true"/>
+			<field name="consolidatedReview" label="$m{application.appform.consolidatedreview}"
+				type="string" nullable="true"/>
+			<field name="consolidatedState" label="$m{application.appform.consolidatedstate}"
+				type="string" nullable="true"/>
+			<field name="listingGenerator" label="$m{application.appform.listinggenerator}"
+				type="string" nullable="true"/>
+			<field name="annotation"
+				label="$m{application.appform.annotation}" type="string"
+				nullable="true" />
+			<field name="typeDesc"
+				label="$m{application.appform.typedesc}" type="list_only"
+				key="type" property="description" />
+			<field name="elementList"
+				label="$m{application.appform.elements}" type="child_list"
+				references="appFormElementRef" />
+			<field name="annotationList"
+				label="$m{application.appform.annotations}" type="child_list"
+				references="appFormAnnotationRef" />
+			<field name="actionList"
+				label="$m{application.appform.actions}" type="child_list"
+				references="appFormActionRef" />
+			<field name="relatedList"
+				label="$m{application.appform.relatedlists}" type="child_list"
+				references="appFormRelatedListRef" />
+			<field name="fieldStateList"
+				label="$m{application.appform.fieldstatepolicies}" type="child_list"
+				references="appFormStatePolicyRef" />
+			<field name="fieldValidationList"
+				label="$m{application.appform.fieldvalidations}" type="child_list"
+				references="appFormFieldValidationPolicyRef" />
+			<field name="formValidationList"
+				label="$m{application.appform.validations}" type="child_list"
+				references="appFormValidationPolicyRef" />
+			<field name="formReviewList"
+				label="$m{application.appform.reviews}" type="child_list"
+				references="appFormReviewPolicyRef" />
+			<uniqueConstraint name="nameUc"
+				description="$m{application.appform.uc.name}"
+				fieldList="applicationId,name" />
+			<uniqueConstraint name="descUc"
+				description="$m{application.appform.uc.description}"
+				fieldList="applicationId,description" />
+		</entity>
+		<entity name="appFormElement"
+			description="$m{application.appformelement}"
+			label="$m{application.appformelement.label}"
+			type="com.flowcentraltech.flowcentral.application.entities.AppFormElement">
+			<field name="appFormId"
+				label="$m{application.appformelement.appformid}" type="ref"
+				references="appFormRef" inputWidget="application.entitylist" />
+			<field name="type" label="$m{application.appformelement.type}"
+				type="enum_ref" references="formelementtypelist"
+				inputWidget="application.enumlist" />
+			<field name="tabContentType"
+				label="$m{application.appformelement.tabcontenttype}"
+				type="enum_ref" references="tabcontenttypelist"
+				inputWidget="application.enumlist" nullable="true" />
+			<field name="color"
+				label="$m{application.appformelement.color}" type="enum_ref"
+				references="widgetcolorlist" inputWidget="application.enumlist"
+				nullable="true" />
+			<field name="label"
+				label="$m{application.appformelement.label}" type="string"
+				nullable="true" />
+			<field name="tabApplet"
+				label="$m{application.appformelement.tabapplet}" type="string"
+				nullable="true" />
+			<field name="tabReference"
+				label="$m{application.appformelement.tabreference}" type="string"
+				nullable="true" />
+			<field name="editAction"
+				label="$m{application.appformelement.editaction}" type="string"
+				nullable="true" />
+			<field name="elementName"
+				label="$m{application.appformelement.elementname}" type="string"
+				nullable="true" />
+			<field name="inputWidget"
+				label="$m{application.appformelement.inputwidget}" type="string"
+				nullable="true" />
+			<field name="inputReference"
+				label="$m{application.appformelement.inputreference}" type="string"
+				nullable="true" />
+			<field name="annotation"
+				label="$m{application.appformelement.annotation}" type="string"
+				nullable="true" />
+			<field name="sectionColumns"
+				label="$m{application.appformelement.sectioncolumns}" type="integer" />
+			<field name="fieldColumn"
+				label="$m{application.appformelement.fieldcolumn}" type="integer" />
+			<field name="minLen"
+				label="$m{application.appformelement.minlen}" type="integer" />
+			<field name="maxLen"
+				label="$m{application.appformelement.maxlen}" type="integer" />
+			<field name="switchOnChange"
+				label="$m{application.appformelement.switchonchange}" type="boolean" />
+			<field name="saveAs"
+				label="$m{application.appformelement.saveas}" type="boolean" />
+			<field name="showAnnotation"
+				label="$m{application.appformelement.showannotation}" type="boolean" />
+			<field name="required"
+				label="$m{application.appformelement.required}" type="boolean" />
+			<field name="visible"
+				label="$m{application.appformelement.visible}" type="boolean" />
+			<field name="editable"
+				label="$m{application.appformelement.editable}" type="boolean" />
+			<field name="disabled"
+				label="$m{application.appformelement.disabled}" type="boolean" />
+			<field name="typeDesc"
+				label="$m{application.appformelement.typedesc}" type="list_only"
+				key="type" property="description" />
+			<field name="tabContentTypeDesc"
+				label="$m{application.appformelement.tabcontenttypedesc}"
+				type="list_only" key="tabContentType" property="description" />
+		</entity>
+		<entity name="appFormAnnotation"
+			description="$m{application.appformannotation}"
+			label="$m{application.appformannotation.label}"
+			type="com.flowcentraltech.flowcentral.application.entities.AppFormAnnotation">
+			<field name="appFormId"
+				label="$m{application.appformannotation.appformid}" type="ref"
+				references="appFormRef" inputWidget="application.entitylist" />
+			<field name="type"
+				label="$m{application.appformannotation.type}" type="enum_ref"
+				references="formannotationtypelist"
+				inputWidget="application.enumlist" />
+			<field name="message"
+				label="$m{application.appformannotation.message}" type="string" />
+			<field name="html"
+				label="$m{application.appformannotation.html}" type="boolean" />
+			<field name="typeDesc"
+				label="$m{application.appformannotation.typedesc}" type="list_only"
+				key="type" property="description" />
+			<uniqueConstraint name="nameUc"
+				description="$m{application.appformannotation.uc.name}"
+				fieldList="appFormId,name" />
+			<uniqueConstraint name="descUc"
+				description="$m{application.appformannotation.uc.description}"
+				fieldList="appFormId,description" />
+		</entity>
+		<entity name="appFormAction"
+			description="$m{application.appformaction}"
+			label="$m{application.appformaction.action.label}"
+			type="com.flowcentraltech.flowcentral.application.entities.AppFormAction">
+			<field name="appFormId"
+				label="$m{application.appformaction.appformid}" type="ref"
+				references="appFormRef" inputWidget="application.entitylist" />
+			<field name="type" label="$m{application.appformaction.type}"
+				type="enum_ref" references="uiactiontypelist"
+				inputWidget="application.enumlist" />
+			<field name="label" label="$m{application.appformaction.label}"
+				type="string" />
+			<field name="policy"
+				label="$m{application.appformaction.policy}" type="string" />
+			<field name="orderIndex"
+				label="$m{application.appformaction.orderindex}" type="integer" />
+			<field name="showOnCreate"
+				label="$m{application.appformaction.showoncreate}" type="boolean" />
+			<field name="showOnMaintain"
+				label="$m{application.appformaction.showonmaintain}" type="boolean" />
+			<field name="validateForm"
+				label="$m{application.appformaction.validateform}" type="boolean" />
+			<field name="typeDesc"
+				label="$m{application.appformaction.typedesc}" type="list_only"
+				key="type" property="description" />
+			<uniqueConstraint name="nameUc"
+				description="$m{application.appformaction.uc.name}"
+				fieldList="appFormId,name" />
+			<uniqueConstraint name="descUc"
+				description="$m{application.appformaction.uc.description}"
+				fieldList="appFormId,description" />
+		</entity>
+		<entity name="appFormRelatedList"
+			description="$m{application.appformrelatedlist}"
+			label="$m{application.appformrelatedlist.list.label}"
+			type="com.flowcentraltech.flowcentral.application.entities.AppFormRelatedList">
+			<field name="appFormId"
+				label="$m{application.appformrelatedlist.appformid}" type="ref"
+				references="appFormRef" inputWidget="application.entitylist" />
+			<field name="label"
+				label="$m{application.appformrelatedlist.label}" type="string" />
+			<field name="applet"
+				label="$m{application.appformrelatedlist.applet}" type="string" />
+			<field name="editAction"
+				label="$m{application.appformrelatedlist.editaction}" type="string"
+				nullable="true" />
+			<uniqueConstraint name="nameUc"
+				description="$m{application.appformrelatedlist.uc.name}"
+				fieldList="appFormId,name" />
+			<uniqueConstraint name="descUc"
+				description="$m{application.appformrelatedlist.uc.description}"
+				fieldList="appFormId,description" />
+		</entity>
+		<entity name="appFormStatePolicy"
+			description="$m{application.appformstatepolicy}"
+			label="$m{application.appformstatepolicy.label}"
+			type="com.flowcentraltech.flowcentral.application.entities.AppFormStatePolicy">
+			<field name="appFormId"
+				label="$m{application.appformstatepolicy.appformid}" type="ref"
+				references="appFormRef" inputWidget="application.entitylist" />
+			<field name="type"
+				label="$m{application.appformstatepolicy.type}" type="enum_ref"
+				references="formstatepolicytypelist"
+				inputWidget="application.enumlist" />
+			<field name="valueGenerator"
+				label="$m{application.appformstatepolicy.valuegenerator}" type="string" />
+			<field name="trigger"
+				label="$m{application.appformstatepolicy.trigger}" type="string" />
+			<field name="onCondition"
+				label="$m{application.appformstatepolicy.oncondition}" type="child"
+				category="formstatepolicy" references="appFilterRef" />
+			<field name="setStateList"
+				label="$m{application.appformstatepolicy.setstate}"
+				type="child_list" references="appFormSetStateRef" />
+			<field name="setValues"
+				label="$m{application.appformstatepolicy.setvalue}" type="child"
+				category="formstatepolicy" references="appSetValuesRef" />
+			<field name="typeDesc"
+				label="$m{application.appformstatepolicy.typedesc}" type="list_only"
+				key="type" property="description" />
+		</entity>
+		<entity name="appFormSetState"
+			description="$m{application.appformsetstate}"
+			label="$m{application.appformsetstate.label}"
+			type="com.flowcentraltech.flowcentral.application.entities.AppFormSetState">
+			<field name="appFormStatePolicyId"
+				label="$m{application.appformsetstate.appformstatepolicyid}"
+				type="ref" references="appFormStatePolicyRef"
+				inputWidget="application.caseentitysearch" />
+			<field name="type" label="$m{application.appformsetstate.type}"
+				type="enum_ref" references="formelementtypelist"
+				inputWidget="application.enumlist" />
+			<field name="target"
+				label="$m{application.appformsetstate.target}" type="string" />
+			<field name="annotation"
+				label="$m{application.appformsetstate.annotation}" type="enum"
+				references="tristatelist" inputWidget="application.enumlist" />
+			<field name="required"
+				label="$m{application.appformsetstate.required}" type="enum"
+				references="tristatelist" inputWidget="application.enumlist" />
+			<field name="visible"
+				label="$m{application.appformsetstate.visible}" type="enum"
+				references="tristatelist" inputWidget="application.enumlist" />
+			<field name="editable"
+				label="$m{application.appformsetstate.editable}" type="enum"
+				references="tristatelist" inputWidget="application.enumlist" />
+			<field name="disabled"
+				label="$m{application.appformsetstate.disabled}" type="enum"
+				references="tristatelist" inputWidget="application.enumlist" />
+			<field name="typeDesc"
+				label="$m{application.appformsetstate.typedesc}" type="list_only"
+				key="type" property="description" />
+		</entity>
+		<entity name="appFormFieldValidationPolicy"
+			description="$m{application.appformfieldvalidationpolicy}"
+			label="$m{application.appformfieldvalidationpolicy.label}"
+			type="com.flowcentraltech.flowcentral.application.entities.AppFormFieldValidationPolicy">
+			<field name="appFormId"
+				label="$m{application.appformfieldvalidationpolicy.appformid}"
+				type="ref" references="appFormRef"
+				inputWidget="application.entitylist" />
+			<field name="fieldName"
+				label="$m{application.appformfieldvalidationpolicy.fieldname}"
+				type="string" />
+			<field name="validation"
+				label="$m{application.appformfieldvalidationpolicy.validation}"
+				type="string" />
+			<field name="rule"
+				label="$m{application.appformfieldvalidationpolicy.rule}"
+				type="string" nullable="true" />
+		</entity>
+		<entity name="appFormValidationPolicy"
+			description="$m{application.appformvalidationpolicy}"
+			label="$m{application.appformvalidationpolicy.label}"
+			type="com.flowcentraltech.flowcentral.application.entities.AppFormValidationPolicy">
+			<field name="appFormId"
+				label="$m{application.appformvalidationpolicy.appformid}" type="ref"
+				references="appFormRef" inputWidget="application.entitylist" />
+			<field name="message"
+				label="$m{application.appformvalidationpolicy.message}"
+				type="string" />
+			<field name="target"
+				label="$m{application.appformvalidationpolicy.target}" type="string" />
+			<field name="entityName"
+				label="$m{application.appformvalidationpolicy.entityname}" type="list_only"
+				key="appFormId" property="entity" />
+			<field name="errorMatcher"
+				label="$m{application.appformvalidationpolicy.errormatcher}"
+				type="string" nullable="true" />
+			<field name="errorCondition"
+				label="$m{application.appformvalidationpolicy.errorcondition}"
+				type="child" category="formvalidationpolicy"
+				references="appFilterRef" />
+		</entity>
+		<entity name="appFormReviewPolicy"
+			description="$m{application.appformreviewpolicy}"
+			label="$m{application.appformreviewpolicy.label}"
+			type="com.flowcentraltech.flowcentral.application.entities.AppFormReviewPolicy">
+			<field name="appFormId"
+				label="$m{application.appformreviewpolicy.appformid}" type="ref"
+				references="appFormRef" inputWidget="application.entitylist" />
+			<field name="messageType"
+				label="$m{application.appformreviewpolicy.messagetype}" type="enum_ref"
+				references="messagetypelist" inputWidget="application.enumlist" />
+			<field name="message"
+				label="$m{application.appformreviewpolicy.message}"
+				type="string" />
+			<field name="formEvents"
+				label="$m{application.appformreviewpolicy.event}" type="string" />
+			<field name="target"
+				label="$m{application.appformreviewpolicy.target}" type="string" />
+			<field name="entityName"
+				label="$m{application.appformreviewpolicy.entityname}" type="list_only"
+				key="appFormId" property="entity" />
+			<field name="errorMatcher"
+				label="$m{application.appformreviewpolicy.errormatcher}"
+				type="string" nullable="true" />
+			<field name="errorCondition"
+				label="$m{application.appformreviewpolicy.errorcondition}"
+				type="child" category="formreviewpolicy"
+				references="appFilterRef" />
+			<field name="messageTypeDesc"
+				label="$m{application.appformreviewpolicy.messagetypedesc}" type="list_only"
+				key="messageType" property="description" />
+		</entity>
+		<entity name="appWidgetType"
+			description="$m{application.appwidgettype}"
+			label="$m{application.appwidgettype.label}"
+			type="com.flowcentraltech.flowcentral.application.entities.AppWidgetType">
+			<field name="dataType"
+				label="$m{application.appwidgettype.datatype}" type="enum_ref"
+				references="datatypelist" inputWidget="application.enumlist" />
+			<field name="inputType"
+				label="$m{application.appwidgettype.inputtype}" type="enum_ref"
+				references="inputtypelist" inputWidget="application.enumlist"
+				nullable="true" />
+			<field name="editor"
+				label="$m{application.appwidgettype.editor}" type="string" />
+			<field name="renderer"
+				label="$m{application.appwidgettype.renderer}" type="string" />
+			<field name="stretch"
+				label="$m{application.appwidgettype.stretch}" type="boolean" />
+			<field name="dataTypeDesc"
+				label="$m{application.appwidgettype.datatypedesc}" type="list_only"
+				key="dataType" property="description" />
+			<field name="inputTypeDesc"
+				label="$m{application.appwidgettype.inputtypedesc}" type="list_only"
+				key="inputType" property="description" />
+		</entity>
+		<entity name="appSuggestionType"
+			description="$m{application.appsuggestiontype}"
+			label="$m{application.appsuggestiontype.label}"
+			type="com.flowcentraltech.flowcentral.application.entities.AppSuggestionType">
+		</entity>
+		<entity name="appSuggestion"
+			description="$m{application.appsuggestion}"
+			label="$m{application.appsuggestion.label}"
+			type="com.flowcentraltech.flowcentral.application.entities.AppSuggestion">
+			<field name="suggestionTypeId"
+				label="$m{application.appsuggestion.suggestiontypeid}" type="ref"
+				references="appSuggestionTypeRef" inputWidget="application.entitysearch" />
+			<field name="suggestion"
+				label="$m{application.appsuggestion.suggestion}" type="string" />
+			<field name="applicationName"
+				label="$m{application.appsuggestion.applicationname}" type="list_only"
+				key="suggestionTypeId" property="applicationName" />
+			<field name="applicationDesc"
+				label="$m{application.appsuggestion.applicationdesc}" type="list_only"
+				key="suggestionTypeId" property="applicationDesc" />
+			<field name="suggestionTypeName"
+				label="$m{application.appsuggestion.suggestiontypename}" type="list_only"
+				key="suggestionTypeId" property="name" />
+			<field name="suggestionTypeDesc"
+				label="$m{application.appsuggestion.suggestiontypedesc}" type="list_only"
+				key="suggestionTypeId" property="description" />
+		</entity>
+	</entities>
+	<!-- Tables -->
+	<tables>
+		<table name="suggestionTable" description="$m{application.appsuggestion.table}"
+			label="$m{application.appsuggestion.table.label}" entity="appSuggestion" itemsPerPage="20">
+			<column field="applicationDesc" renderWidget="application.text"
+				widthRatio="1" />
+			<column field="suggestionTypeDesc" renderWidget="application.text"
+				widthRatio="1" />
+			<column field="suggestion" renderWidget="application.text"
+				widthRatio="1" linkAct="maintainAct" />
+			<column field="createdBy" renderWidget="application.text" />
+			<column field="createDt" renderWidget="application.datetime"
+				widthRatio="1" />
+			<column field="updatedBy" renderWidget="application.text" />
+			<column field="updateDt" renderWidget="application.datetime"
+				widthRatio="1" />
+		</table>
+	</tables>
+	<!-- Forms -->
+	<forms>
+		<form name="suggestionForm" description="$m{application.appsuggestion.form}"
+			entity="appSuggestion">
+			<tab name="basicDetails" label="$m{application.appsuggestion.form.basicdetails}"
+				contentType="miniform">
+				<section name="details" columns="type_2">
+					<field name="suggestionTypeId" inputWidget="application.entitysearch"
+						column="0" required="true" />
+					<field name="suggestion" inputWidget="application.textarea" column="1"
+						required="true" />
+				</section>
+			</tab>
+			<tab name="changeLog" label="$m{application.form.audit}"
+				contentType="miniform_changelog" />
+		</form>
+	</forms>
+</application>

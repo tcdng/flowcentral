@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<!-- Master notification module configuration -->
+<module name="notification" description="$m{notification.module}"
+	shortCode="NOT" label="$m{notification.label}">
+	<!-- Applications -->
+	<applications>
+		<application name="notification"
+			shortDescription="$m{notification.short.description}"
+			longDescription="$m{notification.long.description}" autoInstall="true"
+			configFile="apps/notification-application.xml" />
+	</applications>
+
+	<!-- System Parameters -->
+	<sysParameters>
+		<sysParameter code="NOT-0001" defaultVal="false"
+			description="$m{notification.sysparam.notificationenabled}"
+			editor="!ui-select list:booleanlist" type="boolean" control="true"
+			editable="true" />
+		<sysParameter code="NOT-0002" defaultVal="15"
+			description="$m{notification.sysparam.notificationmaximumtries}"
+			editor="!ui-integer precision:2" type="number" editable="true" />
+		<sysParameter code="NOT-0003" defaultVal="1"
+			description="$m{notification.sysparam.notificationretryminutes}"
+			editor="!ui-integer precision:2" type="number" editable="true" />
+		<sysParameter code="NOT-0004" defaultVal="20"
+			description="$m{notification.sysparam.notificationmaxbatchsize}"
+			editor="!ui-integer precision:2" type="number" editable="true" />
+	</sysParameters>
+</module>

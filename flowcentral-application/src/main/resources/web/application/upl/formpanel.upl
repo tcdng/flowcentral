@@ -1,0 +1,37 @@
+// UPL template for form panel
+// Copyright (c) 2019, 2021, FlowCentral Technologies.
+// All rights reserved.
+// 
+// PROPRIETARY AND CONFIDENTIAL. USE IS SUBJECT TO LICENSE TERMS.
+
+!fc-formpanel layout:$d{!ui-vertical style:$s{width:100%;}} components:$c{headerBar formBodyPanel}
+
+// Header Bar
+!ui-panel:headerBar styleClass:$s{hdbar} layout:$d{!ui-horizontal style:$s{width:100%;} widths:$l{42% none 42%}}
+	components:$c{headerLeftPanel headerCenterPanel headerRightPanel}
+	
+!ui-panel:headerLeftPanel style:$s{width:100%;}
+	layout:$d{!ui-horizontal style:$s{width:100%;} cellType:middle cellStyle:$s{padding-right:8px;}}
+	components:$c{titleBlock}
+!fc-formbreadcrumbs:titleBlock binding:breadCrumbs
+!ui-hidden:switchOnChangeHolder
+	eventHandler:$f{switchOnChangeEventHandler}
+
+!ui-panel:headerCenterPanel style:$s{display:inline-block; width:100%;}
+	layout:$d{!ui-horizontal style:$s{width:100%;} cellType:middle  cellStyle:$s{text-align:center;}}
+	components:$f{moreCenterComponents}
+
+!ui-panel:headerRightPanel style:$s{display:inline-block; float:right;} layout:$d{!ui-horizontal cellType:middle cellStyle:$s{padding-right:8px;}}
+	components:$f{moreActionButtons}
+	
+// Form panel
+!ui-panel:formBodyPanel layout:$d{!ui-vertical style:$s{width:100%;}}
+	components:$c{formAnnotation formErrors}
+	components:$f{mainForm}
+	components:$f{moreMemoryComponents}
+
+!fc-formannotation:formAnnotation binding:formAnnotationDef
+!fc-formmessages:formErrors binding:validationErrors
+
+// Actions
+

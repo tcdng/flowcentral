@@ -1,0 +1,21 @@
+// UPL template for form preview panel
+// Copyright (c) 2019, 2021, FlowCentral Technologies.
+// All rights reserved.
+// 
+// PROPRIETARY AND CONFIDENTIAL. USE IS SUBJECT TO LICENSE TERMS.
+
+!fc-formpreviewpanel layout:$d{!ui-vertical style:$s{width:100%;}} components:$c{mainFormPanel}
+
+!ui-panel:mainFormPanel layout:$d{!ui-vertical style:$s{width:100%;}}
+	components:$c{formAnnotation headerMiniForm formTabSheetPanel}
+
+// Form annotation 
+!fc-formannotation:formAnnotation binding:form.formAnnotationDef
+
+// Header
+!fc-miniform:headerMiniForm binding:form.headerForm
+
+// Tab sheet
+!ui-panel:formTabSheetPanel styleClass:$s{cltabsection} components:$c{formTabSheet}
+!fc-tabsheet:formTabSheet binding:form.tabSheet
+	

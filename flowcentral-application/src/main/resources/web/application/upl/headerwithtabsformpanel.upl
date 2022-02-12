@@ -1,0 +1,30 @@
+// UPL template for header with tabs form panel
+// Copyright (c) 2019, 2021, FlowCentral Technologies.
+// All rights reserved.
+// 
+// PROPRIETARY AND CONFIDENTIAL. USE IS SUBJECT TO LICENSE TERMS.
+
+!fc-headerwithtabsformpanel mainForm:$c{mainFormPanel}
+
+!ui-panel:mainFormPanel styleClass:$e{formbase} layout:$d{!ui-vertical style:$s{width:100%;}}
+	components:$c{headerMiniForm formTabSheetPanel altActionPanel relatedListPanel}
+ 
+// Header
+!fc-miniform:headerMiniForm binding:headerForm
+
+// Tab sheet
+!ui-panel:formTabSheetPanel styleClass:$s{cltabsection} components:$c{formTabSheet}
+!fc-tabsheet:formTabSheet binding:tabSheet
+
+// Related lists // TODO Move to common base form panel
+!ui-panel:relatedListPanel styleClass:$s{rltabsection} layout:$d{!ui-vertical style:$s{width:100%;}}
+	components:$c{relatedListTitle relatedListTabSheet}
+!ui-label:relatedListTitle styleClass:$s{reltitle} caption:$s{Related Lists}
+!fc-tabsheet:relatedListTabSheet binding:relatedListTabSheet
+
+// Alt buttons
+!ui-panel:altActionPanel styleClass:$e{fc-altactionbar} layout:$d{!ui-horizontal cellType:middle cellStyle:$s{padding-right:8px;}}
+	alternate:true components:$f{altActionButtons}
+	
+// Actions
+

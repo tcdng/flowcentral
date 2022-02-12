@@ -1,0 +1,36 @@
+// UPL template for load license panel.
+// Copyright (c) 2019, 2021, FlowCentral Technologies.
+// All rights reserved.
+// 
+// PROPRIETARY AND CONFIDENTIAL. USE IS SUBJECT TO LICENSE TERMS.
+
+!fc-loadlicensepanel dialogCaption:$m{system.loadlicense}
+    dialogBodyComponents:$c{licenseBaseBodyPanel}
+    dialogActionLayout:$d{!ui-vertical style:$s{width:100%;}}
+    dialogActionComponents:$c{loadActionPanel}
+
+!ui-panel:licenseBaseBodyPanel layout:$d{!ui-horizontal style:$s{width:100%;}}
+    components:$c{formPanel}
+
+// Form
+!ui-formpanel:formPanel
+	layout:$d{!ui-vertical style:$s{table-layout:fixed;}}
+    formCaptionSuffix:$s{:} formColumns:1
+	formSection:$d{!ui-section components:$c{frmFileSelect}}
+!ui-fileupload:frmFileSelect caption:$m{system.loadlicense.form.selectfile}
+	binding:licenseFile
+    selectOnly:true required:true style:$s{width:380px;}
+
+// Action panel
+!ui-panel:loadActionPanel layout:$d{!ui-horizontal} components:$c{loadBtn cancelBtn}
+!ui-button:loadBtn styleClass:$e{fc-greenbutton} caption:$m{button.load}
+	eventHandler:$d{!ui-event event:onclick action:$c{loadLicenceReqAct}}
+!ui-button:cancelBtn styleClass:$e{ui-button-alert} caption:$m{button.cancel}
+    eventHandler:$d{!ui-event event:onclick action:$c{closeDialogAct}}
+     
+//Actions
+!ui-post:loadLicenceReqAct path:$g{loadLicenceReqPath}
+    components:$c{formPanel} validations:$c{formValidation} debounce:false
+
+// Validations
+!ui-validation:formValidation components:$c{formPanel}

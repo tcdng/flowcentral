@@ -1,0 +1,68 @@
+<?xml version="1.0"?>
+<!-- User Creation Workflow -->
+<workflow name="userCreation"
+	description="$m{security.workflow.usercreation}"
+	label="$m{security.workflow.usercreation.label}" entity="user">
+	<steps>
+		<step type="start" name="start"
+			description="$m{security.workflow.usercreation.step.start}"
+			label="$m{security.workflow.usercreation.step.start.label}"
+			nextStep="approval">
+			<setValues>
+				<setValue field="workflowStatus" value="AWA" />
+			</setValues>
+		</step>
+		<step type="user_action" name="approval"
+			description="$m{security.workflow.usercreation.step.approval}"
+			label="$m{security.workflow.usercreation.step.approval.label}"
+			applet="security.manageUser">
+			<alerts>
+				<alert name="userCreationApproval"
+					description="$m{security.workflow.usercreation.alert.approval}"
+					type="user_interact" channel="email"
+					template="userCreationApproval" />
+			</alerts>
+			<userActions>
+				<userAction name="approveUserCreate"
+					description="$m{security.workflow.usercreation.useraction.approve}"
+					label="$m{security.workflow.usercreation.useraction.approve.label}"
+					nextStep="prepareCreateUser" />
+				<userAction name="declineUserCreate"
+					description="$m{security.workflow.usercreation.useraction.decline}"
+					label="$m{security.workflow.usercreation.useraction.decline.label}"
+					nextStep="deleteUser" />
+			</userActions>
+		</step>
+		<step type="enrichment" name="prepareCreateUser"
+			description="$m{security.workflow.usercreation.step.prepare}"
+			label="$m{security.workflow.usercreation.step.prepare.label}"
+			nextStep="createUser" policy="usercreation-enrichment">
+		</step>
+		<step type="record_action" name="createUser"
+			description="$m{security.workflow.usercreation.step.creation}"
+			label="$m{security.workflow.usercreation.step.creation.label}"
+			nextStep="end" actionType="update">
+			<setValues>
+				<setValue field="workflowStatus" value="APR" />
+			</setValues>
+			<alerts>
+				<alert name="userWelcome"
+					description="$m{security.workflow.usercreation.alert.welcome}"
+					type="pass_through" channel="email" template="userWelcome"
+					recipientPolicy="entity-wfrecipientpolicy"
+					recipientNameRule="fullName" recipientContactRule="email" />
+			</alerts>
+		</step>
+		<step type="record_action" name="deleteUser"
+			description="$m{security.workflow.usercreation.step.deletion}"
+			label="$m{security.workflow.usercreation.step.deletion.label}"
+			nextStep="end" actionType="delete">
+		</step>
+		<step type="end" name="end"
+			description="$m{security.workflow.usercreation.step.end}"
+			label="$m{security.workflow.usercreation.step.end.label}" />
+		<step type="error" name="error"
+			description="$m{security.workflow.usercreation.step.error}"
+			label="$m{security.workflow.usercreation.step.error.label}" />
+	</steps>
+</workflow>

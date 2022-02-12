@@ -1,0 +1,41 @@
+// UPL template for entity search panel
+// Copyright (c) 2019, 2021, FlowCentral Technologies.
+// All rights reserved.
+// 
+// PROPRIETARY AND CONFIDENTIAL. USE IS SUBJECT TO LICENSE TERMS.
+
+!fc-assignmentpagepanel layout:$d{!ui-vertical style:$s{width:100%;}} components:$c{headerBar assignmentBodyPanel}
+
+// Header Bar
+!ui-panel:headerBar styleClass:$s{hdbar} layout:$d{!ui-horizontal style:$s{width:100%;} widths:$l{42% none 42%}}
+	components:$c{headerLeftPanel headerCenterPanel headerRightPanel}
+	
+!ui-panel:headerLeftPanel style:$s{float:left; width:100%;}
+	layout:$d{!ui-horizontal style:$s{width:100%;} cellType:middle cellStyle:$s{padding-right:8px;}}
+	components:$c{titleBlock}
+!fc-formbreadcrumbs:titleBlock binding:breadCrumbs
+!ui-hidden:switchOnChangeHolder
+	eventHandler:$f{switchOnChangeEventHandler}
+
+!ui-panel:headerCenterPanel style:$s{display:inline-block; width:100%;}
+	layout:$d{!ui-horizontal style:$s{width:100%;} cellType:middle  cellStyle:$s{text-align:center;}}
+	components:$c{displayCounterLabel}
+!ui-label:displayCounterLabel styleClass:$e{fc-dispcounter}
+	styleClassBinding:displayItemCounterClass binding:displayItemCounter
+
+!ui-panel:headerRightPanel style:$s{display:inline-block; float:right;} layout:$d{!ui-horizontal cellType:middle cellStyle:$s{padding-right:8px;}}
+	components:$c{saveBtn}
+	components:$f{moreActionButtons}
+
+!ui-button:saveBtn caption:$m{button.save}
+	eventHandler:$d{!ui-event event:onclick action:$c{saveAssignAct}}
+
+// Assignment box panel
+!ui-panel:assignmentBodyPanel components:$c{assignmentPage assignmentEntryTbl}
+!fc-assignmentpage:assignmentPage style:$s{width:780px; margin: 8px auto;}
+!fc-beantable:assignmentEntryTbl style:$s{width:920px; margin: 8px auto;}
+	multiSelect:true binding:entryBeanTable
+	
+// Actions
+!ui-postcommand:saveAssignAct command:saveAssignment components:$c{assignmentEntryTbl}
+

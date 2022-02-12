@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<!-- Master organization module configuration -->
+<module name="organization" description="$m{organization.module}"
+	shortCode="ORG" label="$m{organization.label}">
+	<!-- Applications -->
+	<applications>
+		<application name="organization"
+			shortDescription="$m{organization.short.description}"
+			longDescription="$m{organization.long.description}" autoInstall="true"
+			configFile="apps/organization-application.xml" />
+	</applications>
+</module>

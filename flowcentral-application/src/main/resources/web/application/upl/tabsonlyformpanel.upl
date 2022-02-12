@@ -1,0 +1,13 @@
+// UPL template for tabs-only form panel
+// Copyright (c) 2019, 2021, FlowCentral Technologies.
+// All rights reserved.
+// 
+// PROPRIETARY AND CONFIDENTIAL. USE IS SUBJECT TO LICENSE TERMS.
+
+!fc-tabsonlyformpanel mainForm:$c{formTabSheet}
+
+// Tab sheet
+!fc-tabsheet:formTabSheet binding:tabSheet
+	
+// Actions
+

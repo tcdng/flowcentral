@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<!-- Studio module configuration -->
+<module name="studio" description="$m{studio.module}" shortCode="STU"
+	label="$m{studio.label}">
+	<!-- Applications -->
+	<applications>
+		<application name="studio"
+			shortDescription="$m{studio.application.short.description}"
+			longDescription="$m{studio.application.long.description}" autoInstall="true"
+			configFile="apps/studio-application.xml" />
+	</applications>
+
+	<!-- System Parameters -->
+</module>

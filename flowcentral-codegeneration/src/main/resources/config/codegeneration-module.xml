@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!-- Code generation module configuration -->
+<module name="codegeneration" description="$m{codegeneration.module}" shortCode="CDN"
+	label="$m{codegeneration.label}">
+	<!-- applications -->
+	<applications>
+		<application name="codegeneration"
+			shortDescription="$m{codegeneration.short.description}"
+			longDescription="$m{codegeneration.long.description}" autoInstall="true"
+			configFile="apps/codegeneration-application.xml" />
+	</applications>
+
+	<!-- Privileges -->
+
+	<!-- System Parameters -->
+	<sysParameters>
+		<sysParameter code="CDN-0001" defaultVal="com.flowcentraltech.flowcentral"
+			description="$m{codegeneration.sysparam.codegenpackagebase}"
+			editor="!ui-text maxLen:128" type="string" editable="true" />
+		<sysParameter code="CDN-0002"
+			description="$m{codegeneration.sysparam.messagereplacementlist}"
+			editor="!ui-textarea" type="string" editable="true" />
+	</sysParameters>
+</module>

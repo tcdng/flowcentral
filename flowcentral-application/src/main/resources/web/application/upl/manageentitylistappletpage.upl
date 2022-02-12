@@ -1,0 +1,17 @@
+// UPL template for manage entity list applet page
+// Copyright (c) 2019, 2021, FlowCentral Technologies.
+// All rights reserved.
+// 
+// PROPRIETARY AND CONFIDENTIAL. USE IS SUBJECT TO LICENSE TERMS.
+
+!ui-page caption:$m{manageentitylistpage.title} components:$c{appletPanel}
+	captionBinding:altCaption subCaptionBinding:altSubCaption
+
+// Applet panel
+!fc-manageentitylistappletpanel:appletPanel style:$s{width:100%;height:100%;} binding:applet
+
+!fc-entityfileattachmentspanel:fileAttachmentsPopup binding:applet.formFileAttachments
+   closeEventHandler:$d{!ui-event event:onclick action:$c{closeFileAttachAct}}
+
+// Actions
+!ui-post:closeFileAttachAct path:$p{/closeFileAttachments}

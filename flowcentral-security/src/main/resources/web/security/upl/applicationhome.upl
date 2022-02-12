@@ -1,0 +1,10 @@
+// UPL template for application home page
+// Copyright (c) 2019, 2021, FlowCentral Technologies.
+// All rights reserved.
+// 
+// PROPRIETARY AND CONFIDENTIAL. USE IS SUBJECT TO LICENSE TERMS.
+
+!ui-document layout:$d{!ui-desktoptype1} contentPanel:$c{content}
+
+!ui-contentpanel:content styleClass:$e{fc-login-contentpanel}
+	path:$s{/security/loginpage/openPage}

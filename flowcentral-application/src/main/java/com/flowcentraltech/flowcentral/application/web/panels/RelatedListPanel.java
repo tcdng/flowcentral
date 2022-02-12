@@ -1,0 +1,27 @@
+/*
+ * Copyright (c) 2019, 2021, FlowCentral Technologies.
+ * All rights reserved.
+ * 
+ * PROPRIETARY AND CONFIDENTIAL. USE IS SUBJECT TO LICENSE TERMS.
+ */
+package com.flowcentraltech.flowcentral.application.web.panels;
+
+import com.tcdng.unify.core.annotation.Component;
+import com.tcdng.unify.core.annotation.UplBinding;
+
+/**
+ * Related list panel.
+ * 
+ * @author Lateef Ojulari
+ * @since 1.0
+ */
+@Component("fc-relatedlistpanel")
+@UplBinding("web/application/upl/relatedlistpanel.upl")
+public class RelatedListPanel extends AbstractInlineEntitySearchPanel {
+
+    @Override
+    protected String getEditActionKey() {
+        return "relatedlist.edit.actionpath";
+    }
+
+}

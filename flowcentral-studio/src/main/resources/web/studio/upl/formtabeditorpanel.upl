@@ -1,0 +1,52 @@
+// UPL template for form tab editor panel
+// Copyright (c) 2019, 2021, FlowCentral Technologies.
+// All rights reserved.
+// 
+// PROPRIETARY AND CONFIDENTIAL. USE IS SUBJECT TO LICENSE TERMS.
+
+!fc-formtabeditorpanel
+    dialogBodyComponents:$c{formPanel}
+    dialogActionLayout:$d{!ui-horizontal style:$s{width:100%;}}
+    dialogActionComponents:$c{dialogActionPanel}
+	
+//Form   
+!ui-formpanel:formPanel
+	layout:$d{!ui-vertical style:$s{table-layout:fixed;}}
+    formCaptionSuffix:$s{:} formBinding:$g{dialogFormBinding} formColumns:2
+	formSection:$d{!ui-section components:$c{frmContType frmName frmLabel
+		frmReference frmApplet frmEditAction frmVisible frmEditable frmDisabled}}
+
+!ui-select:frmContType styleClass:$e{fc-formfield} caption:$m{formeditor.tab.contenttype}
+	list:studiotabcontenttypelist blankOption:$s{} binding:contentType required:true
+	eventHandler:$d{!ui-event event:onchange action:$c{typeChangeAct}}
+!ui-text:frmName styleClass:$e{fc-formfield} caption:$m{formeditor.tab.name} binding:name required:true focus:true
+!ui-text:frmLabel styleClass:$e{fc-formfield} caption:$m{formeditor.tab.label} maxLen:64 binding:label required:true
+!ui-select:frmReference styleClass:$e{fc-formfield} caption:$m{formeditor.tab.reference}
+	list:studiotabreferencelist listParams:$l{contentType entity} blankOption:$s{} binding:reference required:true
+	eventHandler:$d{!ui-event event:onchange action:$c{typeChangeAct}}
+!ui-select:frmApplet styleClass:$e{fc-formfield} caption:$m{formeditor.tab.applet}
+	list:studiotabappletlist listParams:$l{reference entity} blankOption:$s{} binding:applet required:true
+!ui-text:frmEditAction styleClass:$e{fc-formfield} caption:$m{formeditor.tab.editaction} maxLen:64 binding:editAction required:true
+!ui-checkbox:frmVisible caption:$m{formeditor.tab.visible} binding:visible layoutCaption:true
+!ui-checkbox:frmEditable caption:$m{formeditor.tab.editable} binding:editable layoutCaption:true
+!ui-checkbox:frmDisabled caption:$m{formeditor.tab.disabled} binding:disabled layoutCaption:true
+
+// Action buttons
+!ui-panel:dialogActionPanel layout:$d{!ui-horizontal} components:$c{addBtn applyBtn cancelBtn}
+!ui-button:addBtn caption:$m{button.add} styleClass:$e{fc-bluebutton}
+	eventHandler:$d{!ui-event event:onclick action:$c{addAct}}
+!ui-button:applyBtn caption:$m{button.apply} styleClass:$e{fc-bluebutton}
+	eventHandler:$d{!ui-event event:onclick action:$c{applyAct}}
+!ui-button:cancelBtn caption:$m{button.cancel}
+    eventHandler:$d{!ui-event event:onclick action:$c{closeDialogAct}}
+
+//Actions
+!ui-postcommand:typeChangeAct components:$c{formPanel}
+!ui-postcommand:addAct command:add components:$c{formPanel}
+    validations:$c{formValidation} refresh:$f{refreshOnApply}
+!ui-postcommand:applyAct command:apply components:$c{formPanel}
+    validations:$c{formValidation} refresh:$f{refreshOnApply}
+
+
+// Validations
+!ui-validation:formValidation components:$c{formPanel}
