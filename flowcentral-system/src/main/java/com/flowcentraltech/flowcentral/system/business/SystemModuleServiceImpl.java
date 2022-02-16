@@ -34,6 +34,7 @@ import com.flowcentraltech.flowcentral.common.business.AbstractFlowCentralServic
 import com.flowcentraltech.flowcentral.common.business.FileAttachmentProvider;
 import com.flowcentraltech.flowcentral.common.business.LicenseProvider;
 import com.flowcentraltech.flowcentral.common.business.SpecialParamProvider;
+import com.flowcentraltech.flowcentral.common.business.SystemParameterProvider;
 import com.flowcentraltech.flowcentral.common.constants.FlowCentralContainerPropertyConstants;
 import com.flowcentraltech.flowcentral.common.constants.LicenseFeatureCodeConstants;
 import com.flowcentraltech.flowcentral.common.constants.LicenseStatus;
@@ -110,7 +111,7 @@ import com.tcdng.unify.core.util.StringUtils;
 @Transactional
 @Component(SystemModuleNameConstants.SYSTEM_MODULE_SERVICE)
 public class SystemModuleServiceImpl extends AbstractFlowCentralService
-        implements SystemModuleService, LicenseProvider, SpecialParamProvider {
+        implements SystemModuleService, LicenseProvider, SpecialParamProvider, SystemParameterProvider {
 
     private static final String LICENSE = "license";
 
