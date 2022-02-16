@@ -88,7 +88,7 @@ public class WfStep extends BaseConfigNamedEntity {
     @Column(nullable = true)
     private Integer expiryMinutes;
 
-    @Column
+    @Column(name = "AUDIT_FG")
     private boolean audit;
 
     @Column

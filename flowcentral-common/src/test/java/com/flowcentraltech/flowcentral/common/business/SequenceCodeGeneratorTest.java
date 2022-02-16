@@ -44,12 +44,12 @@ public class SequenceCodeGeneratorTest extends AbstractFlowCentralTest {
 
     @Test
     public void testGetSequenceDefinition() throws Exception {
-        SequenceDef sequenceDef = scg.getSequenceDefinition("LOT{n:8}");
+        SequenceDef sequenceDef = scg.getSequenceDefinition("LOT{n:8}{p:S0001}");
         assertNotNull(sequenceDef);
         
         List<SequencePartDef> partList = sequenceDef.getPartList();
         assertNotNull(partList);
-        assertEquals(2, partList.size());
+        assertEquals(3, partList.size());
         
         SequencePartDef partDef = partList.get(0);
         assertNotNull(partDef);
@@ -62,6 +62,12 @@ public class SequenceCodeGeneratorTest extends AbstractFlowCentralTest {
         assertEquals(SequencePartType.SEQUENCE_NUMBER, partDef.getType());
         assertNull(partDef.getText());
         assertEquals(8, partDef.getNumLen());
+        
+        partDef = partList.get(2);
+        assertNotNull(partDef);
+        assertEquals(SequencePartType.SYSTEM_PARAMETER, partDef.getType());
+        assertEquals("S0001", partDef.getText());
+        assertEquals("S0001", partDef.getCode());
         
         assertFalse(sequenceDef.isWithDatePart());
     }

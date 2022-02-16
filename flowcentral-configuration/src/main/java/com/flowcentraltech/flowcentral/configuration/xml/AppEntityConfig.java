@@ -31,6 +31,8 @@ public class AppEntityConfig extends BaseNameConfig {
     private String type;
 
     private String delegate;
+
+    private String table;
     
     private boolean auditable;
 
@@ -64,6 +66,15 @@ public class AppEntityConfig extends BaseNameConfig {
     @XmlAttribute
     public void setDelegate(String delegate) {
         this.delegate = delegate;
+    }
+
+    public String getTable() {
+        return table;
+    }
+
+    @XmlAttribute
+    public void setTable(String table) {
+        this.table = table;
     }
 
     public boolean isAuditable() {

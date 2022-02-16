@@ -27,6 +27,9 @@ public enum SequencePartType {
     TEXT(
             "",
             ""),
+    SYSTEM_PARAMETER(
+            "{p:",
+            ""),
     SEQUENCE_NUMBER(
             "{n:",
             ""),
@@ -65,6 +68,10 @@ public enum SequencePartType {
 
     public boolean isSequenceNumber() {
         return SEQUENCE_NUMBER.equals(this) || SEQUENCE_NUMBER_BY_DATE.equals(this);
+    }
+
+    public boolean isSystemParameter() {
+        return SYSTEM_PARAMETER.equals(this);
     }
 
     public boolean isDatePart() {

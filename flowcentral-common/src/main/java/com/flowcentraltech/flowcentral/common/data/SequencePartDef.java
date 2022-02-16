@@ -50,11 +50,20 @@ public class SequencePartDef {
         this.numLen = numLen;
     }
 
+    public SequencePartDef(SequencePartType type, String code) {
+        this.type = type;
+        this.text = code;
+    }
+
     public SequencePartType getType() {
         return type;
     }
 
     public String getText() {
+        return text;
+    }
+
+    public String getCode() {
         return text;
     }
 

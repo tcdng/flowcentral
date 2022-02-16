@@ -44,12 +44,17 @@ import com.tcdng.unify.core.util.StringUtils;
 @Component("common-sequencecodegenerator")
 public class SequenceCodeGeneratorImpl extends AbstractSequenceCodeGenerator {
 
-    private static final List<SequencePartType> varTypes = Collections.unmodifiableList(Arrays.asList(SequencePartType.SEQUENCE_NUMBER,
-            SequencePartType.SEQUENCE_NUMBER_BY_DATE, SequencePartType.LONG_YEAR, SequencePartType.SHORT_YEAR, SequencePartType.DAY_OF_MONTH, SequencePartType.DAY_OF_YEAR));
+    private static final List<SequencePartType> varTypes = Collections
+            .unmodifiableList(Arrays.asList(SequencePartType.SYSTEM_PARAMETER, SequencePartType.SEQUENCE_NUMBER,
+                    SequencePartType.SEQUENCE_NUMBER_BY_DATE, SequencePartType.LONG_YEAR, SequencePartType.SHORT_YEAR,
+                    SequencePartType.DAY_OF_MONTH, SequencePartType.DAY_OF_YEAR));
 
     @Configurable
     private SequenceNumberService seqNumberService;
 
+    @Configurable
+    private SystemParameterProvider systemParameterProvider;
+    
     private final FactoryMap<String, SequenceDef> sequenceDefs;
 
     public SequenceCodeGeneratorImpl() {
@@ -64,8 +69,12 @@ public class SequenceCodeGeneratorImpl extends AbstractSequenceCodeGenerator {
             };
     }
 
-    public void setSeqNumberService(SequenceNumberService seqNumberService) {
+    public final void setSeqNumberService(SequenceNumberService seqNumberService) {
         this.seqNumberService = seqNumberService;
+    }
+
+    public final void setSystemParameterProvider(SystemParameterProvider systemParameterProvider) {
+        this.systemParameterProvider = systemParameterProvider;
     }
 
     @Override
@@ -109,6 +118,13 @@ public class SequenceCodeGeneratorImpl extends AbstractSequenceCodeGenerator {
                     String year = String.valueOf(cal.get(Calendar.YEAR));
                     sb.append(year.substring(year.length() - 2));
                 }
+                    break;
+                case SYSTEM_PARAMETER:
+                    if (systemParameterProvider != null) {
+                        String param = systemParameterProvider.getSysParameterValue(String.class, partDef.getCode());
+                        sb.append(param);
+                    }
+                    
                     break;
                 case SEQUENCE_NUMBER: {
                     String num = String.valueOf(seqNumberService.getNextSequenceNumber(seqKey));
@@ -157,13 +173,11 @@ public class SequenceCodeGeneratorImpl extends AbstractSequenceCodeGenerator {
                         break;
                     }
                 }
-                
+
                 if (_type == null) {
                     throwOperationErrorException(new RuntimeException(
-                            "Invalid sequence code defintion. Unknown placeholder ["
-                                    + definition + "]."));
+                            "Invalid sequence code defintion. Unknown placeholder [" + definition + "]."));
                 }
-                
 
                 if (exist.contains(_type)) {
                     throwOperationErrorException(new RuntimeException(
@@ -177,7 +191,7 @@ public class SequenceCodeGeneratorImpl extends AbstractSequenceCodeGenerator {
                 }
 
                 fromIndex = index + _type.track().length();
-                if (_type.isSequenceNumber()) {
+                if (_type.isSequenceNumber() || _type.isSystemParameter()) {
                     index = definition.indexOf('}', fromIndex);
                     if (index <= 0) {
                         throwOperationErrorException(new RuntimeException(
@@ -185,21 +199,28 @@ public class SequenceCodeGeneratorImpl extends AbstractSequenceCodeGenerator {
                                         + definition + "]."));
                     }
 
-                    int numLen = Integer.parseInt(definition.substring(fromIndex, index));
-                    partList.add(new SequencePartDef(_type, numLen));
+                    String val = definition.substring(fromIndex, index);
+                    if (_type.isSequenceNumber()) {
+                        int numLen = Integer.parseInt(val);
+                        partList.add(new SequencePartDef(_type, numLen));
+                    } else {
+                        partList.add(new SequencePartDef(_type, val));
+                    }
+                    
                     fromIndex = index + 1;
                 } else {
                     partList.add(new SequencePartDef(_type));
                 }
             }
-            
+
             if (index < 0) {
                 partList.add(new SequencePartDef(definition.substring(fromIndex)));
                 fromIndex = len;
             }
         }
 
-        if (!exist.contains(SequencePartType.SEQUENCE_NUMBER) && !exist.contains(SequencePartType.SEQUENCE_NUMBER_BY_DATE)) {
+        if (!exist.contains(SequencePartType.SEQUENCE_NUMBER)
+                && !exist.contains(SequencePartType.SEQUENCE_NUMBER_BY_DATE)) {
             throwOperationErrorException(new RuntimeException(
                     "Invalid sequence code defintion. No sequence number placeholder found [" + definition + "]."));
         }
@@ -212,6 +233,7 @@ public class SequenceCodeGeneratorImpl extends AbstractSequenceCodeGenerator {
                 case DAY_OF_YEAR:
                 case LONG_YEAR:
                 case SHORT_YEAR:
+                case SYSTEM_PARAMETER:
                     sb.append(part.getType().skeleton());
                     break;
                 case SEQUENCE_NUMBER:

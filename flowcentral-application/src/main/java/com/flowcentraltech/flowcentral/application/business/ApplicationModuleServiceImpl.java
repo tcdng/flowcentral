@@ -2650,8 +2650,9 @@ public class ApplicationModuleServiceImpl extends AbstractFlowCentralService
                 String label = resolveApplicationMessage(appEntityConfig.getLabel());
                 Class<? extends BaseEntity> entityClass = (Class<? extends BaseEntity>) ReflectUtils
                         .classForName(appEntityConfig.getType());
-                String tableName = ((SqlDataSourceDialect) db().getDataSource().getDialect())
-                        .findSqlEntityInfo(entityClass).getTableName();
+                String tableName = !StringUtils.isBlank(appEntityConfig.getDelegate()) ? appEntityConfig.getTable()
+                        : ((SqlDataSourceDialect) db().getDataSource().getDialect()).findSqlEntityInfo(entityClass)
+                                .getTableName();
                 EntityBaseType baseType = ApplicationEntityUtils.getEntityBaseType(entityClass);
                 Long entityId = null;
                 if (oldAppEntity == null) {
