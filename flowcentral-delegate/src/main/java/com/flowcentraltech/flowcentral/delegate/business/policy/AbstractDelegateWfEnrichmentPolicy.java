@@ -16,6 +16,7 @@
 
 package com.flowcentraltech.flowcentral.delegate.business.policy;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
@@ -71,7 +72,7 @@ public abstract class AbstractDelegateWfEnrichmentPolicy extends AbstractWfEnric
 
     @Override
     public List<? extends Listable> getRuleList(Locale locale) throws UnifyException {
-        return null;
+        return Collections.emptyList();
     }
 
     protected ProcedureResponse sendToDelegateProcedureService(ProcedureRequest req) throws UnifyException {
