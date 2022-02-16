@@ -64,11 +64,11 @@ public class StudioMenuWriter extends AbstractPanelWriter {
     @Configurable
     private CodeGenerationProvider codeGenerationProvider;
 
-    private List<StudioAppComponentType> menuCategoryList = Collections
-            .unmodifiableList(Arrays.asList(StudioAppComponentType.CODEGENERATION, StudioAppComponentType.ENTITY, StudioAppComponentType.APPLET,
-                    StudioAppComponentType.REFERENCE, StudioAppComponentType.CHART, StudioAppComponentType.DASHBOARD,
-                    StudioAppComponentType.NOTIFICATION_TEMPLATE, StudioAppComponentType.REPORT_CONFIGURATION,
-                    StudioAppComponentType.TABLE, StudioAppComponentType.FORM, StudioAppComponentType.WORKFLOW));
+    private List<StudioAppComponentType> menuCategoryList = Collections.unmodifiableList(Arrays.asList(
+            StudioAppComponentType.CODEGENERATION, StudioAppComponentType.ENTITY, StudioAppComponentType.APPLET,
+            StudioAppComponentType.REFERENCE, StudioAppComponentType.CHART, StudioAppComponentType.DASHBOARD,
+            StudioAppComponentType.NOTIFICATION_TEMPLATE, StudioAppComponentType.REPORT_CONFIGURATION,
+            StudioAppComponentType.TABLE, StudioAppComponentType.FORM, StudioAppComponentType.WORKFLOW));
 
     private List<StudioAppComponentType> collaborationMenuCategoryList = Collections
             .unmodifiableList(Arrays.asList(StudioAppComponentType.COLLABORATION, StudioAppComponentType.CODEGENERATION,
@@ -134,7 +134,8 @@ public class StudioMenuWriter extends AbstractPanelWriter {
         StudioAppComponentType currCategory = studioMenuWidget.getCurrentSel();
         if (currCategory == null) {
             currCategory = isCollaborationLicensed ? StudioAppComponentType.COLLABORATION
-                    : StudioAppComponentType.ENTITY;
+                    : (codeGenerationProvider != null ? StudioAppComponentType.CODEGENERATION
+                            : StudioAppComponentType.ENTITY);
             studioMenuWidget.setCurrentSel(currCategory);
         }
 
