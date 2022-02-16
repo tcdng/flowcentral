@@ -14,7 +14,8 @@
  * the License.
  */
 
-package com.flowcentraltech.flowcentral.delegate.business;
+
+package com.flowcentraltech.flowcentral.delegate.business.policy;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -25,16 +26,20 @@ import java.net.URL;
 import com.tcdng.unify.core.UnifyException;
 
 /**
- * Convenient abstract base class for HTTP Post environment delegates.
+ * Convenient abstract base class for HTTP post delegate workflow process policy.
  * 
- * @author FlowCentral Technologies Limited
+ * @author Lateef Ojulari
  * @since 1.0
  */
-public abstract class AbstractHttpPostEnvironmentDelegate extends AbstractEnvironmentDelegate {
+public abstract class AbstractHttpPostDelegateWfProcessPolicy extends AbstractDelegateWfProcessPolicy {
+
+    public AbstractHttpPostDelegateWfProcessPolicy(String operation) {
+        super(operation);
+    }
 
     @Override
-    protected String sendToDelegateDatasourceService(String jsonReq) throws UnifyException {
-        String endpoint = getEndpoint() + "/datasource";
+    protected String sendToDelegateProcedureService(String jsonReq) throws UnifyException {
+        String endpoint = getEndpoint() + "/procedure";
         StringBuilder response = new StringBuilder();
         try {
             URL url = new URL(endpoint);
@@ -63,4 +68,5 @@ public abstract class AbstractHttpPostEnvironmentDelegate extends AbstractEnviro
     }
 
     protected abstract String getEndpoint() throws UnifyException;
+
 }

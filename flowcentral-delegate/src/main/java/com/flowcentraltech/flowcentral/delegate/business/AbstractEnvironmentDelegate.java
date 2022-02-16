@@ -453,9 +453,7 @@ public abstract class AbstractEnvironmentDelegate extends AbstractUnifyComponent
 
     protected DataSourceResponse sendToDelegateDatasourceService(DataSourceRequest req) throws UnifyException {
         String reqJSON = DataUtils.asJsonString(req, PrintFormat.NONE);
-        logDebug("Sending message to delegate [{0}]...", reqJSON); // TODO Remove
         String respJSON = sendToDelegateDatasourceService(reqJSON);
-        logDebug("Response received from delegate [{0}]...", respJSON); // TODO Remove
         DataSourceResponse resp = DataUtils.fromJsonString(DataSourceResponse.class, respJSON);
         if (resp.error()) {
             // TODO Translate to local exception and throw
