@@ -6,12 +6,29 @@
 
 	<groupId>com.flowcentraltech.flowcentral</groupId>
 	<artifactId>flowcentral</artifactId>
-	<version>0.0.7-SNAPSHOT</version>
+	<version>1.0.0</version>
 	<packaging>pom</packaging>
 
 	<name>flowcentral</name>
 	<description>Flow Central</description>
 	<url>http://www.flowcentraltechnologies.com</url>
+
+	<licenses>
+		<license>
+			<name>The Apache License, Version 2.0</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+		</license>
+	</licenses>
+
+	<developers>
+		<developer>
+			<id>lateefojulari</id>
+			<name>Lateef Ojulari</name>
+			<email>lateef.ojulari@tcdng.com</email>
+			<organization>The Code Department</organization>
+			<organizationUrl>http://www.tcdng.com</organizationUrl>
+		</developer>
+	</developers>
 
 	<modules>
 		<module>flowcentral-system</module>
@@ -34,7 +51,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
-		<unify.version>2.1.6-SNAPSHOT</unify.version>
+		<unify.version>2.1.6</unify.version>
 	</properties>
 
 	<scm>
