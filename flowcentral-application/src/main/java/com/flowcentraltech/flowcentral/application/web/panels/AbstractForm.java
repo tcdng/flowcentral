@@ -100,6 +100,8 @@ public abstract class AbstractForm {
 
     private String displayItemCounterClass;
     
+    private String warning;
+    
     private int attachmentCount;
 
     public AbstractForm(FormContext ctx, BreadCrumbs breadCrumbs) {
@@ -198,6 +200,14 @@ public abstract class AbstractForm {
 
     public void setDisplayItemCounterClass(String displayItemCounterClass) {
         this.displayItemCounterClass = displayItemCounterClass;
+    }
+
+    public final String getWarning() {
+        return warning;
+    }
+
+    public final void setWarning(String warning) {
+        this.warning = warning;
     }
 
     public void clearDisplayItem() {

@@ -582,6 +582,12 @@ public abstract class AbstractEntityFormApplet extends AbstractApplet implements
     }
 
     public String getDisplayItemCounter() throws UnifyException {
+        AbstractForm _form = getResolvedForm();
+        if (_form.getWarning() != null) {
+            _form.setDisplayItemCounterClass("fc-dispcounterorange");
+            return _form.getWarning();
+        }
+        
         return getAu().resolveSessionMessage("$m{entityformapplet.displaycounter}", mIndex + 1,
                 entitySearch.getEntityTable().getDispItemList().size());
     }

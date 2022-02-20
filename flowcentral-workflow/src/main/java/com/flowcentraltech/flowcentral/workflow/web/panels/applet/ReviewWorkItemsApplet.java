@@ -173,10 +173,10 @@ public class ReviewWorkItemsApplet extends AbstractEntityFormApplet {
     }
     
     private void setDisplayModeMessage(AbstractForm form) throws UnifyException {
-        form.clearDisplayItem();
-        if (!userActionRight) {
-            form.setDisplayItemCounterClass("fc-dispcounterorange");
-            form.setDisplayItemCounter(getAu().resolveSessionMessage("$m{entityformapplet.form.inworkflow.heldby}",
+        if (userActionRight) {
+            form.setWarning(null);
+        } else {
+            form.setWarning(getAu().resolveSessionMessage("$m{entityformapplet.form.inworkflow.heldby}",
                     currWfItem.getHeldBy()));
         }
     }
