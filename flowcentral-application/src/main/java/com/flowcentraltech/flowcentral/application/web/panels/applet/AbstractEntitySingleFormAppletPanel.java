@@ -22,10 +22,10 @@ import com.flowcentraltech.flowcentral.application.data.AppletDef;
 import com.flowcentraltech.flowcentral.application.data.EntityDef;
 import com.flowcentraltech.flowcentral.application.web.data.AppletContext;
 import com.flowcentraltech.flowcentral.application.web.data.FormContext;
-import com.flowcentraltech.flowcentral.application.web.panels.AbstractForm.EvaluationMode;
 import com.flowcentraltech.flowcentral.application.web.panels.EntitySingleForm;
 import com.flowcentraltech.flowcentral.common.business.ApplicationPrivilegeManager;
 import com.flowcentraltech.flowcentral.common.business.policies.EntityActionResult;
+import com.flowcentraltech.flowcentral.common.constants.EvaluationMode;
 import com.flowcentraltech.flowcentral.common.entities.WorkEntity;
 import com.flowcentraltech.flowcentral.system.business.SystemModuleService;
 import com.tcdng.unify.core.UnifyException;
@@ -272,9 +272,9 @@ public abstract class AbstractEntitySingleFormAppletPanel extends AbstractApplet
     public void submit() throws UnifyException {
         final AbstractEntitySingleFormApplet applet = getEntityFormApplet();
         final EvaluationMode evalMode = applet.getMode().isMaintainForm()
-                ? EvaluationMode.getUpdateMode(applet.getRootAppletProp(boolean.class,
+                ? EvaluationMode.getUpdateSubmitMode(applet.getRootAppletProp(boolean.class,
                         AppletPropertyConstants.MAINTAIN_FORM_SUBMIT_VALIDATE, false))
-                : EvaluationMode.getCreateMode(applet.getRootAppletProp(boolean.class,
+                : EvaluationMode.getCreateSubmitMode(applet.getRootAppletProp(boolean.class,
                         AppletPropertyConstants.CREATE_FORM_SUBMIT_VALIDATE, false));
         FormContext ctx = evaluateCurrentFormContext(evalMode);
         if (!ctx.isWithFormErrors()) {
@@ -288,9 +288,9 @@ public abstract class AbstractEntitySingleFormAppletPanel extends AbstractApplet
     public void submitAndNext() throws UnifyException {
         final AbstractEntitySingleFormApplet applet = getEntityFormApplet();
         final EvaluationMode evalMode = applet.getMode().isMaintainForm()
-                ? EvaluationMode.getUpdateMode(applet.getRootAppletProp(boolean.class,
+                ? EvaluationMode.getUpdateSubmitMode(applet.getRootAppletProp(boolean.class,
                         AppletPropertyConstants.MAINTAIN_FORM_SUBMIT_VALIDATE, false))
-                : EvaluationMode.getCreateMode(applet.getRootAppletProp(boolean.class,
+                : EvaluationMode.getCreateSubmitMode(applet.getRootAppletProp(boolean.class,
                         AppletPropertyConstants.CREATE_FORM_SUBMIT_VALIDATE, false));
         FormContext ctx = evaluateCurrentFormContext(evalMode);
         if (!ctx.isWithFormErrors()) {

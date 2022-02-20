@@ -17,7 +17,7 @@
 package com.flowcentraltech.flowcentral.application.validation;
 
 import com.flowcentraltech.flowcentral.application.web.data.FormContext;
-import com.flowcentraltech.flowcentral.application.web.panels.AbstractForm.EvaluationMode;
+import com.flowcentraltech.flowcentral.common.constants.EvaluationMode;
 import com.flowcentraltech.flowcentral.configuration.constants.FormReviewType;
 import com.tcdng.unify.core.UnifyComponent;
 import com.tcdng.unify.core.UnifyException;
@@ -47,10 +47,13 @@ public interface FormContextEvaluator extends UnifyComponent {
      * 
      * @param ctx
      *                   the form context
+     * @param evaluationMode
+     *                       the evaluation mode
      * @param reviewType
      *                   the review type
      * @throws UnifyException
      *                        if an error occurs
      */
-    void reviewFormContext(FormContext ctx, FormReviewType reviewType) throws UnifyException;
+    void reviewFormContext(FormContext ctx, EvaluationMode evaluationMode, FormReviewType reviewType)
+            throws UnifyException;
 }

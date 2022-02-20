@@ -63,31 +63,6 @@ public abstract class AbstractForm {
         }
     }
 
-    public enum EvaluationMode {
-
-        CREATE,
-        UPDATE,
-        DELETE,
-        REQUIRED,
-        NOP;
-
-        public static EvaluationMode getCreateMode(boolean create) {
-            if (create) {
-                return CREATE;
-            }
-
-            return NOP;
-        }
-
-        public static EvaluationMode getUpdateMode(boolean update) {
-            if (update) {
-                return UPDATE;
-            }
-
-            return NOP;
-        }
-    }
-
     private FormContext ctx;
 
     private BreadCrumbs breadCrumbs;

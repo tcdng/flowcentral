@@ -16,8 +16,8 @@
 package com.flowcentraltech.flowcentral.workflow.web.panels.applet;
 
 import com.flowcentraltech.flowcentral.application.web.data.FormContext;
-import com.flowcentraltech.flowcentral.application.web.panels.AbstractForm.EvaluationMode;
 import com.flowcentraltech.flowcentral.application.web.panels.applet.AbstractEntityFormAppletPanel;
+import com.flowcentraltech.flowcentral.common.constants.EvaluationMode;
 import com.tcdng.unify.core.UnifyException;
 import com.tcdng.unify.core.annotation.Component;
 import com.tcdng.unify.core.annotation.UplBinding;
