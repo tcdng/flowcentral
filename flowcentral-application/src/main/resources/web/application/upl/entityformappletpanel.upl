@@ -22,7 +22,7 @@
 	moreActionButtons:$f{moreActionButtons}
 	moreActionButtons:$c{formAttachmentBtn frmActionBtns saveAsBtn saveBtn saveNextBtn saveCloseBtn}
 	moreActionButtons:$c{updateBtn updateCloseBtn submitNextBtn submitCloseBtn deleteBtn cancelBtn prevBtn nextBtn}
-	altActionButtons:$c{saveBtn saveNextBtn saveCloseBtn}
+	altActionButtons:$c{frmActionBtns saveBtn saveNextBtn saveCloseBtn}
 	altActionButtons:$c{updateBtn updateCloseBtn submitNextBtn submitCloseBtn deleteBtn cancelBtn}
 	moreMemoryComponents:$c{focusMemory tabMemory}
 	switchOnChangeEventHandler:$d{!ui-event event:onchange action:$c{switchOnChangeAct}}
@@ -64,7 +64,7 @@
 	moreCenterComponents:$c{listDisplayCounterLabel}
 	moreActionButtons:$c{listFrmActionBtns}
 	moreActionButtons:$c{listCancelBtn listPrevBtn listNextBtn}
-	altActionButtons:$c{listCancelBtn}
+	altActionButtons:$c{listFrmActionBtns listCancelBtn}
 !ui-label:listDisplayCounterLabel styleClass:$e{fc-dispcounter}
 	styleClassBinding:displayItemCounterClass binding:displayItemCounter
 !ui-button:listPrevBtn symbol:$s{angle-left} hint:$m{maintain.previous.item}
