@@ -44,6 +44,13 @@ public class ReviewWorkItemsAppletPanel extends AbstractEntityFormAppletPanel {
         super.switchState();
 
         ReviewWorkItemsApplet applet = getReviewWorkItemsApplet();
+        boolean userActionRight = applet.isUserActionRight();
+        setVisible("frmActionBtns", userActionRight);
+        setVisible("updateBtn", userActionRight);
+        setVisible("updateCloseBtn", userActionRight);
+        setVisible("listFrmActionBtns", userActionRight);
+        // TODO if userActionRight == false show held by someone else notification
+        
         final ReviewWorkItemsApplet.ViewMode viewMode = applet.getMode();
         switch (viewMode) {
             case ASSIGNMENT_PAGE:
