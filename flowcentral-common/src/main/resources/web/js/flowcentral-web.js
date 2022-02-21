@@ -340,7 +340,8 @@ fux.rigEntitySelect = function(rgp) {
 fux.entitySelectInput = function(uEv) {
 	const evp = uEv.evp;
 	_id(evp.uId).value = "";
-	_id(evp.uFacId).value = "";
+//	_id(evp.uFacId).value = "";
+	evp.uTrg =  uEv.uTrg;
 	evp.altered = true;
 	ux.post(uEv);
 }

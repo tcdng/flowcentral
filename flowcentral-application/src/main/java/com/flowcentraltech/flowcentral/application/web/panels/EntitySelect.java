@@ -20,7 +20,6 @@ import com.flowcentraltech.flowcentral.application.data.TableDef;
 import com.flowcentraltech.flowcentral.application.web.widgets.EntityTable;
 import com.tcdng.unify.core.UnifyException;
 import com.tcdng.unify.core.criterion.ILike;
-import com.tcdng.unify.core.criterion.IsNull;
 import com.tcdng.unify.core.criterion.Order;
 import com.tcdng.unify.core.criterion.Restriction;
 import com.tcdng.unify.core.util.StringUtils;
@@ -32,8 +31,6 @@ import com.tcdng.unify.core.util.StringUtils;
  * @since 1.0
  */
 public class EntitySelect {
-
-    private static final Restriction NULL_RESTRICTION = new IsNull("id");
     
     private final String fieldName;
     
@@ -70,7 +67,7 @@ public class EntitySelect {
     }
 
     public void applyFilterToSearch() throws UnifyException {
-        Restriction restriction = !StringUtils.isBlank(filter) ? new ILike(fieldName, filter): NULL_RESTRICTION;
+        Restriction restriction = !StringUtils.isBlank(filter) ? new ILike(fieldName, filter): null;
         entityTable.setSourceObject(restriction);
     }
 

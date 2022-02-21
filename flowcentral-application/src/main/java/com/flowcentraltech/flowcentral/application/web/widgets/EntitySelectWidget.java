@@ -79,10 +79,16 @@ public class EntitySelectWidget extends AbstractPopupTextField {
 
     @Action
     public final void search() throws UnifyException {
+        String input = getRequestTarget(String.class);
         RefDef refDef = getRefDef();
         TableDef tableDef = applicationModuleService.getTableDef(refDef.getSearchTable());
         int limit = getUplAttribute(int.class, "limit");
         EntitySelect entitySelect = new EntitySelect(appletUtilities, tableDef, refDef.getSearchField(), limit);
+        if (input != null && !input.trim().isEmpty()) {
+            entitySelect.setFilter(input);
+        }
+        
+        entitySelect.applyFilterToSearch();
         setSessionAttribute(FlowCentralSessionAttributeConstants.ENTITYSELECT, entitySelect);
         setCommandResultMapping(ApplicationResultMappingConstants.SHOW_ENTITY_SELECT);
     }

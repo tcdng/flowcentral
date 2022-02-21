@@ -633,12 +633,13 @@ textarea:focus {outline: none !important;box-shadow: 0 0 6px #5194f3;}
 .fc-entitysearchpanel .filswitch {display:block; color:#0366d6;font-size: 8pt;cursor: pointer;min-width: 128px;text-align: right}
 .fc-entitysearchpanel .savebar {width:784px;}
 .fc-entitysearchpanel .footer {display: inline-block;padding-left:40px;padding-bottom:20px;padding-top:8px;box-sizing: border-box;}
-.fc-entitysearchpanel .footersel {width:200px};
+.fc-entitysearchpanel .footersel {width:200px}
 
 /* Entity select panel */
-.fc-entityselectpanel {}
+.fc-entityselectpanel {width:640px; background-color:#ffffff;border: 1px solid #b8b8b8;}
 .fc-entityselectpanel .filall {border-top: 1px solid #b8b8b8;border-bottom: 1px solid #b8b8b8;}
-.fc-entityselectpanel .footer {display: inline-block;padding-left:40px;padding-bottom:20px;padding-top:8px;box-sizing: border-box;}
+.fc-entityselectpanel .entityview {height:280px;overflow-y:scroll;}
+.fc-entityselectpanel .footer {display: inline-block;padding-left:4px;padding-bottom:8px;padding-top:8px;box-sizing: border-box;}
 
 /* Entity file attachments panel*/
 .fc-entityfileattachmentspanel {}
