@@ -330,17 +330,36 @@ fux.rigEntitySelect = function(rgp) {
 		evp.uCmd = id + "->search";
 		evp.uIsReqTrg = true;
 		evp.altered = false;
-		ux.addHdl(sel, "input", fux.entitySelectInput, evp);
+		if (rgp.pText) {
+			ux.addHdl(sel, "input", fux.entitySelectText, evp);
+			ux.addHdl(sel, "enter", fux.entitySelectInput, evp);
+			const btn = _id(rgp.pBtnId);
+			ux.addHdl(btn, "click", fux.entitySelectClick, evp);
+		} else {
+			ux.addHdl(sel, "input", fux.entitySelectInput, evp);
+		}
 	}
 
 	const fac = _id(rgp.pFacId);
 	fac.value = rgp.pDesc != undefined? rgp.pDesc:"";
 }
 
+fux.entitySelectText = function(uEv) {
+	const evp = uEv.evp;
+	_id(evp.uId).value = _id(evp.uFacId).value;
+	evp.altered = true;
+}
+
 fux.entitySelectInput = function(uEv) {
 	const evp = uEv.evp;
 	_id(evp.uId).value = "";
-//	_id(evp.uFacId).value = "";
+	evp.uTrg =  uEv.uTrg;
+	evp.altered = true;
+	ux.post(uEv);
+}
+
+fux.entitySelectClick = function(uEv) {
+	const evp = uEv.evp;
 	evp.uTrg =  uEv.uTrg;
 	evp.altered = true;
 	ux.post(uEv);
