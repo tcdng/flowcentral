@@ -38,6 +38,9 @@ public class AppRef extends BaseApplicationEntity {
     @Column(length = 64, nullable = true)
     private String searchTable;
 
+    @Column(length = 64, nullable = true)
+    private String selectHandler;
+
     @Column(length = 128, nullable = true)
     private String listFormat;
     
@@ -72,6 +75,14 @@ public class AppRef extends BaseApplicationEntity {
 
     public void setSearchTable(String searchTable) {
         this.searchTable = searchTable;
+    }
+
+    public String getSelectHandler() {
+        return selectHandler;
+    }
+
+    public void setSelectHandler(String selectHandler) {
+        this.selectHandler = selectHandler;
     }
 
     public String getListFormat() {

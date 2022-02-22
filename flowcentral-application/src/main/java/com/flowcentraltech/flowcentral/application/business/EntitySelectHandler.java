@@ -15,29 +15,29 @@
  */
 
 
-package com.flowcentraltech.flowcentral.common.business;
+package com.flowcentraltech.flowcentral.application.business;
 
 import com.tcdng.unify.core.UnifyComponent;
 import com.tcdng.unify.core.UnifyException;
+import com.tcdng.unify.core.data.ValueStore;
 
 /**
- * System parameter provider.
+ * Entity selection handler.
  * 
  * @author FlowCentral Technologies Limited
  * @since 1.0
  */
-public interface SystemParameterProvider extends UnifyComponent {
+public interface EntitySelectHandler extends UnifyComponent {
 
     /**
-     * Gets a system parameter.
+     * Applies a selection to a form.
      * 
-     * @param dataType
-     *                 the result type
-     * @param code
-     *                 the system parameter code
-     * @return the system parameter value
+     * @param formValueStore
+     *                            the form value store
+     * @param selectionValueStore
+     *                            the selection value store
      * @throws UnifyException
-     *                        if system parameter with code doesn't exists
+     *                        if an error occurs
      */
-    <T> T getSysParameterValue(Class<T> dataType, String code) throws UnifyException;
+    void applySelection(ValueStore formValueStore, ValueStore selectionValueStore) throws UnifyException;
 }

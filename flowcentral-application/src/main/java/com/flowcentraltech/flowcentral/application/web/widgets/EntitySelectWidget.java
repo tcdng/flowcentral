@@ -83,11 +83,12 @@ public class EntitySelectWidget extends AbstractPopupTextField {
         RefDef refDef = getRefDef();
         TableDef tableDef = applicationModuleService.getTableDef(refDef.getSearchTable());
         int limit = getUplAttribute(int.class, "limit");
-        EntitySelect entitySelect = new EntitySelect(appletUtilities, tableDef, refDef.getSearchField(), limit);
+        EntitySelect entitySelect = new EntitySelect(appletUtilities, tableDef, refDef.getSearchField(),
+                getValueStore(), refDef.getSelectHandler(), limit);
         if (input != null && !input.trim().isEmpty()) {
             entitySelect.setFilter(input);
         }
-        
+
         entitySelect.applyFilterToSearch();
         setSessionAttribute(FlowCentralSessionAttributeConstants.ENTITYSELECT, entitySelect);
         setCommandResultMapping(ApplicationResultMappingConstants.SHOW_ENTITY_SELECT);

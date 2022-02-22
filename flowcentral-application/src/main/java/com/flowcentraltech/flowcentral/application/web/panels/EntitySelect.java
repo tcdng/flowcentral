@@ -16,12 +16,15 @@
 package com.flowcentraltech.flowcentral.application.web.panels;
 
 import com.flowcentraltech.flowcentral.application.business.AppletUtilities;
+import com.flowcentraltech.flowcentral.application.business.EntitySelectHandler;
 import com.flowcentraltech.flowcentral.application.data.TableDef;
 import com.flowcentraltech.flowcentral.application.web.widgets.EntityTable;
 import com.tcdng.unify.core.UnifyException;
 import com.tcdng.unify.core.criterion.ILike;
 import com.tcdng.unify.core.criterion.Order;
 import com.tcdng.unify.core.criterion.Restriction;
+import com.tcdng.unify.core.data.BeanValueStore;
+import com.tcdng.unify.core.data.ValueStore;
 import com.tcdng.unify.core.util.StringUtils;
 
 /**
@@ -31,18 +34,25 @@ import com.tcdng.unify.core.util.StringUtils;
  * @since 1.0
  */
 public class EntitySelect {
-    
+
     private final String fieldName;
-    
+
     private String filter;
 
     private EntityTable entityTable;
 
-    public EntitySelect(AppletUtilities au, TableDef tableDef, String fieldName, int limit) {
+    private ValueStore formValueStore;
+
+    private String selectHandlerName;
+
+    public EntitySelect(AppletUtilities au, TableDef tableDef, String searchFieldName, ValueStore formValueStore,
+            String selectHandlerName, int limit) {
         this.entityTable = new EntityTable(au, tableDef);
-        this.entityTable.setOrder(new Order().add(fieldName));
+        this.entityTable.setOrder(new Order().add(searchFieldName));
         this.entityTable.setLimit(limit);
-        this.fieldName = fieldName;
+        this.fieldName = searchFieldName;
+        this.formValueStore = formValueStore;
+        this.selectHandlerName = selectHandlerName;
     }
 
     public String getFilter() {
@@ -57,6 +67,15 @@ public class EntitySelect {
         return entityTable;
     }
 
+    public void select(int index) throws UnifyException {
+        if (formValueStore != null && selectHandlerName != null) {
+            EntitySelectHandler handler = getEntityTable().getAu().getComponent(EntitySelectHandler.class,
+                    selectHandlerName);
+            Object sel = entityTable.getDisplayItem(index);
+            handler.applySelection(formValueStore, new BeanValueStore(sel));
+        }
+    }
+
     public void ensureTableStruct() throws UnifyException {
         TableDef _eTableDef = entityTable.getTableDef();
         TableDef _nTableDef = entityTable.getAu().getTableDef(_eTableDef.getLongName());
@@ -67,7 +86,7 @@ public class EntitySelect {
     }
 
     public void applyFilterToSearch() throws UnifyException {
-        Restriction restriction = !StringUtils.isBlank(filter) ? new ILike(fieldName, filter): null;
+        Restriction restriction = !StringUtils.isBlank(filter) ? new ILike(fieldName, filter) : null;
         entityTable.setSourceObject(restriction);
     }
 

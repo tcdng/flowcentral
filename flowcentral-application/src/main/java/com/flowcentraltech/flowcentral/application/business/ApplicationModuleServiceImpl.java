@@ -709,8 +709,9 @@ public class ApplicationModuleServiceImpl extends AbstractFlowCentralService
                             ? StringUtils.breakdownParameterizedString(appRef.getListFormat())
                             : null;
                     return new RefDef(appRef.getEntity(), appRef.getSearchField(), appRef.getSearchTable(),
-                            appRef.getFilterGenerator(), appRef.getFilterGeneratorRule(), filterDef, listFormat,
-                            longName, appRef.getDescription(), appRef.getId(), appRef.getVersionNo());
+                            appRef.getSelectHandler(), appRef.getFilterGenerator(), appRef.getFilterGeneratorRule(),
+                            filterDef, listFormat, longName, appRef.getDescription(), appRef.getId(),
+                            appRef.getVersionNo());
                 }
 
             };
@@ -2604,6 +2605,7 @@ public class ApplicationModuleServiceImpl extends AbstractFlowCentralService
                             ApplicationNameUtils.ensureLongNameReference(applicationName, refConfig.getEntity()));
                     appRef.setSearchField(refConfig.getSearchField());
                     appRef.setSearchTable(refConfig.getSearchTable());
+                    appRef.setSelectHandler(refConfig.getSelectHandler());
                     appRef.setListFormat(refConfig.getListFormat());
                     appRef.setFilterGenerator(refConfig.getFilterGenerator());
                     appRef.setFilterGeneratorRule(refConfig.getFilterGeneratorRule());
@@ -2618,6 +2620,7 @@ public class ApplicationModuleServiceImpl extends AbstractFlowCentralService
                                 ApplicationNameUtils.ensureLongNameReference(applicationName, refConfig.getEntity()));
                         oldAppRef.setSearchField(refConfig.getSearchField());
                         oldAppRef.setSearchTable(refConfig.getSearchTable());
+                        oldAppRef.setSelectHandler(refConfig.getSelectHandler());
                         oldAppRef.setListFormat(refConfig.getListFormat());
                         oldAppRef.setFilterGenerator(refConfig.getFilterGenerator());
                         oldAppRef.setFilterGeneratorRule(refConfig.getFilterGeneratorRule());

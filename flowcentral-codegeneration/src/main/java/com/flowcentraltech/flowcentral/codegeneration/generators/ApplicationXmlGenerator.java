@@ -275,6 +275,7 @@ public class ApplicationXmlGenerator extends AbstractStaticArtifactGenerator {
                 refConfig.setEntity(appRef.getEntity());
                 refConfig.setSearchField(appRef.getSearchField());
                 refConfig.setSearchTable(appRef.getSearchTable());
+                refConfig.setSelectHandler(appRef.getSelectHandler());
                 refConfig.setListFormat(appRef.getListFormat());
                 refConfig.setFilterGenerator(appRef.getFilterGenerator());
                 refConfig.setFilterGeneratorRule(appRef.getFilterGeneratorRule());

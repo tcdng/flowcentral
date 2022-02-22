@@ -20,7 +20,7 @@ package com.flowcentraltech.flowcentral.common.constants;
 /**
  * Evaluation mode.
  * 
- * @author Lateef Ojulari
+ * @author FlowCentral Technologies Limited
  * @since 1.0
  */
 public enum EvaluationMode {
