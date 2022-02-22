@@ -15,10 +15,13 @@
  */
 package com.flowcentraltech.flowcentral.application.web.panels;
 
+import com.flowcentraltech.flowcentral.application.constants.ApplicationResultMappingConstants;
+import com.flowcentraltech.flowcentral.common.constants.FlowCentralSessionAttributeConstants;
 import com.tcdng.unify.core.UnifyException;
 import com.tcdng.unify.core.annotation.Component;
 import com.tcdng.unify.core.annotation.UplBinding;
 import com.tcdng.unify.web.annotation.Action;
+import com.tcdng.unify.web.constant.ResultMappingConstants;
 import com.tcdng.unify.web.ui.widget.AbstractPanel;
 
 /**
@@ -35,6 +38,21 @@ public class EntitySelectPanel extends AbstractPanel {
     public void search() throws UnifyException {
         EntitySelect entitySelect = getEntitySelect();
         entitySelect.applyFilterToSearch();
+    }
+
+    @Action
+    public void select() throws UnifyException {
+        int selectIndex = getRequestTarget(int.class);
+        EntitySelect entitySelect = (EntitySelect) removeSessionAttribute(FlowCentralSessionAttributeConstants.ENTITYSELECT);
+        entitySelect.select(selectIndex);
+        removeSessionAttribute(FlowCentralSessionAttributeConstants.ENTITYSELECT);
+        setCommandResultMapping(ApplicationResultMappingConstants.REFRESH_CONTENT);
+    }
+
+    @Action
+    public void close() throws UnifyException {
+        removeSessionAttribute(FlowCentralSessionAttributeConstants.ENTITYSELECT);
+        setCommandResultMapping(ResultMappingConstants.HIDE_POPUP);
     }
 
     private EntitySelect getEntitySelect() throws UnifyException {

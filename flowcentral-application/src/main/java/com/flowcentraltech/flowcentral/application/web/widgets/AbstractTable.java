@@ -179,6 +179,10 @@ public abstract class AbstractTable<T, U> {
         return dispItemList;
     }
 
+    public U getDisplayItem(int displayIndex) {
+        return dispItemList.get(displayIndex);
+    }
+    
     public int getDispStartIndex() {
         return dispStartIndex;
     }

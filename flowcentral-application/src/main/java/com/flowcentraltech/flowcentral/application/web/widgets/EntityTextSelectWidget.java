@@ -19,10 +19,8 @@ package com.flowcentraltech.flowcentral.application.web.widgets;
 import com.flowcentraltech.flowcentral.application.business.AppletUtilities;
 import com.flowcentraltech.flowcentral.application.business.ApplicationModuleService;
 import com.flowcentraltech.flowcentral.application.constants.ApplicationResultMappingConstants;
-import com.flowcentraltech.flowcentral.application.data.EntityClassDef;
 import com.flowcentraltech.flowcentral.application.data.RefDef;
 import com.flowcentraltech.flowcentral.application.data.TableDef;
-import com.flowcentraltech.flowcentral.application.policies.EntityBasedFilterGenerator;
 import com.flowcentraltech.flowcentral.application.web.panels.EntitySelect;
 import com.flowcentraltech.flowcentral.common.business.EnvironmentService;
 import com.flowcentraltech.flowcentral.common.constants.FlowCentralSessionAttributeConstants;
@@ -31,30 +29,26 @@ import com.tcdng.unify.core.annotation.Component;
 import com.tcdng.unify.core.annotation.Configurable;
 import com.tcdng.unify.core.annotation.UplAttribute;
 import com.tcdng.unify.core.annotation.UplAttributes;
-import com.tcdng.unify.core.criterion.Restriction;
-import com.tcdng.unify.core.data.BeanValueStore;
 import com.tcdng.unify.core.data.ListData;
 import com.tcdng.unify.core.data.Listable;
-import com.tcdng.unify.core.database.Entity;
-import com.tcdng.unify.core.database.Query;
-import com.tcdng.unify.core.util.StringUtils;
 import com.tcdng.unify.web.annotation.Action;
 import com.tcdng.unify.web.constant.ExtensionType;
 import com.tcdng.unify.web.ui.widget.control.AbstractPopupTextField;
 
 /**
- * Entity select widget.
+ * Entity text select widget.
  * 
  * @author FlowCentral Technologies Limited
  * @since 1.0
  */
-@Component("fc-entityselect")
+@Component("fc-entitytextselect")
 @UplAttributes({ @UplAttribute(name = "limit", type = int.class, defaultVal = "20"),
         @UplAttribute(name = "ref", type = String.class, mandatory = true),
         @UplAttribute(name = "buttonImgSrc", type = String.class, defaultVal = "$t{images/search.png}"),
-        @UplAttribute(name = "buttonSymbol", type = String.class, defaultVal = "search"),
+        @UplAttribute(name = "buttonSymbol", type = String.class, defaultVal = "table-list"),
+        @UplAttribute(name = "selectOnly", type = boolean.class, defaultVal = "false"),
         @UplAttribute(name = "listKey", type = String.class) })
-public class EntitySelectWidget extends AbstractPopupTextField {
+public class EntityTextSelectWidget extends AbstractPopupTextField {
 
     @Configurable
     private ApplicationModuleService applicationModuleService;
@@ -124,60 +118,18 @@ public class EntitySelectWidget extends AbstractPopupTextField {
         return getUplAttribute(String.class, "listKey");
     }
 
+    public boolean selectOnly() throws UnifyException {
+        return getUplAttribute(boolean.class, "selectOnly");
+    }
+
     public Listable getCurrentSelect() throws UnifyException {
         Object keyVal = getValue(Object.class);
         if (keyVal != null) {
-            Listable select = doCurrentSelect(keyVal);
-            if (select != null) {
-                return select;
-            }
-
-            setValue(null);
+            String val = String.valueOf(keyVal);
+            return new ListData(val, val);
         }
 
         return null;
-    }
-
-    @SuppressWarnings("unchecked")
-    private Listable doCurrentSelect(Object keyVal) throws UnifyException {
-        logDebug("Decoding reference value [{0}]...", keyVal);
-        RefDef refDef = getRefDef();
-        final EntityClassDef entityClassDef = applicationModuleService.getEntityClassDef(refDef.getEntity());
-        Query<? extends Entity> query = null;
-        Restriction br = null;
-        if (refDef.isWithFilterGenerator()) {
-            br = ((EntityBasedFilterGenerator) getComponent(refDef.getFilterGenerator()))
-                    .generate(getValueStore().getReader(), refDef.getFilterGeneratorRule());
-        } else {
-            br = refDef.isWithFilter()
-                    ? refDef.getFilter().getRestriction(entityClassDef.getEntityDef(), null,
-                            applicationModuleService.getNow())
-                    : null;
-        }
-
-        if (br != null) {
-            query = Query.ofDefaultingToAnd((Class<? extends Entity>) entityClassDef.getEntityClass(), br);
-        } else {
-            query = Query.of((Class<? extends Entity>) entityClassDef.getEntityClass());
-        }
-
-        String listKey = getListkey();
-        if (StringUtils.isBlank(listKey)) {
-            query.addEquals("id", keyVal);
-        } else {
-            query.addEquals(listKey, keyVal);
-        }
-
-        Listable result = environmentService.listLean(query);
-        if (result != null) {
-            String formatDesc = refDef.isWithListFormat()
-                    ? StringUtils.buildParameterizedString(refDef.getListFormat(), new BeanValueStore(result))
-                    : applicationModuleService.getEntityDescription(entityClassDef, (Entity) result,
-                            refDef.getSearchField());
-            return new ListData(result.getListKey(), formatDesc);
-        }
-
-        return result;
     }
 
     private RefDef getRefDef() throws UnifyException {

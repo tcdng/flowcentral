@@ -63,23 +63,26 @@ public class TableWriter extends AbstractControlWriter {
         }
 
         AbstractTable<?, ?> table = tableWidget.getTable(); // Must call this here to initialize table
-        TableDef tableDef = table.getTableDef();
-        boolean sortable = tableDef.isSortable() && table.getNumberOfPages() > 0;
-        writer.write("<div");
-        writeTagStyleClassWithLeadingExtraStyleClasses(writer, tableWidget, "fc-table");
-        writeTagStyle(writer, tableWidget);
-        writer.write(">");
-        writer.write("<div><table");
-        writeTagId(writer, tableWidget);
-        writeTagStyleClass(writer, "table");
-        writer.write(">");
-        writeHeaderRow(writer, tableWidget);
-        writeBodyRows(writer, tableWidget);
-        writer.write("</table></div>");
-        if (sortable) {
-            writer.writeStructureAndContent(tableWidget.getSortColumnCtrl());
+        if (table != null) {
+            TableDef tableDef = table.getTableDef();
+            boolean sortable = tableDef.isSortable() && table.getNumberOfPages() > 0;
+            writer.write("<div");
+            writeTagStyleClassWithLeadingExtraStyleClasses(writer, tableWidget, "fc-table");
+            writeTagStyle(writer, tableWidget);
+            writer.write(">");
+            writer.write("<div><table");
+            writeTagId(writer, tableWidget);
+            writeTagStyleClass(writer, "table");
+            writer.write(">");
+            writeHeaderRow(writer, tableWidget);
+            writeBodyRows(writer, tableWidget);
+            writer.write("</table></div>");
+            if (sortable) {
+                writer.writeStructureAndContent(tableWidget.getSortColumnCtrl());
+            }
+
+            writer.write("</div>");
         }
-        writer.write("</div>");
     }
 
     @Override
@@ -91,138 +94,142 @@ public class TableWriter extends AbstractControlWriter {
 
         // External control behavior
         final AbstractTable<?, ?> table = tableWidget.getTable();
-        final EventHandler[] switchOnChangeHandlers = table.getSwitchOnChangeHandlers();
-        final TableDef tableDef = table.getTableDef();
-        List<ValueStore> valueList = tableWidget.getValueList();
-        int len = valueList.size();
-        for (int i = 0; i < len; i++) {
-            ValueStore valueStore = valueList.get(i);
-            int index = 0;
-            for (ChildWidgetInfo widgetInfo : tableWidget.getChildWidgetInfos()) {
-                if (widgetInfo.isExternal()) {
-                    TableColumnDef tabelColumnDef = tableDef.getColumnDef(index);
-                    Widget chWidget = widgetInfo.getWidget();
-                    chWidget.setValueStore(valueStore);
-                    writer.writeBehavior(chWidget);
-                    if (switchOnChangeHandlers != null && tabelColumnDef.isSwitchOnChange()) {
-                        final String cId = chWidget.isBindEventsToFacade() ? chWidget.getFacadeId() : chWidget.getId();
-                        for (EventHandler eventHandler : switchOnChangeHandlers) {
-                            writer.writeBehavior(eventHandler, cId, tabelColumnDef.getFieldName());
+        if (table != null) {
+            final EventHandler[] switchOnChangeHandlers = table.getSwitchOnChangeHandlers();
+            final TableDef tableDef = table.getTableDef();
+            List<ValueStore> valueList = tableWidget.getValueList();
+            int len = valueList.size();
+            for (int i = 0; i < len; i++) {
+                ValueStore valueStore = valueList.get(i);
+                int index = 0;
+                for (ChildWidgetInfo widgetInfo : tableWidget.getChildWidgetInfos()) {
+                    if (widgetInfo.isExternal()) {
+                        TableColumnDef tabelColumnDef = tableDef.getColumnDef(index);
+                        Widget chWidget = widgetInfo.getWidget();
+                        chWidget.setValueStore(valueStore);
+                        writer.writeBehavior(chWidget);
+                        if (switchOnChangeHandlers != null && tabelColumnDef.isSwitchOnChange()) {
+                            final String cId = chWidget.isBindEventsToFacade() ? chWidget.getFacadeId() : chWidget.getId();
+                            for (EventHandler eventHandler : switchOnChangeHandlers) {
+                                writer.writeBehavior(eventHandler, cId, tabelColumnDef.getFieldName());
+                            }
                         }
-                    }
 
-                    if (isContainerEditable && tableWidget.isInputWidget(chWidget)) {
-                        addPageAlias(tableWidgetId, chWidget);
+                        if (isContainerEditable && tableWidget.isInputWidget(chWidget)) {
+                            addPageAlias(tableWidgetId, chWidget);
+                        }
+                        index++;
                     }
-                    index++;
                 }
             }
-        }
 
-        if (isContainerEditable && table.isEntryMode()) {
-            getRequestContextUtil().addOnSaveContentWidget(tableWidgetId);
-        }
+            if (isContainerEditable && table.isEntryMode()) {
+                getRequestContextUtil().addOnSaveContentWidget(tableWidgetId);
+            }
 
-        // Append table rigging
-        writer.beginFunction("fux.rigTable");
-        writer.writeParam("pId", tableWidgetId);
-        writer.writeParam("pContId", tableWidget.getContainerId());
-        writer.writeCommandURLParam("pCmdURL");
-        if (tableWidget.isMultiSelect()) {
-            writer.writeParam("pSelAllId", tableWidget.getSelectAllId());
-            writer.writeParam("pSelCtrlId", tableWidget.getSelectCtrl().getId());
-            writer.writeParam("pMultiSel", true);
-            writer.writeParam("pMultiSelDepList",
-                    DataUtils.toArray(String.class, tableWidget.getMultiSelDependentList()));
-        }
+            // Append table rigging
+            writer.beginFunction("fux.rigTable");
+            writer.writeParam("pId", tableWidgetId);
+            writer.writeParam("pContId", tableWidget.getContainerId());
+            writer.writeCommandURLParam("pCmdURL");
+            if (tableWidget.isMultiSelect()) {
+                writer.writeParam("pSelAllId", tableWidget.getSelectAllId());
+                writer.writeParam("pSelCtrlId", tableWidget.getSelectCtrl().getId());
+                writer.writeParam("pMultiSel", true);
+                writer.writeParam("pMultiSelDepList",
+                        DataUtils.toArray(String.class, tableWidget.getMultiSelDependentList()));
+            }
 
-        writer.writeParam("pRefPanels", table.getRefreshPanelIds());
+            writer.writeParam("pRefPanels", table.getRefreshPanelIds());
 
-        boolean sortable = tableDef.isSortable() && table.getNumberOfPages() > 0;
-        if (sortable) {
-            writer.writeParam("pSortIndexId", tableWidget.getSortColumnCtrl().getId());
-            writer.writeParam("pColHeaderId", tableWidget.getColumnHeaderId());
-            writer.writeParam("pColCount", tableDef.getColumnCount());
-        }
+            boolean sortable = tableDef.isSortable() && table.getNumberOfPages() > 0;
+            if (sortable) {
+                writer.writeParam("pSortIndexId", tableWidget.getSortColumnCtrl().getId());
+                writer.writeParam("pColHeaderId", tableWidget.getColumnHeaderId());
+                writer.writeParam("pColCount", tableDef.getColumnCount());
+            }
 
-        if (table.getTotalItemCount() <= 0) {
-            writer.writeParam("pConDepList", DataUtils.toArray(String.class, tableWidget.getContentDependentList()));
+            if (table.getTotalItemCount() <= 0) {
+                writer.writeParam("pConDepList", DataUtils.toArray(String.class, tableWidget.getContentDependentList()));
+            }
+            writer.endFunction();
         }
-        writer.endFunction();
     }
 
     private void writeHeaderRow(ResponseWriter writer, AbstractTableWidget<?, ?, ?> tableWidget) throws UnifyException {
         writer.write("<tr>");
         final AbstractTable<?, ?> table = tableWidget.getTable();
-        final TableDef tableDef = table.getTableDef();
-        final boolean entryMode = table.isEntryMode();
-        if (!entryMode) {
-            writeHeaderMultiSelect(writer, tableWidget);
-        }
-
-        if (tableDef.isSerialNo()) {
-            writer.write("<th class=\"mserialh\"><span>");
-            writer.write(getSessionMessage("tablewidget.serialno"));
-            writer.write("</span></th>");
-        }
-
-        final boolean sysHeaderUppercase = systemModuleService.getSysParameterValue(boolean.class,
-                ApplicationModuleSysParamConstants.ALL_TABLE_HEADER_TO_UPPERCASE);
-        final boolean sysHeaderCenterAlign = systemModuleService.getSysParameterValue(boolean.class,
-                ApplicationModuleSysParamConstants.ALL_TABLE_HEADER_CENTER_ALIGNED);
-        final boolean sortable = tableDef.isSortable() && tableWidget.getTable().getNumberOfPages() > 0;
-        String columnHeaderId = tableWidget.getColumnHeaderId();
-        int index = 0;
-        for (ChildWidgetInfo widgetInfo : tableWidget.getChildWidgetInfos()) {
-            if (widgetInfo.isExternal()) {
-                TableColumnDef tabelColumnDef = tableDef.getColumnDef(index);
-                writer.write("<th");
-                if (sysHeaderCenterAlign || tableDef.isHeaderCenterAlign()) {
-                    writeTagStyle(writer, tabelColumnDef.getHeaderStyle() + "text-align:center;");
-                } else {
-                    writeTagStyle(writer, tabelColumnDef.getHeaderStyle());
-                }
-                writer.write("><span ");
-                boolean appendSortedSym = false;
-                if (sortable && tabelColumnDef.isSortable()) {
-                    writer.write("id = \"").write(columnHeaderId).write(index).write("\"");
-                    if (appendSortedSym = (index == tableWidget.getSortColumnIndex())) {
-                        writer.write(" class = \"sorted g_fsm\"");
-                    } else {
-                        writer.write(" class = \"sort\"");
-                    }
-                }
-                writer.write(">");
-                String caption = tableDef.getFieldLabel(index);
-                if (caption != null) {
-                    if (sysHeaderUppercase || tableDef.isHeaderToUpperCase()) {
-                        writer.writeWithHtmlEscape(caption.toUpperCase());
-                    } else {
-                        writer.writeWithHtmlEscape(caption);
-                    }
-                } else {
-                    writer.writeHtmlFixedSpace();
-                }
-
-                if (appendSortedSym) {
-                    writer.write("&nbsp;");
-                    if (OrderType.ASCENDING.equals(tableWidget.getSortType())) {
-                        writer.write(resolveSymbolHtmlHexCode("caret-up"));
-                    } else {
-                        writer.write(resolveSymbolHtmlHexCode("caret-down"));
-                    }
-                }
-                writer.write("</span>");
-                writer.write("</th>");
-                index++;
+        if (table != null) {
+            final TableDef tableDef = table.getTableDef();
+            final boolean entryMode = table.isEntryMode();
+            if (!entryMode) {
+                writeHeaderMultiSelect(writer, tableWidget);
             }
-        }
 
-        if (entryMode) {
-            writeHeaderMultiSelect(writer, tableWidget);
-        }
+            if (tableDef.isSerialNo()) {
+                writer.write("<th class=\"mserialh\"><span>");
+                writer.write(getSessionMessage("tablewidget.serialno"));
+                writer.write("</span></th>");
+            }
 
-        writer.write("</tr>");
+            final boolean sysHeaderUppercase = systemModuleService.getSysParameterValue(boolean.class,
+                    ApplicationModuleSysParamConstants.ALL_TABLE_HEADER_TO_UPPERCASE);
+            final boolean sysHeaderCenterAlign = systemModuleService.getSysParameterValue(boolean.class,
+                    ApplicationModuleSysParamConstants.ALL_TABLE_HEADER_CENTER_ALIGNED);
+            final boolean sortable = tableDef.isSortable() && tableWidget.getTable().getNumberOfPages() > 0;
+            String columnHeaderId = tableWidget.getColumnHeaderId();
+            int index = 0;
+            for (ChildWidgetInfo widgetInfo : tableWidget.getChildWidgetInfos()) {
+                if (widgetInfo.isExternal()) {
+                    TableColumnDef tabelColumnDef = tableDef.getColumnDef(index);
+                    writer.write("<th");
+                    if (sysHeaderCenterAlign || tableDef.isHeaderCenterAlign()) {
+                        writeTagStyle(writer, tabelColumnDef.getHeaderStyle() + "text-align:center;");
+                    } else {
+                        writeTagStyle(writer, tabelColumnDef.getHeaderStyle());
+                    }
+                    writer.write("><span ");
+                    boolean appendSortedSym = false;
+                    if (sortable && tabelColumnDef.isSortable()) {
+                        writer.write("id = \"").write(columnHeaderId).write(index).write("\"");
+                        if (appendSortedSym = (index == tableWidget.getSortColumnIndex())) {
+                            writer.write(" class = \"sorted g_fsm\"");
+                        } else {
+                            writer.write(" class = \"sort\"");
+                        }
+                    }
+                    writer.write(">");
+                    String caption = tableDef.getFieldLabel(index);
+                    if (caption != null) {
+                        if (sysHeaderUppercase || tableDef.isHeaderToUpperCase()) {
+                            writer.writeWithHtmlEscape(caption.toUpperCase());
+                        } else {
+                            writer.writeWithHtmlEscape(caption);
+                        }
+                    } else {
+                        writer.writeHtmlFixedSpace();
+                    }
+
+                    if (appendSortedSym) {
+                        writer.write("&nbsp;");
+                        if (OrderType.ASCENDING.equals(tableWidget.getSortType())) {
+                            writer.write(resolveSymbolHtmlHexCode("caret-up"));
+                        } else {
+                            writer.write(resolveSymbolHtmlHexCode("caret-down"));
+                        }
+                    }
+                    writer.write("</span>");
+                    writer.write("</th>");
+                    index++;
+                }
+            }
+
+            if (entryMode) {
+                writeHeaderMultiSelect(writer, tableWidget);
+            }
+
+            writer.write("</tr>");
+        }       
     }
 
     private void writeHeaderMultiSelect(ResponseWriter writer, AbstractTableWidget<?, ?, ?> tableWidget)
@@ -246,60 +253,62 @@ public class TableWriter extends AbstractControlWriter {
 
     private void writeBodyRows(ResponseWriter writer, AbstractTableWidget<?, ?, ?> tableWidget) throws UnifyException {
         final AbstractTable<?, ?> table = tableWidget.getTable();
-        final boolean entryMode = table.isEntryMode();
-        final int pageIndex = table.getDispStartIndex() + 1;
-        final TableDef tableDef = table.getTableDef();
-        final boolean isSerialNo = tableDef.isSerialNo();
-        boolean isEvenRow = true;
-        List<ValueStore> valueList = tableWidget.getValueList();
-        int len = valueList.size();
-        for (int i = 0; i < len; i++) {
-            ValueStore valueStore = valueList.get(i);
-            Long id = valueStore.retrieve(Long.class, "id");
-            writer.write("<tr");
-            if (isEvenRow) {
-                writeTagStyleClass(writer, "even");
-                isEvenRow = false;
-            } else {
-                writeTagStyleClass(writer, "odd");
-                isEvenRow = true;
-            }
-
-            writeTagName(writer, tableWidget.getRowId());
-            writer.write(">");
-
-            if (!entryMode) {
-                writeRowMultiSelect(writer, tableWidget, id, i);
-            }
-
-            if (isSerialNo) {
-                writer.write("<td class=\"mseriald\"><span>");
-                writer.write(pageIndex + i);
-                writer.write(".</span></td>");
-            }
-
-            int index = 0;
-            for (ChildWidgetInfo widgetInfo : tableWidget.getChildWidgetInfos()) {
-                if (widgetInfo.isExternal()) {
-                    TableColumnDef tabelColumnDef = tableDef.getColumnDef(index);
-                    Widget chWidget = widgetInfo.getWidget();
-                    chWidget.setEditable(tabelColumnDef.isEditable());
-                    chWidget.setDisabled(tabelColumnDef.isDisabled());
-                    chWidget.setValueStore(valueStore);
-                    writer.write("<td");
-                    writeTagStyle(writer, chWidget.getColumnStyle());
-                    writer.write(">");
-                    writer.writeStructureAndContent(chWidget);
-                    writer.write("</td>");
-                    index++;
+        if (table != null) {
+            final boolean entryMode = table.isEntryMode();
+            final int pageIndex = table.getDispStartIndex() + 1;
+            final TableDef tableDef = table.getTableDef();
+            final boolean isSerialNo = tableDef.isSerialNo();
+            boolean isEvenRow = true;
+            List<ValueStore> valueList = tableWidget.getValueList();
+            int len = valueList.size();
+            for (int i = 0; i < len; i++) {
+                ValueStore valueStore = valueList.get(i);
+                Long id = valueStore.retrieve(Long.class, "id");
+                writer.write("<tr");
+                if (isEvenRow) {
+                    writeTagStyleClass(writer, "even");
+                    isEvenRow = false;
+                } else {
+                    writeTagStyleClass(writer, "odd");
+                    isEvenRow = true;
                 }
-            }
 
-            if (entryMode) {
-                writeRowMultiSelect(writer, tableWidget, id, i);
-            }
+                writeTagName(writer, tableWidget.getRowId());
+                writer.write(">");
 
-            writer.write("</tr>");
+                if (!entryMode) {
+                    writeRowMultiSelect(writer, tableWidget, id, i);
+                }
+
+                if (isSerialNo) {
+                    writer.write("<td class=\"mseriald\"><span>");
+                    writer.write(pageIndex + i);
+                    writer.write(".</span></td>");
+                }
+
+                int index = 0;
+                for (ChildWidgetInfo widgetInfo : tableWidget.getChildWidgetInfos()) {
+                    if (widgetInfo.isExternal()) {
+                        TableColumnDef tabelColumnDef = tableDef.getColumnDef(index);
+                        Widget chWidget = widgetInfo.getWidget();
+                        chWidget.setEditable(tabelColumnDef.isEditable());
+                        chWidget.setDisabled(tabelColumnDef.isDisabled());
+                        chWidget.setValueStore(valueStore);
+                        writer.write("<td");
+                        writeTagStyle(writer, chWidget.getColumnStyle());
+                        writer.write(">");
+                        writer.writeStructureAndContent(chWidget);
+                        writer.write("</td>");
+                        index++;
+                    }
+                }
+
+                if (entryMode) {
+                    writeRowMultiSelect(writer, tableWidget, id, i);
+                }
+
+                writer.write("</tr>");
+            }
         }
     }
 

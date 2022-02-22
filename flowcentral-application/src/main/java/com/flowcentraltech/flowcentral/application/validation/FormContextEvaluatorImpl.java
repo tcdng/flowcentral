@@ -35,10 +35,10 @@ import com.flowcentraltech.flowcentral.application.data.UniqueConstraintDef;
 import com.flowcentraltech.flowcentral.application.util.ValidationUtils;
 import com.flowcentraltech.flowcentral.application.web.data.FormContext;
 import com.flowcentraltech.flowcentral.application.web.data.FormContext.FormWidgetState;
-import com.flowcentraltech.flowcentral.application.web.panels.AbstractForm.EvaluationMode;
 import com.flowcentraltech.flowcentral.common.business.EnvironmentService;
 import com.flowcentraltech.flowcentral.common.business.policies.ConsolidatedFormReviewPolicy;
 import com.flowcentraltech.flowcentral.common.business.policies.ConsolidatedFormValidationPolicy;
+import com.flowcentraltech.flowcentral.common.constants.EvaluationMode;
 import com.flowcentraltech.flowcentral.common.data.TargetFormMessage;
 import com.flowcentraltech.flowcentral.configuration.constants.FormReviewType;
 import com.tcdng.unify.core.AbstractUnifyComponent;
@@ -86,8 +86,7 @@ public class FormContextEvaluatorImpl extends AbstractUnifyComponent implements 
     public void evaluateFormContext(final FormContext ctx, final EvaluationMode evaluationMode) throws UnifyException {
         ctx.clearValidationErrors();
         ctx.clearReviewErrors();
-        if (EvaluationMode.CREATE.equals(evaluationMode) || EvaluationMode.UPDATE.equals(evaluationMode)
-                || EvaluationMode.REQUIRED.equals(evaluationMode)) {
+        if (evaluationMode.evaluation()) {
             final FormDef formDef = ctx.getFormDef();
             final EntityDef entityDef = formDef.getEntityDef();
             final Object inst = ctx.getInst();
@@ -160,8 +159,8 @@ public class FormContextEvaluatorImpl extends AbstractUnifyComponent implements 
                 // Check unique constraints
                 final Object id = DataUtils.getBeanProperty(Object.class, inst, "id");
                 if (entityDef.isWithUniqueConstraints()) {
-                    boolean isUpdate = EvaluationMode.UPDATE.equals(evaluationMode);
-                    if (isUpdate || EvaluationMode.CREATE.equals(evaluationMode)) {
+                    boolean isUpdate = evaluationMode.update();
+                    if (isUpdate || evaluationMode.create()) {
                         final EntityClassDef entityClassDef = au.getEntityClassDef(entityDef.getLongName());
                         for (UniqueConstraintDef constDef : entityDef.getUniqueConstraintList()) {
                             List<String> fieldList = constDef.getFieldList();
@@ -216,7 +215,7 @@ public class FormContextEvaluatorImpl extends AbstractUnifyComponent implements 
                 if (formDef.isWithConsolidatedFormValidation()) {
                     ConsolidatedFormValidationPolicy policy = au.getComponent(ConsolidatedFormValidationPolicy.class,
                             formDef.getConsolidatedFormValidation());
-                    for (TargetFormMessage message : policy.validate(instValueStore)) {
+                    for (TargetFormMessage message : policy.validate(evaluationMode, instValueStore)) {
                         addValidationMessage(ctx, message);
                     }
                 }
@@ -226,7 +225,7 @@ public class FormContextEvaluatorImpl extends AbstractUnifyComponent implements 
                     for (FormValidationPolicyDef policyDef : formDef.getFormValidationPolicies()) {
                         if (policyDef.isErrorMatcher()) {
                             EntityMatcher matcher = au.getComponent(EntityMatcher.class, policyDef.getErrorMatcher());
-                            if (matcher.match(entityDef, instValueStore)) {
+                            if (matcher.match(entityDef, evaluationMode, instValueStore)) {
                                 addValidationMessage(ctx, policyDef);
                                 continue;
                             }
@@ -244,7 +243,8 @@ public class FormContextEvaluatorImpl extends AbstractUnifyComponent implements 
     }
 
     @Override
-    public void reviewFormContext(FormContext ctx, FormReviewType reviewType) throws UnifyException {
+    public void reviewFormContext(FormContext ctx, EvaluationMode evaluationMode, FormReviewType reviewType)
+            throws UnifyException {
         ctx.clearReviewErrors();
         if (ctx.isWithReviewPolicies(reviewType)) {
             final FormDef formDef = ctx.getFormDef();
@@ -264,7 +264,7 @@ public class FormContextEvaluatorImpl extends AbstractUnifyComponent implements 
             for (FormReviewPolicyDef policyDef : ctx.getReviewPolicies(reviewType)) {
                 if (policyDef.isErrorMatcher()) {
                     EntityMatcher matcher = au.getComponent(EntityMatcher.class, policyDef.getErrorMatcher());
-                    if (matcher.match(entityDef, instValueStore)) {
+                    if (matcher.match(entityDef, evaluationMode, instValueStore)) {
                         ctx.addReviewError(policyDef);
                         continue;
                     }

@@ -21,6 +21,7 @@ import java.util.List;
 
 import com.tcdng.unify.core.UnifyException;
 import com.tcdng.unify.core.constant.HAlignType;
+import com.tcdng.unify.core.util.StringUtils;
 import com.tcdng.unify.web.ui.widget.ResponseWriter;
 
 /**
@@ -49,7 +50,16 @@ public class ListingGeneratorWriter {
         this.writer = writer;
     }
 
-    public void beginSection(String label, int sectionColumns, int widthPercent, HAlignType horizontalAlign,
+    public void sectionHeader(String header) throws UnifyException {
+        writer.write("<div class=\"flsection\"><span>").writeResolvedSessionMessage(header).write("</span></div>");
+    }
+    
+    public void beginSection(int sectionColumns, int widthPercent, HAlignType horizontalAlign,
+            boolean alternatingColumn) throws UnifyException {
+        beginSection(null, sectionColumns, widthPercent, horizontalAlign, alternatingColumn);
+    }
+    
+    public void beginSection(String header, int sectionColumns, int widthPercent, HAlignType horizontalAlign,
             boolean alternatingColumn) throws UnifyException {
         if (sectionColumns <= 0) {
             throw new RuntimeException("Section columns must be greater than zero.");
@@ -63,7 +73,10 @@ public class ListingGeneratorWriter {
         this.sectionColumnWidth = 100 / sectionColumns;
         this.currentSectionColumn = 0;
         this.alternatingColumn = alternatingColumn;
-        writer.write("<div class=\"flsection\"><span>").writeResolvedSessionMessage(label).write("</span></div>");
+        if (!StringUtils.isBlank(header)) {
+            sectionHeader(header);
+        }
+        
         int leftMargin = 0;
         if (HAlignType.CENTER.equals(horizontalAlign)) {
             leftMargin = (100 - widthPercent) / 2;

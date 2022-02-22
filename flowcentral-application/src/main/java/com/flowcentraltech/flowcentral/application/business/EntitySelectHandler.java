@@ -14,33 +14,30 @@
  * the License.
  */
 
+
 package com.flowcentraltech.flowcentral.application.business;
 
-import com.flowcentraltech.flowcentral.application.data.EntityDef;
-import com.flowcentraltech.flowcentral.common.constants.EvaluationMode;
 import com.tcdng.unify.core.UnifyComponent;
 import com.tcdng.unify.core.UnifyException;
 import com.tcdng.unify.core.data.ValueStore;
 
 /**
- * Entity matcher.
+ * Entity selection handler.
  * 
  * @author FlowCentral Technologies Limited
  * @since 1.0
  */
-public interface EntityMatcher extends UnifyComponent {
+public interface EntitySelectHandler extends UnifyComponent {
 
     /**
-     * Matches an entity.
+     * Applies a selection to a form.
      * 
-     * @param entityDef
-     *                   the entity definition.
-     * @param evaluationMode the evaluation mode
-     * @param valueStore
-     *                   the entity value store
-     * @return true if matched, otherwise false
+     * @param formValueStore
+     *                            the form value store
+     * @param selectionValueStore
+     *                            the selection value store
      * @throws UnifyException
      *                        if an error occurs
      */
-    boolean match(EntityDef entityDef, EvaluationMode evaluationMode, ValueStore valueStore) throws UnifyException;
+    void applySelection(ValueStore formValueStore, ValueStore selectionValueStore) throws UnifyException;
 }

@@ -216,7 +216,10 @@ public abstract class AbstractTableWidget<T extends AbstractTable<V, U>, U, V>
                 }
             }
 
-            table.setTableSelect(this);
+            if (table != null) {
+                table.setTableSelect(this);
+            }
+            
             oldTable = table;
             sortHistory = null;
         }

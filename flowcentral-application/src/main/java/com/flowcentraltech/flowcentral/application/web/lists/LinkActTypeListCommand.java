@@ -51,7 +51,8 @@ public class LinkActTypeListCommand extends AbstractListCommand<ZeroParams> {
                     list = Collections.unmodifiableList(Arrays.asList(
                             new ListData("maintainAct", getApplicationMessage("application.maintain.action")),
                             new ListData("listingAct", getApplicationMessage("application.listing.action")),
-                            new ListData("decisionAct", getApplicationMessage("application.decision.action"))));
+                            new ListData("decisionAct", getApplicationMessage("application.decision.action")),
+                            new ListData("selectAct", getApplicationMessage("application.select.action"))));
                 }
             }
         }

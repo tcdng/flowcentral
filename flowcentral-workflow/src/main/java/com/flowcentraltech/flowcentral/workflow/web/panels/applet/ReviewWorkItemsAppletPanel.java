@@ -16,8 +16,8 @@
 package com.flowcentraltech.flowcentral.workflow.web.panels.applet;
 
 import com.flowcentraltech.flowcentral.application.web.data.FormContext;
-import com.flowcentraltech.flowcentral.application.web.panels.AbstractForm.EvaluationMode;
 import com.flowcentraltech.flowcentral.application.web.panels.applet.AbstractEntityFormAppletPanel;
+import com.flowcentraltech.flowcentral.common.constants.EvaluationMode;
 import com.tcdng.unify.core.UnifyException;
 import com.tcdng.unify.core.annotation.Component;
 import com.tcdng.unify.core.annotation.UplBinding;
@@ -44,6 +44,13 @@ public class ReviewWorkItemsAppletPanel extends AbstractEntityFormAppletPanel {
         super.switchState();
 
         ReviewWorkItemsApplet applet = getReviewWorkItemsApplet();
+        boolean userActionRight = applet.isUserActionRight();
+        setVisible("frmActionBtns", userActionRight);
+        setVisible("updateBtn", userActionRight);
+        setVisible("updateCloseBtn", userActionRight);
+        setVisible("listFrmActionBtns", userActionRight);
+        // TODO if userActionRight == false show held by someone else notification
+        
         final ReviewWorkItemsApplet.ViewMode viewMode = applet.getMode();
         switch (viewMode) {
             case ASSIGNMENT_PAGE:

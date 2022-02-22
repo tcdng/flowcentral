@@ -23,7 +23,7 @@ import com.tcdng.unify.core.UnifyException;
 /**
  * System parameter provider.
  * 
- * @author Lateef Ojulari
+ * @author FlowCentral Technologies Limited
  * @since 1.0
  */
 public interface SystemParameterProvider extends UnifyComponent {

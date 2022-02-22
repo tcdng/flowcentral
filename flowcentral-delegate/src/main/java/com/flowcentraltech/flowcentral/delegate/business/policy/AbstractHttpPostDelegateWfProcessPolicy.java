@@ -28,7 +28,7 @@ import com.tcdng.unify.core.UnifyException;
 /**
  * Convenient abstract base class for HTTP post delegate workflow process policy.
  * 
- * @author Lateef Ojulari
+ * @author FlowCentral Technologies Limited
  * @since 1.0
  */
 public abstract class AbstractHttpPostDelegateWfProcessPolicy extends AbstractDelegateWfProcessPolicy {

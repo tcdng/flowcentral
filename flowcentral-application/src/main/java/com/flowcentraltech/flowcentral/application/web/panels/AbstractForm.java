@@ -63,31 +63,6 @@ public abstract class AbstractForm {
         }
     }
 
-    public enum EvaluationMode {
-
-        CREATE,
-        UPDATE,
-        DELETE,
-        REQUIRED,
-        NOP;
-
-        public static EvaluationMode getCreateMode(boolean create) {
-            if (create) {
-                return CREATE;
-            }
-
-            return NOP;
-        }
-
-        public static EvaluationMode getUpdateMode(boolean update) {
-            if (update) {
-                return UPDATE;
-            }
-
-            return NOP;
-        }
-    }
-
     private FormContext ctx;
 
     private BreadCrumbs breadCrumbs;
@@ -99,6 +74,8 @@ public abstract class AbstractForm {
     private String displayItemCounter;
 
     private String displayItemCounterClass;
+    
+    private String warning;
     
     private int attachmentCount;
 
@@ -198,6 +175,14 @@ public abstract class AbstractForm {
 
     public void setDisplayItemCounterClass(String displayItemCounterClass) {
         this.displayItemCounterClass = displayItemCounterClass;
+    }
+
+    public final String getWarning() {
+        return warning;
+    }
+
+    public final void setWarning(String warning) {
+        this.warning = warning;
     }
 
     public void clearDisplayItem() {

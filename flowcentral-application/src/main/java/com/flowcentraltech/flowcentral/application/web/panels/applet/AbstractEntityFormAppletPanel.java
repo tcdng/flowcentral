@@ -30,7 +30,6 @@ import com.flowcentraltech.flowcentral.application.validation.FormContextEvaluat
 import com.flowcentraltech.flowcentral.application.web.data.AppletContext;
 import com.flowcentraltech.flowcentral.application.web.data.FormContext;
 import com.flowcentraltech.flowcentral.application.web.panels.AbstractForm;
-import com.flowcentraltech.flowcentral.application.web.panels.AbstractForm.EvaluationMode;
 import com.flowcentraltech.flowcentral.application.web.panels.EditPropertyList;
 import com.flowcentraltech.flowcentral.application.web.panels.EntitySaveAs;
 import com.flowcentraltech.flowcentral.application.web.panels.EntitySearchValueMarkerConstants;
@@ -43,6 +42,7 @@ import com.flowcentraltech.flowcentral.common.business.ApplicationPrivilegeManag
 import com.flowcentraltech.flowcentral.common.business.CollaborationProvider;
 import com.flowcentraltech.flowcentral.common.business.FileAttachmentProvider;
 import com.flowcentraltech.flowcentral.common.business.policies.EntityActionResult;
+import com.flowcentraltech.flowcentral.common.constants.EvaluationMode;
 import com.flowcentraltech.flowcentral.common.entities.WorkEntity;
 import com.flowcentraltech.flowcentral.configuration.constants.TabContentType;
 import com.flowcentraltech.flowcentral.system.business.SystemModuleService;
@@ -535,9 +535,9 @@ public abstract class AbstractEntityFormAppletPanel extends AbstractAppletPanel 
     public void submit() throws UnifyException {
         final AbstractEntityFormApplet applet = getEntityFormApplet();
         final EvaluationMode evalMode = applet.getMode().isMaintainForm()
-                ? EvaluationMode.getUpdateMode(applet.getRootAppletProp(boolean.class,
+                ? EvaluationMode.getUpdateSubmitMode(applet.getRootAppletProp(boolean.class,
                         AppletPropertyConstants.MAINTAIN_FORM_SUBMIT_VALIDATE, false))
-                : EvaluationMode.getCreateMode(applet.getRootAppletProp(boolean.class,
+                : EvaluationMode.getCreateSubmitMode(applet.getRootAppletProp(boolean.class,
                         AppletPropertyConstants.CREATE_FORM_SUBMIT_VALIDATE, false));
         FormContext ctx = evaluateCurrentFormContext(evalMode);
         if (!ctx.isWithFormErrors()) {
@@ -554,9 +554,9 @@ public abstract class AbstractEntityFormAppletPanel extends AbstractAppletPanel 
     public void submitAndNext() throws UnifyException {
         final AbstractEntityFormApplet applet = getEntityFormApplet();
         final EvaluationMode evalMode = applet.getMode().isMaintainForm()
-                ? EvaluationMode.getUpdateMode(applet.getRootAppletProp(boolean.class,
+                ? EvaluationMode.getUpdateSubmitMode(applet.getRootAppletProp(boolean.class,
                         AppletPropertyConstants.MAINTAIN_FORM_SUBMIT_VALIDATE, false))
-                : EvaluationMode.getCreateMode(applet.getRootAppletProp(boolean.class,
+                : EvaluationMode.getCreateSubmitMode(applet.getRootAppletProp(boolean.class,
                         AppletPropertyConstants.CREATE_FORM_SUBMIT_VALIDATE, false));
         FormContext ctx = evaluateCurrentFormContext(evalMode);
         if (!ctx.isWithFormErrors()) {

@@ -21,12 +21,12 @@ import com.flowcentraltech.flowcentral.application.business.AppletUtilities;
 import com.flowcentraltech.flowcentral.application.data.AppletDef;
 import com.flowcentraltech.flowcentral.application.data.FormDef;
 import com.flowcentraltech.flowcentral.application.web.data.FormContext;
+import com.flowcentraltech.flowcentral.application.web.panels.AbstractForm;
 import com.flowcentraltech.flowcentral.application.web.panels.AbstractForm.FormMode;
 import com.flowcentraltech.flowcentral.application.web.panels.EntitySearch;
 import com.flowcentraltech.flowcentral.application.web.panels.HeaderWithTabsForm;
 import com.flowcentraltech.flowcentral.application.web.panels.applet.AbstractEntityFormApplet;
 import com.flowcentraltech.flowcentral.common.entities.WorkEntity;
-import com.flowcentraltech.flowcentral.configuration.constants.DefaultApplicationConstants;
 import com.flowcentraltech.flowcentral.workflow.business.WorkflowModuleService;
 import com.flowcentraltech.flowcentral.workflow.constants.WfAppletPropertyConstants;
 import com.flowcentraltech.flowcentral.workflow.data.WfDef;
@@ -34,9 +34,6 @@ import com.flowcentraltech.flowcentral.workflow.data.WfStepDef;
 import com.flowcentraltech.flowcentral.workflow.entities.WfItem;
 import com.tcdng.unify.core.UnifyException;
 import com.tcdng.unify.core.criterion.AndBuilder;
-import com.tcdng.unify.core.criterion.Equals;
-import com.tcdng.unify.core.criterion.IsNull;
-import com.tcdng.unify.core.criterion.Or;
 import com.tcdng.unify.core.data.BeanValueStore;
 import com.tcdng.unify.core.database.Entity;
 import com.tcdng.unify.core.util.StringUtils;
@@ -60,6 +57,8 @@ public class ReviewWorkItemsApplet extends AbstractEntityFormApplet {
 
     private WorkEntity currEntityInst;
 
+    private boolean userActionRight;
+    
     public ReviewWorkItemsApplet(AppletUtilities au, WorkflowModuleService wms, String pathVariable, String userLoginId,
             EventHandler[] formSwitchOnChangeHandlers, EventHandler[] assnSwitchOnChangeHandlers)
             throws UnifyException {
@@ -75,9 +74,10 @@ public class ReviewWorkItemsApplet extends AbstractEntityFormApplet {
         final String appletName = _appletDef.getPropValue(String.class, WfAppletPropertyConstants.WORKFLOW_STEP_APPLET);
         AndBuilder ab = (AndBuilder) new AndBuilder().equals("applicationName", originApplicationName)
                 .equals("workflowName", workflowName).equals("wfStepName", wfStepName);
-        if (!DefaultApplicationConstants.SYSTEM_LOGINID.equals(userLoginId)) {
-            ab.addCompound(new Or().add(new Equals("heldBy", userLoginId)).add(new IsNull("heldBy")));
-        }
+        // Participants should see all items in workflow irrespective of who holds. TODO Use system parameter to determine behaviour
+//        if (!DefaultApplicationConstants.SYSTEM_LOGINID.equals(userLoginId)) {
+//            ab.addCompound(new Or().add(new Equals("heldBy", userLoginId)).add(new IsNull("heldBy")));
+//        }
 
         entitySearch.setBaseRestriction(ab.build(), au.getSpecialParamProvider());
         entitySearch.getEntityTable().setLimitSelectToColumns(false);
@@ -113,11 +113,13 @@ public class ReviewWorkItemsApplet extends AbstractEntityFormApplet {
                 getCtx().setReadOnly(readOnly);
             }
 
+            setDisplayModeMessage(form);
             viewMode = ViewMode.MAINTAIN_FORM_SCROLL;
         } else { // Listing
             listingForm = constructListingForm(formDef, currEntityInst);
             listingForm.setFormTitle(getRootAppletDef().getLabel());
             listingForm.setFormActionDefList(wfStepDef.getFormActionDefList());
+            setDisplayModeMessage(listingForm);
             viewMode = ViewMode.LISTING_FORM;
         }
 
@@ -126,14 +128,20 @@ public class ReviewWorkItemsApplet extends AbstractEntityFormApplet {
 
     @Override
     protected Entity getEntitySearchItem(EntitySearch entitySearch, int index) throws UnifyException {
-        currWfItem = (WfItem) entitySearch.getEntityTable().getDispItemList().get(mIndex);
-        currEntityInst = wms.getWfItemWorkEntity(currWfItem.getId());
-        if (StringUtils.isBlank(currWfItem.getHeldBy())) { // Current user should hold current item if it is unheld
-            currWfItem.setHeldBy(au.getSessionUserLoginId());
-            au.getEnvironment().updateByIdVersion(currWfItem); // TODO Someone else has held workflow item
+        if (isNoForm()) {
+            currWfItem = (WfItem) entitySearch.getEntityTable().getDispItemList().get(mIndex);
+            currEntityInst = wms.getWfItemWorkEntity(currWfItem.getId());
+            final String currentUser = au.getSessionUserLoginId();
+            if (StringUtils.isBlank(currWfItem.getHeldBy())) { // Current user should hold current item if it is unheld
+                currWfItem.setHeldBy(currentUser);
+                au.getEnvironment().updateByIdVersion(currWfItem);
+            }
+            
+            userActionRight = currentUser != null && currentUser.equals(currWfItem.getHeldBy());
+            return currEntityInst;
         }
-
-        return currEntityInst;
+        
+        return super.getEntitySearchItem(entitySearch, index);
     }
 
     public void applyUserAction(String actionName) throws UnifyException {
@@ -155,8 +163,21 @@ public class ReviewWorkItemsApplet extends AbstractEntityFormApplet {
         navBackToSearch();
     }
 
+    public boolean isUserActionRight() {
+        return userActionRight;
+    }
+
     @Override
     protected AppletDef getAlternateFormAppletDef() throws UnifyException {
         return instAppletDef;
+    }
+    
+    private void setDisplayModeMessage(AbstractForm form) throws UnifyException {
+        if (userActionRight) {
+            form.setWarning(null);
+        } else {
+            form.setWarning(getAu().resolveSessionMessage("$m{entityformapplet.form.inworkflow.heldby}",
+                    currWfItem.getHeldBy()));
+        }
     }
 }

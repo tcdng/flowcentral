@@ -32,6 +32,8 @@ public class RefConfig extends BaseNameConfig {
 
     private String searchTable;
 
+    private String selectHandler;
+    
     private String listFormat;
 
     private String filterGenerator;
@@ -65,6 +67,15 @@ public class RefConfig extends BaseNameConfig {
     @XmlAttribute
     public void setSearchTable(String searchTable) {
         this.searchTable = searchTable;
+    }
+
+    public String getSelectHandler() {
+        return selectHandler;
+    }
+
+    @XmlAttribute
+    public void setSelectHandler(String selectHandler) {
+        this.selectHandler = selectHandler;
     }
 
     public String getListFormat() {

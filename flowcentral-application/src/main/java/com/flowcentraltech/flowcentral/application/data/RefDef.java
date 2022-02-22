@@ -36,6 +36,8 @@ public class RefDef extends BaseApplicationEntityDef {
 
     private String searchTable;
 
+    private String selectHandler;
+
     private String filterGenerator;
 
     private String filterGeneratorRule;
@@ -44,13 +46,14 @@ public class RefDef extends BaseApplicationEntityDef {
 
     private List<StringToken> listFormat;
 
-    public RefDef(String entity, String searchField, String searchTable, String filterGenerator,
+    public RefDef(String entity, String searchField, String searchTable, String selectHandler, String filterGenerator,
             String filterGeneratorRule, FilterDef filter, List<StringToken> listFormat, String longName,
             String description, Long id, long version) throws UnifyException {
         super(ApplicationNameUtils.getApplicationEntityNameParts(longName), description, id, version);
         this.entity = entity;
         this.searchField = searchField;
         this.searchTable = searchTable;
+        this.selectHandler = selectHandler;
         this.filterGenerator = filterGenerator;
         this.filterGeneratorRule = filterGeneratorRule;
         this.filter = filter;
@@ -67,6 +70,10 @@ public class RefDef extends BaseApplicationEntityDef {
 
     public String getSearchTable() {
         return searchTable;
+    }
+
+    public String getSelectHandler() {
+        return selectHandler;
     }
 
     public List<StringToken> getListFormat() {
