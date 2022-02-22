@@ -46,6 +46,7 @@ import com.tcdng.unify.web.ui.widget.control.AbstractPopupTextField;
         @UplAttribute(name = "ref", type = String.class, mandatory = true),
         @UplAttribute(name = "buttonImgSrc", type = String.class, defaultVal = "$t{images/search.png}"),
         @UplAttribute(name = "buttonSymbol", type = String.class, defaultVal = "table-list"),
+        @UplAttribute(name = "selectOnly", type = boolean.class, defaultVal = "false"),
         @UplAttribute(name = "listKey", type = String.class) })
 public class EntityTextSelectWidget extends AbstractPopupTextField {
 
@@ -115,6 +116,10 @@ public class EntityTextSelectWidget extends AbstractPopupTextField {
 
     public String getListkey() throws UnifyException {
         return getUplAttribute(String.class, "listKey");
+    }
+
+    public boolean selectOnly() throws UnifyException {
+        return getUplAttribute(boolean.class, "selectOnly");
     }
 
     public Listable getCurrentSelect() throws UnifyException {

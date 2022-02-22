@@ -330,7 +330,9 @@ fux.rigEntitySelect = function(rgp) {
 		evp.uCmd = id + "->search";
 		evp.uIsReqTrg = true;
 		evp.altered = false;
+		evp.selectOnly = rgp.pSelOnly;
 		if (rgp.pText) {
+			_id(evp.uFacId).readOnly = evp.selectOnly;
 			ux.addHdl(sel, "input", fux.entitySelectText, evp);
 			ux.addHdl(sel, "enter", fux.entitySelectInput, evp);
 			const btn = _id(rgp.pBtnId);
