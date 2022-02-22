@@ -22,9 +22,10 @@
      eventHandler:$d{!ui-event event:onclick action:$c{closeAct}}
 	
 // Search filter panel
-!ui-panel:searchFilterPanel styleClass:$s{filall} layout:$d{!ui-horizontal style:$s{width:100%;}}
-	components:$c{filterInput}
-	
+!ui-panel:searchFilterPanel styleClass:$s{filall} layout:$d{!ui-horizontal style:$s{width:100%;} widths:$l{96px none}}
+	components:$c{filterLabel filterInput}
+
+!ui-label:filterLabel styleClass:$e{search} binding:label	
 !ui-text:filterInput caption:$m{entityselectpanel.filter} binding:filter focus:true
     eventHandler:$d{!ui-event event:oninput action:$c{filterAct}}
 

@@ -85,6 +85,8 @@ public class EntitySelectWidget extends AbstractPopupTextField {
         int limit = getUplAttribute(int.class, "limit");
         EntitySelect entitySelect = new EntitySelect(appletUtilities, tableDef, refDef.getSearchField(),
                 getValueStore(), refDef.getSelectHandler(), limit);
+        String label = tableDef.getEntityDef().getFieldDef(refDef.getSearchField()).getFieldLabel() + ":";
+        entitySelect.setLabel(label);
         if (input != null && !input.trim().isEmpty()) {
             entitySelect.setFilter(input);
         }
