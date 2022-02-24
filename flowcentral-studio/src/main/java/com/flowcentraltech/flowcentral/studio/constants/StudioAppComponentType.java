@@ -25,6 +25,7 @@ import com.flowcentraltech.flowcentral.application.entities.AppEntity;
 import com.flowcentraltech.flowcentral.application.entities.AppForm;
 import com.flowcentraltech.flowcentral.application.entities.AppRef;
 import com.flowcentraltech.flowcentral.application.entities.AppTable;
+import com.flowcentraltech.flowcentral.application.entities.AppWidgetType;
 import com.flowcentraltech.flowcentral.application.entities.BaseApplicationEntity;
 import com.flowcentraltech.flowcentral.chart.entities.Chart;
 import com.flowcentraltech.flowcentral.configuration.constants.AppletType;
@@ -70,6 +71,20 @@ public enum StudioAppComponentType implements EnumConst {
             0,
             AppletType.MANAGE_ENTITYLIST,
             null),
+    WIDGET(
+            "wdg_",
+            "appWidgetTypeForm",
+            "$m{studio.application.component.type.widget}",
+            "$m{studio.application.component.type.widgets}",
+            "studio.menu.label.widgettype",
+            "grid",
+            "/studioappcomponentapplet",
+            "studiooncreatecomponent-policy",
+            null,
+            StudioAppComponentFlags.ENTITY_COMPONENT | StudioAppComponentFlags.SUPPORTS_NEW
+                    | StudioAppComponentFlags.SUPPORTS_SAVEAS,
+            AppletType.STUDIO_FC_COMPONENT,
+            AppWidgetType.class),
     APPLET(
             "apl_",
             "appAppletForm",

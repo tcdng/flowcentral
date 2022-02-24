@@ -69,6 +69,8 @@ public abstract class AbstractStudioEntityActionPolicy extends AbstractEntityAct
         String privilegeCode = null;
         boolean assignToRole = false;
         switch (type) {
+            case WIDGET:
+                break;
             case APPLET:
                 privilegeCode = PrivilegeNameUtils.getAppletPrivilegeName(
                         ApplicationNameUtils.getApplicationEntityLongName(applicationName, appEntity.getName()));
