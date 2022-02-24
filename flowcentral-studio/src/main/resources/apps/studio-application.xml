@@ -116,6 +116,16 @@
 			dataType="string" inputType="string"
 			editor="!ui-select list:studioentitysearchfieldlist listParams:$l{entity} blankOption:$m{blank.none}"
 			renderer="!ui-label" />
+		<widgetType name="entitysearchtablelist"
+			description="$m{studio.widgettype.entitysearchtablelist}"
+			dataType="string" inputType="string"
+			editor="!ui-select list:studioentitytablelist listParams:$l{entity} blankOption:$m{blank.none}"
+			renderer="!ui-label" />
+		<widgetType name="entityselecthandlerlist"
+			description="$m{studio.widgettype.entityselecthandlerlist}"
+			dataType="string" inputType="string"
+			editor="!ui-select list:studioentityselecthandlerlist listParams:$l{entity} blankOption:$m{blank.none}"
+			renderer="!ui-label" />
 		<widgetType name="entityfieldmultiselectlist"
 			description="$m{system.widgettype.entityfieldmultiselectlist}"
 			dataType="string" inputType="string"
@@ -1999,6 +2009,10 @@
 						column="1" switchOnChange="true" required="true" />
 					<field name="searchField"
 						inputWidget="studio.entitysearchfieldlist" column="1" />
+					<field name="searchTable"
+						inputWidget="studio.entitysearchtablelist" column="1" />
+					<field name="selectHandler"
+						inputWidget="studio.entityselecthandlerlist" column="1" />
 					<field name="listFormat" inputWidget="application.text"
 						column="1" />
 					<field name="filterGenerator"

@@ -802,6 +802,12 @@
 			<field name="searchField"
 				label="$m{application.appref.searchfield}" type="string"
 				nullable="true" />
+			<field name="searchTable"
+				label="$m{application.appref.searchtable}" type="string"
+				nullable="true" />
+			<field name="selectHandler"
+				label="$m{application.appref.selecthandler}" type="string"
+				nullable="true" />
 			<field name="listFormat"
 				label="$m{application.appref.listformat}" type="string"
 				nullable="true" />
