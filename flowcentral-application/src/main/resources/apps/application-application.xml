@@ -888,6 +888,8 @@
 				label="$m{application.apptable.headercenteralign}" type="boolean" />
 			<field name="basicSearch"
 				label="$m{application.apptable.basicsearch}" type="boolean" />
+			<field name="limitSelectToColumns"
+				label="$m{application.apptable.limitselecttocolumns}" type="boolean" />
 			<field name="itemsPerPage"
 				label="$m{application.apptable.itemsperpage}" type="integer" />
 			<field name="columnList"

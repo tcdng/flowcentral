@@ -2506,6 +2506,8 @@
 						inputWidget="application.checkbox" column="1" />
 					<field name="basicSearch" inputWidget="application.checkbox"
 						column="1" />
+					<field name="limitSelectToColumns" inputWidget="application.checkbox"
+						column="1" />
 				</section>
 			</tab>
 			<tab name="design" label="$m{studio.apptable.form.design}"
