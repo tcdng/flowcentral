@@ -888,6 +888,8 @@
 				label="$m{application.apptable.headercenteralign}" type="boolean" />
 			<field name="basicSearch"
 				label="$m{application.apptable.basicsearch}" type="boolean" />
+			<field name="limitSelectToColumns"
+				label="$m{application.apptable.limitselecttocolumns}" type="boolean" />
 			<field name="itemsPerPage"
 				label="$m{application.apptable.itemsperpage}" type="integer" />
 			<field name="columnList"
@@ -1272,6 +1274,8 @@
 				label="$m{application.appwidgettype.renderer}" type="string" />
 			<field name="stretch"
 				label="$m{application.appwidgettype.stretch}" type="boolean" />
+			<field name="listOption"
+				label="$m{application.appwidgettype.listoption}" type="boolean" />
 			<field name="dataTypeDesc"
 				label="$m{application.appwidgettype.datatypedesc}" type="list_only"
 				key="dataType" property="description" />
