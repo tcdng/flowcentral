@@ -20,9 +20,11 @@ import com.tcdng.unify.core.UnifyException;
 import com.tcdng.unify.core.annotation.Component;
 import com.tcdng.unify.core.annotation.Writes;
 import com.tcdng.unify.core.data.Listable;
+import com.tcdng.unify.web.ui.util.WebRegexUtils;
 import com.tcdng.unify.web.ui.widget.ResponseWriter;
 import com.tcdng.unify.web.ui.widget.Widget;
 import com.tcdng.unify.web.ui.widget.control.AbstractPopupTextField;
+import com.tcdng.unify.web.ui.widget.control.TextField;
 import com.tcdng.unify.web.ui.widget.writer.control.AbstractPopupTextFieldWriter;
 
 /**
@@ -66,6 +68,27 @@ public class EntityTextSelectWriter extends AbstractPopupTextFieldWriter {
     protected void doWritePopupTextFieldBehaviour(ResponseWriter writer, AbstractPopupTextField popupTextField,
             boolean popupEnabled) throws UnifyException {
 
+    }
+
+    @Override
+    protected String getFormatRegex(TextField textField) throws UnifyException {
+        EntityTextSelectWidget entityTextSelect = (EntityTextSelectWidget) textField;
+        switch (entityTextSelect.type()) {
+            case ALPHANUMERIC:
+                return WebRegexUtils.getAlphanumericFormatRegex(entityTextSelect.isSpecial(),
+                        entityTextSelect.isSpace());
+            case FULLNAME:
+                return WebRegexUtils.getFullNameFormatRegex(entityTextSelect.isSpecial());
+            case INTEGER:
+                WebRegexUtils.getIntegerTextFormatRegex(entityTextSelect.isAcceptPlus(),
+                        entityTextSelect.isAcceptMinus());
+            case TEXT:
+            default:
+                break;
+
+        }
+
+        return "";
     }
 
     @Override

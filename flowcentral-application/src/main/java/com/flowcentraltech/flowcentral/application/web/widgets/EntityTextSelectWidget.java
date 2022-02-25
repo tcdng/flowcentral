@@ -24,6 +24,7 @@ import com.flowcentraltech.flowcentral.application.data.TableDef;
 import com.flowcentraltech.flowcentral.application.web.panels.EntitySelect;
 import com.flowcentraltech.flowcentral.common.business.EnvironmentService;
 import com.flowcentraltech.flowcentral.common.constants.FlowCentralSessionAttributeConstants;
+import com.flowcentraltech.flowcentral.configuration.constants.TextType;
 import com.tcdng.unify.core.UnifyException;
 import com.tcdng.unify.core.annotation.Component;
 import com.tcdng.unify.core.annotation.Configurable;
@@ -47,7 +48,12 @@ import com.tcdng.unify.web.ui.widget.control.AbstractPopupTextField;
         @UplAttribute(name = "buttonImgSrc", type = String.class, defaultVal = "$t{images/search.png}"),
         @UplAttribute(name = "buttonSymbol", type = String.class, defaultVal = "table-list"),
         @UplAttribute(name = "selectOnly", type = boolean.class, defaultVal = "false"),
-        @UplAttribute(name = "listKey", type = String.class) })
+        @UplAttribute(name = "listKey", type = String.class),
+        @UplAttribute(name = "space", type = boolean.class, defaultVal = "false"),
+        @UplAttribute(name = "special", type = boolean.class, defaultVal = "false"),
+        @UplAttribute(name = "acceptPlus", type = boolean.class),
+        @UplAttribute(name = "acceptMinus", type = boolean.class),
+        @UplAttribute(name = "text", type = TextType.class, defaultVal = "text")})
 public class EntityTextSelectWidget extends AbstractPopupTextField {
 
     @Configurable
@@ -107,7 +113,23 @@ public class EntityTextSelectWidget extends AbstractPopupTextField {
 
     @Override
     public boolean isBindEventsToFacade() throws UnifyException {
-        return false;
+        return true;
+    }
+
+    public boolean isSpace() throws UnifyException {
+        return getUplAttribute(boolean.class, "space");
+    }
+
+    public boolean isSpecial() throws UnifyException {
+        return getUplAttribute(boolean.class, "special");
+    }
+
+    public boolean isAcceptPlus() throws UnifyException {
+        return getUplAttribute(boolean.class, "acceptPlus");
+    }
+
+    public boolean isAcceptMinus() throws UnifyException {
+        return getUplAttribute(boolean.class, "acceptMinus");
     }
 
     public String getRef() throws UnifyException {
@@ -120,6 +142,10 @@ public class EntityTextSelectWidget extends AbstractPopupTextField {
 
     public boolean selectOnly() throws UnifyException {
         return getUplAttribute(boolean.class, "selectOnly");
+    }
+
+    public TextType type() throws UnifyException {
+        return getUplAttribute(TextType.class, "text");
     }
 
     public Listable getCurrentSelect() throws UnifyException {
