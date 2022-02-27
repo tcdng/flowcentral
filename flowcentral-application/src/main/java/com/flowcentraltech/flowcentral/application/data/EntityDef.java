@@ -355,6 +355,10 @@ public class EntityDef extends BaseApplicationEntityDef {
         return autoFormatFieldDefList;
     }
 
+    public boolean isWithAutoFormatFields() {
+        return !getAutoFormatFieldDefList().isEmpty();
+    }
+    
     public List<EntityFieldDef> getSuggestionFieldDefList() {
         if (suggestionFieldDefList == null) {
             synchronized (this) {
@@ -372,10 +376,6 @@ public class EntityDef extends BaseApplicationEntityDef {
         }
 
         return suggestionFieldDefList;
-    }
-    
-    public boolean isWithAutoFormatFields() {
-        return !getAutoFormatFieldDefList().isEmpty();
     }
 
     private static final Set<String> RESERVED_SETVALUE_FIELDS = Collections

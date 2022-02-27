@@ -36,6 +36,7 @@ import com.flowcentraltech.flowcentral.common.business.policies.EntityActionResu
 import com.flowcentraltech.flowcentral.common.entities.WorkEntity;
 import com.flowcentraltech.flowcentral.configuration.constants.RecordActionType;
 import com.tcdng.unify.core.UnifyException;
+import com.tcdng.unify.core.data.ValueStoreReader;
 import com.tcdng.unify.core.database.Entity;
 import com.tcdng.unify.core.util.DataUtils;
 import com.tcdng.unify.core.util.ReflectUtils;
@@ -355,12 +356,15 @@ public abstract class AbstractEntitySingleFormApplet extends AbstractApplet {
 
         // Populate values for auto-format fields
         final SequenceCodeGenerator gen = au.getSequenceCodeGenerator();
-        for (EntityFieldDef entityFieldDef : _entityDef.getAutoFormatFieldDefList()) {
-            if (entityFieldDef.isStringAutoFormat()) {
-                String skeleton = gen.getCodeSkeleton(entityFieldDef.getAutoFormat());
-                if (skeleton.equals(DataUtils.getBeanProperty(String.class, inst, entityFieldDef.getFieldName()))) {
-                    DataUtils.setBeanProperty(inst, entityFieldDef.getFieldName(),
-                            gen.getNextSequenceCode(_entityDef.getLongName(), entityFieldDef.getAutoFormat()));
+        if (_entityDef.isWithAutoFormatFields()) {
+            ValueStoreReader valueStoreReader = new ValueStoreReader(inst);
+            for (EntityFieldDef entityFieldDef : _entityDef.getAutoFormatFieldDefList()) {
+                if (entityFieldDef.isStringAutoFormat()) {
+                    String skeleton = gen.getCodeSkeleton(entityFieldDef.getAutoFormat());
+                    if (skeleton.equals(DataUtils.getBeanProperty(String.class, inst, entityFieldDef.getFieldName()))) {
+                        DataUtils.setBeanProperty(inst, entityFieldDef.getFieldName(), gen.getNextSequenceCode(
+                                _entityDef.getLongName(), entityFieldDef.getAutoFormat(), valueStoreReader));
+                    }
                 }
             }
         }

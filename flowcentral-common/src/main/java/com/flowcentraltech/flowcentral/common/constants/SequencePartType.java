@@ -27,6 +27,9 @@ public enum SequencePartType {
     TEXT(
             "",
             ""),
+    VALUESTORE_GENERATOR(
+            "{v:",
+            ""),
     SYSTEM_PARAMETER(
             "{p:",
             ""),

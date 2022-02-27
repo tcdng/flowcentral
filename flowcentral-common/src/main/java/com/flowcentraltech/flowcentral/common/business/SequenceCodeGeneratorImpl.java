@@ -32,6 +32,7 @@ import com.tcdng.unify.core.UnifyException;
 import com.tcdng.unify.core.annotation.Component;
 import com.tcdng.unify.core.annotation.Configurable;
 import com.tcdng.unify.core.data.FactoryMap;
+import com.tcdng.unify.core.data.ValueStoreReader;
 import com.tcdng.unify.core.system.SequenceNumberService;
 import com.tcdng.unify.core.util.StringUtils;
 
@@ -88,12 +89,14 @@ public class SequenceCodeGeneratorImpl extends AbstractSequenceCodeGenerator {
     }
 
     @Override
-    public String getNextSequenceCode(String ownerId, String sequenceDefintion) throws UnifyException {
-        return getNextSequenceCode(ownerId, sequenceDefintion, seqNumberService.getNow());
+    public String getNextSequenceCode(String ownerId, String sequenceDefintion, ValueStoreReader valueStoreReader)
+            throws UnifyException {
+        return getNextSequenceCode(ownerId, sequenceDefintion, seqNumberService.getNow(), valueStoreReader);
     }
 
     @Override
-    public String getNextSequenceCode(String ownerId, String sequenceDefintion, Date date) throws UnifyException {
+    public String getNextSequenceCode(String ownerId, String sequenceDefintion, Date date,
+            ValueStoreReader valueStoreReader) throws UnifyException {
         final String seqKey = StringUtils.dotify(ownerId, sequenceDefintion);
         SequenceDef _sequenceDef = sequenceDefs.get(sequenceDefintion);
         Calendar cal = null;
@@ -119,12 +122,19 @@ public class SequenceCodeGeneratorImpl extends AbstractSequenceCodeGenerator {
                     sb.append(year.substring(year.length() - 2));
                 }
                     break;
+                case VALUESTORE_GENERATOR: {
+                    ValueStoreNextSequenceCodeGenerator generator = (ValueStoreNextSequenceCodeGenerator) getComponent(
+                            partDef.getCode());
+                    String code = generator.getNextSequenceCode(valueStoreReader);
+                    sb.append(code);
+                }
+                    break;
                 case SYSTEM_PARAMETER:
                     if (systemParameterProvider != null) {
                         String param = systemParameterProvider.getSysParameterValue(String.class, partDef.getCode());
                         sb.append(param);
                     }
-                    
+
                     break;
                 case SEQUENCE_NUMBER: {
                     String num = String.valueOf(seqNumberService.getNextSequenceNumber(seqKey));
