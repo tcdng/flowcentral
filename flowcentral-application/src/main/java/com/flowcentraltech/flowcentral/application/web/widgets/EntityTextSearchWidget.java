@@ -123,7 +123,7 @@ public class EntityTextSearchWidget extends AbstractPopupTextField {
 
     @Override
     public boolean isBindEventsToFacade() throws UnifyException {
-        return false;
+        return true;
     }
 
     public String getSearchPanelId() throws UnifyException {
