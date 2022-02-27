@@ -49,6 +49,9 @@ public class AppWidgetType extends BaseApplicationEntity {
     @Column
     private boolean listOption;
 
+    @Column
+    private boolean enumOption;
+
     @ListOnly(key = "dataType", property = "description")
     private String dataTypeDesc;
 
@@ -101,6 +104,14 @@ public class AppWidgetType extends BaseApplicationEntity {
 
     public void setListOption(boolean listOption) {
         this.listOption = listOption;
+    }
+
+    public boolean isEnumOption() {
+        return enumOption;
+    }
+
+    public void setEnumOption(boolean enumOption) {
+        this.enumOption = enumOption;
     }
 
     public String getDataTypeDesc() {

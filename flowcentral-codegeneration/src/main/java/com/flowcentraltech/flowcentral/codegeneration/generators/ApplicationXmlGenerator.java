@@ -253,6 +253,7 @@ public class ApplicationXmlGenerator extends AbstractStaticArtifactGenerator {
                 widgetTypeConfig.setRenderer(appWidgetType.getRenderer());
                 widgetTypeConfig.setStretch(appWidgetType.isStretch());
                 widgetTypeConfig.setListOption(appWidgetType.isListOption());
+                widgetTypeConfig.setEnumOption(appWidgetType.isEnumOption());
                 widgetTypeList.add(widgetTypeConfig);
             }
 

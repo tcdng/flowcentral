@@ -3040,6 +3040,8 @@
 						inputWidget="application.checkbox" column="1" />
 					<field name="listOption"
 						inputWidget="application.checkbox" column="1" />
+					<field name="enumOption"
+						inputWidget="application.checkbox" column="1" />
 				</section>
 				<section name="editorDetails" columns="type_1">
 					<field name="editor"
@@ -3081,7 +3083,7 @@
 				</onCondition>
 				<setStates>
 					<setState type="field"
-						target="name,description,dataType,inputType,editor,renderer,stretch,listOption" disabled="true" />
+						target="name,description,dataType,inputType,editor,renderer,stretch,listOption,enumOption" disabled="true" />
 				</setStates>
 			</formStatePolicy>
 			<formStatePolicy type="on_switch"

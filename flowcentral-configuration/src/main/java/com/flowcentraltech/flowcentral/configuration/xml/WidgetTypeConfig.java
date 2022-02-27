@@ -43,6 +43,8 @@ public class WidgetTypeConfig extends BaseNameConfig {
 
     private boolean listOption;
 
+    private boolean enumOption;
+
     public WidgetTypeConfig() {
         stretch = true;
     }
@@ -101,6 +103,15 @@ public class WidgetTypeConfig extends BaseNameConfig {
     @XmlAttribute
     public void setListOption(boolean listOption) {
         this.listOption = listOption;
+    }
+
+    public boolean isEnumOption() {
+        return enumOption;
+    }
+
+    @XmlAttribute
+    public void setEnumOption(boolean enumOption) {
+        this.enumOption = enumOption;
     }
 
 }
