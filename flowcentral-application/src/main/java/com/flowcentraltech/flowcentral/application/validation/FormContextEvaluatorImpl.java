@@ -95,7 +95,7 @@ public class FormContextEvaluatorImpl extends AbstractUnifyComponent implements 
             Map<String, Object> fieldsInScope = new HashMap<String, Object>();
             // Pull fields in scope and check required fields and lengths
             for (FormWidgetState formWidgetState : ctx.getFormWidgetStateList()) {
-                if (formWidgetState.isVisible() && formWidgetState.isEditable() && !formWidgetState.isDisabled()) {
+                if (formWidgetState.isVisible() /*&& /*formWidgetState.isEditable()*/ && !formWidgetState.isDisabled()) {
                     String fieldName = formWidgetState.getFieldName();
                     Object val = DataUtils.getBeanProperty(Object.class, inst, fieldName);
                     fieldsInScope.put(fieldName, val);
