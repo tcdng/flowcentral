@@ -24,6 +24,7 @@ import com.flowcentraltech.flowcentral.application.entities.AppEntity;
 import com.flowcentraltech.flowcentral.application.entities.AppForm;
 import com.flowcentraltech.flowcentral.application.entities.AppRef;
 import com.flowcentraltech.flowcentral.application.entities.AppTable;
+import com.flowcentraltech.flowcentral.application.entities.AppWidgetType;
 import com.flowcentraltech.flowcentral.application.entities.BaseApplicationEntity;
 import com.flowcentraltech.flowcentral.common.constants.CollaborationType;
 
@@ -39,6 +40,7 @@ public final class ApplicationCollaborationUtils {
 
     static {
         collaborationEntityTypeMapping = new HashMap<Class<? extends BaseApplicationEntity>, CollaborationType>();
+        collaborationEntityTypeMapping.put(AppWidgetType.class, CollaborationType.WIDGET);
         collaborationEntityTypeMapping.put(AppEntity.class, CollaborationType.ENTITY);
         collaborationEntityTypeMapping.put(AppRef.class, CollaborationType.REFERENCE);
         collaborationEntityTypeMapping.put(AppApplet.class, CollaborationType.APPLET);
