@@ -64,6 +64,9 @@ public final class ChartUtils {
         if (!StringUtils.isBlank(chartDef.getSubTitle())) {
             jw.beginObject("subtitle");
             jw.write("text", chartDef.getSubTitle());
+            jw.beginObject("style");
+            jw.write("color", "#a0a0a0");
+            jw.endObject();
             jw.endObject();
         }
 
@@ -101,6 +104,7 @@ public final class ChartUtils {
         } else {
             jw.write("curve", "straight");
         }
+        jw.write("width", 1.5);
         jw.endObject();
 
         // Data labels
