@@ -70,8 +70,22 @@ public class SequenceCodeGeneratorTest extends AbstractFlowCentralTest {
         assertEquals("S0001", partDef.getCode());
         
         assertFalse(sequenceDef.isWithDatePart());
+        
+        sequenceDef = scg.getSequenceDefinition("{v:code-generator}");
+        assertNotNull(sequenceDef);
+        
+        partList = sequenceDef.getPartList();
+        assertNotNull(partList);
+        assertEquals(1, partList.size());
+        
+        partDef = partList.get(0);
+        assertNotNull(partDef);
+        assertEquals(SequencePartType.VALUESTORE_GENERATOR, partDef.getType());
+        assertEquals("code-generator", partDef.getText());
+        assertEquals("code-generator", partDef.getCode());
+        assertEquals(0, partDef.getNumLen());
     }
-    
+
     @Test
     public void testGetNextSequenceCode() throws Exception {
         Calendar cal = Calendar.getInstance();

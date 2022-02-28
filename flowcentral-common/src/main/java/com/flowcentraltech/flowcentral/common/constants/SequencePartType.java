@@ -77,6 +77,10 @@ public enum SequencePartType {
         return SYSTEM_PARAMETER.equals(this);
     }
 
+    public boolean isValueStore() {
+        return VALUESTORE_GENERATOR.equals(this);
+    }
+
     public boolean isDatePart() {
         return LONG_YEAR.equals(this) || SHORT_YEAR.equals(this) || DAY_OF_MONTH.equals(this)
                 || DAY_OF_YEAR.equals(this);

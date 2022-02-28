@@ -45,10 +45,10 @@ import com.tcdng.unify.core.util.StringUtils;
 @Component("common-sequencecodegenerator")
 public class SequenceCodeGeneratorImpl extends AbstractSequenceCodeGenerator {
 
-    private static final List<SequencePartType> varTypes = Collections
-            .unmodifiableList(Arrays.asList(SequencePartType.SYSTEM_PARAMETER, SequencePartType.SEQUENCE_NUMBER,
-                    SequencePartType.SEQUENCE_NUMBER_BY_DATE, SequencePartType.LONG_YEAR, SequencePartType.SHORT_YEAR,
-                    SequencePartType.DAY_OF_MONTH, SequencePartType.DAY_OF_YEAR));
+    private static final List<SequencePartType> varTypes = Collections.unmodifiableList(Arrays.asList(
+            SequencePartType.VALUESTORE_GENERATOR, SequencePartType.SYSTEM_PARAMETER, SequencePartType.SEQUENCE_NUMBER,
+            SequencePartType.SEQUENCE_NUMBER_BY_DATE, SequencePartType.LONG_YEAR, SequencePartType.SHORT_YEAR,
+            SequencePartType.DAY_OF_MONTH, SequencePartType.DAY_OF_YEAR));
 
     @Configurable
     private SequenceNumberService seqNumberService;
@@ -186,12 +186,12 @@ public class SequenceCodeGeneratorImpl extends AbstractSequenceCodeGenerator {
 
                 if (_type == null) {
                     throwOperationErrorException(new RuntimeException(
-                            "Invalid sequence code defintion. Unknown placeholder [" + definition + "]."));
+                            "Invalid sequence code definition. Unknown placeholder [" + definition + "]."));
                 }
 
                 if (exist.contains(_type)) {
                     throwOperationErrorException(new RuntimeException(
-                            "Invalid sequence code defintion. Repeated parts for [" + definition + "]."));
+                            "Invalid sequence code definition. Repeated parts for [" + definition + "]."));
                 }
                 exist.add(_type);
                 withDatePart |= _type.isDatePart();
@@ -201,11 +201,11 @@ public class SequenceCodeGeneratorImpl extends AbstractSequenceCodeGenerator {
                 }
 
                 fromIndex = index + _type.track().length();
-                if (_type.isSequenceNumber() || _type.isSystemParameter()) {
+                if (_type.isSequenceNumber() || _type.isSystemParameter() || _type.isValueStore()) {
                     index = definition.indexOf('}', fromIndex);
                     if (index <= 0) {
                         throwOperationErrorException(new RuntimeException(
-                                "Invalid sequence code defintion. Expected closing brace for number placeholder ["
+                                "Invalid sequence code definition. Expected closing brace for number placeholder ["
                                         + definition + "]."));
                     }
 
@@ -229,11 +229,11 @@ public class SequenceCodeGeneratorImpl extends AbstractSequenceCodeGenerator {
             }
         }
 
-        if (!exist.contains(SequencePartType.SEQUENCE_NUMBER)
-                && !exist.contains(SequencePartType.SEQUENCE_NUMBER_BY_DATE)) {
-            throwOperationErrorException(new RuntimeException(
-                    "Invalid sequence code defintion. No sequence number placeholder found [" + definition + "]."));
-        }
+//        if (!exist.contains(SequencePartType.SEQUENCE_NUMBER)
+//                && !exist.contains(SequencePartType.SEQUENCE_NUMBER_BY_DATE)) {
+//            throwOperationErrorException(new RuntimeException(
+//                    "Invalid sequence code definition. No sequence number placeholder found [" + definition + "]."));
+//        }
 
         // Build skeleton
         StringBuilder sb = new StringBuilder();
@@ -243,6 +243,7 @@ public class SequenceCodeGeneratorImpl extends AbstractSequenceCodeGenerator {
                 case DAY_OF_YEAR:
                 case LONG_YEAR:
                 case SHORT_YEAR:
+                case VALUESTORE_GENERATOR:
                 case SYSTEM_PARAMETER:
                     sb.append(part.getType().skeleton());
                     break;
