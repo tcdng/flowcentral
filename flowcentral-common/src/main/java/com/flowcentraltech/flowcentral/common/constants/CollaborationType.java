@@ -31,6 +31,8 @@ import com.tcdng.unify.core.util.EnumUtils;
 @StaticList(name = "collaborationtypelist", description = "$m{staticlist.collaborationtypelist}")
 public enum CollaborationType implements EnumConst {
 
+    WIDGET(
+            "WDG"),
     ENTITY(
             "ENT"),
     REFERENCE(

@@ -24,6 +24,7 @@ import com.tcdng.unify.core.criterion.Amongst;
 import com.tcdng.unify.core.criterion.And;
 import com.tcdng.unify.core.criterion.Equals;
 import com.tcdng.unify.core.criterion.IsNull;
+import com.tcdng.unify.core.criterion.Or;
 import com.tcdng.unify.core.database.Entity;
 import com.tcdng.unify.core.database.Query;
 
@@ -52,8 +53,11 @@ public final class StudioQueryUtils {
                             .add(new Amongst("name", Arrays.asList("entitylist", "entitysearch", "entityselect"))));
                 }
             } else if (entityFieldDataType.isEnumDataType()) {
-                query.addRestriction(new And().add(new Equals("applicationName", "application"))
-                        .add(new Equals("name", "enumlist")));
+                query.addRestriction(new Or()
+                        .add(new And().add(new Equals("applicationName", "application"))
+                                .add(new Equals("name", "enumlist")))
+                        .add(new And().add(new Equals("dataType", DataType.STRING))
+                                .add(new Equals("enumOption", Boolean.TRUE)).add(new Equals("listOption", true))));
             } else {
                 DataType dataType = entityFieldDataType.dataType();
                 if (dataType == null) {

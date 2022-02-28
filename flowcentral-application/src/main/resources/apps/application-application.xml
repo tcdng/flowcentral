@@ -1276,6 +1276,8 @@
 				label="$m{application.appwidgettype.stretch}" type="boolean" />
 			<field name="listOption"
 				label="$m{application.appwidgettype.listoption}" type="boolean" />
+			<field name="enumOption"
+				label="$m{application.appwidgettype.enumoption}" type="boolean" />
 			<field name="dataTypeDesc"
 				label="$m{application.appwidgettype.datatypedesc}" type="list_only"
 				key="dataType" property="description" />

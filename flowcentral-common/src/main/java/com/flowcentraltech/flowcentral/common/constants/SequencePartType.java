@@ -27,6 +27,9 @@ public enum SequencePartType {
     TEXT(
             "",
             ""),
+    VALUESTORE_GENERATOR(
+            "{v:",
+            ""),
     SYSTEM_PARAMETER(
             "{p:",
             ""),
@@ -72,6 +75,10 @@ public enum SequencePartType {
 
     public boolean isSystemParameter() {
         return SYSTEM_PARAMETER.equals(this);
+    }
+
+    public boolean isValueStore() {
+        return VALUESTORE_GENERATOR.equals(this);
     }
 
     public boolean isDatePart() {

@@ -70,8 +70,22 @@ public class SequenceCodeGeneratorTest extends AbstractFlowCentralTest {
         assertEquals("S0001", partDef.getCode());
         
         assertFalse(sequenceDef.isWithDatePart());
+        
+        sequenceDef = scg.getSequenceDefinition("{v:code-generator}");
+        assertNotNull(sequenceDef);
+        
+        partList = sequenceDef.getPartList();
+        assertNotNull(partList);
+        assertEquals(1, partList.size());
+        
+        partDef = partList.get(0);
+        assertNotNull(partDef);
+        assertEquals(SequencePartType.VALUESTORE_GENERATOR, partDef.getType());
+        assertEquals("code-generator", partDef.getText());
+        assertEquals("code-generator", partDef.getCode());
+        assertEquals(0, partDef.getNumLen());
     }
-    
+
     @Test
     public void testGetNextSequenceCode() throws Exception {
         Calendar cal = Calendar.getInstance();
@@ -79,41 +93,41 @@ public class SequenceCodeGeneratorTest extends AbstractFlowCentralTest {
         cal.set(Calendar.YEAR, 2002);
         Date date = cal.getTime();
         
-        String code = scg.getNextSequenceCode("test", "QT{n:10}", date);
+        String code = scg.getNextSequenceCode("test", "QT{n:10}", date, null);
         assertEquals("QT0000000001", code);
-        code = scg.getNextSequenceCode("test", "QT{n:10}", date);
+        code = scg.getNextSequenceCode("test", "QT{n:10}", date, null);
         assertEquals("QT0000000002", code);
         
-        code = scg.getNextSequenceCode("test", "{n:10}QT", date);
+        code = scg.getNextSequenceCode("test", "{n:10}QT", date, null);
         assertEquals("0000000001QT", code);
         
-        code = scg.getNextSequenceCode("test", "PC{n:0}", date);
+        code = scg.getNextSequenceCode("test", "PC{n:0}", date, null);
         assertEquals("PC1", code);
         
-        code = scg.getNextSequenceCode("test", "{n:0}PC", date);
+        code = scg.getNextSequenceCode("test", "{n:0}PC", date, null);
         assertEquals("1PC", code);
         
-        code = scg.getNextSequenceCode("test", "PC/{yyyy}/{n:0}", date);
+        code = scg.getNextSequenceCode("test", "PC/{yyyy}/{n:0}", date, null);
         assertEquals("PC/2002/1", code);
-        code = scg.getNextSequenceCode("test", "PC/{yyyy}/{n:0}", date);
+        code = scg.getNextSequenceCode("test", "PC/{yyyy}/{n:0}", date, null);
         assertEquals("PC/2002/2", code);
         
-        code = scg.getNextSequenceCode("test", "{yyyy}/PC/{n:0}", date);
+        code = scg.getNextSequenceCode("test", "{yyyy}/PC/{n:0}", date, null);
         assertEquals("2002/PC/1", code);
-        code = scg.getNextSequenceCode("test", "{yyyy}/PC/{n:0}", date);
+        code = scg.getNextSequenceCode("test", "{yyyy}/PC/{n:0}", date, null);
         assertEquals("2002/PC/2", code);
         
-        code = scg.getNextSequenceCode("test", "GT{yyyy}/PC/{n:0}", date);
+        code = scg.getNextSequenceCode("test", "GT{yyyy}/PC/{n:0}", date, null);
         assertEquals("GT2002/PC/1", code);
-        code = scg.getNextSequenceCode("test", "GT{yyyy}/PC/{n:0}", date);
+        code = scg.getNextSequenceCode("test", "GT{yyyy}/PC/{n:0}", date, null);
         assertEquals("GT2002/PC/2", code);
         
-        code = scg.getNextSequenceCode("test", "GT{dd}/{yyyy}/PC/{ddd}/{n:0}", date);
+        code = scg.getNextSequenceCode("test", "GT{dd}/{yyyy}/PC/{ddd}/{n:0}", date, null);
         assertEquals("GT25/2002/PC/145/1", code);
-        code = scg.getNextSequenceCode("test", "GT{dd}/{yyyy}/PC/{ddd}/{n:0}", date);
+        code = scg.getNextSequenceCode("test", "GT{dd}/{yyyy}/PC/{ddd}/{n:0}", date, null);
         assertEquals("GT25/2002/PC/145/2", code);
 
-        code = scg.getNextSequenceCode("test", "GT{dd}/{yy}/PC/{ddd}/{n:0}", date);
+        code = scg.getNextSequenceCode("test", "GT{dd}/{yy}/PC/{ddd}/{n:0}", date, null);
         assertEquals("GT25/02/PC/145/1", code);
     }
 
@@ -127,40 +141,40 @@ public class SequenceCodeGeneratorTest extends AbstractFlowCentralTest {
         cal.set(Calendar.YEAR, 2014);
         Date date2 = cal.getTime();
         
-        String code = scg.getNextSequenceCode("test", "QT{N:10}", date1);
+        String code = scg.getNextSequenceCode("test", "QT{N:10}", date1, null);
         assertEquals("QT0000000001", code);
-        code = scg.getNextSequenceCode("test", "QT{N:10}", date1);
+        code = scg.getNextSequenceCode("test", "QT{N:10}", date1, null);
         assertEquals("QT0000000002", code);
-        code = scg.getNextSequenceCode("test", "QT{N:10}", date2);
+        code = scg.getNextSequenceCode("test", "QT{N:10}", date2, null);
         assertEquals("QT0000000001", code);
-        code = scg.getNextSequenceCode("test", "QT{N:10}", date2);
+        code = scg.getNextSequenceCode("test", "QT{N:10}", date2, null);
         assertEquals("QT0000000002", code);
         
-        code = scg.getNextSequenceCode("test", "{N:10}QT", date1);
+        code = scg.getNextSequenceCode("test", "{N:10}QT", date1, null);
         assertEquals("0000000001QT", code);
-        code = scg.getNextSequenceCode("test", "{N:10}QT", date1);
+        code = scg.getNextSequenceCode("test", "{N:10}QT", date1, null);
         assertEquals("0000000002QT", code);
-        code = scg.getNextSequenceCode("test", "{N:10}QT", date2);
+        code = scg.getNextSequenceCode("test", "{N:10}QT", date2, null);
         assertEquals("0000000001QT", code);
-        code = scg.getNextSequenceCode("test", "{N:10}QT", date2);
+        code = scg.getNextSequenceCode("test", "{N:10}QT", date2, null);
         assertEquals("0000000002QT", code);
         
-        code = scg.getNextSequenceCode("test", "PC{N:0}", date1);
+        code = scg.getNextSequenceCode("test", "PC{N:0}", date1, null);
         assertEquals("PC1", code);
-        code = scg.getNextSequenceCode("test", "PC{N:0}", date1);
+        code = scg.getNextSequenceCode("test", "PC{N:0}", date1, null);
         assertEquals("PC2", code);
-        code = scg.getNextSequenceCode("test", "PC{N:0}", date2);
+        code = scg.getNextSequenceCode("test", "PC{N:0}", date2, null);
         assertEquals("PC1", code);
-        code = scg.getNextSequenceCode("test", "PC{N:0}", date2);
+        code = scg.getNextSequenceCode("test", "PC{N:0}", date2, null);
         assertEquals("PC2", code);
 
-        code = scg.getNextSequenceCode("test", "GT{dd}/{yyyy}/PC/{ddd}/{N:0}", date1);
+        code = scg.getNextSequenceCode("test", "GT{dd}/{yyyy}/PC/{ddd}/{N:0}", date1, null);
         assertEquals("GT25/2002/PC/145/1", code);
-        code = scg.getNextSequenceCode("test", "GT{dd}/{yyyy}/PC/{ddd}/{N:0}", date1);
+        code = scg.getNextSequenceCode("test", "GT{dd}/{yyyy}/PC/{ddd}/{N:0}", date1, null);
         assertEquals("GT25/2002/PC/145/2", code);
-        code = scg.getNextSequenceCode("test", "GT{dd}/{yyyy}/PC/{ddd}/{N:0}", date2);
+        code = scg.getNextSequenceCode("test", "GT{dd}/{yyyy}/PC/{ddd}/{N:0}", date2, null);
         assertEquals("GT26/2014/PC/207/1", code);
-        code = scg.getNextSequenceCode("test", "GT{dd}/{yyyy}/PC/{ddd}/{N:0}", date2);
+        code = scg.getNextSequenceCode("test", "GT{dd}/{yyyy}/PC/{ddd}/{N:0}", date2, null);
         assertEquals("GT26/2014/PC/207/2", code);
     }
     

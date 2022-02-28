@@ -21,6 +21,7 @@ import java.util.Date;
 import com.flowcentraltech.flowcentral.common.data.SequenceDef;
 import com.tcdng.unify.core.UnifyComponent;
 import com.tcdng.unify.core.UnifyException;
+import com.tcdng.unify.core.data.ValueStoreReader;
 
 /**
  * Sequence code generator
@@ -54,14 +55,18 @@ public interface SequenceCodeGenerator extends UnifyComponent {
      * Gets the next sequence code for the supplied sequence definition and current
      * date.
      * 
-     * @param ownerId the sequence owner Id
+     * @param ownerId
+     *                          the sequence owner Id
      * @param sequenceDefintion
      *                          the sequence definition
+     * @param valueStoreReader
+     *                          the value store reader (optional)
      * @return the next sequence code
      * @throws UnifyException
      *                        if an error occurs
      */
-    String getNextSequenceCode(String ownerId, String sequenceDefintion) throws UnifyException;
+    String getNextSequenceCode(String ownerId, String sequenceDefintion, ValueStoreReader valueStoreReader)
+            throws UnifyException;
 
     /**
      * Gets the next sequence code for the supplied sequence definition and date.
@@ -71,9 +76,12 @@ public interface SequenceCodeGenerator extends UnifyComponent {
      *                          the sequence definition
      * @param date
      *                          the sequence date
+     * @param valueStoreReader
+     *                          the value store reader (optional)
      * @return the next sequence code
      * @throws UnifyException
      *                        if an error occurs
      */
-    String getNextSequenceCode(String ownerId, String sequenceDefintion, Date date) throws UnifyException;
+    String getNextSequenceCode(String ownerId, String sequenceDefintion, Date date, ValueStoreReader valueStoreReader)
+            throws UnifyException;
 }

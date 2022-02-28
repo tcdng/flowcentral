@@ -2568,6 +2568,7 @@ public class ApplicationModuleServiceImpl extends AbstractFlowCentralService
                     appWidgetType.setRenderer(widgetTypeConfig.getRenderer());
                     appWidgetType.setStretch(widgetTypeConfig.isStretch());
                     appWidgetType.setListOption(widgetTypeConfig.isListOption());
+                    appWidgetType.setEnumOption(widgetTypeConfig.isEnumOption());
                     appWidgetType.setConfigType(ConfigType.STATIC_INSTALL);
                     environment().create(appWidgetType);
                 } else {
@@ -2580,6 +2581,7 @@ public class ApplicationModuleServiceImpl extends AbstractFlowCentralService
                         oldWidgetType.setRenderer(widgetTypeConfig.getRenderer());
                         oldWidgetType.setStretch(widgetTypeConfig.isStretch());
                         oldWidgetType.setListOption(widgetTypeConfig.isListOption());
+                        oldWidgetType.setEnumOption(widgetTypeConfig.isEnumOption());
                         environment().updateByIdVersion(oldWidgetType);
                     }
                 }
