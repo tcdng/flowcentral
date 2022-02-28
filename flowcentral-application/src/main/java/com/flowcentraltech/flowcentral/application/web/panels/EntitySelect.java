@@ -20,6 +20,7 @@ import com.flowcentraltech.flowcentral.application.business.EntitySelectHandler;
 import com.flowcentraltech.flowcentral.application.data.TableDef;
 import com.flowcentraltech.flowcentral.application.web.widgets.EntityTable;
 import com.tcdng.unify.core.UnifyException;
+import com.tcdng.unify.core.criterion.And;
 import com.tcdng.unify.core.criterion.ILike;
 import com.tcdng.unify.core.criterion.Order;
 import com.tcdng.unify.core.criterion.Restriction;
@@ -46,6 +47,8 @@ public class EntitySelect {
     private ValueStore formValueStore;
 
     private String selectHandlerName;
+
+    private Restriction baseRestriction;
 
     public EntitySelect(AppletUtilities au, TableDef tableDef, String searchFieldName, ValueStore formValueStore,
             String selectHandlerName, int limit) {
@@ -77,6 +80,14 @@ public class EntitySelect {
         return entityTable;
     }
 
+    public Restriction getBaseRestriction() {
+        return baseRestriction;
+    }
+
+    public void setBaseRestriction(Restriction baseRestriction) {
+        this.baseRestriction = baseRestriction;
+    }
+
     public void select(int index) throws UnifyException {
         if (formValueStore != null && selectHandlerName != null) {
             EntitySelectHandler handler = getEntityTable().getAu().getComponent(EntitySelectHandler.class,
@@ -97,6 +108,14 @@ public class EntitySelect {
 
     public void applyFilterToSearch() throws UnifyException {
         Restriction restriction = !StringUtils.isBlank(filter) ? new ILike(fieldName, filter) : null;
+        if (baseRestriction != null) {
+            if (restriction == null) {
+                restriction = baseRestriction;
+            } else {
+                restriction = new And().add(baseRestriction).add(restriction);
+            }
+        }
+        
         entityTable.setSourceObject(restriction);
     }
 
