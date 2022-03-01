@@ -171,7 +171,7 @@ public class StudioOnCreateAppAppletPolicy extends StudioOnCreateComponentPolicy
                 appAssignmentPage.setBaseField(appApplet.getBaseField());
                 appAssignmentPage.setAssignField(appApplet.getAssignField());
                 appAssignmentPage.setRuleDescField(appApplet.getAssignDescField());
-                appAssignmentPage.setConfigType(ConfigType.STATIC_INSTALL);
+//                appAssignmentPage.setConfigType(ConfigType.STATIC_INSTALL);
                 getAms().createAppAssignmentPage(appAssignmentPage);
                 
                 // Add applet properties
