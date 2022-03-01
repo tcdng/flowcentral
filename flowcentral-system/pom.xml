@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>com.flowcentraltech.flowcentral</groupId>
 		<artifactId>flowcentral</artifactId>
-		<version>1.0.2</version>
+		<version>1.0.3</version>
 	</parent>
 
 	<artifactId>flowcentral-system</artifactId>
@@ -47,6 +47,11 @@
             <artifactId>flowcentral-configuration</artifactId>
             <version>${project.version}</version>
         </dependency>
+		<dependency>
+			<groupId>com.tcdng.unify</groupId>
+			<artifactId>unify-core</artifactId>
+			<version>${unify.version}</version>
+		</dependency>
 		<!-- Test dependencies -->
 		<dependency>
             <groupId>com.flowcentraltech.flowcentral</groupId>

@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>com.flowcentraltech.flowcentral</groupId>
 		<artifactId>flowcentral</artifactId>
-		<version>1.0.2</version>
+		<version>1.0.3</version>
 	</parent>
 
 	<artifactId>flowcentral-delegate</artifactId>
@@ -54,12 +54,12 @@
         </dependency>
         <dependency>
             <groupId>com.flowcentraltech.flowcentral</groupId>
-            <artifactId>flowcentral-interconnect-configuration</artifactId>
+            <artifactId>flowcentral-connect-configuration</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>com.flowcentraltech.flowcentral</groupId>
-            <artifactId>flowcentral-interconnect-common</artifactId>
+            <artifactId>flowcentral-connect-common</artifactId>
             <version>${project.version}</version>
         </dependency>
 		<!-- Test dependencies -->

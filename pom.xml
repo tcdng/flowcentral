@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.flowcentraltech.flowcentral</groupId>
 	<artifactId>flowcentral</artifactId>
-	<version>1.0.2</version>
+	<version>1.0.3</version>
 	<packaging>pom</packaging>
 
 	<name>flowcentral</name>
@@ -45,6 +43,9 @@
 		<module>flowcentral-dashboard</module>
 		<module>flowcentral-delegate</module>
 		<module>flowcentral-codegeneration</module>
+    	<module>flowcentral-connect-common</module>
+    	<module>flowcentral-connect-configuration</module>
+		<module>flowcentral-connect-springboot</module>
 	</modules>
 
 	<properties>
@@ -177,49 +178,7 @@
 
 	<dependencies>
 		<!-- Main dependencies -->
-		<dependency>
-			<groupId>com.tcdng.unify</groupId>
-			<artifactId>unify-core</artifactId>
-			<version>${unify.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>com.tcdng.unify</groupId>
-			<artifactId>unify-web</artifactId>
-			<version>${unify.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>com.tcdng.unify</groupId>
-			<artifactId>unify-web-ui</artifactId>
-			<version>${unify.version}</version>
-		</dependency>
 		<!-- Test dependencies -->
-		<dependency>
-			<groupId>com.tcdng.unify</groupId>
-			<artifactId>unify-core</artifactId>
-			<version>${unify.version}</version>
-			<type>test-jar</type>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>com.tcdng.unify</groupId>
-			<artifactId>unify-web</artifactId>
-			<version>${unify.version}</version>
-			<type>test-jar</type>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>com.tcdng.unify</groupId>
-			<artifactId>unify-web-ui</artifactId>
-			<version>${unify.version}</version>
-			<type>test-jar</type>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>com.tcdng.unify</groupId>
-			<artifactId>unify-jetty</artifactId>
-			<version>${unify.version}</version>
-			<scope>test</scope>
-		</dependency>
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
