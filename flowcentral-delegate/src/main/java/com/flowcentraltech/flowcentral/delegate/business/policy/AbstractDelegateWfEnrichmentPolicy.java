@@ -22,8 +22,8 @@ import java.util.Locale;
 
 import com.flowcentraltech.flowcentral.common.business.EnvironmentDelegateUtilities;
 import com.flowcentraltech.flowcentral.common.business.policies.AbstractWfEnrichmentPolicy;
-import com.flowcentraltech.flowcentral.interconnect.common.data.ProcedureRequest;
-import com.flowcentraltech.flowcentral.interconnect.common.data.ProcedureResponse;
+import com.flowcentraltech.flowcentral.connect.common.data.ProcedureRequest;
+import com.flowcentraltech.flowcentral.connect.common.data.ProcedureResponse;
 import com.tcdng.unify.core.UnifyException;
 import com.tcdng.unify.core.annotation.Configurable;
 import com.tcdng.unify.core.constant.PrintFormat;
