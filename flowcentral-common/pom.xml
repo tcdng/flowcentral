@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>com.flowcentraltech.flowcentral</groupId>
 		<artifactId>flowcentral</artifactId>
-		<version>1.0.2</version>
+		<version>1.0.3</version>
 	</parent>
 
 	<artifactId>flowcentral-common</artifactId>
@@ -42,6 +42,48 @@
             <artifactId>flowcentral-configuration</artifactId>
             <version>${project.version}</version>
         </dependency>
+		<dependency>
+			<groupId>com.tcdng.unify</groupId>
+			<artifactId>unify-core</artifactId>
+			<version>${unify.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.tcdng.unify</groupId>
+			<artifactId>unify-web</artifactId>
+			<version>${unify.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.tcdng.unify</groupId>
+			<artifactId>unify-web-ui</artifactId>
+			<version>${unify.version}</version>
+		</dependency>
 		<!-- Test dependencies -->
+		<dependency>
+			<groupId>com.tcdng.unify</groupId>
+			<artifactId>unify-core</artifactId>
+			<version>${unify.version}</version>
+			<type>test-jar</type>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.tcdng.unify</groupId>
+			<artifactId>unify-web</artifactId>
+			<version>${unify.version}</version>
+			<type>test-jar</type>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.tcdng.unify</groupId>
+			<artifactId>unify-web-ui</artifactId>
+			<version>${unify.version}</version>
+			<type>test-jar</type>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.tcdng.unify</groupId>
+			<artifactId>unify-jetty</artifactId>
+			<version>${unify.version}</version>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
 </project>
