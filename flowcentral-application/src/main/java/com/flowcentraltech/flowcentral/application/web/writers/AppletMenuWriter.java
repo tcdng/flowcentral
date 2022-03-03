@@ -15,7 +15,11 @@
  */
 package com.flowcentraltech.flowcentral.application.web.writers;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import com.flowcentraltech.flowcentral.application.business.ApplicationAppletDefProvider;
 import com.flowcentraltech.flowcentral.application.business.ApplicationModuleService;
@@ -25,6 +29,7 @@ import com.flowcentraltech.flowcentral.application.data.ApplicationMenuDef;
 import com.flowcentraltech.flowcentral.application.web.widgets.AbstractMenuWidget;
 import com.flowcentraltech.flowcentral.application.web.widgets.AppletMenuWidget;
 import com.flowcentraltech.flowcentral.common.business.ApplicationPrivilegeManager;
+import com.flowcentraltech.flowcentral.common.business.CollaborationProvider;
 import com.flowcentraltech.flowcentral.common.business.LicenseProvider;
 import com.flowcentraltech.flowcentral.common.business.WorkspacePrivilegeManager;
 import com.flowcentraltech.flowcentral.common.constants.FlowCentralSessionAttributeConstants;
@@ -65,26 +70,33 @@ public class AppletMenuWriter extends AbstractMenuWriter {
     @Configurable
     private LicenseProvider licenseProvider;
 
+    @Configurable
+    private CollaborationProvider collaborationProvider;
+
     private List<ApplicationAppletDefProvider> applicationAppletDefProviderList;
 
-    public void setApplicationModuleService(ApplicationModuleService applicationModuleService) {
+    public final void setApplicationModuleService(ApplicationModuleService applicationModuleService) {
         this.applicationModuleService = applicationModuleService;
     }
 
-    public void setSystemModuleService(SystemModuleService systemModuleService) {
+    public final void setSystemModuleService(SystemModuleService systemModuleService) {
         this.systemModuleService = systemModuleService;
     }
 
-    public void setAppPrivilegeManager(ApplicationPrivilegeManager appPrivilegeManager) {
+    public final void setAppPrivilegeManager(ApplicationPrivilegeManager appPrivilegeManager) {
         this.appPrivilegeManager = appPrivilegeManager;
     }
 
-    public void setWkspPrivilegeManager(WorkspacePrivilegeManager wkspPrivilegeManager) {
+    public final void setWkspPrivilegeManager(WorkspacePrivilegeManager wkspPrivilegeManager) {
         this.wkspPrivilegeManager = wkspPrivilegeManager;
     }
 
-    public void setLicenseProvider(LicenseProvider licenseProvider) {
+    public final void setLicenseProvider(LicenseProvider licenseProvider) {
         this.licenseProvider = licenseProvider;
+    }
+
+    public final void setCollaborationProvider(CollaborationProvider collaborationProvider) {
+        this.collaborationProvider = collaborationProvider;
     }
 
     @Override
@@ -146,6 +158,9 @@ public class AppletMenuWriter extends AbstractMenuWriter {
         writer.write("</div>");
     }
 
+    private static final Set<String> STANDARD_EXCLUSION = Collections
+            .unmodifiableSet(new HashSet<String>(Arrays.asList("manageLicensing")));
+    
     @Override
     protected void doWriteSectionStructureAndContent(ResponseWriter writer, Widget widget, String sectionId)
             throws UnifyException {
@@ -165,6 +180,8 @@ public class AppletMenuWriter extends AbstractMenuWriter {
             final StringBuilder misb = new StringBuilder();
             final boolean isWorkspaceLicensed = licenseProvider != null
                     && licenseProvider.isLicensed(LicenseFeatureCodeConstants.APPLICATION_WORKSPACES);
+            final boolean enterprise = collaborationProvider != null;
+            
             msb.append('[');
             misb.append('[');
             final String submenuStyle = appletMenuWidget.isCollapsedInitial() ? "none" : "block";
@@ -201,6 +218,10 @@ public class AppletMenuWriter extends AbstractMenuWriter {
                     msb.append('"').append(applicationId).append('"');
 
                     for (AppletDef appletDef : applicationMenuDef.getAppletDefList()) {
+                        if (!enterprise && STANDARD_EXCLUSION.contains(appletDef.getName())) {
+                            continue;
+                        }
+                        
                         final String appletPrivilegeCode = appletDef.getPrivilege();
                         if (appPrivilegeManager.isRoleWithPrivilege(roleCode, appletPrivilegeCode)
                                 && (!isWorkspaceLicensed || wkspPrivilegeManager.isWorkspaceWithPrivilege(workspaceCode,

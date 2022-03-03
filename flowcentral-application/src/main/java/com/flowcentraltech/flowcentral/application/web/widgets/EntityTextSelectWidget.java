@@ -35,6 +35,7 @@ import com.tcdng.unify.core.annotation.UplAttributes;
 import com.tcdng.unify.core.criterion.Restriction;
 import com.tcdng.unify.core.data.ListData;
 import com.tcdng.unify.core.data.Listable;
+import com.tcdng.unify.core.util.StringUtils;
 import com.tcdng.unify.web.annotation.Action;
 import com.tcdng.unify.web.constant.ExtensionType;
 import com.tcdng.unify.web.ui.widget.control.AbstractPopupTextField;
@@ -51,6 +52,7 @@ import com.tcdng.unify.web.ui.widget.control.AbstractPopupTextField;
         @UplAttribute(name = "buttonImgSrc", type = String.class, defaultVal = "$t{images/search.png}"),
         @UplAttribute(name = "buttonSymbol", type = String.class, defaultVal = "table-list"),
         @UplAttribute(name = "selectOnly", type = boolean.class, defaultVal = "false"),
+        @UplAttribute(name = "selectOnlyBinding", type = String.class),
         @UplAttribute(name = "listKey", type = String.class),
         @UplAttribute(name = "space", type = boolean.class, defaultVal = "false"),
         @UplAttribute(name = "special", type = boolean.class, defaultVal = "false"),
@@ -158,7 +160,9 @@ public class EntityTextSelectWidget extends AbstractPopupTextField {
     }
 
     public boolean selectOnly() throws UnifyException {
-        return getUplAttribute(boolean.class, "selectOnly");
+        String selectOnlyBinding = getUplAttribute(String.class, "selectOnlyBinding");
+        return !StringUtils.isBlank(selectOnlyBinding) ? getValue(boolean.class, selectOnlyBinding)
+                : getUplAttribute(boolean.class, "selectOnly");
     }
 
     public TextType type() throws UnifyException {
