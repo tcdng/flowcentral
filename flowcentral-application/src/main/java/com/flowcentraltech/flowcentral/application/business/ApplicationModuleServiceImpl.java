@@ -1498,7 +1498,7 @@ public class ApplicationModuleServiceImpl extends AbstractFlowCentralService
     @Override
     public List<ApplicationMenuDef> getApplicationMenuDefs(String appletFilter) throws UnifyException {
         List<Application> applicationList = environment()
-                .findAll(new ApplicationQuery().isMenuAccess().addOrder("displayIndex"));
+                .findAll(new ApplicationQuery().isMenuAccess().addOrder("displayIndex", "label"));
         if (!DataUtils.isBlank(applicationList)) {
             List<ApplicationMenuDef> resultList = new ArrayList<ApplicationMenuDef>();
             final String importApplicationName = systemModuleService.getSysParameterValue(String.class,
