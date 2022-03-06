@@ -490,6 +490,7 @@ textarea:focus {outline: none !important;box-shadow: 0 0 6px #5194f3;}
 .fc-table .table .mseld input {display:none;}
 .fc-table .table .mserialh {width: 48px;}
 .fc-table .table .mseriald {}
+.fc-table .table .mnorec {font-size:8pt;color: #606060;}
 
 .fc-beantable {}
 .fc-beantable .table .mseld {background-color: transparent;}

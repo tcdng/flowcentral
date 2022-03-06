@@ -261,53 +261,74 @@ public class TableWriter extends AbstractControlWriter {
             boolean isEvenRow = true;
             List<ValueStore> valueList = tableWidget.getValueList();
             int len = valueList.size();
-            for (int i = 0; i < len; i++) {
-                ValueStore valueStore = valueList.get(i);
-                Long id = valueStore.retrieve(Long.class, "id");
-                writer.write("<tr");
-                if (isEvenRow) {
-                    writeTagStyleClass(writer, "even");
-                    isEvenRow = false;
-                } else {
-                    writeTagStyleClass(writer, "odd");
-                    isEvenRow = true;
-                }
-
-                writeTagName(writer, tableWidget.getRowId());
-                writer.write(">");
-
-                if (!entryMode) {
-                    writeRowMultiSelect(writer, tableWidget, id, i);
+            if (len == 0) {
+                writer.write("<tr class=\"even\">");
+                int skip = 0;
+                if (!entryMode && tableWidget.isMultiSelect()) {
+                    writer.write("<td class=\"mseld\"><span></span></td>");
+                    skip++;
                 }
 
                 if (isSerialNo) {
-                    writer.write("<td class=\"mseriald\"><span>");
-                    writer.write(pageIndex + i);
-                    writer.write(".</span></td>");
+                    writer.write("<td class=\"mseriald\"><span></span></td>");
+                    skip++;
                 }
 
-                int index = 0;
-                for (ChildWidgetInfo widgetInfo : tableWidget.getChildWidgetInfos()) {
-                    if (widgetInfo.isExternal()) {
-                        TableColumnDef tabelColumnDef = tableDef.getColumnDef(index);
-                        Widget chWidget = widgetInfo.getWidget();
-                        chWidget.setEditable(tabelColumnDef.isEditable());
-                        chWidget.setDisabled(tabelColumnDef.isDisabled());
-                        chWidget.setValueStore(valueStore);
-                        writer.write("<td");
-                        writeTagStyle(writer, chWidget.getColumnStyle());
-                        writer.write(">");
-                        writer.writeStructureAndContent(chWidget);
-                        writer.write("</td>");
-                        index++;
-                    }
-                }
-
-                if (entryMode) {
-                    writeRowMultiSelect(writer, tableWidget, id, i);
-                }
-
+                writer.write("<td colspan=\"");
+                writer.write(tableWidget.getChildWidgetInfos().size() - skip);
+                writer.write("\"><span class=\"mnorec\" style=\"display:block;text-align:center;\">");
+                writer.write(resolveSessionMessage("$m{tablewidget.norecordsfound}"));
+                writer.write("</span></td>");
                 writer.write("</tr>");
+            } else {
+                for (int i = 0; i < len; i++) {
+                    ValueStore valueStore = valueList.get(i);
+                    Long id = valueStore.retrieve(Long.class, "id");
+                    writer.write("<tr");
+                    if (isEvenRow) {
+                        writeTagStyleClass(writer, "even");
+                        isEvenRow = false;
+                    } else {
+                        writeTagStyleClass(writer, "odd");
+                        isEvenRow = true;
+                    }
+
+                    writeTagName(writer, tableWidget.getRowId());
+                    writer.write(">");
+
+                    if (!entryMode) {
+                        writeRowMultiSelect(writer, tableWidget, id, i);
+                    }
+
+                    if (isSerialNo) {
+                        writer.write("<td class=\"mseriald\"><span>");
+                        writer.write(pageIndex + i);
+                        writer.write(".</span></td>");
+                    }
+
+                    int index = 0;
+                    for (ChildWidgetInfo widgetInfo : tableWidget.getChildWidgetInfos()) {
+                        if (widgetInfo.isExternal()) {
+                            TableColumnDef tabelColumnDef = tableDef.getColumnDef(index);
+                            Widget chWidget = widgetInfo.getWidget();
+                            chWidget.setEditable(tabelColumnDef.isEditable());
+                            chWidget.setDisabled(tabelColumnDef.isDisabled());
+                            chWidget.setValueStore(valueStore);
+                            writer.write("<td");
+                            writeTagStyle(writer, chWidget.getColumnStyle());
+                            writer.write(">");
+                            writer.writeStructureAndContent(chWidget);
+                            writer.write("</td>");
+                            index++;
+                        }
+                    }
+
+                    if (entryMode) {
+                        writeRowMultiSelect(writer, tableWidget, id, i);
+                    }
+
+                    writer.write("</tr>");
+                }
             }
         }
     }
