@@ -13,22 +13,16 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package com.flowcentraltech.flowcentral.connect.common.data;
+
+package com.flowcentraltech.flowcentral.application.constants;
 
 /**
- * Data source response.
+ * Applet request attribute constants
  * 
  * @author FlowCentral Technologies Limited
  * @since 1.0
  */
-public class DataSourceResponse extends BaseResponse {
+public interface AppletRequestAttributeConstants {
 
-    public DataSourceResponse(String errorCode, String errorMsg) {
-        super(errorCode, errorMsg);
-    }
-
-    public DataSourceResponse() {
-
-    }
-
+    String SILENT_MULTIRECORD_SEARCH_ERROR_MSG = "app:silentmultirecordsearchmsg";
 }

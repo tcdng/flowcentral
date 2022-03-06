@@ -13,22 +13,24 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package com.flowcentraltech.flowcentral.connect.common.data;
+package com.flowcentraltech.flowcentral.delegate.constants;
+
+import com.flowcentraltech.flowcentral.configuration.constants.AbstractFlowCentralStaticSettings;
+import com.flowcentraltech.flowcentral.configuration.constants.ModuleInstallLevelConstants;
+import com.tcdng.unify.core.annotation.AutoDetect;
 
 /**
- * Data source response.
+ * Delegate module static settings.
  * 
  * @author FlowCentral Technologies Limited
  * @since 1.0
  */
-public class DataSourceResponse extends BaseResponse {
+@AutoDetect
+public class DelegateModuleStaticSettings extends AbstractFlowCentralStaticSettings {
 
-    public DataSourceResponse(String errorCode, String errorMsg) {
-        super(errorCode, errorMsg);
-    }
-
-    public DataSourceResponse() {
-
+    public DelegateModuleStaticSettings() {
+        super(null, null, "com.flowcentraltech.flowcentral.resources.delegate-messages",
+                ModuleInstallLevelConstants.MINIMAL_PRIORITY_LEVEL);
     }
 
 }
