@@ -491,6 +491,7 @@ textarea:focus {outline: none !important;box-shadow: 0 0 6px #5194f3;}
 .fc-table .table .mserialh {width: 48px;}
 .fc-table .table .mseriald {}
 .fc-table .table .mnorec {font-size:8pt;color: #606060;}
+.fc-table .merr {border: 1px solid #e08484;font-size: 8pt;color: #e08484;font-weight: bold;background-color: #fff5f5;padding: 10px 0px;}
 
 .fc-beantable {}
 .fc-beantable .table .mseld {background-color: transparent;}

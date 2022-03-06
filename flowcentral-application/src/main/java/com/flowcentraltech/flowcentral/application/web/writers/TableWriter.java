@@ -17,6 +17,7 @@ package com.flowcentraltech.flowcentral.application.web.writers;
 
 import java.util.List;
 
+import com.flowcentraltech.flowcentral.application.constants.AppletRequestAttributeConstants;
 import com.flowcentraltech.flowcentral.application.constants.ApplicationModuleSysParamConstants;
 import com.flowcentraltech.flowcentral.application.data.TableColumnDef;
 import com.flowcentraltech.flowcentral.application.data.TableDef;
@@ -30,6 +31,7 @@ import com.tcdng.unify.core.annotation.Writes;
 import com.tcdng.unify.core.constant.OrderType;
 import com.tcdng.unify.core.data.ValueStore;
 import com.tcdng.unify.core.util.DataUtils;
+import com.tcdng.unify.core.util.StringUtils;
 import com.tcdng.unify.web.ui.widget.AbstractMultiControl.ChildWidgetInfo;
 import com.tcdng.unify.web.ui.widget.Control;
 import com.tcdng.unify.web.ui.widget.EventHandler;
@@ -74,6 +76,14 @@ public class TableWriter extends AbstractControlWriter {
             writeTagId(writer, tableWidget);
             writeTagStyleClass(writer, "table");
             writer.write(">");
+            
+            String errMsg = (String) getRequestAttribute(AppletRequestAttributeConstants.SILENT_MULTIRECORD_SEARCH_ERROR_MSG);
+            if(!StringUtils.isBlank(errMsg)) {
+                writer.write("<div class=\"merr\"><span style=\"display:block;text-align:center;\">");
+                writer.write(errMsg);
+                writer.write("</span></div>");
+            }
+            
             writeHeaderRow(writer, tableWidget);
             writeBodyRows(writer, tableWidget);
             writer.write("</table></div>");

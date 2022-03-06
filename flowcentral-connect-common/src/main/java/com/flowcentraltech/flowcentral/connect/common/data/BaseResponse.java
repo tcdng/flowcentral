@@ -29,6 +29,16 @@ public abstract class BaseResponse {
 
     private String errorMsg;
 
+    public BaseResponse(String errorCode, String errorMsg) {
+        this.payload = new String[0];
+        this.errorCode = errorCode;
+        this.errorMsg = errorMsg;
+    }
+
+    public BaseResponse() {
+
+    }
+
     public String[] getPayload() {
         return payload;
     }

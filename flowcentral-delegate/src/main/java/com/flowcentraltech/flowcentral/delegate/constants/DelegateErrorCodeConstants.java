@@ -13,22 +13,16 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package com.flowcentraltech.flowcentral.connect.common.data;
+package com.flowcentraltech.flowcentral.delegate.constants;
 
 /**
- * Data source response.
+ * Delegate error code constants.
  * 
  * @author FlowCentral Technologies Limited
  * @since 1.0
  */
-public class DataSourceResponse extends BaseResponse {
+public interface DelegateErrorCodeConstants {
 
-    public DataSourceResponse(String errorCode, String errorMsg) {
-        super(errorCode, errorMsg);
-    }
-
-    public DataSourceResponse() {
-
-    }
-
+    /** Delegate backend connection error. Caused by [{0}].*/
+    String DELEGATE_BACKEND_CONNECTION_ERROR = "DELEGATE_0001";
 }
