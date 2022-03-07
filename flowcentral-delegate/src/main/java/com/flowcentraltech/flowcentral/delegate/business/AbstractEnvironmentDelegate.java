@@ -32,6 +32,7 @@ import com.flowcentraltech.flowcentral.application.data.EntityDef;
 import com.flowcentraltech.flowcentral.application.data.EntityFieldDef;
 import com.flowcentraltech.flowcentral.common.business.EnvironmentDelegate;
 import com.flowcentraltech.flowcentral.common.business.EnvironmentDelegateUtilities;
+import com.flowcentraltech.flowcentral.common.entities.BaseAuditEntity;
 import com.flowcentraltech.flowcentral.common.entities.BaseEntity;
 import com.flowcentraltech.flowcentral.connect.common.constants.DataSourceOperation;
 import com.flowcentraltech.flowcentral.connect.common.data.DataSourceRequest;
@@ -315,6 +316,7 @@ public abstract class AbstractEnvironmentDelegate extends AbstractUnifyComponent
     @Override
     public Object create(Entity record) throws UnifyException {
         DataSourceRequest req = new DataSourceRequest(DataSourceOperation.CREATE);
+        setCreateAuditInformation(record);
         req.setPayload(utilities.encodeDelegateEntity(record));
         return singleValueResultOperation(Long.class, record.getClass(), req);
     }
@@ -323,6 +325,7 @@ public abstract class AbstractEnvironmentDelegate extends AbstractUnifyComponent
     public int updateById(Entity record) throws UnifyException {
         DataSourceRequest req = new DataSourceRequest(DataSourceOperation.UPDATE,
                 utilities.encodeDelegateObjectId(record.getId()), null);
+        setUpdateAuditInformation(record);
         req.setPayload(utilities.encodeDelegateEntity(record));
         return singleValueResultOperation(int.class, record.getClass(), req);
     }
@@ -332,6 +335,7 @@ public abstract class AbstractEnvironmentDelegate extends AbstractUnifyComponent
         long versionNo = ((BaseEntity) record).getVersionNo();
         DataSourceRequest req = new DataSourceRequest(DataSourceOperation.UPDATE,
                 utilities.encodeDelegateObjectId(record.getId()), versionNo);
+        setUpdateAuditInformation(record);
         req.setPayload(utilities.encodeDelegateEntity(record));
         return singleValueResultOperation(int.class, record.getClass(), req);
     }
@@ -340,6 +344,7 @@ public abstract class AbstractEnvironmentDelegate extends AbstractUnifyComponent
     public int updateLeanById(Entity record) throws UnifyException {
         DataSourceRequest req = new DataSourceRequest(DataSourceOperation.UPDATE_LEAN,
                 utilities.encodeDelegateObjectId(record.getId()), null);
+        setUpdateAuditInformation(record);
         req.setPayload(utilities.encodeDelegateEntity(record));
         return singleValueResultOperation(int.class, record.getClass(), req);
     }
@@ -349,6 +354,7 @@ public abstract class AbstractEnvironmentDelegate extends AbstractUnifyComponent
         long versionNo = ((BaseEntity) record).getVersionNo();
         DataSourceRequest req = new DataSourceRequest(DataSourceOperation.UPDATE_LEAN,
                 utilities.encodeDelegateObjectId(record.getId()), versionNo);
+        setUpdateAuditInformation(record);
         req.setPayload(utilities.encodeDelegateEntity(record));
         return singleValueResultOperation(int.class, record.getClass(), req);
     }
@@ -357,6 +363,7 @@ public abstract class AbstractEnvironmentDelegate extends AbstractUnifyComponent
     public int updateById(Class<? extends Entity> entityClass, Object id, Update update) throws UnifyException {
         DataSourceRequest req = new DataSourceRequest(DataSourceOperation.UPDATE, utilities.encodeDelegateObjectId(id),
                 null);
+        setUpdateAuditInformation(entityClass, id, update);
         req.setUpdate(utilities.encodeDelegateUpdate(update));
         return singleValueResultOperation(int.class, entityClass, req);
     }
@@ -365,6 +372,7 @@ public abstract class AbstractEnvironmentDelegate extends AbstractUnifyComponent
     public int updateAll(Query<? extends Entity> query, Update update) throws UnifyException {
         DataSourceRequest req = new DataSourceRequest(DataSourceOperation.UPDATE_ALL);
         setQueryDetails(req, query);
+        setUpdateAuditInformation(query.getEntityClass(), null, update);
         req.setUpdate(utilities.encodeDelegateUpdate(update));
         return singleValueResultOperation(int.class, query.getEntityClass(), req);
     }
@@ -490,6 +498,29 @@ public abstract class AbstractEnvironmentDelegate extends AbstractUnifyComponent
 
     }
 
+    private void setCreateAuditInformation(Entity entity) throws UnifyException {
+        if (entity instanceof BaseAuditEntity) {
+            String userLoginId = getUserToken().getUserLoginId();
+            ((BaseAuditEntity) entity).setCreatedBy(userLoginId);
+            ((BaseAuditEntity) entity).setUpdatedBy(userLoginId);
+        }
+    }
+    
+    private void setUpdateAuditInformation(Entity entity) throws UnifyException {
+        if (entity instanceof BaseAuditEntity) {
+            String userLoginId = getUserToken().getUserLoginId();
+            ((BaseAuditEntity) entity).setUpdatedBy(userLoginId);
+        }
+    }
+    
+    private void setUpdateAuditInformation(Class<? extends Entity> entityClass, Object id, Update update)
+            throws UnifyException {
+        if (BaseAuditEntity.class.isAssignableFrom(entityClass)) {
+            String userLoginId = getUserToken().getUserLoginId();
+            update.add("updatedBy", userLoginId);
+        }
+    }
+    
     private <T extends Entity, U> U singleValueResultOperation(Class<U> resultClass, Class<T> entityClass,
             DataSourceRequest req) throws UnifyException {
         req.setEntity(utilities.resolveLongName(entityClass));
