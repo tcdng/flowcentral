@@ -51,4 +51,6 @@ public interface ApplicationModuleSysParamConstants {
 
     String AUTOSAVE_SUGGESTIONS = "APP-000E";
 
+    String ALL_TABLE_IN_CLASSIC_MODE = "APP-000F";
+
 }
