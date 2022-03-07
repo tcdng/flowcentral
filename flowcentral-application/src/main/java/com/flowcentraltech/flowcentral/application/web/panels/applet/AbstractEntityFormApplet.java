@@ -1082,12 +1082,19 @@ public abstract class AbstractEntityFormApplet extends AbstractApplet implements
             entityActionResult = new EntityActionResult(
                     new EntityActionContext(form.getFormDef().getEntityDef(), inst, null));
         } else {
-            entityActionResult = getAu().getWorkItemUtilities().submitToWorkflowChannel(
-                    form.getFormDef().getEntityDef(),
-                    _currFormAppletDef.getPropValue(String.class,
-                            AppletPropertyConstants.MAINTAIN_FORM_SUBMIT_WORKFLOW_CHANNEL),
-                    (WorkEntity) inst,
-                    _currFormAppletDef.getPropValue(String.class, AppletPropertyConstants.MAINTAIN_FORM_SUBMIT_POLICY));
+            String channel = _currFormAppletDef.getPropValue(String.class,
+                    AppletPropertyConstants.MAINTAIN_FORM_SUBMIT_WORKFLOW_CHANNEL);
+            String policy = _currFormAppletDef.getPropValue(String.class,
+                    AppletPropertyConstants.MAINTAIN_FORM_SUBMIT_POLICY);
+            if (StringUtils.isBlank(channel)) {
+                channel = _currFormAppletDef.getPropValue(String.class,
+                        AppletPropertyConstants.CREATE_FORM_SUBMIT_WORKFLOW_CHANNEL);
+                policy = _currFormAppletDef.getPropValue(String.class,
+                        AppletPropertyConstants.CREATE_FORM_SUBMIT_POLICY);
+            }
+            
+            entityActionResult = getAu().getWorkItemUtilities()
+                    .submitToWorkflowChannel(form.getFormDef().getEntityDef(), channel, (WorkEntity) inst, policy);
             if (actionMode.isWithNext()) {
                 enterNextForm();
             } else {
