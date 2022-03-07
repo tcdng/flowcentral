@@ -129,6 +129,8 @@
 				type="string" inputWidget="application.text" maxLen="64" />
 			<field name="sortCode" label="$m{organization.branch.sortcode}"
 				type="string" inputWidget="application.text" maxLen="32" nullable="true"/>
+			<field name="address" label="$m{organization.branch.address}"
+				type="string" inputWidget="application.textarea" maxLen="512" nullable="true"/>
 			<field name="headOffice" label="$m{organization.branch.headoffice}"
 				type="boolean" inputWidget="application.checkbox" />
 			<field name="zoneCode" label="$m{organization.branch.zone.code}"
@@ -424,6 +426,9 @@
 						column="1" />
 					<field name="status" inputWidget="application.enumlist" column="1"
 						required="true" />
+				</section>
+				<section name="branchAddress" columns="type_1">
+					<field name="address" inputWidget="application.textarea" column="0"/>
 				</section>
 			</tab>
 			<tab name="zoneDetails" label="$m{organization.branch.form.zonedetails}"

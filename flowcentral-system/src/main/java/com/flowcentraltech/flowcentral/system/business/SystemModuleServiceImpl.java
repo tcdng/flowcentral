@@ -282,6 +282,11 @@ public class SystemModuleServiceImpl extends AbstractFlowCentralService
     }
 
     @Override
+    public List<String> getAllModuleNames() throws UnifyException {
+        return environment().valueList(String.class, "name", new ModuleQuery().ignoreEmptyCriteria(true));
+    }
+
+    @Override
     public <T> T getSysParameterValue(Class<T> clazz, String code) throws UnifyException {
         return internalGetSysParameterValue(clazz, code);
     }

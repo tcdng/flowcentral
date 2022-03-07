@@ -66,6 +66,8 @@ public class TableWriter extends AbstractControlWriter {
 
         AbstractTable<?, ?> table = tableWidget.getTable(); // Must call this here to initialize table
         if (table != null) {
+            final boolean classicMode = systemModuleService.getSysParameterValue(boolean.class,
+                    ApplicationModuleSysParamConstants.ALL_TABLE_IN_CLASSIC_MODE);
             TableDef tableDef = table.getTableDef();
             boolean sortable = tableDef.isSortable() && table.getNumberOfPages() > 0;
             writer.write("<div");
@@ -74,7 +76,11 @@ public class TableWriter extends AbstractControlWriter {
             writer.write(">");
             writer.write("<div><table");
             writeTagId(writer, tableWidget);
-            writeTagStyleClass(writer, "table");
+            if (classicMode) {
+                writeTagStyleClass(writer, "table classic");
+            } else {
+                writeTagStyleClass(writer, "table");
+            }
             writer.write(">");
             
             String errMsg = (String) getRequestAttribute(AppletRequestAttributeConstants.SILENT_MULTIRECORD_SEARCH_ERROR_MSG);

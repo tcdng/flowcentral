@@ -41,7 +41,7 @@ public class ExtensionModuleMessagesGenerator extends AbstractStaticArtifactGene
     @Override
     protected void doGenerate(ExtensionModuleStaticFileBuilderContext ctx, String moduleName, ZipOutputStream zos)
             throws UnifyException {
-        final String filename = moduleName.toLowerCase() + "-extension-messages.properties";
+        final String filename = "extension-" + moduleName.toLowerCase() + "-messages.properties";
         openEntry(filename, zos);
         try {
             BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(zos));

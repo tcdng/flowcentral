@@ -26,7 +26,7 @@
 	layout:$d{!ui-horizontal style:$s{float:right;} showCaption:true inlineCaption:true captionSuffix:$s{:} cellType:middle}
 	components:$c{dashboardSelect refreshBtn}
 
-!ui-select:dashboardSelect list:roledashboardslist binding:selDashboard
+!ui-select:dashboardSelect style:$s{width:264px;} list:roledashboardslist binding:selDashboard
     eventHandler:$d{!ui-event event:onchange action:$c{switchDashboardAct}}
 !ui-button:refreshBtn styleClass:$e{fc-bluebutton}
 	caption:$m{button.refresh}

@@ -42,7 +42,7 @@ public class ExtensionModuleEntitiesJavaGenerator extends AbstractStaticArtifact
     private ApplicationModuleService applicationModuleService;
 
     public ExtensionModuleEntitiesJavaGenerator() {
-        super("src/main/java/{0}/{1}/extension/entities/");
+        super("src/main/java/{0}/extension/{1}/entities/");
     }
 
     public final void setApplicationModuleService(ApplicationModuleService applicationModuleService) {

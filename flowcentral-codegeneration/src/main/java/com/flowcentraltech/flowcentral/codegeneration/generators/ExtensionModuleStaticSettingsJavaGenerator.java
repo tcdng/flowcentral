@@ -34,7 +34,7 @@ import com.tcdng.unify.core.util.StringUtils;
 public class ExtensionModuleStaticSettingsJavaGenerator extends AbstractStaticArtifactGenerator {
 
     public ExtensionModuleStaticSettingsJavaGenerator() {
-        super("src/main/java/{0}/{1}/extension/constants/");
+        super("src/main/java/{0}/extension/{1}/constants/");
     }
 
     @Override
@@ -44,7 +44,7 @@ public class ExtensionModuleStaticSettingsJavaGenerator extends AbstractStaticAr
         final String lowerModuleName = moduleName.toLowerCase();
         final String className = capModuleName + "ModuleStaticSettings";
         final String filename = className + ".java";
-        final String packageName = ctx.getBasePackage() + '.' + lowerModuleName + ".extension.constants";
+        final String packageName = ctx.getBasePackage() + ".extension." + lowerModuleName + ".constants";
 
         openEntry(filename, zos);
 
@@ -69,14 +69,14 @@ public class ExtensionModuleStaticSettingsJavaGenerator extends AbstractStaticAr
         pw.print(className);
         pw.println("() {");
 
-        pw.print("\t\tsuper(null, \"config/");
+        pw.print("\t\tsuper(null, \"config/extension-");
         pw.print(lowerModuleName);
-        pw.println("-extension-module.xml\",");
+        pw.println("-module.xml\",");
         pw.print("\t\t\t\"");
         pw.print(ctx.getBasePackage());
-        pw.print(".resources.");
+        pw.print(".resources.extension-");
         pw.print(lowerModuleName);
-        pw.print("-extension-messages\");");
+        pw.print("-messages\");");
 
         pw.println("\t}");
 

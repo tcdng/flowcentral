@@ -53,6 +53,7 @@ import com.tcdng.unify.web.ui.widget.control.AbstractPopupTextField;
         @UplAttribute(name = "buttonSymbol", type = String.class, defaultVal = "table-list"),
         @UplAttribute(name = "selectOnly", type = boolean.class, defaultVal = "false"),
         @UplAttribute(name = "selectOnlyBinding", type = String.class),
+        @UplAttribute(name = "filterBinding", type = String.class),
         @UplAttribute(name = "listKey", type = String.class),
         @UplAttribute(name = "space", type = boolean.class, defaultVal = "false"),
         @UplAttribute(name = "special", type = boolean.class, defaultVal = "false"),
@@ -84,7 +85,6 @@ public class EntityTextSelectWidget extends AbstractPopupTextField {
 
     @Action
     public final void search() throws UnifyException {
-        String input = getRequestTarget(String.class);
         RefDef refDef = getRefDef();
         TableDef tableDef = applicationModuleService.getTableDef(refDef.getSearchTable());
         int limit = getUplAttribute(int.class, "limit");
@@ -92,8 +92,14 @@ public class EntityTextSelectWidget extends AbstractPopupTextField {
                 getValueStore(), refDef.getSelectHandler(), limit);
         String label = tableDef.getEntityDef().getFieldDef(refDef.getSearchField()).getFieldLabel() + ":";
         entitySelect.setLabel(label);
-        if (input != null && !input.trim().isEmpty()) {
-            entitySelect.setFilter(input);
+        String defaultFilter = getDefaultFilter();
+        if (!StringUtils.isBlank(defaultFilter)) {
+            entitySelect.setFilter(defaultFilter);
+        } else {
+            String input = getRequestTarget(String.class);
+            if (input != null && !input.trim().isEmpty()) {
+                entitySelect.setFilter(input);
+            }
         }
         
         Restriction br = null;
@@ -164,7 +170,7 @@ public class EntityTextSelectWidget extends AbstractPopupTextField {
         return !StringUtils.isBlank(selectOnlyBinding) ? getValue(boolean.class, selectOnlyBinding)
                 : getUplAttribute(boolean.class, "selectOnly");
     }
-
+    
     public TextType type() throws UnifyException {
         return getUplAttribute(TextType.class, "text");
     }
@@ -177,6 +183,11 @@ public class EntityTextSelectWidget extends AbstractPopupTextField {
         }
 
         return null;
+    }
+
+    private String getDefaultFilter() throws UnifyException {
+        String filterBinding = getUplAttribute(String.class, "filterBinding");
+        return !StringUtils.isBlank(filterBinding) ? getValue(String.class, filterBinding) : null;
     }
 
     private RefDef getRefDef() throws UnifyException {

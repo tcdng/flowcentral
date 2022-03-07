@@ -33,11 +33,9 @@
 	caption:$m{extensionmodulestaticfilesgenerationpage.generationdetails.caption}
 !ui-panel:generationBodyPanel
 	layout:$d{!ui-vertical style:$s{width:100%;} showCaption:true cellStyle:$s{padding:5px 2px;}}
-	components:$c{frmBasePackage frmModuleId generateBtn}	
+	components:$c{frmBasePackage generateBtn}	
 !ui-name:frmBasePackage caption:$m{extensionmodulestaticfilesgeneration.form.basepackage}
 	period:true case:lower binding:basePackage required:true size:48
-!ui-select:frmModuleId caption:$m{extensionmodulestaticfilesgeneration.form.module}
-	list:$s{modulelist} blankOption:$s{} binding:moduleId required:true
 !ui-button:generateBtn styleClass:$e{fc-bluebutton} caption:$m{button.generate}
 	eventHandler:$d{!ui-event event:onclick action:$c{generateAct}}
 	
