@@ -14,44 +14,33 @@
  * the License.
  */
 
-package com.flowcentraltech.flowcentral.codegeneration.data;
+package com.flowcentraltech.flowcentral.codegeneration.generators;
+
+import java.util.HashSet;
+import java.util.Set;
 
 /**
- * Code generation item.
+ * Extension static file builder context.
  * 
  * @author FlowCentral Technologies Limited
  * @since 1.0
  */
-public class CodeGenerationItem {
+public class ExtensionStaticFileBuilderContext {
+
+    private Set<String> zipDirs;
 
     private String basePackage;
-    
-    private String filename;
-    
-    private byte[] data;
 
-    public CodeGenerationItem(String basePackage) {
+    public ExtensionStaticFileBuilderContext(String basePackage) {
+        this.zipDirs = new HashSet<String>();
         this.basePackage = basePackage;
+    }
+
+    public boolean addZipDir(String zipDir) {
+        return zipDirs.add(zipDir);
     }
 
     public String getBasePackage() {
         return basePackage;
     }
-
-    public String getFilename() {
-        return filename;
-    }
-
-    public void setFilename(String filename) {
-        this.filename = filename;
-    }
-
-    public byte[] getData() {
-        return data;
-    }
-
-    public void setData(byte[] data) {
-        this.data = data;
-    }
-    
 }

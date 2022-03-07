@@ -137,7 +137,7 @@ public class ApplicationXmlGenerator extends AbstractStaticArtifactGenerator {
     @Override
     protected void doGenerate(ExtensionModuleStaticFileBuilderContext ctx, String applicationName, ZipOutputStream zos)
             throws UnifyException {
-        final String filename = applicationName.toLowerCase() + "-extension-application.xml";
+        final String filename = "extension-" + applicationName.toLowerCase() + "-application.xml";
         openEntry(filename, zos);
 
         final AppConfig appConfig = new AppConfig();

@@ -17,10 +17,8 @@
 package com.flowcentraltech.flowcentral.codegeneration.generators;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import com.flowcentraltech.flowcentral.application.entities.AppEntity;
 import com.flowcentraltech.flowcentral.application.util.ApplicationCodeGenUtils;
@@ -41,6 +39,8 @@ import com.flowcentraltech.flowcentral.configuration.xml.WfChannelsConfig;
  * @since 1.0
  */
 public class ExtensionModuleStaticFileBuilderContext {
+    
+    private ExtensionStaticFileBuilderContext mainCtx;
 
     private List<StaticApplicationConfig> staticApplicationConfigs;
 
@@ -50,28 +50,23 @@ public class ExtensionModuleStaticFileBuilderContext {
 
     private List<String> entityList;
 
-    private Set<String> zipDirs;
-
     private Map<String, String> messageReplacements;
-
-    private String basePackage;
 
     private String moduleName;
 
-    public ExtensionModuleStaticFileBuilderContext(String basePackage, String moduleName,
+    public ExtensionModuleStaticFileBuilderContext(ExtensionStaticFileBuilderContext mainCtx, String moduleName,
             Map<String, String> messageReplacements) {
         this.staticApplicationConfigs = new ArrayList<StaticApplicationConfig>();
         this.moduleAppsConfig = new ModuleAppsConfig();
         this.moduleAppsConfig.setModuleAppList(new ArrayList<ModuleAppConfig>());
         this.entityList = new ArrayList<String>();
-        this.zipDirs = new HashSet<String>();
-        this.basePackage = basePackage;
+        this.mainCtx = mainCtx;
         this.moduleName = moduleName;
         this.messageReplacements = messageReplacements;
     }
 
     public String getBasePackage() {
-        return basePackage;
+        return mainCtx.getBasePackage();
     }
 
     public String getModuleName() {
@@ -83,7 +78,7 @@ public class ExtensionModuleStaticFileBuilderContext {
     }
 
     public boolean addZipDir(String zipDir) {
-        return zipDirs.add(zipDir);
+        return mainCtx.addZipDir(zipDir);
     }
 
     public void addEntity(String entityName) {
@@ -176,6 +171,6 @@ public class ExtensionModuleStaticFileBuilderContext {
     }
 
     public String getExtensionEntityClassName(AppEntity appEntity) {
-        return ApplicationCodeGenUtils.generateExtensionEntityClassName(basePackage, moduleName, appEntity.getName());
+        return ApplicationCodeGenUtils.generateExtensionEntityClassName(mainCtx.getBasePackage(), moduleName, appEntity.getName());
     }
 }

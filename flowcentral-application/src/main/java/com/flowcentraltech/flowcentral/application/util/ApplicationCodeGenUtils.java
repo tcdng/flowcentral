@@ -46,7 +46,7 @@ public final class ApplicationCodeGenUtils {
 
     public static String generateExtensionEntityClassName(String basePackage, String moduleName, String entityName) {
         return StringUtils.isBlank(entityName) ? null
-                : basePackage + "." + moduleName.toLowerCase() + ".extension.entities."
+                : basePackage + ".extension." + moduleName.toLowerCase() + ".entities."
                         + StringUtils.capitalizeFirstLetter(entityName);
     }
 }

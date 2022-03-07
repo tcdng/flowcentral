@@ -58,8 +58,7 @@ public class ExtensionModuleStaticFilesGenerationPageController
     @Action
     public String generateStaticFiles() throws UnifyException {
         ExtensionModuleStaticFilesGenerationPageBean pageBean = getPageBean();
-        final String moduleName = systemModuleService.getModuleName(pageBean.getModuleId());
-        pageBean.setCodeGenerationItem(new CodeGenerationItem(pageBean.getBasePackage(), moduleName));
+        pageBean.setCodeGenerationItem(new CodeGenerationItem(pageBean.getBasePackage()));
         TaskSetup taskSetup = TaskSetup.newBuilder()
                 .addTask(CodeGenerationTaskConstants.GENERATE_EXTENSION_MODULE_FILES_TASK_NAME)
                 .setParam(CodeGenerationTaskConstants.CODEGENERATION_ITEM, pageBean.getCodeGenerationItem())

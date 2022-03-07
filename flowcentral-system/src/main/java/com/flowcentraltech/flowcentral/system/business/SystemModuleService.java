@@ -135,6 +135,15 @@ public interface SystemModuleService extends FlowCentralService {
     String getModuleName(Long moduleId) throws UnifyException;
 
     /**
+     * Gets all the module names in this application.
+     * 
+     * @return the list of module names
+     * @throws UnifyException
+     *                        if an error occurs
+     */
+    List<String> getAllModuleNames() throws UnifyException;
+
+    /**
      * Gets system parameter value and converts to the specified type.
      * 
      * @param clazz

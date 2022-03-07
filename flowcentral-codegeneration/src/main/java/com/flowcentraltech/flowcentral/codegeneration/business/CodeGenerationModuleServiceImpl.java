@@ -31,6 +31,7 @@ import com.flowcentraltech.flowcentral.codegeneration.constants.CodeGenerationMo
 import com.flowcentraltech.flowcentral.codegeneration.constants.CodeGenerationTaskConstants;
 import com.flowcentraltech.flowcentral.codegeneration.data.CodeGenerationItem;
 import com.flowcentraltech.flowcentral.codegeneration.generators.ExtensionModuleStaticFileBuilderContext;
+import com.flowcentraltech.flowcentral.codegeneration.generators.ExtensionStaticFileBuilderContext;
 import com.flowcentraltech.flowcentral.codegeneration.generators.StaticArtifactGenerator;
 import com.flowcentraltech.flowcentral.codegeneration.util.CodeGenerationUtils;
 import com.flowcentraltech.flowcentral.common.business.AbstractFlowCentralService;
@@ -89,62 +90,68 @@ public class CodeGenerationModuleServiceImpl extends AbstractFlowCentralService
             limit = TaskExecLimit.ALLOW_MULTIPLE, schedulable = false)
     public int generateExtensionModuleFilesTask(TaskMonitor taskMonitor, CodeGenerationItem codeGenerationItem)
             throws UnifyException {
-        final String moduleName = codeGenerationItem.getSourceName();
+//        final String moduleName = codeGenerationItem.getSourceName();
         Date now = environment().getNow();
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ZipOutputStream zos = new ZipOutputStream(baos);
         try {
-            addTaskMessage(taskMonitor, "Generating code for extension module [{0}]", moduleName);
-            final String replacements = systemModuleService.getSysParameterValue(String.class, CodeGenerationModuleSysParamConstants.MESSAGE_REPLACEMENT_LIST);
-            Map<String, String> messageReplacements = CodeGenerationUtils.splitMessageReplacements(replacements);
-            addTaskMessage(taskMonitor, "Using message replacement list [{0}]...", replacements);
-            
-            ExtensionModuleStaticFileBuilderContext ctx = new ExtensionModuleStaticFileBuilderContext(
-                    codeGenerationItem.getBasePackage(), moduleName, messageReplacements);
+            ExtensionStaticFileBuilderContext mainCtx = new ExtensionStaticFileBuilderContext(codeGenerationItem.getBasePackage());
+            List<String> moduleList = systemModuleService.getAllModuleNames();
+            for (final String moduleName: moduleList) {
+                addTaskMessage(taskMonitor, "Generating code for extension module [{0}]", moduleName);
+                final String replacements = systemModuleService.getSysParameterValue(String.class, CodeGenerationModuleSysParamConstants.MESSAGE_REPLACEMENT_LIST);
+                Map<String, String> messageReplacements = CodeGenerationUtils.splitMessageReplacements(replacements);
+                addTaskMessage(taskMonitor, "Using message replacement list [{0}]...", replacements);
+                
+                ExtensionModuleStaticFileBuilderContext moduleCtx = new ExtensionModuleStaticFileBuilderContext(
+                        mainCtx, moduleName, messageReplacements);
 
-            // Generate applications
-            List<Application> applicationList = environment()
-                    .listAll(new ApplicationQuery().moduleName(moduleName).configType(ConfigType.CUSTOM));
-            for (Application application : applicationList) {
-                ctx.nextApplication(application.getName(), application.getDescription());
-                addTaskMessage(taskMonitor, "Generating artifacts for application [{0}]...",
-                        application.getDescription());
-                for (String generatorName : APPLICATION_ARTIFACT_GENERATORS) {
-                    addTaskMessage(taskMonitor, "Executing artifact generator [{0}]...", generatorName);
-                    StaticArtifactGenerator generator = (StaticArtifactGenerator) getComponent(generatorName);
-                    generator.generate(ctx, application.getName(), zos);
+                // Generate applications
+                List<Application> applicationList = environment()
+                        .listAll(new ApplicationQuery().moduleName(moduleName).configType(ConfigType.CUSTOM)); // TODO Include CUSTOMIZED
+                if (!applicationList.isEmpty()) {
+                    for (Application application : applicationList) {
+                        moduleCtx.nextApplication(application.getName(), application.getDescription());
+                        addTaskMessage(taskMonitor, "Generating artifacts for application [{0}]...",
+                                application.getDescription());
+                        for (String generatorName : APPLICATION_ARTIFACT_GENERATORS) {
+                            addTaskMessage(taskMonitor, "Executing artifact generator [{0}]...", generatorName);
+                            StaticArtifactGenerator generator = (StaticArtifactGenerator) getComponent(generatorName);
+                            generator.generate(moduleCtx, application.getName(), zos);
+                        }
+                    }
+
+                    // Generate module configuration XML
+                    addTaskMessage(taskMonitor, "Generating module configuration for module [{0}]...", moduleName);
+                    addTaskMessage(taskMonitor, "Executing artifact generator [{0}]...", "extension-module-xml-generator");
+                    StaticArtifactGenerator generator = (StaticArtifactGenerator) getComponent("extension-module-xml-generator");
+                    generator.generate(moduleCtx, moduleName, zos);
+
+                    // Generate module static settings
+                    addTaskMessage(taskMonitor, "Generating static settings for module [{0}]...", moduleName);
+                    addTaskMessage(taskMonitor, "Executing artifact generator [{0}]...",
+                            "extension-module-static-settings-java-generator");
+                    generator = (StaticArtifactGenerator) getComponent("extension-module-static-settings-java-generator");
+                    generator.generate(moduleCtx, moduleName, zos);
+
+                    // Generate entity classes
+                    addTaskMessage(taskMonitor, "Generating entity classes for module [{0}]...", moduleName);
+                    addTaskMessage(taskMonitor, "Executing artifact generator [{0}]...",
+                            "extension-module-entities-java-generator");
+                    generator = (StaticArtifactGenerator) getComponent("extension-module-entities-java-generator");
+                    generator.generate(moduleCtx, moduleName, zos);
+
+                    // Generate messages
+                    addTaskMessage(taskMonitor, "Generating messages for module [{0}]...", moduleName);
+                    addTaskMessage(taskMonitor, "Executing artifact generator [{0}]...", "extension-module-messages-generator");
+                    generator = (StaticArtifactGenerator) getComponent(
+                            "extension-module-messages-generator");
+                    generator.generate(moduleCtx, moduleName, zos);
                 }
-            }
-
-            // Generate module configuration XML
-            addTaskMessage(taskMonitor, "Generating module configuration for module [{0}]...", moduleName);
-            addTaskMessage(taskMonitor, "Executing artifact generator [{0}]...", "extension-module-xml-generator");
-            StaticArtifactGenerator generator = (StaticArtifactGenerator) getComponent("extension-module-xml-generator");
-            generator.generate(ctx, moduleName, zos);
-
-            // Generate module static settings
-            addTaskMessage(taskMonitor, "Generating static settings for module [{0}]...", moduleName);
-            addTaskMessage(taskMonitor, "Executing artifact generator [{0}]...",
-                    "extension-module-static-settings-java-generator");
-            generator = (StaticArtifactGenerator) getComponent("extension-module-static-settings-java-generator");
-            generator.generate(ctx, moduleName, zos);
-
-            // Generate entity classes
-            addTaskMessage(taskMonitor, "Generating entity classes for module [{0}]...", moduleName);
-            addTaskMessage(taskMonitor, "Executing artifact generator [{0}]...",
-                    "extension-module-entities-java-generator");
-            generator = (StaticArtifactGenerator) getComponent("extension-module-entities-java-generator");
-            generator.generate(ctx, moduleName, zos);
-
-            // Generate messages
-            addTaskMessage(taskMonitor, "Generating messages for module [{0}]...", moduleName);
-            addTaskMessage(taskMonitor, "Executing artifact generator [{0}]...", "extension-module-messages-generator");
-            generator = (StaticArtifactGenerator) getComponent(
-                    "extension-module-messages-generator");
-            generator.generate(ctx, moduleName, zos);
+            }            
 
             SimpleDateFormat smf = new SimpleDateFormat("yyyyMMdd_HHmmss");
-            String zipFilename = String.format("%s_extension_%s%s", moduleName, smf.format(now), ".zip");
+            String zipFilename = String.format("flowcentral_extension_%s%s", smf.format(now), ".zip");
 
             IOUtils.close(zos);
             codeGenerationItem.setFilename(zipFilename);

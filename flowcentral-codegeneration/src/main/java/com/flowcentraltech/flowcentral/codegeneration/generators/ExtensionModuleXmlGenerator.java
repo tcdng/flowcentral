@@ -50,13 +50,13 @@ public class ExtensionModuleXmlGenerator extends AbstractStaticArtifactGenerator
     protected void doGenerate(ExtensionModuleStaticFileBuilderContext ctx, String moduleName, ZipOutputStream zos)
             throws UnifyException {
         final String lowerCaseModuleName = moduleName.toLowerCase();
-        final String filename =  lowerCaseModuleName + "-extension-module.xml";
+        final String filename =  "extension-" + lowerCaseModuleName + "-module.xml";
         openEntry(filename, zos);
         
         final ModuleConfig moduleConfig = new ModuleConfig();
         Module module = systemModuleService.findModule(moduleName);
-        String descKey = lowerCaseModuleName + ".extension.description";
-        String labelKey = lowerCaseModuleName + ".extension.label";
+        String descKey = "extension." + lowerCaseModuleName + ".description";
+        String labelKey = "extension." + lowerCaseModuleName + ".label";
         ctx.addMessage(StaticMessageCategoryType.HEADER, descKey, module.getDescription());
         ctx.addMessage(StaticMessageCategoryType.HEADER, labelKey, module.getLabel());
         moduleConfig.setName(moduleName);
