@@ -47,6 +47,9 @@ public class Branch extends BaseStatusEntity {
     @Column(name = "HEAD_OFFICE_FG")
     private boolean headOffice;
 
+    @Column(name = "ADDRESS", length = 512, nullable = true)
+    private String address;
+
     @ListOnly(key = "zoneId", property = "code")
     private String zoneCode;
 
@@ -90,6 +93,14 @@ public class Branch extends BaseStatusEntity {
 
     public void setHeadOffice(boolean headOffice) {
         this.headOffice = headOffice;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 
     public Long getZoneId() {
