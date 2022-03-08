@@ -70,6 +70,7 @@ import com.tcdng.unify.core.database.Database;
 import com.tcdng.unify.core.database.Entity;
 import com.tcdng.unify.core.database.Query;
 import com.tcdng.unify.core.filter.ObjectFilter;
+import com.tcdng.unify.core.system.entities.AbstractSequencedEntity;
 import com.tcdng.unify.core.util.DataUtils;
 import com.tcdng.unify.core.util.ReflectUtils;
 import com.tcdng.unify.core.util.StringUtils;
@@ -1067,11 +1068,15 @@ public abstract class AbstractEntityFormApplet extends AbstractApplet implements
         final FormContext formContext = form.getCtx();
         final Entity inst = (Entity) form.getFormBean();
         final AppletDef _currFormAppletDef = getFormAppletDef();
+        final EntityDef _entityDef = form.getFormDef().getEntityDef();
         EntityActionResult entityActionResult = null;
         Long entityInstId = (Long) inst.getId();
         if (viewMode.isCreateForm()) {
             entityActionResult = createInst();
             entityInstId = (Long) entityActionResult.getResult();
+            if(_entityDef.delegated()) {
+                ((AbstractSequencedEntity) inst).setId(entityInstId);
+            }
         }
 
         // Review form
@@ -1080,7 +1085,7 @@ public abstract class AbstractEntityFormApplet extends AbstractApplet implements
         if (formContext.isWithReviewErrors()) {
             enterMaintainForm(formContext, entityInstId);
             entityActionResult = new EntityActionResult(
-                    new EntityActionContext(form.getFormDef().getEntityDef(), inst, null));
+                    new EntityActionContext(_entityDef, inst, null));
         } else {
             String channel = _currFormAppletDef.getPropValue(String.class,
                     AppletPropertyConstants.MAINTAIN_FORM_SUBMIT_WORKFLOW_CHANNEL);
@@ -1094,7 +1099,7 @@ public abstract class AbstractEntityFormApplet extends AbstractApplet implements
             }
             
             entityActionResult = getAu().getWorkItemUtilities()
-                    .submitToWorkflowChannel(form.getFormDef().getEntityDef(), channel, (WorkEntity) inst, policy);
+                    .submitToWorkflowChannel(_entityDef, channel, (WorkEntity) inst, policy);
             if (actionMode.isWithNext()) {
                 enterNextForm();
             } else {

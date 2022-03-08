@@ -45,9 +45,10 @@ public class ReviewWorkItemsAppletPanel extends AbstractEntityFormAppletPanel {
 
         ReviewWorkItemsApplet applet = getReviewWorkItemsApplet();
         boolean userActionRight = applet.isUserActionRight();
+        boolean editable = !applet.getCtx().isReadOnly();
         setVisible("frmActionBtns", userActionRight);
-        setVisible("updateBtn", userActionRight);
-        setVisible("updateCloseBtn", userActionRight);
+        setVisible("updateBtn", userActionRight && editable);
+        setVisible("updateCloseBtn", userActionRight && editable);
         setVisible("listFrmActionBtns", userActionRight);
         // TODO if userActionRight == false show held by someone else notification
         
