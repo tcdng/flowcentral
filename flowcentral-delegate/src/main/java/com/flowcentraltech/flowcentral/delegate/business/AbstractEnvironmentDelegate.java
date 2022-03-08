@@ -41,6 +41,7 @@ import com.flowcentraltech.flowcentral.delegate.constants.DelegateErrorCodeConst
 import com.tcdng.unify.convert.constants.EnumConst;
 import com.tcdng.unify.core.AbstractUnifyComponent;
 import com.tcdng.unify.core.UnifyException;
+import com.tcdng.unify.core.UserToken;
 import com.tcdng.unify.core.annotation.Configurable;
 import com.tcdng.unify.core.constant.LocaleType;
 import com.tcdng.unify.core.constant.PrintFormat;
@@ -500,7 +501,8 @@ public abstract class AbstractEnvironmentDelegate extends AbstractUnifyComponent
 
     private void setCreateAuditInformation(Entity entity) throws UnifyException {
         if (entity instanceof BaseAuditEntity) {
-            String userLoginId = getUserToken().getUserLoginId();
+            UserToken userToken = getUserToken();
+            String userLoginId = userToken != null ? userToken.getUserLoginId() : null;
             ((BaseAuditEntity) entity).setCreatedBy(userLoginId);
             ((BaseAuditEntity) entity).setUpdatedBy(userLoginId);
         }
@@ -508,7 +510,8 @@ public abstract class AbstractEnvironmentDelegate extends AbstractUnifyComponent
     
     private void setUpdateAuditInformation(Entity entity) throws UnifyException {
         if (entity instanceof BaseAuditEntity) {
-            String userLoginId = getUserToken().getUserLoginId();
+            UserToken userToken = getUserToken();
+            String userLoginId = userToken != null ? userToken.getUserLoginId() : null;
             ((BaseAuditEntity) entity).setUpdatedBy(userLoginId);
         }
     }
@@ -516,7 +519,8 @@ public abstract class AbstractEnvironmentDelegate extends AbstractUnifyComponent
     private void setUpdateAuditInformation(Class<? extends Entity> entityClass, Object id, Update update)
             throws UnifyException {
         if (BaseAuditEntity.class.isAssignableFrom(entityClass)) {
-            String userLoginId = getUserToken().getUserLoginId();
+            UserToken userToken = getUserToken();
+            String userLoginId = userToken != null ? userToken.getUserLoginId() : null;
             update.add("updatedBy", userLoginId);
         }
     }
