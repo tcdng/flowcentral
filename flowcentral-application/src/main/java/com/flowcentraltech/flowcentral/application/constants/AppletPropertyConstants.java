@@ -42,6 +42,8 @@ public interface AppletPropertyConstants {
 
     String SEARCH_TABLE_ACTIONFOOTER = "searchTable.actionFooter";
 
+    String SEARCH_TABLE_BASICSEARCHONLY = "searchTable.basicSearchOnly";
+    
     String ENTITY_FORM = "entityForm";
 
     String CREATE_FORM = "createForm";

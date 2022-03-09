@@ -3597,6 +3597,9 @@
 				<property name="searchTable.report"
 					description="$m{studio.appappletprop.manageentity.searchtable.report}"
 					inputWidget="application.checkbox" />
+				<property name="searchTable.basicSearchOnly"
+					description="$m{studio.appappletprop.manageentity.searchtable.basicsearchonly}"
+					inputWidget="application.checkbox" />
 			</propertySet>
 			<propertySet
 				label="$m{studio.appappletprop.manageentity.formproperties}">
@@ -3727,6 +3730,9 @@
 					inputWidget="application.checkbox" />
 				<property name="searchTable.report"
 					description="$m{studio.appappletprop.manageentitysingleform.searchtable.report}"
+					inputWidget="application.checkbox" />
+				<property name="searchTable.basicSearchOnly"
+					description="$m{studio.appappletprop.manageentity.searchtable.basicsearchonly}"
 					inputWidget="application.checkbox" />
 			</propertySet>
 			<propertySet

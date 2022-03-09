@@ -54,6 +54,7 @@ import com.flowcentraltech.flowcentral.application.web.widgets.BreadCrumbs;
 import com.flowcentraltech.flowcentral.application.web.widgets.BreadCrumbs.BreadCrumb;
 import com.flowcentraltech.flowcentral.application.web.widgets.TabSheet.TabSheetItem;
 import com.flowcentraltech.flowcentral.common.business.SequenceCodeGenerator;
+import com.flowcentraltech.flowcentral.common.business.policies.ConsolidatedFormStatePolicy;
 import com.flowcentraltech.flowcentral.common.business.policies.EntityActionContext;
 import com.flowcentraltech.flowcentral.common.business.policies.EntityActionResult;
 import com.flowcentraltech.flowcentral.common.business.policies.SweepingCommitPolicy;
@@ -805,6 +806,7 @@ public abstract class AbstractEntityFormApplet extends AbstractApplet implements
 
         final HeaderWithTabsForm form = au.constructHeaderWithTabsForm(this, getRootAppletDef().getDescription(),
                 beanTitle, formDef, inst, formMode, makeFormBreadCrumbs(), formSwitchOnChangeHandlers);
+        final ValueStore formValueStore = form.getCtx().getFormValueStore();
         final boolean isReference = !StringUtils.isBlank(childFkFieldName);
         if (isReference) {
             form.getCtx().setFixedReference(childFkFieldName);
@@ -828,7 +830,7 @@ public abstract class AbstractEntityFormApplet extends AbstractApplet implements
                         .getOnCreateFormStatePolicyDef(onCreateStatePolicy);
                 if (onCreateFormStatePolicyDef.isSetValues()) {
                     onCreateFormStatePolicyDef.getSetValuesDef().apply(au, formDef.getEntityDef(), au.getNow(),
-                            form.getCtx().getFormValueStore(), null);
+                            formValueStore, null);
                 }
             }
 
@@ -849,10 +851,16 @@ public abstract class AbstractEntityFormApplet extends AbstractApplet implements
         for (FormStatePolicyDef formStatePolicyDef : formDef.getOnFormConstructSetValuesFormStatePolicyDefList()) {
             if (formStatePolicyDef.isSetValues()) {
                 formStatePolicyDef.getSetValuesDef().apply(au, formDef.getEntityDef(), au.getNow(),
-                        form.getCtx().getFormValueStore(), null);
+                        formValueStore, null);
             }
         }
 
+        if (formDef.isWithConsolidatedFormState()) {
+            ConsolidatedFormStatePolicy policy = getAu().getComponent(ConsolidatedFormStatePolicy.class,
+                    formDef.getConsolidatedFormState());
+            policy.onFormConstuct(formValueStore);
+        }
+        
         return form;
     }
 

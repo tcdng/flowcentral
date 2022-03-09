@@ -31,6 +31,16 @@ import com.tcdng.unify.core.data.ValueStore;
 public interface ConsolidatedFormStatePolicy extends UnifyComponent {
 
     /**
+     * Executed on form construction.
+     * 
+     * @param instValueStore
+     *                       the form bean value store
+     * @throws UnifyException
+     *                        if an error occurs
+     */
+    void onFormConstuct(ValueStore instValueStore) throws UnifyException;
+    
+    /**
      * Perform the form tab states.
      * 
      * @param instValueStore
