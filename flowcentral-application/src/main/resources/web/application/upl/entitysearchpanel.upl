@@ -63,8 +63,6 @@
 !ui-panel:searchEntriesPanel styleClass:$s{filall} layout:$d{!ui-horizontal style:$s{width:100%;}  widths:$l{100% none}}
 	components:$c{searchEntriesBody switchToAdvanced}
 
-//!ui-panel:searchEntriesHeader layout:$d{!ui-horizontal style:$s{width:100%; text-align:right;}} 	
-//	components:$c{switchToAdvanced}
 !ui-label:switchToAdvanced styleClass:$s{filswitch} caption:$s{Switch to Advanced}
     eventHandler:$d{!ui-event event:onclick action:$c{switchToAdvancedAct}}
 

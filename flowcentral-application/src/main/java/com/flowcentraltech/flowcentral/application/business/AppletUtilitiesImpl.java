@@ -909,9 +909,12 @@ public class AppletUtilitiesImpl extends AbstractUnifyComponent implements Apple
             entitySearchMode = entitySearchMode & ~EntitySearch.SHOW_ACTIONFOOTER;
         }
 
+        final boolean basicSearchOnly = _appletDef.getPropValue(boolean.class,
+                AppletPropertyConstants.SEARCH_TABLE_BASICSEARCHONLY, false);
         EntitySearch _entitySearch = new EntitySearch(ctx, sweepingCommitPolicy, tabName, _tableDef, _appletDef.getId(),
                 editAction, entitySearchMode);
         _entitySearch.setPaginationLabel(resolveSessionMessage("$m{entitysearch.display.label}"));
+        _entitySearch.setBasicSearchOnly(basicSearchOnly);
         if (_appletDef.isDescriptiveButtons()) {
             String addCaption = _appletDef.getPropValue(String.class, AppletPropertyConstants.SEARCH_TABLE_NEW_CAPTION);
             if (!StringUtils.isBlank(addCaption)) {

@@ -100,6 +100,8 @@ public class EntitySearch extends AbstractPanelFormBinding {
 
     private boolean filterEditorVisible;
 
+    private boolean basicSearchOnly;
+
     public EntitySearch(FormContext ctx, SweepingCommitPolicy sweepingCommitPolicy, String tabName, TableDef tableDef,
             Long appAppletId, String editAction, int mode) {
         super(ctx, sweepingCommitPolicy, tabName);
@@ -395,6 +397,14 @@ public class EntitySearch extends AbstractPanelFormBinding {
 
     public boolean isFilterEditorPinned() {
         return filterEditorPinned;
+    }
+
+    public boolean isBasicSearchOnly() {
+        return basicSearchOnly;
+    }
+
+    public void setBasicSearchOnly(boolean basicSearchOnly) {
+        this.basicSearchOnly = basicSearchOnly;
     }
 
     public boolean isNewButtonVisible() {

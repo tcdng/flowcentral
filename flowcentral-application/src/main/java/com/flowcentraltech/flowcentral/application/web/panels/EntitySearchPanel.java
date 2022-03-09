@@ -82,11 +82,12 @@ public class EntitySearchPanel extends AbstractPanel {
         setVisible("viewBtn",
                 entitySearch.isViewButtonVisible() && applicationPrivilegeManager.isRoleWithPrivilege(roleCode, entityDef.getEditPrivilege()));
         setVisible("switchToBasic", entityTable.isSupportsBasicSearch());
-        if (entityTable.isBasicSearchMode()) {
+        if (entitySearch.isBasicSearchOnly() || entityTable.isBasicSearchMode()) {
             setVisible("searchEntriesPanel", true);
             setVisible("searchFilterPanel", false);
             setVisible("quickFilterBlock", false);
             setVisible("footerActionPanel", entitySearch.isShowActionFooter());
+            setVisible("switchToAdvanced", !entitySearch.isBasicSearchOnly());
         } else {
             setVisible("searchEntriesPanel", false);
             setVisible("searchFilterPanel", true);            
