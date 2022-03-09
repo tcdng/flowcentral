@@ -65,6 +65,7 @@ import com.flowcentraltech.flowcentral.configuration.constants.FormReviewType;
 import com.flowcentraltech.flowcentral.configuration.constants.RecordActionType;
 import com.tcdng.unify.core.UnifyException;
 import com.tcdng.unify.core.criterion.Update;
+import com.tcdng.unify.core.data.BeanValueStore;
 import com.tcdng.unify.core.data.ValueStore;
 import com.tcdng.unify.core.data.ValueStoreReader;
 import com.tcdng.unify.core.database.Database;
@@ -804,6 +805,17 @@ public abstract class AbstractEntityFormApplet extends AbstractApplet implements
             formDef = form.getCtx().getFormDef();
         }
 
+        if (formMode.isMaintain()) {
+            if (formDef.isWithConsolidatedFormState()) {
+                ConsolidatedFormStatePolicy policy = getAu().getComponent(ConsolidatedFormStatePolicy.class,
+                        formDef.getConsolidatedFormState());
+                boolean autoUpdated = policy.performAutoUpdates(new BeanValueStore(inst));
+                if (autoUpdated) {
+                    inst = au.getEnvironment().listLean(inst.getClass(), inst.getId());
+                }
+            }
+        }
+
         final HeaderWithTabsForm form = au.constructHeaderWithTabsForm(this, getRootAppletDef().getDescription(),
                 beanTitle, formDef, inst, formMode, makeFormBreadCrumbs(), formSwitchOnChangeHandlers);
         final ValueStore formValueStore = form.getCtx().getFormValueStore();
@@ -850,17 +862,11 @@ public abstract class AbstractEntityFormApplet extends AbstractApplet implements
         // Fire on form construct value generators
         for (FormStatePolicyDef formStatePolicyDef : formDef.getOnFormConstructSetValuesFormStatePolicyDefList()) {
             if (formStatePolicyDef.isSetValues()) {
-                formStatePolicyDef.getSetValuesDef().apply(au, formDef.getEntityDef(), au.getNow(),
-                        formValueStore, null);
+                formStatePolicyDef.getSetValuesDef().apply(au, formDef.getEntityDef(), au.getNow(), formValueStore,
+                        null);
             }
         }
 
-        if (formDef.isWithConsolidatedFormState()) {
-            ConsolidatedFormStatePolicy policy = getAu().getComponent(ConsolidatedFormStatePolicy.class,
-                    formDef.getConsolidatedFormState());
-            policy.onFormConstuct(formValueStore);
-        }
-        
         return form;
     }
 
