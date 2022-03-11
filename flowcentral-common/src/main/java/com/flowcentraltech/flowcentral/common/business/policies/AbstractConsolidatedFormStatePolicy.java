@@ -45,14 +45,16 @@ public abstract class AbstractConsolidatedFormStatePolicy extends AbstractUnifyC
 
     @Override
     public final boolean performAutoUpdates(ValueStore instValueStore) throws UnifyException {
-        TargetFormWidgetStates states = evaluateWidgetStates(instValueStore.getReader(), null);
-        if (states.isWithValueList()) {
-            for (TargetFormValue targetFormValue: states.getTargetValueList()) {
-                instValueStore.store(targetFormValue.getFieldName(), targetFormValue.getValue());
-            }
+        if (autoUpdateSupported()) {
+            TargetFormWidgetStates states = evaluateWidgetStates(instValueStore.getReader(), null);
+            if (states.isWithValueList()) {
+                for (TargetFormValue targetFormValue: states.getTargetValueList()) {
+                    instValueStore.store(targetFormValue.getFieldName(), targetFormValue.getValue());
+                }
 
-            environmentService.updateLean((Entity) instValueStore.getValueObject());
-            return true;
+                environmentService.updateLean((Entity) instValueStore.getValueObject());
+                return true;
+            }
         }
         
         return false;
@@ -74,6 +76,8 @@ public abstract class AbstractConsolidatedFormStatePolicy extends AbstractUnifyC
         return states;
     }
 
+    protected abstract boolean autoUpdateSupported() throws UnifyException;
+    
     protected abstract void evaluateTabStates(ValueStoreReader reader, String trigger,
             TargetFormTabStates states) throws UnifyException;
 
