@@ -441,8 +441,9 @@ public class FormContext extends AbstractContext implements ErrorContext {
         if (formDef.isWithConsolidatedFormState()) {
             ConsolidatedFormStatePolicy policy = getAu().getComponent(ConsolidatedFormStatePolicy.class,
                     formDef.getConsolidatedFormState());
-            String trigger = triggerEvaluator != null? triggerEvaluator.evaluateTrigger(): null;
-            for (TargetFormState state : policy.evaluateTabStates(formValueStore, trigger).getTargetStateList()) {
+            String trigger = triggerEvaluator != null ? triggerEvaluator.evaluateTrigger() : null;
+            for (TargetFormState state : policy.evaluateTabStates(formValueStore.getReader(), trigger)
+                    .getTargetStateList()) {
                 for (String target : state.getTarget()) {
                     FormTab tb = formTabs.get(target);
                     if (tb != null) {

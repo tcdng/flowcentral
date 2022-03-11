@@ -221,7 +221,7 @@ public class MiniFormWidget extends AbstractMultiControl implements FormTriggerE
             if (formDef.isWithConsolidatedFormState()) {
                 ConsolidatedFormStatePolicy policy = ctx.getAu().getComponent(ConsolidatedFormStatePolicy.class,
                         formDef.getConsolidatedFormState());
-                TargetFormWidgetStates states = policy.evaluateWidgetStates(formValueStore, focusFieldName);
+                TargetFormWidgetStates states = policy.evaluateWidgetStates(formValueStore.getReader(), focusFieldName);
                 for (TargetFormState state : states.getTargetStateList()) {
                     if (state.isSectionRule()) {
                         for (String target : state.getTarget()) {
