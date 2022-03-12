@@ -48,6 +48,19 @@ public interface CollaborationProvider extends UnifyComponent {
      *                        if an error occurs
      */
     boolean isLicensedForCollaboration() throws UnifyException;
+
+    /**
+     * Checks if resource is frozen.
+     * 
+     * @param type
+     *                 the collaboration type
+     * @param resourceName
+     *                 the resource's long name
+     * @return true if frozen otherwise false
+     * @throws UnifyException
+     *                        if an error occurs
+     */
+    boolean isFrozen(CollaborationType type, String resourceName) throws UnifyException;
     
     /**
      * Gets lock information.
@@ -63,7 +76,7 @@ public interface CollaborationProvider extends UnifyComponent {
     CollaborationLockInfo getLockInfo(CollaborationType type, String resourceName) throws UnifyException;
 
     /**
-     * Checks if resource's is locked.
+     * Checks if resource is locked.
      * 
      * @param type
      *                 the collaboration type
@@ -76,7 +89,7 @@ public interface CollaborationProvider extends UnifyComponent {
     boolean isLocked(CollaborationType type, String resourceName) throws UnifyException;
 
     /**
-     * Checks if resource's is locked by user.
+     * Checks if resource is locked by user.
      * 
      * @param type
      *                 the collaboration type

@@ -16,11 +16,16 @@
 
 package com.flowcentraltech.flowcentral.studio.web.panels;
 
+import com.flowcentraltech.flowcentral.application.entities.BaseApplicationEntity;
+import com.flowcentraltech.flowcentral.application.util.ApplicationCollaborationUtils;
+import com.flowcentraltech.flowcentral.application.util.ApplicationNameUtils;
 import com.flowcentraltech.flowcentral.common.business.CollaborationProvider;
+import com.flowcentraltech.flowcentral.common.constants.CollaborationType;
 import com.flowcentraltech.flowcentral.studio.web.panels.applet.StudioAppComponentApplet;
 import com.tcdng.unify.core.UnifyException;
 import com.tcdng.unify.core.annotation.Configurable;
 import com.tcdng.unify.core.annotation.UplBinding;
+import com.tcdng.unify.core.database.Entity;
 import com.tcdng.unify.web.ui.widget.AbstractPanel;
 
 /**
@@ -48,7 +53,13 @@ public abstract class AbstractStudioEditorPagePanel extends AbstractPanel {
         final boolean isEditable = !applet.getCtx().isReadOnly();
         if (isCollaboration) {
             AbstractStudioEditorPage editorPage = getValue(AbstractStudioEditorPage.class);
-            if (isEditable) {
+            boolean isFrozen = checkFrozen((Entity) applet.getForm().getFormBean());
+            if (isFrozen) {
+                editorPage.setDisplayItemCounterClass("fc-dispcounterfrozen");
+                editorPage.setDisplayItemCounter(
+                        resolveSessionMessage("$m{entityformapplet.form.collaboration.frozen}"));
+                applet.getCtx().setReadOnly(true);
+            } else if (isEditable) {
                 editorPage.setDisplayItemCounterClass("fc-dispcountergreen");
                 editorPage.setDisplayItemCounter(
                         resolveSessionMessage("$m{entityformapplet.form.collaboration.editable}"));
@@ -58,10 +69,23 @@ public abstract class AbstractStudioEditorPagePanel extends AbstractPanel {
                         resolveSessionMessage("$m{entityformapplet.form.collaboration.viewonly}"));
             }
         }
+
         setVisible("displayCounterLabel", isCollaboration);
     }
 
     protected boolean isAppletContextReadOnly() throws UnifyException {
         return ((StudioAppComponentApplet) getValueStore().getValueObject()).getCtx().isReadOnly();
+    }
+    
+    private boolean checkFrozen(Entity inst) throws UnifyException {
+        BaseApplicationEntity _appInst = (BaseApplicationEntity) inst;
+        CollaborationType type = ApplicationCollaborationUtils.getCollaborationType(_appInst.getClass());
+        if (type != null) {
+            String resourceName = ApplicationNameUtils
+                    .getApplicationEntityLongName(_appInst.getApplicationName(), _appInst.getName());
+            return collaborationProvider.isFrozen(type, resourceName);
+        }
+        
+        return false;
     }
 }
