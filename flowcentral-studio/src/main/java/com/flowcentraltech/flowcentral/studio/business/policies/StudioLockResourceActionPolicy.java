@@ -65,7 +65,8 @@ public class StudioLockResourceActionPolicy extends AbstractCollaborationEntityA
             if (type != null) {
                 final String resourceName = ApplicationNameUtils
                         .getApplicationEntityLongName(_appInst.getApplicationName(), _appInst.getName());
-                return !getCollaborationProvider().isLockedBy(type, resourceName, getUserToken().getUserLoginId());
+                return !getCollaborationProvider().isFrozen(type, resourceName)
+                        && !getCollaborationProvider().isLockedBy(type, resourceName, getUserToken().getUserLoginId());
             }
         }
 
