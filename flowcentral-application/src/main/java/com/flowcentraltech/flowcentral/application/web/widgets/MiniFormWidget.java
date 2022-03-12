@@ -36,7 +36,6 @@ import com.flowcentraltech.flowcentral.application.web.data.FormContext.FormTab;
 import com.flowcentraltech.flowcentral.common.business.policies.ConsolidatedFormStatePolicy;
 import com.flowcentraltech.flowcentral.common.data.FormStateRule;
 import com.flowcentraltech.flowcentral.common.data.TargetFormState;
-import com.flowcentraltech.flowcentral.common.data.TargetFormValue;
 import com.flowcentraltech.flowcentral.common.data.TargetFormWidgetStates;
 import com.flowcentraltech.flowcentral.configuration.constants.FormColumnsType;
 import com.tcdng.unify.core.UnifyException;
@@ -221,7 +220,7 @@ public class MiniFormWidget extends AbstractMultiControl implements FormTriggerE
             if (formDef.isWithConsolidatedFormState()) {
                 ConsolidatedFormStatePolicy policy = ctx.getAu().getComponent(ConsolidatedFormStatePolicy.class,
                         formDef.getConsolidatedFormState());
-                TargetFormWidgetStates states = policy.evaluateWidgetStates(formValueStore, focusFieldName);
+                TargetFormWidgetStates states = policy.evaluateWidgetStates(formValueStore.getReader(), focusFieldName);
                 for (TargetFormState state : states.getTargetStateList()) {
                     if (state.isSectionRule()) {
                         for (String target : state.getTarget()) {
@@ -241,10 +240,7 @@ public class MiniFormWidget extends AbstractMultiControl implements FormTriggerE
                 }
                 
                 if (states.isWithValueList()) {
-                    for (TargetFormValue targetFormValue: states.getTargetValueList()) {
-                        formValueStore.store(targetFormValue.getFieldName(), targetFormValue.getValue());
-                    }
-
+                    states.applyValues(formValueStore);
                     setValuesExecuted = true;
                 }
             }

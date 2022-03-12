@@ -44,6 +44,7 @@ import com.flowcentraltech.flowcentral.common.data.FormMessage;
 import com.flowcentraltech.flowcentral.common.data.FormStateRule;
 import com.flowcentraltech.flowcentral.common.data.TargetFormMessage;
 import com.flowcentraltech.flowcentral.common.data.TargetFormState;
+import com.flowcentraltech.flowcentral.common.data.TargetFormTabStates;
 import com.flowcentraltech.flowcentral.configuration.constants.FormReviewType;
 import com.tcdng.unify.core.UnifyException;
 import com.tcdng.unify.core.data.ValueStore;
@@ -71,7 +72,7 @@ public class FormContext extends AbstractContext implements ErrorContext {
     private EventHandler[] formSwitchOnChangeHandlers;
 
     private FormTriggerEvaluator triggerEvaluator;
-    
+
     private ValueStore formValueStore;
 
     private Object oldInst;
@@ -441,14 +442,19 @@ public class FormContext extends AbstractContext implements ErrorContext {
         if (formDef.isWithConsolidatedFormState()) {
             ConsolidatedFormStatePolicy policy = getAu().getComponent(ConsolidatedFormStatePolicy.class,
                     formDef.getConsolidatedFormState());
-            String trigger = triggerEvaluator != null? triggerEvaluator.evaluateTrigger(): null;
-            for (TargetFormState state : policy.evaluateTabStates(formValueStore, trigger).getTargetStateList()) {
+            String trigger = triggerEvaluator != null ? triggerEvaluator.evaluateTrigger() : null;
+            TargetFormTabStates states = policy.evaluateTabStates(formValueStore.getReader(), trigger);
+            for (TargetFormState state : states.getTargetStateList()) {
                 for (String target : state.getTarget()) {
                     FormTab tb = formTabs.get(target);
                     if (tb != null) {
                         tb.applyStatePolicy(state);
                     }
                 }
+            }
+            
+            if (states.isWithValueList()) {
+                states.applyValues(formValueStore);
             }
         }
 

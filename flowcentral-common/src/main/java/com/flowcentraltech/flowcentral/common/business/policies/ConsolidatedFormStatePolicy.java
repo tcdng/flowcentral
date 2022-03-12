@@ -21,6 +21,7 @@ import com.flowcentraltech.flowcentral.common.data.TargetFormWidgetStates;
 import com.tcdng.unify.core.UnifyComponent;
 import com.tcdng.unify.core.UnifyException;
 import com.tcdng.unify.core.data.ValueStore;
+import com.tcdng.unify.core.data.ValueStoreReader;
 
 /**
  * Consolidated form state policy.
@@ -31,38 +32,39 @@ import com.tcdng.unify.core.data.ValueStore;
 public interface ConsolidatedFormStatePolicy extends UnifyComponent {
 
     /**
-     * Executed on form construction.
+     * Performs auto updates.
      * 
      * @param instValueStore
      *                       the form bean value store
+     * @return true if entity backed by value store was updated otherwise false
      * @throws UnifyException
      *                        if an error occurs
      */
-    void onFormConstuct(ValueStore instValueStore) throws UnifyException;
+    boolean performAutoUpdates(ValueStore instValueStore) throws UnifyException;
     
     /**
      * Perform the form tab states.
      * 
-     * @param instValueStore
-     *                       the object value store
+     * @param reader
+     *                       the object value store reader
      * @param trigger
      *                       optional form trigger
      * @return the form state result
      * @throws UnifyException
      *                        if an error occurs
      */
-    TargetFormTabStates evaluateTabStates(ValueStore instValueStore, String trigger) throws UnifyException;
+    TargetFormTabStates evaluateTabStates(ValueStoreReader reader, String trigger) throws UnifyException;
 
     /**
      * Perform the form widget states.
      * 
-     * @param instValueStore
-     *                       the object value store
+     * @param reader
+     *                       the object value store reader
      * @param trigger
      *                       optional form trigger
      * @return the form state result
      * @throws UnifyException
      *                        if an error occurs
      */
-    TargetFormWidgetStates evaluateWidgetStates(ValueStore instValueStore, String trigger) throws UnifyException;
+    TargetFormWidgetStates evaluateWidgetStates(ValueStoreReader reader, String trigger) throws UnifyException;
 }

@@ -209,6 +209,7 @@ public class ReviewWizardWorkItemsApplet extends AbstractEntityFormApplet {
 
 //        form = constructForm(wfWizardStepFormDef, currEntityInst, formMode, null, false);
         form = constructForm(currEntityInst, formMode, null, false);
+        currEntityInst = (Entity) form.getFormBean();
         form.setFormTitle(_wfWizardStepDef.getLabel());
         form.setFormStepIndex(index + 1);
         wfWizardStepIndex = index;

@@ -98,6 +98,7 @@ public class ReviewWorkItemsApplet extends AbstractEntityFormApplet {
         if (formDef.isInputForm()) {
             if (form == null) {
                 form = constructForm(formDef, currEntityInst, FormMode.MAINTAIN, null, false);
+                currEntityInst = (WorkEntity) form.getFormBean();
                 form.setFormTitle(getRootAppletDef().getLabel());
                 form.setFormActionDefList(wfStepDef.getFormActionDefList());
             } else {
