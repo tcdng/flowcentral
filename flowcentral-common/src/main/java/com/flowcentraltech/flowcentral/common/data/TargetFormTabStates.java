@@ -29,7 +29,7 @@ import com.tcdng.unify.core.util.DataUtils;
  * @author FlowCentral Technologies Limited
  * @since 1.0
  */
-public class TargetFormTabStates {
+public class TargetFormTabStates extends AbstractTargetFormStates {
 
     private List<TargetFormState> targetStateList;
 

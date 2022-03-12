@@ -18,7 +18,6 @@ package com.flowcentraltech.flowcentral.common.business.policies;
 
 import com.flowcentraltech.flowcentral.common.business.EnvironmentService;
 import com.flowcentraltech.flowcentral.common.data.TargetFormTabStates;
-import com.flowcentraltech.flowcentral.common.data.TargetFormValue;
 import com.flowcentraltech.flowcentral.common.data.TargetFormWidgetStates;
 import com.tcdng.unify.core.AbstractUnifyComponent;
 import com.tcdng.unify.core.UnifyException;
@@ -48,10 +47,7 @@ public abstract class AbstractConsolidatedFormStatePolicy extends AbstractUnifyC
         if (autoUpdateSupported()) {
             TargetFormWidgetStates states = evaluateWidgetStates(instValueStore.getReader(), null);
             if (states.isWithValueList()) {
-                for (TargetFormValue targetFormValue: states.getTargetValueList()) {
-                    instValueStore.store(targetFormValue.getFieldName(), targetFormValue.getValue());
-                }
-
+                states.applyValues(instValueStore);
                 environmentService.updateLean((Entity) instValueStore.getValueObject());
                 return true;
             }

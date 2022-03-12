@@ -29,15 +29,12 @@ import com.tcdng.unify.core.util.DataUtils;
  * @author FlowCentral Technologies Limited
  * @since 1.0
  */
-public class TargetFormWidgetStates {
+public class TargetFormWidgetStates extends AbstractTargetFormStates {
 
     private List<TargetFormState> targetStateList;
 
-    private List<TargetFormValue> targetValueList;
-
     public TargetFormWidgetStates() {
         this.targetStateList = new ArrayList<TargetFormState>();
-        this.targetValueList = new ArrayList<TargetFormValue>();
     }
 
     public void setSectionState(TriState required, TriState visible,
@@ -52,23 +49,12 @@ public class TargetFormWidgetStates {
                 editable, disabled, targets));
     }
 
-    public void setFieldValue(String fieldName, Object val) {
-        targetValueList.add(new TargetFormValue(fieldName, val));
-    }
-
     public List<TargetFormState> getTargetStateList() {
         return DataUtils.unmodifiableList(targetStateList);
-    }
-    
-    public List<TargetFormValue> getTargetValueList() {
-        return DataUtils.unmodifiableList(targetValueList);
     }
 
     public boolean isWithStateList() {
         return !DataUtils.isBlank(targetStateList);
     }
 
-    public boolean isWithValueList() {
-        return !DataUtils.isBlank(targetValueList);
-    }
 }
