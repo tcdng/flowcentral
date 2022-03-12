@@ -58,6 +58,7 @@ public abstract class AbstractStudioEditorPagePanel extends AbstractPanel {
                 editorPage.setDisplayItemCounterClass("fc-dispcounterfrozen");
                 editorPage.setDisplayItemCounter(
                         resolveSessionMessage("$m{entityformapplet.form.collaboration.frozen}"));
+                applet.getCtx().setReadOnly(true);
             } else if (isEditable) {
                 editorPage.setDisplayItemCounterClass("fc-dispcountergreen");
                 editorPage.setDisplayItemCounter(
