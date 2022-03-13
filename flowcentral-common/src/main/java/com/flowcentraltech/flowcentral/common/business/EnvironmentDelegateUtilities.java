@@ -29,7 +29,7 @@ import com.tcdng.unify.core.database.Query;
  * @since 1.0
  */
 public interface EnvironmentDelegateUtilities extends UnifyComponent {
-    
+
     /**
      * Encode object ID
      * 
@@ -105,4 +105,20 @@ public interface EnvironmentDelegateUtilities extends UnifyComponent {
      *                        if an error occurs
      */
     String resolveLongName(Class<? extends Entity> entityClass) throws UnifyException;
+
+    /**
+     * Decode entity query
+     * 
+     * @param entity
+     *                    the entity long name
+     * @param query
+     *                    the query definition
+     * @param order
+     *                    the order definition (optional)
+     * @return the decoded query object
+     * @throws UnifyException
+     *                        if an error occurs
+     */
+    Query<? extends Entity> decodeDelegateQuery(String entity, String query, String order)
+            throws UnifyException;
 }

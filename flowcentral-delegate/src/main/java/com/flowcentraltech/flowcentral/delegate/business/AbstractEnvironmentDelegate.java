@@ -26,7 +26,6 @@ import java.util.Map;
 import java.util.Set;
 
 import com.flowcentraltech.flowcentral.application.business.ApplicationModuleService;
-import com.flowcentraltech.flowcentral.application.constants.AppletRequestAttributeConstants;
 import com.flowcentraltech.flowcentral.application.data.EntityClassDef;
 import com.flowcentraltech.flowcentral.application.data.EntityDef;
 import com.flowcentraltech.flowcentral.application.data.EntityFieldDef;
@@ -37,14 +36,12 @@ import com.flowcentraltech.flowcentral.common.entities.BaseEntity;
 import com.flowcentraltech.flowcentral.connect.common.constants.DataSourceOperation;
 import com.flowcentraltech.flowcentral.connect.common.data.DataSourceRequest;
 import com.flowcentraltech.flowcentral.connect.common.data.DataSourceResponse;
-import com.flowcentraltech.flowcentral.delegate.constants.DelegateErrorCodeConstants;
 import com.tcdng.unify.convert.constants.EnumConst;
 import com.tcdng.unify.core.AbstractUnifyComponent;
 import com.tcdng.unify.core.UnifyException;
 import com.tcdng.unify.core.UserToken;
 import com.tcdng.unify.core.annotation.Configurable;
 import com.tcdng.unify.core.constant.LocaleType;
-import com.tcdng.unify.core.constant.PrintFormat;
 import com.tcdng.unify.core.criterion.Aggregate;
 import com.tcdng.unify.core.criterion.AggregateFunction;
 import com.tcdng.unify.core.criterion.Update;
@@ -458,36 +455,19 @@ public abstract class AbstractEnvironmentDelegate extends AbstractUnifyComponent
         return null;
     }
 
+    protected ApplicationModuleService applicationService() {
+        return applicationModuleService;
+    }
+
+    protected EnvironmentDelegateUtilities utilities() {
+        return utilities;
+    }
+
     protected String getLongName(Class<? extends Entity> entityClass) throws UnifyException {
         return utilities.resolveLongName(entityClass);
     }
 
-    protected DataSourceResponse sendToDelegateDatasourceService(DataSourceRequest req) throws UnifyException {
-        DataSourceResponse resp = null;
-        try {
-            String reqJSON = DataUtils.asJsonString(req, PrintFormat.NONE);
-            String respJSON = sendToDelegateDatasourceService(reqJSON);
-            resp = DataUtils.fromJsonString(DataSourceResponse.class, respJSON);
-            if (resp.error()) {
-                // TODO Translate to local exception and throw
-            }
-        } catch (UnifyException e) {
-            logError(e);
-            resp = new DataSourceResponse(e.getErrorCode(), getErrorMessage(LocaleType.SESSION, e.getUnifyError()));
-        } catch (Exception e) {
-            logError(e);
-            resp = new DataSourceResponse(DelegateErrorCodeConstants.DELEGATE_BACKEND_CONNECTION_ERROR, this
-                    .getSessionMessage(DelegateErrorCodeConstants.DELEGATE_BACKEND_CONNECTION_ERROR, e.getMessage()));
-        }
-
-        if (resp.error()) {
-            setRequestAttribute(AppletRequestAttributeConstants.SILENT_MULTIRECORD_SEARCH_ERROR_MSG, resp.getErrorMsg());
-        }
-        
-        return resp;
-    }
-
-    protected abstract String sendToDelegateDatasourceService(String jsonReq) throws UnifyException;
+    protected abstract DataSourceResponse sendToDelegateDatasourceService(DataSourceRequest req) throws UnifyException;
 
     @Override
     protected void onInitialize() throws UnifyException {
@@ -529,8 +509,8 @@ public abstract class AbstractEnvironmentDelegate extends AbstractUnifyComponent
             DataSourceRequest req) throws UnifyException {
         req.setEntity(utilities.resolveLongName(entityClass));
         DataSourceResponse resp = sendToDelegateDatasourceService(req);
-        String[] payload = resp.getPayload();
-        String result = payload != null && payload.length == 1 ? payload[0] : null;
+        Object[] payload = resp.getPayload();
+        Object result = payload != null && payload.length == 1 ? payload[0] : null;
         return DataUtils.convert(resultClass, result);
     }
 
@@ -539,7 +519,7 @@ public abstract class AbstractEnvironmentDelegate extends AbstractUnifyComponent
             DataSourceRequest req) throws UnifyException {
         req.setEntity(utilities.resolveLongName(entityClass));
         DataSourceResponse resp = sendToDelegateDatasourceService(req);
-        String[] payload = resp.getPayload();
+        Object[] payload = resp.getPayload();
         if (payload != null) {
             return DataUtils.convert(List.class, resultClass, Arrays.asList(payload));
         }
@@ -547,24 +527,39 @@ public abstract class AbstractEnvironmentDelegate extends AbstractUnifyComponent
         return Collections.emptyList();
     }
 
+    @SuppressWarnings("unchecked")
     private <T extends Entity> T singleEntityResultOperation(Class<T> entityClass, DataSourceRequest req)
             throws UnifyException {
         req.setEntity(utilities.resolveLongName(entityClass));
         DataSourceResponse resp = sendToDelegateDatasourceService(req);
-        String[] payload = resp.getPayload();
-        return payload != null && payload.length == 1 ? readEntityResultFromJsonPayload(entityClass, payload[0], req)
-                : null;
+        Object[] payload = resp.getPayload();
+        if (payload != null && payload.length == 1) {
+            if (payload instanceof String[]) {
+                return readEntityResultFromJsonPayload(entityClass, (String) payload[0], req);
+            }
+
+            return (T) payload[0];
+        }
+
+        return null;
     }
 
+    @SuppressWarnings("unchecked")
     private <T extends Entity> List<T> multipleEntityResultOperation(Class<T> entityClass, DataSourceRequest req)
             throws UnifyException {
         req.setEntity(utilities.resolveLongName(entityClass));
         DataSourceResponse resp = sendToDelegateDatasourceService(req);
-        String[] payload = resp.getPayload();
+        Object[] payload = resp.getPayload();
         if (payload != null && payload.length > 0) {
             List<T> resultList = new ArrayList<T>();
-            for (int i = 0; i < payload.length; i++) {
-                resultList.add(readEntityResultFromJsonPayload(entityClass, payload[i], req));
+            if (payload instanceof String[]) {
+                for (int i = 0; i < payload.length; i++) {
+                    resultList.add(readEntityResultFromJsonPayload(entityClass, (String) payload[i], req));
+                }
+            } else {
+                for (int i = 0; i < payload.length; i++) {
+                    resultList.add((T) payload[i]);
+                }
             }
 
             return resultList;

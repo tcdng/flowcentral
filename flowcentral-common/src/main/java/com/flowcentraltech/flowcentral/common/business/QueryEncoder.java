@@ -62,4 +62,20 @@ public interface QueryEncoder extends UnifyComponent {
      *                        if an error occurs
      */
     String encodeUpdate(Update update) throws UnifyException;
+
+    /**
+     * Decode entity query
+     * 
+     * @param entity
+     *                    the entity long name
+     * @param query
+     *                    the query definition
+     * @param order
+     *                    the order definition (optional)
+     * @return the decoded query object
+     * @throws UnifyException
+     *                        if an error occurs
+     */
+    Query<? extends Entity> decodeQuery(String entity, String query, String order)
+            throws UnifyException;
 }

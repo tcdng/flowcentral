@@ -61,6 +61,7 @@ import com.flowcentraltech.flowcentral.configuration.xml.SetValueConfig;
 import com.flowcentraltech.flowcentral.configuration.xml.SetValuesConfig;
 import com.tcdng.unify.core.UnifyException;
 import com.tcdng.unify.core.UnifyOperationException;
+import com.tcdng.unify.core.constant.OrderType;
 import com.tcdng.unify.core.constant.TextCase;
 import com.tcdng.unify.core.criterion.CompoundRestriction;
 import com.tcdng.unify.core.criterion.CriteriaBuilder;
@@ -68,6 +69,7 @@ import com.tcdng.unify.core.criterion.DoubleParamRestriction;
 import com.tcdng.unify.core.criterion.FilterConditionListType;
 import com.tcdng.unify.core.criterion.FilterConditionType;
 import com.tcdng.unify.core.criterion.MultipleParamRestriction;
+import com.tcdng.unify.core.criterion.Order;
 import com.tcdng.unify.core.criterion.Restriction;
 import com.tcdng.unify.core.criterion.SimpleRestriction;
 import com.tcdng.unify.core.criterion.SingleParamRestriction;
@@ -562,6 +564,43 @@ public final class InputWidgetUtils {
         return sw.toString();
     }
 
+    public static String getOrderDefinition(Order order) throws UnifyException {
+        if (order != null) {
+            StringBuilder sb = new StringBuilder();
+            for (Order.Part part : order.getParts()) {
+                sb.append(part.getField()).append("]").append(part.getType().name()).append("\r\n");
+            }
+
+            return sb.toString();
+        }
+        
+        return null;
+    }
+    
+    public static Order getOrder(String definition) throws UnifyException{
+        if (!StringUtils.isBlank(definition)) {
+            Order order = new Order();
+            BufferedReader reader = new BufferedReader(new StringReader(definition));
+            try {
+                String line = null;
+                while ((line = reader.readLine()) != null) {
+                    String[] p = line.split("]");
+                    String fieldName = p[0];
+                    OrderType type = OrderType.fromName(p[1]);
+                    order.add(fieldName, type);
+                }
+            } catch (IOException e) {
+                throw new UnifyOperationException(e);
+            } finally {
+                IOUtils.close(reader);
+            }
+            
+            return order;
+        }
+        
+        return null;
+    }
+    
     public static FilterConfig getFilterConfig(AppAppletFilter appAppletFilter) throws UnifyException {
         FilterConfig filterConfig = InputWidgetUtils.getFilterConfig(appAppletFilter.getName(),
                 appAppletFilter.getDescription(), appAppletFilter.getPreferredForm(), appAppletFilter.getFilter());
@@ -644,7 +683,28 @@ public final class InputWidgetUtils {
         if (appFilter != null) {
             FilterDef.Builder fdb = FilterDef.newBuilder();
             fdb.name(name).description(description).preferredForm(preferredForm);
-            BufferedReader reader = new BufferedReader(new StringReader(appFilter.getDefinition()));
+            addFilterDefinition(fdb, appFilter.getDefinition());
+            return fdb.build();
+        }
+
+        return null;
+    }
+
+    public static FilterDef getFilterDef(String filterDefinition)
+            throws UnifyException {
+        if (filterDefinition != null) {
+            FilterDef.Builder fdb = FilterDef.newBuilder();
+            addFilterDefinition(fdb, filterDefinition);
+            return fdb.build();
+        }
+
+        return null;
+    }
+
+    private static void addFilterDefinition(FilterDef.Builder fdb, String filterDefinition)
+            throws UnifyException {
+        if (filterDefinition != null) {
+            BufferedReader reader = new BufferedReader(new StringReader(filterDefinition));
             try {
                 String line = null;
                 while ((line = reader.readLine()) != null) {
@@ -661,11 +721,7 @@ public final class InputWidgetUtils {
             } finally {
                 IOUtils.close(reader);
             }
-
-            return fdb.build();
         }
-
-        return null;
     }
 
     public static FilterDef getFilterDef(Restriction restriction) throws UnifyException {

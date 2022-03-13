@@ -63,8 +63,16 @@ public abstract class AbstractDelegateWfEnrichmentPolicy extends AbstractWfEnric
         req.setEntity(utilities.resolveLongName(inst.getClass()));
         req.setPayload(utilities.encodeDelegateEntity(inst));
         ProcedureResponse resp =  sendToDelegateProcedureService(req);
-        String[] payload = resp.getPayload();
-        Entity respInst = payload != null && payload.length == 1 ? DataUtils.fromJsonString(inst.getClass(), payload[0]) : null;
+        Object[] payload = resp.getPayload();
+        Entity respInst = null;
+        if (payload != null && payload.length == 1) {
+            if (payload instanceof String[]) {
+                respInst = DataUtils.fromJsonString(inst.getClass(), (String) payload[0]);
+            } else {
+                respInst = (Entity) payload[0];
+            }
+        }
+
         if (respInst != null) {
             new BeanValueStore(inst).copy(new BeanValueStore(respInst));
         }

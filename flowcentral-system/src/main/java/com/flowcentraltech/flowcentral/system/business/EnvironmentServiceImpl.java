@@ -139,6 +139,12 @@ public class EnvironmentServiceImpl extends AbstractBusinessService
     }
 
     @Override
+    public Query<? extends Entity> decodeDelegateQuery(String entity, String query, String order)
+            throws UnifyException {
+        return queryEncoder.decodeQuery(entity, query, order);
+    }
+
+    @Override
     public String resolveLongName(Class<? extends Entity> entityClass) throws UnifyException {
         EnvironmentDelegateInfo delegateInfo = delegateInfoByEntityClass.get(entityClass);
         if (delegateInfo == null) {
