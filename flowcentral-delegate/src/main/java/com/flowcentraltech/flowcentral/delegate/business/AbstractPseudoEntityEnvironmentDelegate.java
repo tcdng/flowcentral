@@ -18,9 +18,11 @@ package com.flowcentraltech.flowcentral.delegate.business;
 
 import java.util.List;
 
+import com.flowcentraltech.flowcentral.common.business.EnvironmentService;
 import com.flowcentraltech.flowcentral.connect.common.data.DataSourceRequest;
 import com.flowcentraltech.flowcentral.connect.common.data.DataSourceResponse;
 import com.tcdng.unify.core.UnifyException;
+import com.tcdng.unify.core.annotation.Configurable;
 import com.tcdng.unify.core.database.Entity;
 import com.tcdng.unify.core.database.Query;
 
@@ -33,6 +35,17 @@ import com.tcdng.unify.core.database.Query;
 public abstract class AbstractPseudoEntityEnvironmentDelegate<T extends Entity> extends AbstractEnvironmentDelegate {
 
     private static final Object[] EMPTY_PAYLOAD = new Object[0];
+
+    @Configurable
+    private EnvironmentService environmentService;
+    
+    public final void setEnvironmentService(EnvironmentService environmentService) {
+        this.environmentService = environmentService;
+    }
+
+    protected final EnvironmentService environment() {
+        return environmentService;
+    }
 
     @Override
     protected DataSourceResponse sendToDelegateDatasourceService(DataSourceRequest req) throws UnifyException {
