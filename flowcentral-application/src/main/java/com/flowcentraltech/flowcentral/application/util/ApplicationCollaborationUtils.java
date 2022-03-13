@@ -38,6 +38,8 @@ public final class ApplicationCollaborationUtils {
 
     private static Map<Class<? extends BaseApplicationEntity>, CollaborationType> collaborationEntityTypeMapping;
 
+    private static Map<CollaborationType, Class<? extends BaseApplicationEntity>> entityTypeCollaborationMapping;
+
     static {
         collaborationEntityTypeMapping = new HashMap<Class<? extends BaseApplicationEntity>, CollaborationType>();
         collaborationEntityTypeMapping.put(AppWidgetType.class, CollaborationType.WIDGET);
@@ -46,6 +48,15 @@ public final class ApplicationCollaborationUtils {
         collaborationEntityTypeMapping.put(AppApplet.class, CollaborationType.APPLET);
         collaborationEntityTypeMapping.put(AppForm.class, CollaborationType.FORM);
         collaborationEntityTypeMapping.put(AppTable.class, CollaborationType.TABLE);
+        
+        
+        entityTypeCollaborationMapping = new HashMap<CollaborationType, Class<? extends BaseApplicationEntity>>();
+        entityTypeCollaborationMapping.put(CollaborationType.WIDGET, AppWidgetType.class);
+        entityTypeCollaborationMapping.put(CollaborationType.ENTITY, AppEntity.class);
+        entityTypeCollaborationMapping.put(CollaborationType.REFERENCE, AppRef.class);
+        entityTypeCollaborationMapping.put(CollaborationType.APPLET, AppApplet.class);
+        entityTypeCollaborationMapping.put(CollaborationType.FORM, AppForm.class);
+        entityTypeCollaborationMapping.put(CollaborationType.TABLE, AppTable.class);        
     }
 
     private ApplicationCollaborationUtils() {
@@ -57,8 +68,13 @@ public final class ApplicationCollaborationUtils {
         return collaborationEntityTypeMapping.get(applicationEntityClass);
     }
 
+    public static Class<? extends BaseApplicationEntity> getEntityClass(CollaborationType collaborationType) {
+        return entityTypeCollaborationMapping.get(collaborationType);
+    }
+
     public static void registerCollaborationType(Class<? extends BaseApplicationEntity> appEntityType,
             CollaborationType type) {
         collaborationEntityTypeMapping.put(appEntityType, type);
+        entityTypeCollaborationMapping.put(type, appEntityType);
     }
 }
