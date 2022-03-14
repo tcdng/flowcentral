@@ -23,6 +23,7 @@ import java.util.List;
 import com.flowcentraltech.flowcentral.application.business.ApplicationModuleService;
 import com.flowcentraltech.flowcentral.application.data.AppletDef;
 import com.flowcentraltech.flowcentral.application.util.ApplicationNameUtils;
+import com.flowcentraltech.flowcentral.common.business.ApplicationPrivilegeManager;
 import com.flowcentraltech.flowcentral.common.business.CodeGenerationProvider;
 import com.flowcentraltech.flowcentral.common.business.CollaborationProvider;
 import com.flowcentraltech.flowcentral.studio.business.StudioModuleService;
@@ -64,6 +65,9 @@ public class StudioMenuWriter extends AbstractPanelWriter {
     @Configurable
     private CodeGenerationProvider codeGenerationProvider;
 
+    @Configurable
+    private ApplicationPrivilegeManager appPrivilegeManager;
+
     private List<StudioAppComponentType> menuCategoryList = Collections
             .unmodifiableList(Arrays.asList(StudioAppComponentType.CODEGENERATION, StudioAppComponentType.WIDGET,
                     StudioAppComponentType.ENTITY, StudioAppComponentType.APPLET, StudioAppComponentType.REFERENCE,
@@ -92,6 +96,10 @@ public class StudioMenuWriter extends AbstractPanelWriter {
 
     public final void setCodeGenerationProvider(CodeGenerationProvider codeGenerationProvider) {
         this.codeGenerationProvider = codeGenerationProvider;
+    }
+
+    public final void setAppPrivilegeManager(ApplicationPrivilegeManager appPrivilegeManager) {
+        this.appPrivilegeManager = appPrivilegeManager;
     }
 
     @Override
@@ -221,19 +229,28 @@ public class StudioMenuWriter extends AbstractPanelWriter {
     }
 
     private List<AppletDef> getCollaborationAppletDefs(String applicationName) throws UnifyException {
+        final String roleCode = getUserToken().getRoleCode();
         List<AppletDef> appletDefList = new ArrayList<AppletDef>();
         for (String appletName : collaborationProvider.getCollaborationApplets()) {
-            appletDefList.add(applicationModuleService
-                    .getAppletDef(ApplicationNameUtils.addVestigialNamePart(appletName, applicationName)));
+            AppletDef _appletDef = applicationModuleService
+                    .getAppletDef(ApplicationNameUtils.addVestigialNamePart(appletName, applicationName));
+            if (appPrivilegeManager.isRoleWithPrivilege(roleCode, _appletDef.getPrivilege())) {
+                appletDefList.add(_appletDef);
+            }
         }
+
         return appletDefList;
     }
 
     private List<AppletDef> getCodeGenerationAppletDefs(String applicationName) throws UnifyException {
+        final String roleCode = getUserToken().getRoleCode();
         List<AppletDef> appletDefList = new ArrayList<AppletDef>();
         for (String appletName : codeGenerationProvider.getCodeGenerationApplets()) {
-            appletDefList.add(applicationModuleService
-                    .getAppletDef(ApplicationNameUtils.addVestigialNamePart(appletName, applicationName)));
+            AppletDef _appletDef = applicationModuleService
+                    .getAppletDef(ApplicationNameUtils.addVestigialNamePart(appletName, applicationName));
+            if (appPrivilegeManager.isRoleWithPrivilege(roleCode, _appletDef.getPrivilege())) {
+                appletDefList.add(_appletDef);
+            }
         }
         return appletDefList;
     }
