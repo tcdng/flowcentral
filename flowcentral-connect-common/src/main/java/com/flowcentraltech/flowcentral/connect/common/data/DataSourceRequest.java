@@ -175,9 +175,9 @@ public class DataSourceRequest extends BaseRequest {
 
     @Override
     public String toString() {
-        return "DataSourceRequest [operation=" + operation + ", entity=" + getEntity() + ", id=" + id + ", fieldName="
-                + fieldName + ", update=" + update + ", query=" + query + ", versionNo=" + versionNo + ", payload="
-                + Arrays.toString(getPayload()) + ", ignoreEmptyCriteria=" + ignoreEmptyCriteria + ", offset=" + offset
-                + ", limit=" + limit + "]";
+        return "DataSourceRequest [operation=" + operation + ", id=" + id + ", fieldName=" + fieldName + ", update="
+                + update + ", query=" + query + ", order=" + order + ", versionNo=" + versionNo
+                + ", ignoreEmptyCriteria=" + ignoreEmptyCriteria + ", offset=" + offset + ", limit=" + limit
+                + ", getPayload()=" + Arrays.toString(getPayload()) + ", getEntity()=" + getEntity() + "]";
     }
 }
