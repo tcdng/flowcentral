@@ -23,7 +23,7 @@ package com.flowcentraltech.flowcentral.connect.common.data;
  */
 public abstract class BaseResponse {
     
-    private String[] payload;
+    private Object[] payload;
 
     private String errorCode;
 
@@ -39,11 +39,11 @@ public abstract class BaseResponse {
 
     }
 
-    public String[] getPayload() {
+    public Object[] getPayload() {
         return payload;
     }
 
-    public void setPayload(String[] payload) {
+    public void setPayload(Object[] payload) {
         this.payload = payload;
     }
 

@@ -30,7 +30,7 @@ import com.tcdng.unify.core.UnifyException;
  * @author FlowCentral Technologies Limited
  * @since 1.0
  */
-public abstract class AbstractHttpPostEnvironmentDelegate extends AbstractEnvironmentDelegate {
+public abstract class AbstractHttpPostEnvironmentDelegate extends AbstractJsonEnvironmentDelegate {
 
     @Override
     protected String sendToDelegateDatasourceService(String jsonReq) throws UnifyException {

@@ -801,11 +801,21 @@ public abstract class AbstractEntityFormApplet extends AbstractApplet implements
     private HeaderWithTabsForm constructForm(FormDef formDef, Entity inst, FormMode formMode, String beanTitle,
             String childFkFieldName, boolean isChild) throws UnifyException {
         final AppletDef _currentFormAppletDef = getFormAppletDef();
+        final boolean isReference = !StringUtils.isBlank(childFkFieldName);
         if (formDef == null && formMode.isMaintain()) {
             formDef = form.getCtx().getFormDef();
         }
 
-        if (formMode.isMaintain()) {
+        if (formMode.isCreate()) {
+            if (isReference) {
+                if (isChild) {
+                    getAu().populateNewChildReferenceFields(currParentEntityDef, currFormTabDef.getReference(),
+                            currParentInst, inst);
+                } else { // Related List
+                    DataUtils.setBeanProperty(inst, childFkFieldName, currParentInst.getId());
+                }
+            }
+        } else if (formMode.isMaintain()) {
             if (formDef.isWithConsolidatedFormState()) {
                 ConsolidatedFormStatePolicy policy = getAu().getComponent(ConsolidatedFormStatePolicy.class,
                         formDef.getConsolidatedFormState());
@@ -819,21 +829,11 @@ public abstract class AbstractEntityFormApplet extends AbstractApplet implements
         final HeaderWithTabsForm form = au.constructHeaderWithTabsForm(this, getRootAppletDef().getDescription(),
                 beanTitle, formDef, inst, formMode, makeFormBreadCrumbs(), formSwitchOnChangeHandlers);
         final ValueStore formValueStore = form.getCtx().getFormValueStore();
-        final boolean isReference = !StringUtils.isBlank(childFkFieldName);
         if (isReference) {
             form.getCtx().setFixedReference(childFkFieldName);
         }
 
         if (formMode.isCreate()) {
-            if (isReference) {
-                if (isChild) {
-                    getAu().populateNewChildReferenceFields(currParentEntityDef, currFormTabDef.getReference(),
-                            currParentInst, (Entity) form.getFormBean());
-                } else { // Related List
-                    DataUtils.setBeanProperty(form.getFormBean(), childFkFieldName, currParentInst.getId());
-                }
-            }
-
             // Apply create state policy
             String onCreateStatePolicy = _currentFormAppletDef.getPropValue(String.class,
                     AppletPropertyConstants.CREATE_FORM_STATE_POLICY);

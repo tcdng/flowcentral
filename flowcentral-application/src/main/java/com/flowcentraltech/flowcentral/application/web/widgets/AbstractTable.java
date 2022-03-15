@@ -227,6 +227,7 @@ public abstract class AbstractTable<T, U> {
             return true;
         }
 
+        getDispItems();
         return false;
     }
 
