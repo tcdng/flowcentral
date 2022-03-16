@@ -167,6 +167,8 @@ public class ApplicationController extends AbstractApplicationForwarderControlle
                 FlowCentralSessionAttributeConstants.USERROLEOPTIONS);
         UserRoleInfo userRoleInfo = userRoleOptions.getUserRoleList().get(
                 getPageWidgetByShortName(Table.class, "userRoleOptionsPopup.roleTablePanel.contentTbl").getViewIndex());
+        ContentPanel contentPanel = getPageWidgetByShortName(ContentPanel.class, "content");
+        contentPanel.clearPages();
         return forwardToApplication(userRoleInfo);
     }
 

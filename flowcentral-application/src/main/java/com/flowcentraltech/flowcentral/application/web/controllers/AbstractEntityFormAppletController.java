@@ -46,6 +46,7 @@ public abstract class AbstractEntityFormAppletController<T extends AbstractEntit
         AbstractEntityFormApplet applet = pageBean.getApplet();
         int childTabIndex = getRequestTarget(int.class);
         applet.newChildItem(childTabIndex);
+        getPageRequestContextUtil().setContentScrollReset();
         return "refreshapplet";
     }
 
@@ -55,6 +56,7 @@ public abstract class AbstractEntityFormAppletController<T extends AbstractEntit
         AbstractEntityFormApplet applet = pageBean.getApplet();
         int childTabIndex = getRequestTarget(int.class);
         applet.newChildListItem(childTabIndex);
+        getPageRequestContextUtil().setContentScrollReset();
         return "refreshapplet";
     }
 
@@ -64,6 +66,7 @@ public abstract class AbstractEntityFormAppletController<T extends AbstractEntit
         AbstractEntityFormApplet applet = pageBean.getApplet();
         int childTabIndex = getRequestTarget(int.class);
         applet.editChildItem(childTabIndex);
+        getPageRequestContextUtil().setContentScrollReset();
         return "refreshapplet";
     }
 
@@ -73,6 +76,7 @@ public abstract class AbstractEntityFormAppletController<T extends AbstractEntit
         AbstractEntityFormApplet applet = pageBean.getApplet();
         int childTabIndex = getRequestTarget(int.class);
         applet.assignToChildItem(childTabIndex);
+        getPageRequestContextUtil().setContentScrollReset();
         return "refreshapplet";
     }
 
@@ -82,6 +86,7 @@ public abstract class AbstractEntityFormAppletController<T extends AbstractEntit
         AbstractEntityFormApplet applet = pageBean.getApplet();
         String relatedListName = getRequestTarget(String.class);
         applet.newRelatedListItem(relatedListName);
+        getPageRequestContextUtil().setContentScrollReset();
         return "refreshapplet";
     }
 
@@ -91,6 +96,7 @@ public abstract class AbstractEntityFormAppletController<T extends AbstractEntit
         AbstractEntityFormApplet applet = pageBean.getApplet();
         String appletName = getRequestTarget(String.class);
         applet.newHeadlessListItem(appletName);
+        getPageRequestContextUtil().setContentScrollReset();
         return "refreshapplet";
     }
 
@@ -100,6 +106,7 @@ public abstract class AbstractEntityFormAppletController<T extends AbstractEntit
         AbstractEntityFormApplet applet = pageBean.getApplet();
         String relatedListName = getRequestTarget(String.class);
         applet.assignToRelatedListItem(relatedListName);
+        getPageRequestContextUtil().setContentScrollReset();
         return "refreshapplet";
     }
 
@@ -109,6 +116,7 @@ public abstract class AbstractEntityFormAppletController<T extends AbstractEntit
         AbstractEntityFormApplet applet = pageBean.getApplet();
         int childTabIndex = getRequestTarget(int.class);
         applet.prepareItemProperties(childTabIndex);
+        getPageRequestContextUtil().setContentScrollReset();
         return "refreshapplet";
     }
 
