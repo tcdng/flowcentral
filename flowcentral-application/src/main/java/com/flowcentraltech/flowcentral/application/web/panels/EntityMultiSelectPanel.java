@@ -25,14 +25,14 @@ import com.tcdng.unify.web.constant.ResultMappingConstants;
 import com.tcdng.unify.web.ui.widget.AbstractPanel;
 
 /**
- * Entity select panel.
+ * Entity multi-select panel.
  * 
  * @author FlowCentral Technologies Limited
  * @since 1.0
  */
-@Component("fc-entityselectpanel")
-@UplBinding("web/application/upl/entityselectpanel.upl")
-public class EntitySelectPanel extends AbstractPanel {
+@Component("fc-entitymultiselectpanel")
+@UplBinding("web/application/upl/entitymultiselectpanel.upl")
+public class EntityMultiSelectPanel extends AbstractPanel {
 
     @Override
     public void switchState() throws UnifyException {
@@ -49,10 +49,9 @@ public class EntitySelectPanel extends AbstractPanel {
 
     @Action
     public void select() throws UnifyException {
-        int selectIndex = getRequestTarget(int.class);
         EntitySelect entitySelect = (EntitySelect) removeSessionAttribute(
                 FlowCentralSessionAttributeConstants.ENTITYSELECT);
-        entitySelect.select(selectIndex);
+        entitySelect.multiselect();
         removeSessionAttribute(FlowCentralSessionAttributeConstants.ENTITYSELECT);
         setCommandResultMapping(ApplicationResultMappingConstants.REFRESH_CONTENT);
     }

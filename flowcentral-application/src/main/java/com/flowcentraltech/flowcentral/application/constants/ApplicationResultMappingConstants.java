@@ -30,6 +30,8 @@ public interface ApplicationResultMappingConstants {
     
     String SHOW_ENTITY_SELECT = "showentityselect";
     
+    String SHOW_ENTITY_MULTISELECT = "showentitymultiselect";
+    
     String FORWARD_TO_HOME = "forwardtohome";
     
     String REFRESH_WORKSPACE = "refreshworkspace";

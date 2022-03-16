@@ -36,6 +36,7 @@ import com.flowcentraltech.flowcentral.application.data.FormRelatedListDef;
 import com.flowcentraltech.flowcentral.application.data.FormStatePolicyDef;
 import com.flowcentraltech.flowcentral.application.data.FormTabDef;
 import com.flowcentraltech.flowcentral.application.data.PropertyRuleDef;
+import com.flowcentraltech.flowcentral.application.data.RefDef;
 import com.flowcentraltech.flowcentral.application.util.ApplicationEntityUtils;
 import com.flowcentraltech.flowcentral.application.validation.FormContextEvaluator;
 import com.flowcentraltech.flowcentral.application.web.data.FormContext;
@@ -312,6 +313,18 @@ public abstract class AbstractEntityFormApplet extends AbstractApplet implements
         newChildItem(childTabIndex, true);
     }
 
+    public RefDef newChildMultiSelectRef(int childTabIndex) throws UnifyException {
+        FormTabDef _currFormTabDef = form.getFormDef().getFormTabDef(childTabIndex);
+        AppletDef _childAppletDef = getAppletDef(_currFormTabDef.getApplet());
+        String ref = _childAppletDef.getPropValue(String.class,
+                AppletPropertyConstants.SEARCH_TABLE_MULTISELECT_NEW_REF);
+        if (!StringUtils.isBlank(ref)) {
+            return au.getRefDef(ref);
+        }
+
+        return null;
+    }
+    
     private void newChildItem(int childTabIndex, boolean childList) throws UnifyException {
         FormTabDef _currFormTabDef = form.getFormDef().getFormTabDef(childTabIndex);
         AppletDef _childAppletDef = getAppletDef(_currFormTabDef.getApplet());

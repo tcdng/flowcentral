@@ -1,0 +1,49 @@
+// UPL template for entity multi-select panel
+// Copyright 2021-2022 FlowCentral Technologies Limited.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not
+// use this file except in compliance with the License. You may obtain a copy of
+// the License at
+// 
+// http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+// WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+// License for the specific language governing permissions and limitations under
+// the License.
+
+!fc-entitymultiselectpanel layout:$d{!ui-vertical}
+	components:$c{titleBar searchFilterPanel searchResultPanel footerActionPanel}
+
+// Header
+!ui-titlebar:titleBar caption:$m{entitymultiselectpanel.select} components:$c{closeBtn} draggable:true
+!ui-image:closeBtn src:$t{images/cross_white.png} styleClass:$e{tbbutton}
+     eventHandler:$d{!ui-event event:onclick action:$c{closeAct}}
+	
+// Search filter panel
+!ui-panel:searchFilterPanel styleClass:$s{filall} layout:$d{!ui-horizontal style:$s{width:100%;} widths:$l{96px none}}
+	components:$c{filterLabel filterInput}
+
+!ui-label:filterLabel styleClass:$e{search} binding:label	
+!ui-text:filterInput caption:$m{entitymultiselectpanel.filter} binding:filter focus:true
+    eventHandler:$d{!ui-event event:oninput action:$c{filterAct}}
+
+// Search result panel
+!ui-panel:searchResultPanel layout:$d{!ui-vertical style:$s{width:100%;}} components:$c{searchResultTbl}
+!fc-entitytable:searchResultTbl styleClass:$e{entityview} binding:entityTable valueMarker:$f{searchResultMarker}
+	multiSelect:true multiSelDependentList:$c{selectBtn}
+
+// Footer action panel
+!ui-panel:footerActionPanel styleClass:$e{footer} layout:$d{!ui-horizontal} components:$c{selectBtn cancelBtn}
+!ui-button:selectBtn caption:$m{button.select} styleClass:$e{fc-bluebutton}
+    eventHandler:$d{!ui-event event:onclick action:$c{selectAct}}
+!ui-button:cancelBtn caption:$m{button.cancel}
+    eventHandler:$d{!ui-event event:onclick action:$c{closeAct}}
+
+// Actions
+!ui-postcommand:filterAct command:search components:$c{filterInput}
+	 refresh:$c{searchResultPanel}
+!ui-postcommand:closeAct command:close
+!ui-postcommand:selectAct command:select debounce:true
+

@@ -3579,6 +3579,9 @@
 				<property name="searchTable.new.caption"
 					description="$m{studio.appappletprop.manageentity.searchtable.newcaption}"
 					inputWidget="application.text" />
+				<property name="searchTable.new.multiselect.ref"
+					description="$m{studio.appappletprop.manageentity.searchtable.newmultiselectref}"
+					inputWidget="studio.entityfieldreflist" />
 				<property name="searchTable"
 					description="$m{studio.appappletprop.manageentity.searchtable}"
 					inputWidget="studio.propertyapplettablelist" required="true" />
@@ -3713,6 +3716,9 @@
 				<property name="searchTable.new.caption"
 					description="$m{studio.appappletprop.manageentitysingleform.searchtable.newcaption}"
 					inputWidget="application.text" />
+				<property name="searchTable.new.multiselect.ref"
+					description="$m{studio.appappletprop.manageentity.searchtable.newmultiselectref}"
+					inputWidget="studio.entityfieldreflist" />
 				<property name="searchTable"
 					description="$m{studio.appappletprop.manageentitysingleform.searchtable}"
 					inputWidget="studio.propertyapplettablelist" required="true" />

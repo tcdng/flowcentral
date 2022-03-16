@@ -39,6 +39,7 @@ import com.flowcentraltech.flowcentral.application.web.panels.EntityFieldSequenc
 import com.flowcentraltech.flowcentral.application.web.panels.EntityFilter;
 import com.flowcentraltech.flowcentral.application.web.panels.EntityParamValues;
 import com.flowcentraltech.flowcentral.application.web.panels.EntitySearch;
+import com.flowcentraltech.flowcentral.application.web.panels.EntitySelect;
 import com.flowcentraltech.flowcentral.application.web.panels.EntitySetValues;
 import com.flowcentraltech.flowcentral.application.web.panels.EntitySingleForm;
 import com.flowcentraltech.flowcentral.application.web.panels.HeaderWithTabsForm;
@@ -60,6 +61,7 @@ import com.tcdng.unify.core.criterion.Restriction;
 import com.tcdng.unify.core.data.Listable;
 import com.tcdng.unify.core.data.MapValues;
 import com.tcdng.unify.core.data.ParamConfig;
+import com.tcdng.unify.core.data.ValueStore;
 import com.tcdng.unify.core.database.Entity;
 import com.tcdng.unify.core.upl.UplComponent;
 import com.tcdng.unify.web.ui.widget.EventHandler;
@@ -732,6 +734,24 @@ public interface AppletUtilities extends UnifyComponent {
      */
     EntitySearch constructEntitySearch(FormContext ctx, SweepingCommitPolicy sweepingCommitPolicy, String tabName,
             String rootTitle, AppletDef _appletDef, String editAction, int entitySearchMode) throws UnifyException;
+
+    /**
+     * Constructs an entity select object.
+     * 
+     * @param refDef
+     *                   the reference definition
+     * @param valueStore
+     *                   the value store
+     * @param filter
+     *                   the initial filter (optional)
+     * @param limit
+     *                   the limit (optional)
+     * @return the entity select object
+     * @throws UnifyException
+     *                        if an error occurs
+     */
+    EntitySelect constructEntitySelect(RefDef refDef, ValueStore valueStore, String filter, int limit)
+            throws UnifyException;
 
     /**
      * Constructs entity child.

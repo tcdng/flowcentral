@@ -57,6 +57,8 @@ import com.tcdng.unify.web.ui.widget.control.Table;
                 response = { "!showpopupresponse popup:$s{userDetailsPopup}" }),
         @ResultMapping(name = ApplicationResultMappingConstants.SHOW_ENTITY_SELECT,
                 response = { "!showpopupresponse popup:$s{entitySelectPopup}" }),
+        @ResultMapping(name = ApplicationResultMappingConstants.SHOW_ENTITY_MULTISELECT,
+                response = { "!showpopupresponse popup:$s{entityMultiselectPopup}" }),
         @ResultMapping(name = ApplicationResultMappingConstants.FORWARD_TO_HOME,
                 response = { "!forwardresponse path:$x{application.web.home}" }),
         @ResultMapping(name = ApplicationResultMappingConstants.REFRESH_WORKSPACE,

@@ -52,6 +52,7 @@ import com.flowcentraltech.flowcentral.application.web.panels.EntityFieldSequenc
 import com.flowcentraltech.flowcentral.application.web.panels.EntityFilter;
 import com.flowcentraltech.flowcentral.application.web.panels.EntityParamValues;
 import com.flowcentraltech.flowcentral.application.web.panels.EntitySearch;
+import com.flowcentraltech.flowcentral.application.web.panels.EntitySelect;
 import com.flowcentraltech.flowcentral.application.web.panels.EntitySetValues;
 import com.flowcentraltech.flowcentral.application.web.panels.EntitySingleForm;
 import com.flowcentraltech.flowcentral.application.web.panels.HeaderWithTabsForm;
@@ -95,6 +96,7 @@ import com.tcdng.unify.core.data.FactoryMap;
 import com.tcdng.unify.core.data.Listable;
 import com.tcdng.unify.core.data.MapValues;
 import com.tcdng.unify.core.data.ParamConfig;
+import com.tcdng.unify.core.data.ValueStore;
 import com.tcdng.unify.core.data.ValueStoreReader;
 import com.tcdng.unify.core.database.Entity;
 import com.tcdng.unify.core.database.Query;
@@ -930,6 +932,36 @@ public class AppletUtilitiesImpl extends AbstractUnifyComponent implements Apple
         return _entitySearch;
     }
 
+    @Override
+    public EntitySelect constructEntitySelect(RefDef refDef, ValueStore valueStore, String filter, int limit)
+            throws UnifyException {
+        TableDef tableDef = applicationModuleService.getTableDef(refDef.getSearchTable());
+        EntitySelect entitySelect = new EntitySelect(this, tableDef, refDef.getSearchField(), valueStore,
+                refDef.getSelectHandler(), limit);
+        entitySelect.setEnableFilter(true);
+        String label = tableDef.getEntityDef().getFieldDef(refDef.getSearchField()).getFieldLabel() + ":";
+        entitySelect.setLabel(label);
+        if (!StringUtils.isBlank(filter)) {
+            entitySelect.setFilter(filter);
+        }
+
+        Restriction br = null;
+        if (refDef.isWithFilterGenerator()) {
+            br = ((EntityBasedFilterGenerator) getComponent(refDef.getFilterGenerator()))
+                    .generate(valueStore.getReader(), refDef.getFilterGeneratorRule());
+        } else {
+            EntityClassDef entityClassDef = applicationModuleService.getEntityClassDef(refDef.getEntity());
+
+            br = refDef.isWithFilter()
+                    ? refDef.getFilter().getRestriction(entityClassDef.getEntityDef(), null,
+                            applicationModuleService.getNow())
+                    : null;
+        }
+
+        entitySelect.setBaseRestriction(br);
+        return entitySelect;
+    }
+    
     @Override
     public EntityChild constructEntityChild(FormContext ctx, SweepingCommitPolicy sweepingCommitPolicy, String tabName,
             String rootTitle, AppletDef _appletDef) throws UnifyException {

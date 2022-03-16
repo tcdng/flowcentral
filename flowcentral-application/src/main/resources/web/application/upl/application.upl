@@ -76,6 +76,10 @@
 !fc-entityselectpanel:entitySelectPopup
     binding:$j{com.flowcentraltech.flowcentral.common.constants.FlowCentralSessionAttributeConstants.ENTITYSELECT}
 
+// Entity multiselect pop up
+!fc-entitymultiselectpanel:entityMultiselectPopup
+    binding:$j{com.flowcentraltech.flowcentral.common.constants.FlowCentralSessionAttributeConstants.ENTITYSELECT}
+
 //Actions 
 !ui-post:wkspChangeAct path:$n{/changeWorkspace} components:$c{currentWkspSel}
 !ui-post:logoutAct path:$n{/logOut} confirm:$m{application.logout.confirm}

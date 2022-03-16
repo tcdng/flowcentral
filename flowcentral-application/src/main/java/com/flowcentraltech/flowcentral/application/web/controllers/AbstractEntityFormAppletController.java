@@ -15,7 +15,11 @@
  */
 package com.flowcentraltech.flowcentral.application.web.controllers;
 
+import com.flowcentraltech.flowcentral.application.constants.ApplicationResultMappingConstants;
+import com.flowcentraltech.flowcentral.application.data.RefDef;
+import com.flowcentraltech.flowcentral.application.web.panels.EntitySelect;
 import com.flowcentraltech.flowcentral.application.web.panels.applet.AbstractEntityFormApplet;
+import com.flowcentraltech.flowcentral.common.constants.FlowCentralSessionAttributeConstants;
 import com.tcdng.unify.core.UnifyException;
 import com.tcdng.unify.web.annotation.Action;
 import com.tcdng.unify.web.annotation.ResultMapping;
@@ -55,6 +59,17 @@ public abstract class AbstractEntityFormAppletController<T extends AbstractEntit
         AbstractEntityFormAppletPageBean<T> pageBean = getPageBean();
         AbstractEntityFormApplet applet = pageBean.getApplet();
         int childTabIndex = getRequestTarget(int.class);
+        RefDef refDef = applet.newChildMultiSelectRef(childTabIndex);
+        if (refDef != null) {
+            applet.getForm().getCtx().getFormValueStore();
+            EntitySelect entitySelect = applet.getAu().constructEntitySelect(refDef,
+                    applet.getForm().getCtx().getFormValueStore(), null, 0);
+            entitySelect.setEnableFilter(false);
+            entitySelect.applyFilterToSearch();
+            setSessionAttribute(FlowCentralSessionAttributeConstants.ENTITYSELECT, entitySelect);
+            return ApplicationResultMappingConstants.SHOW_ENTITY_SELECT;
+        }
+
         applet.newChildListItem(childTabIndex);
         getPageRequestContextUtil().setContentScrollReset();
         return "refreshapplet";

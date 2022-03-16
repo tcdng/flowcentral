@@ -15,6 +15,8 @@
  */
 package com.flowcentraltech.flowcentral.application.web.panels;
 
+import java.util.List;
+
 import com.flowcentraltech.flowcentral.application.business.AppletUtilities;
 import com.flowcentraltech.flowcentral.application.business.EntitySelectHandler;
 import com.flowcentraltech.flowcentral.application.data.TableDef;
@@ -24,6 +26,7 @@ import com.tcdng.unify.core.criterion.And;
 import com.tcdng.unify.core.criterion.ILike;
 import com.tcdng.unify.core.criterion.Order;
 import com.tcdng.unify.core.criterion.Restriction;
+import com.tcdng.unify.core.data.BeanValueListStore;
 import com.tcdng.unify.core.data.BeanValueStore;
 import com.tcdng.unify.core.data.ValueStore;
 import com.tcdng.unify.core.util.StringUtils;
@@ -50,6 +53,8 @@ public class EntitySelect {
 
     private Restriction baseRestriction;
 
+    private boolean enableFilter;
+    
     public EntitySelect(AppletUtilities au, TableDef tableDef, String searchFieldName, ValueStore formValueStore,
             String selectHandlerName, int limit) {
         this.entityTable = new EntityTable(au, tableDef);
@@ -88,12 +93,29 @@ public class EntitySelect {
         this.baseRestriction = baseRestriction;
     }
 
+    public boolean isEnableFilter() {
+        return enableFilter;
+    }
+
+    public void setEnableFilter(boolean enableFilter) {
+        this.enableFilter = enableFilter;
+    }
+
     public void select(int index) throws UnifyException {
         if (formValueStore != null && selectHandlerName != null) {
             EntitySelectHandler handler = getEntityTable().getAu().getComponent(EntitySelectHandler.class,
                     selectHandlerName);
             Object sel = entityTable.getDisplayItem(index);
             handler.applySelection(formValueStore, new BeanValueStore(sel));
+        }
+    }
+
+    public void multiselect() throws UnifyException {
+        if (formValueStore != null && selectHandlerName != null) {
+            EntitySelectHandler handler = getEntityTable().getAu().getComponent(EntitySelectHandler.class,
+                    selectHandlerName);
+            List<?> sel = entityTable.getSelectedItems();
+            handler.applySelection(formValueStore, new BeanValueListStore(sel));
         }
     }
 
