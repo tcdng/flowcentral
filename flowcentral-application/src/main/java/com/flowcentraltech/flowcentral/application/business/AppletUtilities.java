@@ -904,4 +904,19 @@ public interface AppletUtilities extends UnifyComponent {
      *                        if an error occurs
      */
     void populateListOnlyFields(EntityDef entityDef, Entity inst) throws UnifyException;
+
+    /**
+     * Gets an entity description.
+     * 
+     * @param entityClassDef
+     *                       the entity class definition
+     * @param inst
+     *                       the entity
+     * @param fieldName
+     *                       the description field name
+     * @return the entity description
+     * @throws UnifyException
+     *                        if an error occurs
+     */
+    String getEntityDescription(EntityClassDef entityClassDef, Entity inst, String fieldName) throws UnifyException;
 }

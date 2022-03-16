@@ -775,14 +775,18 @@ public abstract class AbstractEntityFormApplet extends AbstractApplet implements
         FormDef formDef = getPreferredForm(PreferredFormType.LISTING_ONLY, _currentFormAppletDef, _inst,
                 FormMode.LISTING.formProperty());
 
+        String beanTitle = au.getEntityDescription(au.getEntityClassDef(formDef.getEntityDef().getLongName()), _inst,
+                "description");
         ListingForm listingForm = au.constructListingForm(this, getRootAppletDef().getDescription(),
-                _inst.getDescription(), formDef, _inst, makeFormBreadCrumbs());
+                beanTitle, formDef, _inst, makeFormBreadCrumbs());
         return listingForm;
     }
 
     protected ListingForm constructListingForm(FormDef formDef, Entity _inst) throws UnifyException {
+        String beanTitle = au.getEntityDescription(au.getEntityClassDef(formDef.getEntityDef().getLongName()), _inst,
+                "description");
         ListingForm listingForm = au.constructListingForm(this, getRootAppletDef().getDescription(),
-                _inst.getDescription(), formDef, _inst, makeFormBreadCrumbs());
+                beanTitle, formDef, _inst, makeFormBreadCrumbs());
         return listingForm;
     }
 
@@ -792,7 +796,9 @@ public abstract class AbstractEntityFormApplet extends AbstractApplet implements
         String createNewCaption = _currentFormAppletDef != null
                 ? _currentFormAppletDef.getPropValue(String.class, AppletPropertyConstants.CREATE_FORM_NEW_CAPTION)
                 : null;
-        final String beanTitle = inst.getDescription() != null ? inst.getDescription()
+        String beanTitle = au.getEntityDescription(au.getEntityClassDef(formDef.getEntityDef().getLongName()), inst,
+                "description");
+        beanTitle = !StringUtils.isBlank(beanTitle) ? beanTitle
                 : !StringUtils.isBlank(createNewCaption) ? createNewCaption
                         : au.resolveSessionMessage("$m{form.newrecord}");
         return constructForm(formDef, inst, formMode, beanTitle, childFkFieldName, isChild);

@@ -685,7 +685,8 @@ public class AppletUtilitiesImpl extends AbstractUnifyComponent implements Apple
         final FormContext formContext = form.getCtx();
         boolean isCreateMode = form.getFormMode().isCreate();
         if (!isCreateMode) {
-            form.setBeanTitle(inst.getDescription());
+            String beanTitle = getEntityDescription(getEntityClassDef(entityDef.getLongName()), inst, "description");
+            form.setBeanTitle(beanTitle);
         }
 
         FormTabDef _formTabDef = formDef.getFormTabDef(0);
@@ -1038,6 +1039,12 @@ public class AppletUtilitiesImpl extends AbstractUnifyComponent implements Apple
                 }
             }
         }
+    }
+
+    @Override
+    public String getEntityDescription(EntityClassDef entityClassDef, Entity inst, String fieldName)
+            throws UnifyException {
+        return applicationModuleService.getEntityDescription(entityClassDef, inst, fieldName);
     }
 
     private SingleFormBean createSingleFormBeanForPanel(String panelName) throws UnifyException {

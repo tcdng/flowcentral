@@ -2053,7 +2053,10 @@ public class ApplicationModuleServiceImpl extends AbstractFlowCentralService
                 appendSym = true;
             }
 
-            sb.append(ReflectUtils.getBeanProperty(inst, entityFieldDef.getFieldName()));
+            Object val = ReflectUtils.getBeanProperty(inst, entityFieldDef.getFieldName());
+            if (val != null) {
+                sb.append(val);
+            }
         }
 
         return sb.toString();
