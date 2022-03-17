@@ -31,6 +31,7 @@ import com.flowcentraltech.flowcentral.application.data.EntityAttachmentDef;
 import com.flowcentraltech.flowcentral.application.data.EntityClassDef;
 import com.flowcentraltech.flowcentral.application.data.EntityDef;
 import com.flowcentraltech.flowcentral.application.data.EntityFieldDef;
+import com.flowcentraltech.flowcentral.application.data.FilterDef;
 import com.flowcentraltech.flowcentral.application.data.FormDef;
 import com.flowcentraltech.flowcentral.application.data.FormRelatedListDef;
 import com.flowcentraltech.flowcentral.application.data.FormStatePolicyDef;
@@ -55,6 +56,7 @@ import com.flowcentraltech.flowcentral.application.web.widgets.BreadCrumbs;
 import com.flowcentraltech.flowcentral.application.web.widgets.BreadCrumbs.BreadCrumb;
 import com.flowcentraltech.flowcentral.application.web.widgets.TabSheet.TabSheetItem;
 import com.flowcentraltech.flowcentral.common.business.SequenceCodeGenerator;
+import com.flowcentraltech.flowcentral.common.business.SpecialParamProvider;
 import com.flowcentraltech.flowcentral.common.business.policies.ConsolidatedFormStatePolicy;
 import com.flowcentraltech.flowcentral.common.business.policies.EntityActionContext;
 import com.flowcentraltech.flowcentral.common.business.policies.EntityActionResult;
@@ -315,11 +317,25 @@ public abstract class AbstractEntityFormApplet extends AbstractApplet implements
 
     public RefDef newChildMultiSelectRef(int childTabIndex) throws UnifyException {
         FormTabDef _currFormTabDef = form.getFormDef().getFormTabDef(childTabIndex);
-        AppletDef _childAppletDef = getAppletDef(_currFormTabDef.getApplet());
-        String ref = _childAppletDef.getPropValue(String.class,
-                AppletPropertyConstants.SEARCH_TABLE_MULTISELECT_NEW_REF);
-        if (!StringUtils.isBlank(ref)) {
-            return au.getRefDef(ref);
+        List<FilterDef> filterList = currFormAppletDef.getChildListFilterDefs(_currFormTabDef.getApplet());
+        if (!filterList.isEmpty()) {
+            EntityDef entityDef = form.getFormDef().getEntityDef();
+            ValueStore formValueStore = form.getCtx().getFormValueStore();
+            SpecialParamProvider specialParamProvider = form.getCtx().getAppletContext().getSpecialParamProvider();
+            Date now = au.getNow();
+            for (FilterDef filterDef : filterList) {
+                ObjectFilter filter = filterDef.getObjectFilter(entityDef, specialParamProvider, now);
+                if (filter.match(formValueStore)) {
+                    AppletDef _childAppletDef = getAppletDef(_currFormTabDef.getApplet());
+                    String ref = _childAppletDef.getPropValue(String.class,
+                            AppletPropertyConstants.SEARCH_TABLE_MULTISELECT_NEW_REF);
+                    if (!StringUtils.isBlank(ref)) {
+                        return au.getRefDef(ref);
+                    }
+
+                    break;
+                }
+            }
         }
 
         return null;

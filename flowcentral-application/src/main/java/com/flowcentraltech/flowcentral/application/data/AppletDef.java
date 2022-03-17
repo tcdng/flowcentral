@@ -16,6 +16,7 @@
 package com.flowcentraltech.flowcentral.application.data;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -79,6 +80,8 @@ public class AppletDef extends BaseApplicationEntityDef {
 
     private List<FilterDef> preferredFormFilterList;
 
+    private Map<String, List<FilterDef>> childListAppletFilterDefMap;
+
     private AppletDef(AppletType type, List<AppletPropDef> propDefList, Map<String, AppletPropDef> propDefMap,
             Map<String, FilterDef> filterDefMap, String entity, String label, String icon, String assignDescField,
             String routeToApplet, String openPath, String originApplicationName, String originName, int displayIndex,
@@ -103,13 +106,29 @@ public class AppletDef extends BaseApplicationEntityDef {
         this.propDefMap = propDefMap;
         this.filterDefMap = filterDefMap;
         List<FilterDef> preferredFormFilterList = new ArrayList<FilterDef>();
+        Map<String, List<FilterDef>> childListAppletFilterDefMap = new HashMap<String, List<FilterDef>>();
         for (FilterDef filterDef : filterDefMap.values()) {
             if (filterDef.isWithPreferredForm()) {
                 preferredFormFilterList.add(filterDef);
             }
+
+            if (filterDef.isWithPreferredChildListApplet()) {
+                List<FilterDef> list = childListAppletFilterDefMap.get(filterDef.getPreferredChildListApplet());
+                if (list == null) {
+                    list = new ArrayList<FilterDef>();
+                    childListAppletFilterDefMap.put(filterDef.getPreferredChildListApplet(), list);
+                }
+                list.add(filterDef);
+            }
+        }
+
+        for (String appletName : childListAppletFilterDefMap.keySet()) {
+            childListAppletFilterDefMap.replace(appletName,
+                    DataUtils.unmodifiableList(childListAppletFilterDefMap.get(appletName)));
         }
 
         this.preferredFormFilterList = DataUtils.unmodifiableList(preferredFormFilterList);
+        this.childListAppletFilterDefMap = DataUtils.unmodifiableMap(childListAppletFilterDefMap);
         this.privilege = PrivilegeNameUtils.getAppletPrivilegeName(nameParts.getLongName());
     }
 
@@ -231,7 +250,7 @@ public class AppletDef extends BaseApplicationEntityDef {
     public boolean isWithPreferredFormFilters() {
         return !preferredFormFilterList.isEmpty();
     }
-    
+
     public List<AppletPropDef> getPropDefList() {
         return propDefList;
     }
@@ -239,7 +258,7 @@ public class AppletDef extends BaseApplicationEntityDef {
     public boolean isLabelMatch(String filter) {
         return lowerCaseLabel != null && lowerCaseLabel.indexOf(filter) >= 0;
     }
-    
+
     @SuppressWarnings("unchecked")
     public <T> T getPropValue(Class<T> dataClazz, String name) throws UnifyException {
         AppletPropDef appletPropDef = propDefMap.get(name);
@@ -289,6 +308,11 @@ public class AppletDef extends BaseApplicationEntityDef {
         }
 
         return filterDef;
+    }
+
+    public List<FilterDef> getChildListFilterDefs(String prefferedChildListApplet) {
+        List<FilterDef> result = childListAppletFilterDefMap.get(prefferedChildListApplet);
+        return result != null ? result : Collections.emptyList();
     }
 
     public static Builder newBuilder(AppletType type, String entity, String label, String icon, String assignDescField,

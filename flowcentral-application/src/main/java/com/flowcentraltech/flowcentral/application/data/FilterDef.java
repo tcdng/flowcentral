@@ -50,19 +50,23 @@ public class FilterDef implements Listable {
 
     private String preferredForm;
 
+    private String preferredChildListApplet;
+    
     public FilterDef(FilterDef _filterDef) {
         this.filterRestrictionDefList = _filterDef.filterRestrictionDefList;
         this.name = _filterDef.name;
         this.description = _filterDef.description;
         this.preferredForm = _filterDef.preferredForm;
+        this.preferredChildListApplet = _filterDef.preferredChildListApplet;
     }
 
     private FilterDef(List<FilterRestrictionDef> filterRestrictionDefList, String name, String description,
-            String preferredForm) {
+            String preferredForm, String preferredChildListApplet) {
         this.filterRestrictionDefList = filterRestrictionDefList;
         this.name = name;
         this.description = description;
         this.preferredForm = preferredForm;
+        this.preferredChildListApplet = preferredChildListApplet;
     }
 
     @Override
@@ -87,8 +91,16 @@ public class FilterDef implements Listable {
         return preferredForm;
     }
 
+    public String getPreferredChildListApplet() {
+        return preferredChildListApplet;
+    }
+
     public boolean isWithPreferredForm() {
         return !StringUtils.isBlank(preferredForm);
+    }
+
+    public boolean isWithPreferredChildListApplet() {
+        return !StringUtils.isBlank(preferredChildListApplet);
     }
 
     public List<FilterRestrictionDef> getFilterRestrictionDefList() {
@@ -128,8 +140,9 @@ public class FilterDef implements Listable {
 
     @Override
     public String toString() {
-        return "FilterDef [filterRestrictionDefList=" + filterRestrictionDefList + ", name=" + name + ", description="
-                + description + "]";
+        return "FilterDef [filterRestrictionDefList=" + filterRestrictionDefList + ", restriction=" + restriction
+                + ", objectFilter=" + objectFilter + ", name=" + name + ", description=" + description
+                + ", preferredForm=" + preferredForm + ", preferredChildListApplet=" + preferredChildListApplet + "]";
     }
 
     public static Builder newBuilder() {
@@ -144,6 +157,8 @@ public class FilterDef implements Listable {
 
         private String preferredForm;
 
+        private String preferredChildListApplet;
+        
         private List<FilterRestrictionDef> filterRestrictionDefList;
 
         public Builder() {
@@ -165,6 +180,11 @@ public class FilterDef implements Listable {
             return this;
         }
 
+        public Builder preferredChildListApplet(String preferredChildListApplet) {
+            this.preferredChildListApplet = preferredChildListApplet;
+            return this;
+        }
+
         public Builder addRestrictionDef(FilterConditionType type, String fieldName, String paramA, String paramB,
                 int depth) {
             filterRestrictionDefList.add(new FilterRestrictionDef(type, fieldName, paramA, paramB, depth));
@@ -173,7 +193,7 @@ public class FilterDef implements Listable {
 
         public FilterDef build() throws UnifyException {
             return new FilterDef(DataUtils.unmodifiableList(filterRestrictionDefList), name, description,
-                    preferredForm);
+                    preferredForm, preferredChildListApplet);
         }
     }
 

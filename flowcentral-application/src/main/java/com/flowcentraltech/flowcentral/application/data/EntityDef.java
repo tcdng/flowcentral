@@ -74,6 +74,8 @@ public class EntityDef extends BaseApplicationEntityDef {
 
     private List<EntityFieldDef> listOnlyFieldDefList;
 
+    private List<EntityFieldDef> childListFieldDefList;
+
     private List<EntityFieldDef> basicSearchFieldDefList;
 
     private List<EntityFieldDef> autoFormatFieldDefList;
@@ -434,6 +436,21 @@ public class EntityDef extends BaseApplicationEntityDef {
         }
 
         return listOnlyFieldDefList;
+    }
+
+    public List<EntityFieldDef> getChildListFieldDefList() {
+        if (childListFieldDefList == null) {
+            childListFieldDefList = new ArrayList<EntityFieldDef>();
+            for (EntityFieldDef entityFieldDef : fieldDefList) {
+                if (entityFieldDef.isChildList()) {
+                    childListFieldDefList.add(entityFieldDef);
+                }
+            }
+
+            childListFieldDefList = DataUtils.unmodifiableList(childListFieldDefList);
+        }
+
+        return childListFieldDefList;
     }
 
     public List<EntityFieldDef> getStringFieldDefList() {

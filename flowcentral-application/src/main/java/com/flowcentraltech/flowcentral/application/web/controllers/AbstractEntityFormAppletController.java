@@ -61,7 +61,6 @@ public abstract class AbstractEntityFormAppletController<T extends AbstractEntit
         int childTabIndex = getRequestTarget(int.class);
         RefDef refDef = applet.newChildMultiSelectRef(childTabIndex);
         if (refDef != null) {
-            applet.getForm().getCtx().getFormValueStore();
             EntitySelect entitySelect = applet.getAu().constructEntitySelect(refDef,
                     applet.getForm().getCtx().getFormValueStore(), null, 0);
             entitySelect.setEnableFilter(false);

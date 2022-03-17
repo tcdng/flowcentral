@@ -375,7 +375,7 @@ public class ApplicationModuleServiceImpl extends AbstractFlowCentralService
                     for (AppAppletFilter appAppletFilter : appApplet.getFilterList()) {
                         adb.addFilterDef(InputWidgetUtils.getFilterDef(appAppletFilter.getName(),
                                 appAppletFilter.getDescription(), appAppletFilter.getPreferredForm(),
-                                appAppletFilter.getFilter()));
+                                appAppletFilter.getPreferredChildListApplet(), appAppletFilter.getFilter()));
                     }
 
                     adb.routeToApplet(appApplet.getRouteToApplet());
@@ -3099,6 +3099,7 @@ public class ApplicationModuleServiceImpl extends AbstractFlowCentralService
                     appAppletFilter.setDescription(resolveApplicationMessage(filterConfig.getDescription()));
                     appAppletFilter.setFilter(InputWidgetUtils.newAppFilter(filterConfig));
                     appAppletFilter.setPreferredForm(filterConfig.getPreferredForm());
+                    appAppletFilter.setPreferredChildListApplet(filterConfig.getPreferredChildListApplet());
                     appAppletFilter.setQuickFilter(filterConfig.isQuickFilter());
                     appAppletFilter.setConfigType(ConfigType.MUTABLE_INSTALL);
                     filterList.add(appAppletFilter);
@@ -3108,6 +3109,7 @@ public class ApplicationModuleServiceImpl extends AbstractFlowCentralService
                         oldAppAppletFilter.setDescription(resolveApplicationMessage(filterConfig.getDescription()));
                         oldAppAppletFilter.setFilter(InputWidgetUtils.newAppFilter(filterConfig));
                         oldAppAppletFilter.setPreferredForm(filterConfig.getPreferredForm());
+                        oldAppAppletFilter.setPreferredChildListApplet(filterConfig.getPreferredChildListApplet());
                         oldAppAppletFilter.setQuickFilter(filterConfig.isQuickFilter());
                     } else {
                         environment().findChildren(oldAppAppletFilter);

@@ -49,6 +49,9 @@ public class AppAppletFilter extends BaseConfigNamedEntity {
     @Column(name = "PREFFERED_FORM_NM", length = 128, nullable = true)
     private String preferredForm;
 
+    @Column(name = "PREFFERED_CHILDLIST_APP_NM", length = 128, nullable = true)
+    private String preferredChildListApplet;
+
     @ListOnly(key = "ownershipType", property = "description")
     private String ownershipTypeDesc;
 
@@ -95,6 +98,14 @@ public class AppAppletFilter extends BaseConfigNamedEntity {
 
     public void setPreferredForm(String preferredForm) {
         this.preferredForm = preferredForm;
+    }
+
+    public String getPreferredChildListApplet() {
+        return preferredChildListApplet;
+    }
+
+    public void setPreferredChildListApplet(String preferredChildListApplet) {
+        this.preferredChildListApplet = preferredChildListApplet;
     }
 
     public boolean isQuickFilter() {

@@ -156,9 +156,9 @@ public class StudioModuleServiceImpl extends AbstractFlowCentralService implemen
                                     "studioentity-deletecondition");
 
                             adb.addFilterDef(InputWidgetUtils.getFilterDef("studioentity-updatecondition", "",
-                                    "", entityFormUpdateCondition));
+                                    "", null, entityFormUpdateCondition));
                             adb.addFilterDef(InputWidgetUtils.getFilterDef("studioentity-deletecondition", "",
-                                    "", entityFormDeleteCondition));
+                                    "", null, entityFormDeleteCondition));
 
                             adb.openPath(
                                     ApplicationPageUtils.constructAppletOpenPagePath(type.appletPath(), appletName));
