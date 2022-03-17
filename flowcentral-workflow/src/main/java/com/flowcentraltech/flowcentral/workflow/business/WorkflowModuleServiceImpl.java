@@ -205,7 +205,7 @@ public class WorkflowModuleServiceImpl extends AbstractFlowCentralService
                     for (WorkflowFilter appAppletFilter : workflow.getFilterList()) {
                         filterNames.add(appAppletFilter.getName());
                         wdb.addFilterDef(InputWidgetUtils.getFilterDef(appAppletFilter.getName(),
-                                appAppletFilter.getDescription(), null, appAppletFilter.getFilter()));
+                                appAppletFilter.getDescription(), null, null, appAppletFilter.getFilter()));
                     }
 
                     final boolean descriptiveButtons = systemModuleService.getSysParameterValue(boolean.class,

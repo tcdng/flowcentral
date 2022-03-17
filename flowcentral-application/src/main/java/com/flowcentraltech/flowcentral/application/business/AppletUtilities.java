@@ -39,6 +39,7 @@ import com.flowcentraltech.flowcentral.application.web.panels.EntityFieldSequenc
 import com.flowcentraltech.flowcentral.application.web.panels.EntityFilter;
 import com.flowcentraltech.flowcentral.application.web.panels.EntityParamValues;
 import com.flowcentraltech.flowcentral.application.web.panels.EntitySearch;
+import com.flowcentraltech.flowcentral.application.web.panels.EntitySelect;
 import com.flowcentraltech.flowcentral.application.web.panels.EntitySetValues;
 import com.flowcentraltech.flowcentral.application.web.panels.EntitySingleForm;
 import com.flowcentraltech.flowcentral.application.web.panels.HeaderWithTabsForm;
@@ -60,6 +61,7 @@ import com.tcdng.unify.core.criterion.Restriction;
 import com.tcdng.unify.core.data.Listable;
 import com.tcdng.unify.core.data.MapValues;
 import com.tcdng.unify.core.data.ParamConfig;
+import com.tcdng.unify.core.data.ValueStore;
 import com.tcdng.unify.core.database.Entity;
 import com.tcdng.unify.core.upl.UplComponent;
 import com.tcdng.unify.web.ui.widget.EventHandler;
@@ -734,6 +736,24 @@ public interface AppletUtilities extends UnifyComponent {
             String rootTitle, AppletDef _appletDef, String editAction, int entitySearchMode) throws UnifyException;
 
     /**
+     * Constructs an entity select object.
+     * 
+     * @param refDef
+     *                   the reference definition
+     * @param valueStore
+     *                   the value store
+     * @param filter
+     *                   the initial filter (optional)
+     * @param limit
+     *                   the limit (optional)
+     * @return the entity select object
+     * @throws UnifyException
+     *                        if an error occurs
+     */
+    EntitySelect constructEntitySelect(RefDef refDef, ValueStore valueStore, String filter, int limit)
+            throws UnifyException;
+
+    /**
      * Constructs entity child.
      * 
      * @param ctx
@@ -904,4 +924,19 @@ public interface AppletUtilities extends UnifyComponent {
      *                        if an error occurs
      */
     void populateListOnlyFields(EntityDef entityDef, Entity inst) throws UnifyException;
+
+    /**
+     * Gets an entity description.
+     * 
+     * @param entityClassDef
+     *                       the entity class definition
+     * @param inst
+     *                       the entity
+     * @param fieldName
+     *                       the description field name
+     * @return the entity description
+     * @throws UnifyException
+     *                        if an error occurs
+     */
+    String getEntityDescription(EntityClassDef entityClassDef, Entity inst, String fieldName) throws UnifyException;
 }

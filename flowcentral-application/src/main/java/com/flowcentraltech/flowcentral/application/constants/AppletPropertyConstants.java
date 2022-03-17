@@ -34,6 +34,8 @@ public interface AppletPropertyConstants {
 
     String SEARCH_TABLE_NEW_CAPTION= "searchTable.new.caption";
 
+    String SEARCH_TABLE_MULTISELECT_NEW_REF= "searchTable.new.multiselect.ref";
+
     String SEARCH_TABLE_EDIT = "searchTable.edit";
 
     String SEARCH_TABLE_REPORT = "searchTable.report";

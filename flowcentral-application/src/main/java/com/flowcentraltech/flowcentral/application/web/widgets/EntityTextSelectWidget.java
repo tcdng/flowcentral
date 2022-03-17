@@ -19,10 +19,7 @@ package com.flowcentraltech.flowcentral.application.web.widgets;
 import com.flowcentraltech.flowcentral.application.business.AppletUtilities;
 import com.flowcentraltech.flowcentral.application.business.ApplicationModuleService;
 import com.flowcentraltech.flowcentral.application.constants.ApplicationResultMappingConstants;
-import com.flowcentraltech.flowcentral.application.data.EntityClassDef;
 import com.flowcentraltech.flowcentral.application.data.RefDef;
-import com.flowcentraltech.flowcentral.application.data.TableDef;
-import com.flowcentraltech.flowcentral.application.policies.EntityBasedFilterGenerator;
 import com.flowcentraltech.flowcentral.application.web.panels.EntitySelect;
 import com.flowcentraltech.flowcentral.common.business.EnvironmentService;
 import com.flowcentraltech.flowcentral.common.constants.FlowCentralSessionAttributeConstants;
@@ -32,7 +29,6 @@ import com.tcdng.unify.core.annotation.Component;
 import com.tcdng.unify.core.annotation.Configurable;
 import com.tcdng.unify.core.annotation.UplAttribute;
 import com.tcdng.unify.core.annotation.UplAttributes;
-import com.tcdng.unify.core.criterion.Restriction;
 import com.tcdng.unify.core.data.ListData;
 import com.tcdng.unify.core.data.Listable;
 import com.tcdng.unify.core.util.StringUtils;
@@ -86,36 +82,11 @@ public class EntityTextSelectWidget extends AbstractPopupTextField {
     @Action
     public final void search() throws UnifyException {
         RefDef refDef = getRefDef();
-        TableDef tableDef = applicationModuleService.getTableDef(refDef.getSearchTable());
         int limit = getUplAttribute(int.class, "limit");
-        EntitySelect entitySelect = new EntitySelect(appletUtilities, tableDef, refDef.getSearchField(),
-                getValueStore(), refDef.getSelectHandler(), limit);
-        String label = tableDef.getEntityDef().getFieldDef(refDef.getSearchField()).getFieldLabel() + ":";
-        entitySelect.setLabel(label);
         String defaultFilter = getDefaultFilter();
-        if (!StringUtils.isBlank(defaultFilter)) {
-            entitySelect.setFilter(defaultFilter);
-        } else {
-            String input = getRequestTarget(String.class);
-            if (input != null && !input.trim().isEmpty()) {
-                entitySelect.setFilter(input);
-            }
-        }
-        
-        Restriction br = null;
-        if (refDef.isWithFilterGenerator()) {
-            br = ((EntityBasedFilterGenerator) getComponent(refDef.getFilterGenerator()))
-                    .generate(getValueStore().getReader(), refDef.getFilterGeneratorRule());
-        } else {
-            EntityClassDef entityClassDef = applicationModuleService.getEntityClassDef(refDef.getEntity());
-            
-            br = refDef.isWithFilter()
-                    ? refDef.getFilter().getRestriction(entityClassDef.getEntityDef(), null,
-                            applicationModuleService.getNow())
-                    : null;
-        }
-
-        entitySelect.setBaseRestriction(br);
+        String filter = !StringUtils.isBlank(defaultFilter) ? defaultFilter : getRequestTarget(String.class);
+        EntitySelect entitySelect = appletUtilities.constructEntitySelect(refDef, getValueStore(), filter, limit);
+        entitySelect.setEnableFilter(true);
         entitySelect.applyFilterToSearch();
         setSessionAttribute(FlowCentralSessionAttributeConstants.ENTITYSELECT, entitySelect);
         setCommandResultMapping(ApplicationResultMappingConstants.SHOW_ENTITY_SELECT);

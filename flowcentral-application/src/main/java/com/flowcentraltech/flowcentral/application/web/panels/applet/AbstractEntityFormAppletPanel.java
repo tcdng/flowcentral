@@ -399,6 +399,7 @@ public abstract class AbstractEntityFormAppletPanel extends AbstractAppletPanel 
     @Action
     public void newInst() throws UnifyException {
         getEntityFormApplet().newEntityInst();
+        getRequestContextUtil().setContentScrollReset();
     }
 
     @Action
@@ -420,11 +421,13 @@ public abstract class AbstractEntityFormAppletPanel extends AbstractAppletPanel 
         }
 
         applet.navBackToPrevious();
+        getRequestContextUtil().setContentScrollReset();
     }
 
     @Action
     public void navBackToSearch() throws UnifyException {
         getEntityFormApplet().navBackToSearch();
+        getRequestContextUtil().setContentScrollReset();
     }
 
     @Action
@@ -602,11 +605,13 @@ public abstract class AbstractEntityFormAppletPanel extends AbstractAppletPanel 
     @Action
     public void previous() throws UnifyException {
         getEntityFormApplet().previousInst();
+        getRequestContextUtil().setContentScrollReset();
     }
 
     @Action
     public void next() throws UnifyException {
         getEntityFormApplet().nextInst();
+        getRequestContextUtil().setContentScrollReset();
     }
 
     @Action
@@ -630,6 +635,7 @@ public abstract class AbstractEntityFormAppletPanel extends AbstractAppletPanel 
         }
 
         getEntityFormApplet().maintainInst(mIndex);
+        getRequestContextUtil().setContentScrollReset();
     }
 
     @Action
@@ -656,6 +662,7 @@ public abstract class AbstractEntityFormAppletPanel extends AbstractAppletPanel 
         }
 
         getEntityFormApplet().listingInst(mIndex);
+        getRequestContextUtil().setContentScrollReset();
     }
 
     private void handleEntityActionResult(EntityActionResult entityActionResult) throws UnifyException {

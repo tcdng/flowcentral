@@ -34,6 +34,8 @@ public class FilterConfig {
 
     private String preferredForm;
     
+    private String preferredChildListApplet;
+    
     private boolean quickFilter;
 
     private List<FilterRestrictionConfig> restrictionList;
@@ -63,6 +65,15 @@ public class FilterConfig {
     @XmlAttribute
     public void setPreferredForm(String preferredForm) {
         this.preferredForm = preferredForm;
+    }
+
+    public String getPreferredChildListApplet() {
+        return preferredChildListApplet;
+    }
+
+    @XmlAttribute
+    public  void setPreferredChildListApplet(String preferredChildListApplet) {
+        this.preferredChildListApplet = preferredChildListApplet;
     }
 
     public boolean isQuickFilter() {

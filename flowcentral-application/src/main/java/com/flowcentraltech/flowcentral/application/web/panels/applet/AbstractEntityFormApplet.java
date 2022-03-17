@@ -31,11 +31,13 @@ import com.flowcentraltech.flowcentral.application.data.EntityAttachmentDef;
 import com.flowcentraltech.flowcentral.application.data.EntityClassDef;
 import com.flowcentraltech.flowcentral.application.data.EntityDef;
 import com.flowcentraltech.flowcentral.application.data.EntityFieldDef;
+import com.flowcentraltech.flowcentral.application.data.FilterDef;
 import com.flowcentraltech.flowcentral.application.data.FormDef;
 import com.flowcentraltech.flowcentral.application.data.FormRelatedListDef;
 import com.flowcentraltech.flowcentral.application.data.FormStatePolicyDef;
 import com.flowcentraltech.flowcentral.application.data.FormTabDef;
 import com.flowcentraltech.flowcentral.application.data.PropertyRuleDef;
+import com.flowcentraltech.flowcentral.application.data.RefDef;
 import com.flowcentraltech.flowcentral.application.util.ApplicationEntityUtils;
 import com.flowcentraltech.flowcentral.application.validation.FormContextEvaluator;
 import com.flowcentraltech.flowcentral.application.web.data.FormContext;
@@ -54,6 +56,7 @@ import com.flowcentraltech.flowcentral.application.web.widgets.BreadCrumbs;
 import com.flowcentraltech.flowcentral.application.web.widgets.BreadCrumbs.BreadCrumb;
 import com.flowcentraltech.flowcentral.application.web.widgets.TabSheet.TabSheetItem;
 import com.flowcentraltech.flowcentral.common.business.SequenceCodeGenerator;
+import com.flowcentraltech.flowcentral.common.business.SpecialParamProvider;
 import com.flowcentraltech.flowcentral.common.business.policies.ConsolidatedFormStatePolicy;
 import com.flowcentraltech.flowcentral.common.business.policies.EntityActionContext;
 import com.flowcentraltech.flowcentral.common.business.policies.EntityActionResult;
@@ -312,6 +315,32 @@ public abstract class AbstractEntityFormApplet extends AbstractApplet implements
         newChildItem(childTabIndex, true);
     }
 
+    public RefDef newChildMultiSelectRef(int childTabIndex) throws UnifyException {
+        FormTabDef _currFormTabDef = form.getFormDef().getFormTabDef(childTabIndex);
+        List<FilterDef> filterList = currFormAppletDef.getChildListFilterDefs(_currFormTabDef.getApplet());
+        if (!filterList.isEmpty()) {
+            EntityDef entityDef = form.getFormDef().getEntityDef();
+            ValueStore formValueStore = form.getCtx().getFormValueStore();
+            SpecialParamProvider specialParamProvider = form.getCtx().getAppletContext().getSpecialParamProvider();
+            Date now = au.getNow();
+            for (FilterDef filterDef : filterList) {
+                ObjectFilter filter = filterDef.getObjectFilter(entityDef, specialParamProvider, now);
+                if (filter.match(formValueStore)) {
+                    AppletDef _childAppletDef = getAppletDef(_currFormTabDef.getApplet());
+                    String ref = _childAppletDef.getPropValue(String.class,
+                            AppletPropertyConstants.SEARCH_TABLE_MULTISELECT_NEW_REF);
+                    if (!StringUtils.isBlank(ref)) {
+                        return au.getRefDef(ref);
+                    }
+
+                    break;
+                }
+            }
+        }
+
+        return null;
+    }
+    
     private void newChildItem(int childTabIndex, boolean childList) throws UnifyException {
         FormTabDef _currFormTabDef = form.getFormDef().getFormTabDef(childTabIndex);
         AppletDef _childAppletDef = getAppletDef(_currFormTabDef.getApplet());
@@ -775,14 +804,18 @@ public abstract class AbstractEntityFormApplet extends AbstractApplet implements
         FormDef formDef = getPreferredForm(PreferredFormType.LISTING_ONLY, _currentFormAppletDef, _inst,
                 FormMode.LISTING.formProperty());
 
+        String beanTitle = au.getEntityDescription(au.getEntityClassDef(formDef.getEntityDef().getLongName()), _inst,
+                null);
         ListingForm listingForm = au.constructListingForm(this, getRootAppletDef().getDescription(),
-                _inst.getDescription(), formDef, _inst, makeFormBreadCrumbs());
+                beanTitle, formDef, _inst, makeFormBreadCrumbs());
         return listingForm;
     }
 
     protected ListingForm constructListingForm(FormDef formDef, Entity _inst) throws UnifyException {
+        String beanTitle = au.getEntityDescription(au.getEntityClassDef(formDef.getEntityDef().getLongName()), _inst,
+                null);
         ListingForm listingForm = au.constructListingForm(this, getRootAppletDef().getDescription(),
-                _inst.getDescription(), formDef, _inst, makeFormBreadCrumbs());
+                beanTitle, formDef, _inst, makeFormBreadCrumbs());
         return listingForm;
     }
 
@@ -792,7 +825,9 @@ public abstract class AbstractEntityFormApplet extends AbstractApplet implements
         String createNewCaption = _currentFormAppletDef != null
                 ? _currentFormAppletDef.getPropValue(String.class, AppletPropertyConstants.CREATE_FORM_NEW_CAPTION)
                 : null;
-        final String beanTitle = inst.getDescription() != null ? inst.getDescription()
+        String beanTitle = au.getEntityDescription(au.getEntityClassDef(formDef.getEntityDef().getLongName()), inst,
+                null);
+        beanTitle = !StringUtils.isBlank(beanTitle) ? beanTitle
                 : !StringUtils.isBlank(createNewCaption) ? createNewCaption
                         : au.resolveSessionMessage("$m{form.newrecord}");
         return constructForm(formDef, inst, formMode, beanTitle, childFkFieldName, isChild);

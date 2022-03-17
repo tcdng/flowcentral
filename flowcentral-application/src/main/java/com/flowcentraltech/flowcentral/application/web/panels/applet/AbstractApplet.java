@@ -106,7 +106,7 @@ public abstract class AbstractApplet {
         this.altSubCaption = altSubCaption;
     }
 
-    protected AppletUtilities getAu() {
+    public final AppletUtilities getAu() {
         return au;
     }
 

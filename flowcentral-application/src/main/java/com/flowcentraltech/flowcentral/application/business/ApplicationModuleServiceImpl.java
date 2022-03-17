@@ -375,7 +375,7 @@ public class ApplicationModuleServiceImpl extends AbstractFlowCentralService
                     for (AppAppletFilter appAppletFilter : appApplet.getFilterList()) {
                         adb.addFilterDef(InputWidgetUtils.getFilterDef(appAppletFilter.getName(),
                                 appAppletFilter.getDescription(), appAppletFilter.getPreferredForm(),
-                                appAppletFilter.getFilter()));
+                                appAppletFilter.getPreferredChildListApplet(), appAppletFilter.getFilter()));
                     }
 
                     adb.routeToApplet(appApplet.getRouteToApplet());
@@ -2035,12 +2035,16 @@ public class ApplicationModuleServiceImpl extends AbstractFlowCentralService
             throws UnifyException {
         final EntityDef entityDef = entityClassDef.getEntityDef();
         if (entityDef.isWithDescriptiveFieldList()) {
-            return this.buildEntityDescription(entityDef, inst);
+            return buildEntityDescription(entityDef, inst);
         }
 
-        fieldName = entityDef.isWithDescriptionField() ? "description" : fieldName;
-        return environment().value(String.class, fieldName,
-                Query.of((Class<? extends Entity>) entityClassDef.getEntityClass()).addEquals("id", inst.getId()));
+        fieldName = fieldName == null ? "description" : fieldName;
+        if (fieldName != null && entityDef.isWithFieldDef(fieldName)) {
+            return environment().value(String.class, fieldName,
+                    Query.of((Class<? extends Entity>) entityClassDef.getEntityClass()).addEquals("id", inst.getId()));
+        }
+
+        return "";
     }
 
     private String buildEntityDescription(EntityDef entityDef, Entity inst) throws UnifyException {
@@ -2053,7 +2057,10 @@ public class ApplicationModuleServiceImpl extends AbstractFlowCentralService
                 appendSym = true;
             }
 
-            sb.append(ReflectUtils.getBeanProperty(inst, entityFieldDef.getFieldName()));
+            Object val = ReflectUtils.getBeanProperty(inst, entityFieldDef.getFieldName());
+            if (val != null) {
+                sb.append(val);
+            }
         }
 
         return sb.toString();
@@ -3092,6 +3099,7 @@ public class ApplicationModuleServiceImpl extends AbstractFlowCentralService
                     appAppletFilter.setDescription(resolveApplicationMessage(filterConfig.getDescription()));
                     appAppletFilter.setFilter(InputWidgetUtils.newAppFilter(filterConfig));
                     appAppletFilter.setPreferredForm(filterConfig.getPreferredForm());
+                    appAppletFilter.setPreferredChildListApplet(filterConfig.getPreferredChildListApplet());
                     appAppletFilter.setQuickFilter(filterConfig.isQuickFilter());
                     appAppletFilter.setConfigType(ConfigType.MUTABLE_INSTALL);
                     filterList.add(appAppletFilter);
@@ -3101,6 +3109,7 @@ public class ApplicationModuleServiceImpl extends AbstractFlowCentralService
                         oldAppAppletFilter.setDescription(resolveApplicationMessage(filterConfig.getDescription()));
                         oldAppAppletFilter.setFilter(InputWidgetUtils.newAppFilter(filterConfig));
                         oldAppAppletFilter.setPreferredForm(filterConfig.getPreferredForm());
+                        oldAppAppletFilter.setPreferredChildListApplet(filterConfig.getPreferredChildListApplet());
                         oldAppAppletFilter.setQuickFilter(filterConfig.isQuickFilter());
                     } else {
                         environment().findChildren(oldAppAppletFilter);

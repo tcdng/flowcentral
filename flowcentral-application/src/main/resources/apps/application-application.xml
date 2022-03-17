@@ -584,6 +584,9 @@
 			<field name="preferredForm"
 				label="$m{application.appappletfilter.preferredform}" type="string"
 				nullable="true" />
+			<field name="preferredChildListApplet"
+				label="$m{application.appappletfilter.preferredchildlistapplet}" type="string"
+				nullable="true" />				
 			<field name="quickFilter"
 				label="$m{application.appappletfilter.quickfilter}" type="boolean" />
 			<field name="ownershipTypeDesc"

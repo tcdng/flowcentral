@@ -56,6 +56,11 @@
 			dataType="string" inputType="string"
 			editor="!fc-entityfieldrefsearch caseInsensitive:true typeField:$s{dataType} entityName:$s{appEntityName} appName:$s{applicationName}"
 			renderer="!ui-label" />
+		<widgetType name="entityreflist"
+			description="$m{studio.widgettype.entityreflist}"
+			dataType="string" inputType="string"
+			editor="!fc-entityrefsearch caseInsensitive:true"
+			renderer="!ui-label" />
 		<widgetType name="entitykeylist"
 			description="$m{studio.widgettype.entitykeylist}" dataType="string"
 			inputType="string"
@@ -251,6 +256,11 @@
 			inputType="string"
 			editor="!ui-select list:studioappletallformlist listParams:$l{appAppletId} blankOption:$m{blank.none}"
 			renderer="!ui-label" />
+		<widgetType name="appletchildlistappletlist"
+			description="$m{studio.widgettype.appletchildlistappletlist}" dataType="string"
+			inputType="string"
+			editor="!ui-select list:studioappletallchildappletlist listParams:$l{appAppletId} blankOption:$m{blank.none}"
+			renderer="!ui-label" />			
 		<widgetType name="propertyappletcreateformstatepolicylist"
 			description="$m{studio.widgettype.propertyappletcreateformstatepolicylist}"
 			dataType="string" inputType="string"
@@ -1396,6 +1406,8 @@
 						disabled="true" />
 					<field name="preferredForm"
 						inputWidget="studio.appletformlist" column="1" />
+					<field name="preferredChildListApplet"
+						inputWidget="studio.appletchildlistappletlist" column="1" />
 					<field name="quickFilter" inputWidget="application.checkbox"
 						column="1" />
 				</section>
@@ -3579,6 +3591,9 @@
 				<property name="searchTable.new.caption"
 					description="$m{studio.appappletprop.manageentity.searchtable.newcaption}"
 					inputWidget="application.text" />
+				<property name="searchTable.new.multiselect.ref"
+					description="$m{studio.appappletprop.manageentity.searchtable.newmultiselectref}"
+					inputWidget="studio.entityreflist" />
 				<property name="searchTable"
 					description="$m{studio.appappletprop.manageentity.searchtable}"
 					inputWidget="studio.propertyapplettablelist" required="true" />
@@ -3713,6 +3728,9 @@
 				<property name="searchTable.new.caption"
 					description="$m{studio.appappletprop.manageentitysingleform.searchtable.newcaption}"
 					inputWidget="application.text" />
+				<property name="searchTable.new.multiselect.ref"
+					description="$m{studio.appappletprop.manageentity.searchtable.newmultiselectref}"
+					inputWidget="studio.entityreflist" />
 				<property name="searchTable"
 					description="$m{studio.appappletprop.manageentitysingleform.searchtable}"
 					inputWidget="studio.propertyapplettablelist" required="true" />
