@@ -43,6 +43,28 @@ public interface ConsolidatedFormStatePolicy extends UnifyComponent {
     boolean performAutoUpdates(ValueStore instValueStore) throws UnifyException;
     
     /**
+     * Executed on form construction.
+     * 
+     * @param instValueStore
+     *                       the form value store
+     * @throws UnifyException
+     *                        if an error occurs
+     */
+    void onFormConstruct(ValueStore instValueStore) throws UnifyException;
+    
+    /**
+     * Executed on form widget switch.
+     * 
+     * @param instValueStore
+     *                       the form value store
+     * @param trigger
+     *                       optional form trigger
+     * @throws UnifyException
+     *                        if an error occurs
+     */
+    void onFormSwitch(ValueStore instValueStore, String trigger) throws UnifyException;
+    
+    /**
      * Perform the form tab states.
      * 
      * @param reader

@@ -22,9 +22,7 @@ import com.flowcentraltech.flowcentral.common.data.TargetFormWidgetStates;
 import com.tcdng.unify.core.AbstractUnifyComponent;
 import com.tcdng.unify.core.UnifyException;
 import com.tcdng.unify.core.annotation.Configurable;
-import com.tcdng.unify.core.data.ValueStore;
 import com.tcdng.unify.core.data.ValueStoreReader;
-import com.tcdng.unify.core.database.Entity;
 
 /**
  * Convenient abstract base class for consolidated form state policies.
@@ -40,20 +38,6 @@ public abstract class AbstractConsolidatedFormStatePolicy extends AbstractUnifyC
 
     public final void setEnvironmentService(EnvironmentService environmentService) {
         this.environmentService = environmentService;
-    }
-
-    @Override
-    public final boolean performAutoUpdates(ValueStore instValueStore) throws UnifyException {
-        if (autoUpdateSupported()) {
-            TargetFormWidgetStates states = evaluateWidgetStates(instValueStore.getReader(), null);
-            if (states.isWithValueList()) {
-                states.applyValues(instValueStore);
-                environmentService.updateLean((Entity) instValueStore.getValueObject());
-                return true;
-            }
-        }
-        
-        return false;
     }
 
     @Override
