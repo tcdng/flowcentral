@@ -38,7 +38,9 @@ public class EntityMultiSelectPanel extends AbstractPanel {
     public void switchState() throws UnifyException {
         super.switchState();
         EntitySelect entitySelect = getEntitySelect();
-        setVisible("searchFilterPanel", entitySelect.isEnableFilter());
+        if (entitySelect != null) {
+            setVisible("searchFilterPanel", entitySelect.isEnableFilter());
+        }
     }
 
     @Action

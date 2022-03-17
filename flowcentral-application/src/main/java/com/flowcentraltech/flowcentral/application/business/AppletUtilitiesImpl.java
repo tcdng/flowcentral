@@ -687,7 +687,7 @@ public class AppletUtilitiesImpl extends AbstractUnifyComponent implements Apple
         final FormContext formContext = form.getCtx();
         boolean isCreateMode = form.getFormMode().isCreate();
         if (!isCreateMode) {
-            String beanTitle = getEntityDescription(getEntityClassDef(entityDef.getLongName()), inst, "description");
+            String beanTitle = getEntityDescription(getEntityClassDef(entityDef.getLongName()), inst, null);
             form.setBeanTitle(beanTitle);
         }
 

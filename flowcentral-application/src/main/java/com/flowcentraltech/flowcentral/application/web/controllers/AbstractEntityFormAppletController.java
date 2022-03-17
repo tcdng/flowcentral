@@ -67,7 +67,7 @@ public abstract class AbstractEntityFormAppletController<T extends AbstractEntit
             entitySelect.setEnableFilter(false);
             entitySelect.applyFilterToSearch();
             setSessionAttribute(FlowCentralSessionAttributeConstants.ENTITYSELECT, entitySelect);
-            return ApplicationResultMappingConstants.SHOW_ENTITY_SELECT;
+            return ApplicationResultMappingConstants.SHOW_ENTITY_MULTISELECT;
         }
 
         applet.newChildListItem(childTabIndex);

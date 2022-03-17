@@ -56,6 +56,11 @@
 			dataType="string" inputType="string"
 			editor="!fc-entityfieldrefsearch caseInsensitive:true typeField:$s{dataType} entityName:$s{appEntityName} appName:$s{applicationName}"
 			renderer="!ui-label" />
+		<widgetType name="entityreflist"
+			description="$m{studio.widgettype.entityreflist}"
+			dataType="string" inputType="string"
+			editor="!fc-entityrefsearch caseInsensitive:true"
+			renderer="!ui-label" />
 		<widgetType name="entitykeylist"
 			description="$m{studio.widgettype.entitykeylist}" dataType="string"
 			inputType="string"
@@ -3581,7 +3586,7 @@
 					inputWidget="application.text" />
 				<property name="searchTable.new.multiselect.ref"
 					description="$m{studio.appappletprop.manageentity.searchtable.newmultiselectref}"
-					inputWidget="studio.entityfieldreflist" />
+					inputWidget="studio.entityreflist" />
 				<property name="searchTable"
 					description="$m{studio.appappletprop.manageentity.searchtable}"
 					inputWidget="studio.propertyapplettablelist" required="true" />
@@ -3718,7 +3723,7 @@
 					inputWidget="application.text" />
 				<property name="searchTable.new.multiselect.ref"
 					description="$m{studio.appappletprop.manageentity.searchtable.newmultiselectref}"
-					inputWidget="studio.entityfieldreflist" />
+					inputWidget="studio.entityreflist" />
 				<property name="searchTable"
 					description="$m{studio.appappletprop.manageentitysingleform.searchtable}"
 					inputWidget="studio.propertyapplettablelist" required="true" />

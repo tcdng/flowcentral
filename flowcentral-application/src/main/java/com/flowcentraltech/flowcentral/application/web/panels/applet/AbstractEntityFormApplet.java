@@ -789,7 +789,7 @@ public abstract class AbstractEntityFormApplet extends AbstractApplet implements
                 FormMode.LISTING.formProperty());
 
         String beanTitle = au.getEntityDescription(au.getEntityClassDef(formDef.getEntityDef().getLongName()), _inst,
-                "description");
+                null);
         ListingForm listingForm = au.constructListingForm(this, getRootAppletDef().getDescription(),
                 beanTitle, formDef, _inst, makeFormBreadCrumbs());
         return listingForm;
@@ -797,7 +797,7 @@ public abstract class AbstractEntityFormApplet extends AbstractApplet implements
 
     protected ListingForm constructListingForm(FormDef formDef, Entity _inst) throws UnifyException {
         String beanTitle = au.getEntityDescription(au.getEntityClassDef(formDef.getEntityDef().getLongName()), _inst,
-                "description");
+                null);
         ListingForm listingForm = au.constructListingForm(this, getRootAppletDef().getDescription(),
                 beanTitle, formDef, _inst, makeFormBreadCrumbs());
         return listingForm;
@@ -810,7 +810,7 @@ public abstract class AbstractEntityFormApplet extends AbstractApplet implements
                 ? _currentFormAppletDef.getPropValue(String.class, AppletPropertyConstants.CREATE_FORM_NEW_CAPTION)
                 : null;
         String beanTitle = au.getEntityDescription(au.getEntityClassDef(formDef.getEntityDef().getLongName()), inst,
-                "description");
+                null);
         beanTitle = !StringUtils.isBlank(beanTitle) ? beanTitle
                 : !StringUtils.isBlank(createNewCaption) ? createNewCaption
                         : au.resolveSessionMessage("$m{form.newrecord}");

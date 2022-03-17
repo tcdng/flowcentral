@@ -2035,12 +2035,16 @@ public class ApplicationModuleServiceImpl extends AbstractFlowCentralService
             throws UnifyException {
         final EntityDef entityDef = entityClassDef.getEntityDef();
         if (entityDef.isWithDescriptiveFieldList()) {
-            return this.buildEntityDescription(entityDef, inst);
+            return buildEntityDescription(entityDef, inst);
         }
 
-        fieldName = entityDef.isWithDescriptionField() ? "description" : fieldName;
-        return environment().value(String.class, fieldName,
-                Query.of((Class<? extends Entity>) entityClassDef.getEntityClass()).addEquals("id", inst.getId()));
+        fieldName = fieldName == null ? "description" : fieldName;
+        if (fieldName != null && entityDef.isWithFieldDef(fieldName)) {
+            return environment().value(String.class, fieldName,
+                    Query.of((Class<? extends Entity>) entityClassDef.getEntityClass()).addEquals("id", inst.getId()));
+        }
+
+        return "";
     }
 
     private String buildEntityDescription(EntityDef entityDef, Entity inst) throws UnifyException {
