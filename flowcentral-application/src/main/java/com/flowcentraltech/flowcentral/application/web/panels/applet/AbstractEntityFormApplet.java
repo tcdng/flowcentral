@@ -894,6 +894,12 @@ public abstract class AbstractEntityFormApplet extends AbstractApplet implements
             }
         }
 
+        if (formDef.isWithConsolidatedFormState()) {
+            ConsolidatedFormStatePolicy policy = ctx.getAu().getComponent(ConsolidatedFormStatePolicy.class,
+                    formDef.getConsolidatedFormState());
+            policy.onFormConstruct(formValueStore);
+        }
+        
         // Fire on form construct value generators
         for (FormStatePolicyDef formStatePolicyDef : formDef.getOnFormConstructSetValuesFormStatePolicyDefList()) {
             if (formStatePolicyDef.isSetValues()) {

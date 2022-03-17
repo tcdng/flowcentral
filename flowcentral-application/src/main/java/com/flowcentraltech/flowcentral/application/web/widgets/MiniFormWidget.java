@@ -243,6 +243,8 @@ public class MiniFormWidget extends AbstractMultiControl implements FormTriggerE
                     states.applyValues(formValueStore);
                     setValuesExecuted = true;
                 }
+                
+                policy.onFormSwitch(formValueStore, focusFieldName);
             }
 
             for (FormStatePolicyDef formStatePolicyDef : formDef.getOnSwitchFormStatePolicyDefList()) {
