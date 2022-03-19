@@ -15,6 +15,7 @@
  */
 package com.flowcentraltech.flowcentral.application.web.panels;
 
+import com.flowcentraltech.flowcentral.application.constants.AppletRequestAttributeConstants;
 import com.flowcentraltech.flowcentral.application.constants.ApplicationResultMappingConstants;
 import com.flowcentraltech.flowcentral.common.constants.FlowCentralSessionAttributeConstants;
 import com.tcdng.unify.core.UnifyException;
@@ -55,6 +56,7 @@ public class EntityMultiSelectPanel extends AbstractPanel {
                 FlowCentralSessionAttributeConstants.ENTITYSELECT);
         entitySelect.multiselect();
         removeSessionAttribute(FlowCentralSessionAttributeConstants.ENTITYSELECT);
+        setRequestAttribute(AppletRequestAttributeConstants.RELOAD_ONSWITCH, Boolean.TRUE); // TODO Get from entity select flag
         setCommandResultMapping(ApplicationResultMappingConstants.REFRESH_CONTENT);
     }
 

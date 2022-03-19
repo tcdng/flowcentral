@@ -25,4 +25,6 @@ package com.flowcentraltech.flowcentral.application.constants;
 public interface AppletRequestAttributeConstants {
 
     String SILENT_MULTIRECORD_SEARCH_ERROR_MSG = "app:silentmultirecordsearchmsg";
+
+    String RELOAD_ONSWITCH = "app:reloadonswitch";
 }
