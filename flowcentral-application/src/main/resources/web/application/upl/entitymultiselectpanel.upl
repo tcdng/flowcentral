@@ -45,5 +45,5 @@
 !ui-postcommand:filterAct command:search components:$c{filterInput}
 	 refresh:$c{searchResultPanel}
 !ui-postcommand:closeAct command:close
-!ui-postcommand:selectAct command:select debounce:true
+!ui-postcommand:selectAct command:select components:$c{searchResultTbl} debounce:true
 
