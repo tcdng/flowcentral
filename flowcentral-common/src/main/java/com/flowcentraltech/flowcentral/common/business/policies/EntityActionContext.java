@@ -18,6 +18,7 @@ package com.flowcentraltech.flowcentral.common.business.policies;
 
 import com.flowcentraltech.flowcentral.common.data.AbstractContext;
 import com.flowcentraltech.flowcentral.configuration.constants.RecordActionType;
+import com.tcdng.unify.core.data.Audit;
 import com.tcdng.unify.core.database.Entity;
 
 /**
@@ -40,6 +41,8 @@ public class EntityActionContext extends AbstractContext {
     
     private Object result;
 
+    private Audit audit;
+    
     public EntityActionContext(Object entityDef, Entity inst, String actionPolicyName) {
         this.entityDef = entityDef;
         this.inst = inst;
@@ -61,6 +64,14 @@ public class EntityActionContext extends AbstractContext {
 
     public Entity getInst() {
         return inst;
+    }
+
+    public Audit getAudit() {
+        return audit;
+    }
+
+    public void setAudit(Audit audit) {
+        this.audit = audit;
     }
 
     public RecordActionType getActionType() {

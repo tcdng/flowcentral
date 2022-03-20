@@ -53,7 +53,7 @@ import com.tcdng.unify.core.util.StringUtils;
  * @since 1.0
  */
 public class EntityDef extends BaseApplicationEntityDef {
-
+    
     private EntityBaseType baseType;
 
     private ConfigType type;
@@ -105,6 +105,8 @@ public class EntityDef extends BaseApplicationEntityDef {
     private EntityFieldDef fosterParentTypeDef;
 
     private EntityFieldDef categoryColumnDef;
+    
+    private Set<String> auditFieldNames;
 
     private String blobFieldName;
 
@@ -593,6 +595,25 @@ public class EntityDef extends BaseApplicationEntityDef {
 
     public String getAttachPrivilege() {
         return attachPrivilege;
+    }
+
+    public Set<String> getAuditFieldNames() {
+        if (auditFieldNames == null) {
+            synchronized(EntityDef.class) {
+                if (auditFieldNames == null) {
+                    auditFieldNames = new HashSet<String>();
+                    for (EntityFieldDef entityFieldDef: fieldDefList) {
+                        if (entityFieldDef.isAuditable()) {
+                            auditFieldNames.add(entityFieldDef.getFieldName());
+                        }
+                    }
+                    
+                    auditFieldNames = Collections.unmodifiableSet(auditFieldNames);
+                }                
+            }
+        }
+        
+        return auditFieldNames;
     }
 
     public boolean isSingleFieldUniqueConstraint(String fieldName) {
