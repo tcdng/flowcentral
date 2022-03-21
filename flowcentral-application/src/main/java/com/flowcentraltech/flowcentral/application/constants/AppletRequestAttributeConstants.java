@@ -26,5 +26,7 @@ public interface AppletRequestAttributeConstants {
 
     String SILENT_MULTIRECORD_SEARCH_ERROR_MSG = "app:silentmultirecordsearchmsg";
 
+    String SILENT_FORM_ERROR_MSG = "app:silentformerrormsg";
+
     String RELOAD_ONSWITCH = "app:reloadonswitch";
 }

@@ -226,6 +226,7 @@ public abstract class AbstractEntityFormApplet extends AbstractApplet implements
         if (restoreForm()) {
             Entity _inst = reloadEntity((Entity) form.getFormBean(), false);
             if (_inst != null) {
+                form.getCtx().clearValidationErrors();
                 updateForm(HeaderWithTabsForm.UpdateType.NAV_BACK_TO_PREVIOUS, form, _inst);
                 reviewFormContext(form.getCtx(), EvaluationMode.REQUIRED, FormReviewType.ON_UPDATE);
             } else {
@@ -1182,6 +1183,7 @@ public abstract class AbstractEntityFormApplet extends AbstractApplet implements
         applyDelayedSetValues(form);
 
         EntityActionResult entityActionResult = getAu().getEnvironment().updateLean(eCtx);
+        form.getCtx().addValidationErrors(eCtx.getFormMessages());
         updateForm(HeaderWithTabsForm.UpdateType.UPDATE_INST, form, reloadEntity(inst, false));
 
         // Review form

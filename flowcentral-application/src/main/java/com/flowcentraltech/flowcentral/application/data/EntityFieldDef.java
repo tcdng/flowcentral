@@ -327,7 +327,7 @@ public class EntityFieldDef implements Listable, EntityFieldAttributes {
     }
 
     public boolean isAuditable() {
-        return auditable;
+        return auditable || dataType.isForeignKey();
     }
 
     public boolean isReportable() {

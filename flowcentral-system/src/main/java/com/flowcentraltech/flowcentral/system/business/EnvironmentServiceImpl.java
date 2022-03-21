@@ -171,6 +171,11 @@ public class EnvironmentServiceImpl extends AbstractBusinessService
     }
 
     @Override
+    public void clearRollbackTransactions() throws UnifyException {
+        super.clearRollbackTransactions();
+    }
+
+    @Override
     public void setSavePoint() throws UnifyException {
         super.setSavePoint();
     }

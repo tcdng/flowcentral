@@ -365,11 +365,11 @@ textarea:focus {outline: none !important;box-shadow: 0 0 6px #5194f3;}
 /* Form errors */
 .fc-formmessages {}
 .fc-formmessages .bdy {display:block; padding:4px 2px; margin-bottom: 2px;  list-style-position: inside;list-style-type: square;}
-.fc-formmessages .info {padding:4px 4px;background-color: #efeffe;
+.fc-formmessages .info {padding:8px 4px;background-color: #efeffe;
 	border: 1px solid #ccccff; color: #2020b0;}
-.fc-formmessages .warning {padding:4px 4px; background-color: #fef8ef;
+.fc-formmessages .warning {padding:8px 4px; background-color: #fef8ef;
 	border: 1px solid #fff8cc; color: #f6b608; }
-.fc-formmessages .error{padding:4px 4px; background-color: #feefef;
+.fc-formmessages .error{padding:8px 4px; background-color: #feefef;
 	border: 1px solid #ffcccc; color: #b02020;}
 
 /* Mini form */
@@ -491,7 +491,7 @@ textarea:focus {outline: none !important;box-shadow: 0 0 6px #5194f3;}
 .fc-table .table .mserialh {width: 48px;}
 .fc-table .table .mseriald {}
 .fc-table .table .mnorec {font-size:8pt;color: #606060;}
-.fc-table .merr {border: 1px solid #e08484;font-size: 8pt;color: #e08484;font-weight: bold;background-color: #fff5f5;padding: 10px 0px;}
+.fc-table .mwarn {border: 1px solid #ff823b;font-size: 8pt;color: #ff823b;font-weight: bold;background-color: #ffe6d7;padding: 10px 0px;}
 .fc-table .classic th {border: 1px solid #e8e8e8;background-color: #d5d5d5;}
 .fc-table .classic td {border-right: 1px solid #e8e8e8;border-left: 1px solid #e8e8e8;}
 .fc-table .classic .mselh {width: 32px;background-color: #e3e7ea;}

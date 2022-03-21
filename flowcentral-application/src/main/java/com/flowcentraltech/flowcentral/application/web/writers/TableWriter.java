@@ -85,7 +85,7 @@ public class TableWriter extends AbstractControlWriter {
             
             String errMsg = (String) getRequestAttribute(AppletRequestAttributeConstants.SILENT_MULTIRECORD_SEARCH_ERROR_MSG);
             if(!StringUtils.isBlank(errMsg)) {
-                writer.write("<div class=\"merr\"><span style=\"display:block;text-align:center;\">");
+                writer.write("<div class=\"mwarn\"><span style=\"display:block;text-align:center;\">");
                 writer.write(errMsg);
                 writer.write("</span></div>");
             }

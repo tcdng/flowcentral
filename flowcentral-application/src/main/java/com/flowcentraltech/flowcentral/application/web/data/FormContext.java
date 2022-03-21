@@ -238,6 +238,14 @@ public class FormContext extends AbstractContext implements ErrorContext {
         addValidationError(new FormMessage(MessageType.ERROR, message));
     }
 
+    public void addValidationErrors(List<FormMessage> messages) {
+        if (messages != null) {
+            for(FormMessage message: messages) {
+                addValidationError(message);
+            }
+        }
+    }
+
     @Override
     public void addValidationError(FormMessage message) {
         if (validationErrors == null) {

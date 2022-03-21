@@ -19,7 +19,7 @@
 // Header
 !ui-titlebar:titleBar caption:$m{entitymultiselectpanel.select} components:$c{closeBtn} draggable:true
 !ui-image:closeBtn src:$t{images/cross_white.png} styleClass:$e{tbbutton}
-     eventHandler:$d{!ui-event event:onclick action:$c{closeAct}}
+     eventHandler:$d{!ui-event event:onclick action:$c{mCloseAct}}
 	
 // Search filter panel
 !ui-panel:searchFilterPanel styleClass:$s{filall} layout:$d{!ui-horizontal style:$s{width:100%;} widths:$l{96px none}}
@@ -27,7 +27,7 @@
 
 !ui-label:filterLabel styleClass:$e{search} binding:label	
 !ui-text:filterInput caption:$m{entitymultiselectpanel.filter} binding:filter focus:true
-    eventHandler:$d{!ui-event event:oninput action:$c{filterAct}}
+    eventHandler:$d{!ui-event event:oninput action:$c{mFilterAct}}
 
 // Search result panel
 !ui-panel:searchResultPanel layout:$d{!ui-vertical style:$s{width:100%;}} components:$c{searchResultTbl}
@@ -37,13 +37,13 @@
 // Footer action panel
 !ui-panel:footerActionPanel styleClass:$e{footer} layout:$d{!ui-horizontal} components:$c{selectBtn cancelBtn}
 !ui-button:selectBtn caption:$m{button.select} styleClass:$e{fc-bluebutton}
-    eventHandler:$d{!ui-event event:onclick action:$c{selectAct}}
+    eventHandler:$d{!ui-event event:onclick action:$c{mSelectAct}}
 !ui-button:cancelBtn caption:$m{button.cancel}
-    eventHandler:$d{!ui-event event:onclick action:$c{closeAct}}
+    eventHandler:$d{!ui-event event:onclick action:$c{mCloseAct}}
 
 // Actions
-!ui-postcommand:filterAct command:search components:$c{filterInput}
+!ui-postcommand:mFilterAct command:search components:$c{filterInput}
 	 refresh:$c{searchResultPanel}
-!ui-postcommand:closeAct command:close
-!ui-postcommand:selectAct command:select components:$c{searchResultTbl} debounce:true
+!ui-postcommand:mCloseAct command:close
+!ui-postcommand:mSelectAct command:select components:$c{searchResultTbl} debounce:true
 
