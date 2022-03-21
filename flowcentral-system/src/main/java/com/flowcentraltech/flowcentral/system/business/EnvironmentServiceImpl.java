@@ -171,6 +171,21 @@ public class EnvironmentServiceImpl extends AbstractBusinessService
     }
 
     @Override
+    public void setSavePoint() throws UnifyException {
+        super.setSavePoint();
+    }
+
+    @Override
+    public void clearSavePoint() throws UnifyException {
+        super.clearSavePoint();
+    }
+
+    @Override
+    public void rollbackToSavePoint() throws UnifyException {
+        super.rollbackToSavePoint();
+    }
+
+    @Override
     public EntityActionResult performEntityAction(EntityActionContext ctx) throws UnifyException {
         executeEntityPreActionPolicy(ctx);
         return executeEntityPostActionPolicy(db(ctx.getInst().getClass()), ctx);
