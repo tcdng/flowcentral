@@ -14,19 +14,27 @@
  * the License.
  */
 
-package com.flowcentraltech.flowcentral.application.constants;
+package com.flowcentraltech.flowcentral.common.business;
+
+import com.flowcentraltech.flowcentral.common.data.EntityAuditInfo;
+import com.tcdng.unify.core.UnifyComponent;
+import com.tcdng.unify.core.UnifyException;
 
 /**
- * Applet request attribute constants
+ * Entity audit information provider.
  * 
  * @author FlowCentral Technologies Limited
  * @since 1.0
  */
-public interface AppletRequestAttributeConstants {
+public interface EntityAuditInfoProvider extends UnifyComponent {
 
-    String SILENT_MULTIRECORD_SEARCH_ERROR_MSG = "app:silentmultirecordsearchmsg";
-
-    String SILENT_FORM_ERROR_MSG = "app:silentformerrormsg";
-
-    String RELOAD_ONSWITCH = "app:reloadonswitch";
+    /**
+     * Gets entity audit information for supplied entity definition.
+     * 
+     * @param entityDef
+     *                       the entity definition object
+     * @throws UnifyException
+     *                        if an error occurs
+     */
+    EntityAuditInfo getEntityAuditInfo(Object entityDef) throws UnifyException;
 }

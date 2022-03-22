@@ -151,12 +151,14 @@ import com.flowcentraltech.flowcentral.common.annotation.LongName;
 import com.flowcentraltech.flowcentral.common.business.AbstractFlowCentralService;
 import com.flowcentraltech.flowcentral.common.business.ApplicationArtifactInstaller;
 import com.flowcentraltech.flowcentral.common.business.ApplicationPrivilegeManager;
+import com.flowcentraltech.flowcentral.common.business.EntityAuditInfoProvider;
 import com.flowcentraltech.flowcentral.common.business.FileAttachmentProvider;
 import com.flowcentraltech.flowcentral.common.business.SuggestionProvider;
 import com.flowcentraltech.flowcentral.common.business.policies.SweepingCommitPolicy;
 import com.flowcentraltech.flowcentral.common.constants.ConfigType;
 import com.flowcentraltech.flowcentral.common.constants.OwnershipType;
 import com.flowcentraltech.flowcentral.common.data.Attachment;
+import com.flowcentraltech.flowcentral.common.data.EntityAuditInfo;
 import com.flowcentraltech.flowcentral.common.data.ParamValuesDef;
 import com.flowcentraltech.flowcentral.common.entities.BaseEntity;
 import com.flowcentraltech.flowcentral.common.entities.FileAttachment;
@@ -266,7 +268,7 @@ import com.tcdng.unify.core.util.StringUtils.StringToken;
 @Transactional
 @Component(ApplicationModuleNameConstants.APPLICATION_MODULE_SERVICE)
 public class ApplicationModuleServiceImpl extends AbstractFlowCentralService
-        implements ApplicationModuleService, FileAttachmentProvider, SuggestionProvider {
+        implements ApplicationModuleService, FileAttachmentProvider, EntityAuditInfoProvider, SuggestionProvider {
 
     private final Set<String> refProperties = Collections.unmodifiableSet(new HashSet<String>(Arrays.asList(
             AppletPropertyConstants.SEARCH_TABLE, AppletPropertyConstants.CREATE_FORM,
@@ -1044,6 +1046,16 @@ public class ApplicationModuleServiceImpl extends AbstractFlowCentralService
 
     public final void setTwoWayStringCryptograph(TwoWayStringCryptograph twoWayStringCryptograph) {
         this.twoWayStringCryptograph = twoWayStringCryptograph;
+    }
+
+    @Override
+    public EntityAuditInfo getEntityAuditInfo(Object entityDef) throws UnifyException {
+        EntityDef _entityDef = (EntityDef) entityDef;
+        if (_entityDef.isAuditable()) {
+            return new EntityAuditInfo(_entityDef.getAuditFieldNames(), true);
+        }
+        
+        return new EntityAuditInfo();
     }
 
     @Override

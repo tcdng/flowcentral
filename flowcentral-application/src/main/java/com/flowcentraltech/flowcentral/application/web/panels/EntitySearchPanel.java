@@ -15,6 +15,7 @@
  */
 package com.flowcentraltech.flowcentral.application.web.panels;
 
+import com.flowcentraltech.flowcentral.application.constants.AppletRequestAttributeConstants;
 import com.flowcentraltech.flowcentral.application.data.EntityDef;
 import com.flowcentraltech.flowcentral.application.web.widgets.EntityTable;
 import com.flowcentraltech.flowcentral.application.web.widgets.EntityTableWidget;
@@ -71,16 +72,19 @@ public class EntitySearchPanel extends AbstractPanel {
 
         EntitySearch entitySearch = getEntitySearch();
         entitySearch.ensureTableStruct();
+        if (Boolean.TRUE.equals(getRequestAttribute(AppletRequestAttributeConstants.RELOAD_ONSWITCH))) {
+            entitySearch.applyFilterToSearch();
+        }
 
         String roleCode = getUserToken().getRoleCode();
         EntityTable entityTable = entitySearch.getEntityTable();
         EntityDef entityDef = entityTable.getTableDef().getEntityDef();
-        setVisible("newBtn",
-                entitySearch.isNewButtonVisible() && applicationPrivilegeManager.isRoleWithPrivilege(roleCode, entityDef.getAddPrivilege()));
-        setVisible("editBtn",
-                entitySearch.isEditButtonVisible() && applicationPrivilegeManager.isRoleWithPrivilege(roleCode, entityDef.getEditPrivilege()));
-        setVisible("viewBtn",
-                entitySearch.isViewButtonVisible() && applicationPrivilegeManager.isRoleWithPrivilege(roleCode, entityDef.getEditPrivilege()));
+        setVisible("newBtn", entitySearch.isNewButtonVisible()
+                && applicationPrivilegeManager.isRoleWithPrivilege(roleCode, entityDef.getAddPrivilege()));
+        setVisible("editBtn", entitySearch.isEditButtonVisible()
+                && applicationPrivilegeManager.isRoleWithPrivilege(roleCode, entityDef.getEditPrivilege()));
+        setVisible("viewBtn", entitySearch.isViewButtonVisible()
+                && applicationPrivilegeManager.isRoleWithPrivilege(roleCode, entityDef.getEditPrivilege()));
         setVisible("switchToBasic", entityTable.isSupportsBasicSearch());
         if (entitySearch.isBasicSearchOnly() || entityTable.isBasicSearchMode()) {
             setVisible("searchEntriesPanel", true);
@@ -90,7 +94,7 @@ public class EntitySearchPanel extends AbstractPanel {
             setVisible("switchToAdvanced", !entitySearch.isBasicSearchOnly());
         } else {
             setVisible("searchEntriesPanel", false);
-            setVisible("searchFilterPanel", true);            
+            setVisible("searchFilterPanel", true);
             setVisible("quickFilterBlock", entitySearch.isShowQuickFilter());
             setVisible("footerActionPanel", entitySearch.isShowActionFooter());
             setVisible("searchFilterBody", entitySearch.isFilterEditorVisible());
@@ -101,8 +105,8 @@ public class EntitySearchPanel extends AbstractPanel {
                 setDisabled("tackFilterBtn", entitySearch.isFilterEditorPinned());
                 setVisible("openSaveFilterBtn", entitySearch.isShowFilterSave());
                 if (isWidgetVisible("saveFilterPanel")) {
-                    setDisabled("saveFilterScope",
-                            !applicationPrivilegeManager.isRoleWithPrivilege(roleCode, entityTable.getSaveGlobalTableQuickFilterPrivilege()));
+                    setDisabled("saveFilterScope", !applicationPrivilegeManager.isRoleWithPrivilege(roleCode,
+                            entityTable.getSaveGlobalTableQuickFilterPrivilege()));
                 }
             }
         }

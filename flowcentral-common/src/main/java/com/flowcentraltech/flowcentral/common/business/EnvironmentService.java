@@ -78,6 +78,38 @@ public interface EnvironmentService extends BusinessService {
     Database getDatabase() throws UnifyException;
 
     /**
+     * Clears roll back on current transactions in database session.
+     * 
+     * @throws UnifyException
+     *             if an error occurs
+     */
+    void clearRollbackTransactions() throws UnifyException;
+
+    /**
+     * Sets save point for transaction session.
+     * 
+     * @throws UnifyException
+     *                        if an error occurs
+     */
+    void setSavePoint() throws UnifyException;
+
+    /**
+     * Clears current save point for transaction.
+     * 
+     * @throws UnifyException
+     *                        if an error occurs
+     */
+    void clearSavePoint() throws UnifyException;
+
+    /**
+     * Roll back transaction to last save point.
+     * 
+     * @throws UnifyException
+     *                        if an error occurs
+     */
+    void rollbackToSavePoint() throws UnifyException;
+
+    /**
      * Performs policy action only on supplied entity.
      * 
      * @param ctx

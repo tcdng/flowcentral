@@ -15,6 +15,7 @@
  */
 package com.flowcentraltech.flowcentral.application.web.controllers;
 
+import com.flowcentraltech.flowcentral.application.constants.AppletRequestAttributeConstants;
 import com.flowcentraltech.flowcentral.application.constants.ApplicationResultMappingConstants;
 import com.flowcentraltech.flowcentral.application.data.RefDef;
 import com.flowcentraltech.flowcentral.application.web.panels.EntitySelect;
@@ -132,6 +133,12 @@ public abstract class AbstractEntityFormAppletController<T extends AbstractEntit
         applet.prepareItemProperties(childTabIndex);
         getPageRequestContextUtil().setContentScrollReset();
         return "refreshapplet";
+    }
+
+    @Override
+    protected void onOpenPage() throws UnifyException {
+        super.onOpenPage();
+        setRequestAttribute(AppletRequestAttributeConstants.RELOAD_ONSWITCH, Boolean.TRUE);
     }
 
 }

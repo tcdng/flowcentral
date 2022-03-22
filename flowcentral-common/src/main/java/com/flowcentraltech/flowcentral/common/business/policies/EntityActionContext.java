@@ -16,9 +16,16 @@
 
 package com.flowcentraltech.flowcentral.common.business.policies;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import com.flowcentraltech.flowcentral.common.data.AbstractContext;
+import com.flowcentraltech.flowcentral.common.data.FormMessage;
 import com.flowcentraltech.flowcentral.configuration.constants.RecordActionType;
+import com.tcdng.unify.core.data.Audit;
 import com.tcdng.unify.core.database.Entity;
+import com.tcdng.unify.web.ui.constant.MessageType;
 
 /**
  * Entity action context object.
@@ -40,19 +47,35 @@ public class EntityActionContext extends AbstractContext {
     
     private Object result;
 
+    private Audit audit;
+
+    private List<FormMessage> formMessages;
+    
     public EntityActionContext(Object entityDef, Entity inst, String actionPolicyName) {
         this.entityDef = entityDef;
         this.inst = inst;
         this.actionPolicyName = actionPolicyName;
     }
 
-    public EntityActionContext(Object entityDef, Entity inst, RecordActionType actionType, SweepingCommitPolicy sweepingCommitPolicy,
-            String actionPolicyName) {
+    public EntityActionContext(Object entityDef, Entity inst, RecordActionType actionType,
+            SweepingCommitPolicy sweepingCommitPolicy, String actionPolicyName) {
         this.entityDef = entityDef;
         this.inst = inst;
         this.actionType = actionType;
         this.sweepingCommitPolicy = sweepingCommitPolicy;
         this.actionPolicyName = actionPolicyName;
+    }
+    
+    public void addFormMessage(MessageType type, String message) {
+        if (formMessages == null) {
+            formMessages = new ArrayList<FormMessage>();
+        }
+
+        formMessages.add(new FormMessage(type, message));
+    }
+
+    public List<FormMessage> getFormMessages() {
+        return formMessages != null ? formMessages: Collections.emptyList();
     }
 
     public Object getEntityDef() {
@@ -61,6 +84,14 @@ public class EntityActionContext extends AbstractContext {
 
     public Entity getInst() {
         return inst;
+    }
+
+    public Audit getAudit() {
+        return audit;
+    }
+
+    public void setAudit(Audit audit) {
+        this.audit = audit;
     }
 
     public RecordActionType getActionType() {

@@ -20,6 +20,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
+import com.flowcentraltech.flowcentral.common.business.EntityAuditInfoProvider;
 import com.flowcentraltech.flowcentral.common.business.EnvironmentDelegate;
 import com.flowcentraltech.flowcentral.common.business.EnvironmentDelegateInfo;
 import com.flowcentraltech.flowcentral.common.business.EnvironmentDelegateUtilities;
@@ -34,6 +35,7 @@ import com.flowcentraltech.flowcentral.common.business.policies.EntityListAction
 import com.flowcentraltech.flowcentral.common.business.policies.EntityListActionPolicy;
 import com.flowcentraltech.flowcentral.common.business.policies.EntityListActionResult;
 import com.flowcentraltech.flowcentral.common.business.policies.SweepingCommitPolicy;
+import com.flowcentraltech.flowcentral.common.data.EntityAuditInfo;
 import com.flowcentraltech.flowcentral.configuration.constants.RecordActionType;
 import com.flowcentraltech.flowcentral.system.constants.SystemModuleNameConstants;
 import com.tcdng.unify.core.UnifyException;
@@ -46,6 +48,8 @@ import com.tcdng.unify.core.criterion.Aggregate;
 import com.tcdng.unify.core.criterion.AggregateFunction;
 import com.tcdng.unify.core.criterion.Update;
 import com.tcdng.unify.core.data.Aggregation;
+import com.tcdng.unify.core.data.Audit;
+import com.tcdng.unify.core.data.BeanValueStore;
 import com.tcdng.unify.core.data.GroupAggregation;
 import com.tcdng.unify.core.database.Database;
 import com.tcdng.unify.core.database.Entity;
@@ -75,6 +79,9 @@ public class EnvironmentServiceImpl extends AbstractBusinessService
     @Configurable
     private SuggestionProvider suggestionProvider;
     
+    @Configurable
+    private EntityAuditInfoProvider entityAuditInfoProvider;
+    
     public EnvironmentServiceImpl() {
         this.delegateInfoByEntityClass = new ConcurrentHashMap<Class<? extends Entity>, EnvironmentDelegateInfo>();
         this.delegateInfoByLongName = new ConcurrentHashMap<String, EnvironmentDelegateInfo>();
@@ -86,6 +93,10 @@ public class EnvironmentServiceImpl extends AbstractBusinessService
 
     public final void setSuggestionProvider(SuggestionProvider suggestionProvider) {
         this.suggestionProvider = suggestionProvider;
+    }
+
+    public final void setEntityAuditInfoProvider(EntityAuditInfoProvider entityAuditInfoProvider) {
+        this.entityAuditInfoProvider = entityAuditInfoProvider;
     }
 
     @Override
@@ -157,6 +168,26 @@ public class EnvironmentServiceImpl extends AbstractBusinessService
     @Override
     public Database getDatabase() throws UnifyException {
         return db();
+    }
+
+    @Override
+    public void clearRollbackTransactions() throws UnifyException {
+        super.clearRollbackTransactions();
+    }
+
+    @Override
+    public void setSavePoint() throws UnifyException {
+        super.setSavePoint();
+    }
+
+    @Override
+    public void clearSavePoint() throws UnifyException {
+        super.clearSavePoint();
+    }
+
+    @Override
+    public void rollbackToSavePoint() throws UnifyException {
+        super.rollbackToSavePoint();
     }
 
     @Override
@@ -294,11 +325,21 @@ public class EnvironmentServiceImpl extends AbstractBusinessService
     public EntityActionResult updateLean(EntityActionContext ctx) throws UnifyException {
         executeEntityPreActionPolicy(ctx);
         Entity inst = ctx.getInst();
+        if (entityAuditInfoProvider != null) {
+            EntityAuditInfo entityAuditInfo = entityAuditInfoProvider.getEntityAuditInfo(ctx.getEntityDef());
+            if (entityAuditInfo.auditable() && entityAuditInfo.inclusions()) {
+                Entity _oldInst = findLean(inst.getClass(), inst.getId());
+                Audit audit = new BeanValueStore(inst).diff(new BeanValueStore(_oldInst),
+                        entityAuditInfo.getInclusions());
+                ctx.setAudit(audit);
+            }
+        }
+
         ctx.setResult(db(inst.getClass()).updateLeanByIdVersion(inst));
         if (suggestionProvider != null) {
             suggestionProvider.saveSuggestions(ctx.getEntityDef(), inst);
         }
-        
+
         return executeEntityPostActionPolicy(db(inst.getClass()), ctx);
     }
 
