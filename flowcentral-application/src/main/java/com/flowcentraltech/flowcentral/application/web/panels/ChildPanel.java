@@ -39,8 +39,10 @@ public class ChildPanel extends AbstractStandalonePanel {
     @Override
     public void switchState() throws UnifyException {
         super.switchState();
-
+        
         EntityChild entityChild = getEntityChild();
+        entityChild.reload();
+
         boolean editMode = entityChild.isWithChild();
         setWidgetVisible("createBtn", !editMode && entityChild.isCreateButtonVisible());
         setWidgetVisible("editBtn", editMode && entityChild.isEditButtonVisible());

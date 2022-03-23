@@ -864,6 +864,18 @@ public abstract class AbstractEntityFormApplet extends AbstractApplet implements
 
         final HeaderWithTabsForm form = au.constructHeaderWithTabsForm(this, getRootAppletDef().getDescription(),
                 beanTitle, formDef, inst, formMode, makeFormBreadCrumbs(), formSwitchOnChangeHandlers);
+        String submitCaption = _currentFormAppletDef.getPropValue(String.class,
+                AppletPropertyConstants.CREATE_FORM_SUBMIT_CAPTION);
+        String submitNextCaption = _currentFormAppletDef.getPropValue(String.class,
+                AppletPropertyConstants.CREATE_FORM_SUBMIT_NEXT_CAPTION);
+        boolean submitButtonHighlight = _currentFormAppletDef.getPropValue(boolean.class,
+                AppletPropertyConstants.CREATE_FORM_SUBMIT_BUTTON_HIGHLIGHT);
+        form.setSubmitCaption(submitCaption);
+        form.setSubmitNextCaption(submitNextCaption);
+        if (submitButtonHighlight) {
+            form.setSubmitStyleClass("fc-greenbutton");
+        }
+        
         final ValueStore formValueStore = form.getCtx().getFormValueStore();
         if (isReference) {
             form.getCtx().setFixedReference(childFkFieldName);

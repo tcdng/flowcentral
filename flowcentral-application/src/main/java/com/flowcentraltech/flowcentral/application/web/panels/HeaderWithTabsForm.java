@@ -45,6 +45,12 @@ public class HeaderWithTabsForm extends AbstractForm {
 
     private UpdateType updateType;
 
+    private String submitCaption;
+
+    private String submitNextCaption;
+    
+    private String submitStyleClass;
+    
     public HeaderWithTabsForm(FormContext ctx, BreadCrumbs breadCrumbs) {
         super(ctx, breadCrumbs);
         headerForm = new MiniForm(MiniFormScope.MAIN_FORM, ctx, ctx.getFormDef().getFormTabDef(0));
@@ -68,6 +74,30 @@ public class HeaderWithTabsForm extends AbstractForm {
 
     public MiniForm getHeaderForm() {
         return headerForm;
+    }
+
+    public String getSubmitCaption() {
+        return submitCaption;
+    }
+
+    public void setSubmitCaption(String submitCaption) {
+        this.submitCaption = submitCaption;
+    }
+
+    public String getSubmitNextCaption() {
+        return submitNextCaption;
+    }
+
+    public void setSubmitNextCaption(String submitNextCaption) {
+        this.submitNextCaption = submitNextCaption;
+    }
+
+    public String getSubmitStyleClass() {
+        return submitStyleClass;
+    }
+
+    public void setSubmitStyleClass(String submitStyleClass) {
+        this.submitStyleClass = submitStyleClass;
     }
 
     public void setTabSheet(TabSheet tabSheet) {

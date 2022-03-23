@@ -56,6 +56,8 @@ public interface AppletPropertyConstants {
 //
     String CREATE_FORM_SUBMIT = "createForm.submit";
 
+    String CREATE_FORM_SUBMIT_CAPTION = "createForm.submit.caption";
+
     String CREATE_FORM_SUBMIT_POLICY = "createForm.submit.policy";
 
     String CREATE_FORM_SUBMIT_VALIDATE = "createForm.submit.validate";
@@ -63,6 +65,10 @@ public interface AppletPropertyConstants {
     String CREATE_FORM_SUBMIT_WORKFLOW_CHANNEL = "createForm.submit.workflow.channel";
 
     String CREATE_FORM_SUBMIT_NEXT = "createForm.submitnext";
+
+    String CREATE_FORM_SUBMIT_NEXT_CAPTION = "createForm.submitnext.caption";
+
+    String CREATE_FORM_SUBMIT_BUTTON_HIGHLIGHT = "createForm.submit.buttonhighlight";
 
     String CREATE_FORM_SUBMIT_CONDITION = "createForm.submit.condition";
 //

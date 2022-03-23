@@ -42,6 +42,10 @@ public class EntityChild extends AbstractPanelFormBinding {
 
     private Entity childInst;
 
+    private FormContext mCtx;
+
+    private Restriction mRestriction;
+    
     private int childTabIndex;
 
     private boolean canCreate;
@@ -103,9 +107,17 @@ public class EntityChild extends AbstractPanelFormBinding {
         return !getAppletCtx().isContextEditable();
     }
 
+    public void reload() throws UnifyException {
+        if (mCtx != null && mRestriction != null ) {
+            load(mCtx, mRestriction);
+        }
+    }
+    
     @SuppressWarnings("unchecked")
     public void load(FormContext ctx, Restriction restriction) throws UnifyException {
         final EntityClassDef entityClassDef = ctx.getAu().getEntityClassDef(childFormDef.getEntityDef().getLongName());
+        mCtx = ctx;
+        mRestriction = restriction;
         childInst = ctx.getEnvironment()
                 .listLean(Query.of((Class<? extends Entity>) entityClassDef.getEntityClass())
                         .addRestriction(restriction));
