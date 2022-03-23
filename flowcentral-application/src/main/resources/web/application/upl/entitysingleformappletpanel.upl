@@ -31,9 +31,11 @@
 	eventHandler:$d{!ui-event event:onclick action:$c{saveNextAct}}
 !ui-button:saveCloseBtn caption:$m{button.saveclose}
 	eventHandler:$d{!ui-event event:onclick action:$c{saveCloseAct}}
-!ui-button:submitCloseBtn caption:$m{button.submitclose}
+!ui-button:submitCloseBtn caption:$m{button.submitclose} captionBinding:submitCaption
+	styleClassBinding:submitStyleClass
 	eventHandler:$d{!ui-event event:onclick action:$c{submitAct}}
-!ui-button:submitNextBtn caption:$m{button.submitnext}
+!ui-button:submitNextBtn caption:$m{button.submitnext} captionBinding:submitNextCaption
+	styleClassBinding:submitStyleClass
 	eventHandler:$d{!ui-event event:onclick action:$c{submitNextAct}}
 !ui-button:updateBtn caption:$m{button.update}
 	eventHandler:$d{!ui-event event:onclick action:$c{updateAct}}

@@ -40,9 +40,11 @@
 	eventHandler:$d{!ui-event event:onclick action:$c{saveCloseAct}}
 !ui-button:saveAsBtn caption:$m{button.saveas.ellipsis}
 	eventHandler:$d{!ui-event event:onclick action:$c{prepareEntitySaveAsAct}}
-!ui-button:submitCloseBtn caption:$m{button.submit}
+!ui-button:submitCloseBtn caption:$m{button.submit} captionBinding:submitCaption
+	styleClassBinding:submitStyleClass
 	eventHandler:$d{!ui-event event:onclick action:$c{submitAct}}
-!ui-button:submitNextBtn caption:$m{button.submitnext}
+!ui-button:submitNextBtn caption:$m{button.submitnext} captionBinding:submitNextCaption
+	styleClassBinding:submitStyleClass
 	eventHandler:$d{!ui-event event:onclick action:$c{submitNextAct}}
 !ui-button:updateBtn caption:$m{button.update}
 	eventHandler:$d{!ui-event event:onclick action:$c{updateAct}}
