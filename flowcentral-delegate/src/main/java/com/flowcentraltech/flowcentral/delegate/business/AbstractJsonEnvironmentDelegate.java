@@ -17,8 +17,9 @@
 package com.flowcentraltech.flowcentral.delegate.business;
 
 import com.flowcentraltech.flowcentral.application.constants.AppletRequestAttributeConstants;
+import com.flowcentraltech.flowcentral.connect.common.data.BaseResponse;
 import com.flowcentraltech.flowcentral.connect.common.data.DataSourceRequest;
-import com.flowcentraltech.flowcentral.connect.common.data.DataSourceResponse;
+import com.flowcentraltech.flowcentral.connect.common.data.JsonDataSourceResponse;
 import com.flowcentraltech.flowcentral.delegate.constants.DelegateErrorCodeConstants;
 import com.tcdng.unify.core.UnifyException;
 import com.tcdng.unify.core.constant.LocaleType;
@@ -33,21 +34,21 @@ import com.tcdng.unify.core.util.DataUtils;
  */
 public abstract class AbstractJsonEnvironmentDelegate extends AbstractEnvironmentDelegate {
 
-    protected DataSourceResponse sendToDelegateDatasourceService(DataSourceRequest req) throws UnifyException {
-        DataSourceResponse resp = null;
+    protected BaseResponse sendToDelegateDatasourceService(DataSourceRequest req) throws UnifyException {
+        JsonDataSourceResponse resp = null;
         try {
             String reqJSON = DataUtils.asJsonString(req, PrintFormat.NONE);
             String respJSON = sendToDelegateDatasourceService(reqJSON);
-            resp = DataUtils.fromJsonString(DataSourceResponse.class, respJSON);
+            resp = DataUtils.fromJsonString(JsonDataSourceResponse.class, respJSON);
             if (resp.error()) {
                 // TODO Translate to local exception and throw
             }
         } catch (UnifyException e) {
             logError(e);
-            resp = new DataSourceResponse(e.getErrorCode(), getErrorMessage(LocaleType.SESSION, e.getUnifyError()));
+            resp = new JsonDataSourceResponse(e.getErrorCode(), getErrorMessage(LocaleType.SESSION, e.getUnifyError()));
         } catch (Exception e) {
             logError(e);
-            resp = new DataSourceResponse(DelegateErrorCodeConstants.DELEGATE_BACKEND_CONNECTION_ERROR, this
+            resp = new JsonDataSourceResponse(DelegateErrorCodeConstants.DELEGATE_BACKEND_CONNECTION_ERROR, this
                     .getSessionMessage(DelegateErrorCodeConstants.DELEGATE_BACKEND_CONNECTION_ERROR, e.getMessage()));
         }
 

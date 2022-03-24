@@ -26,9 +26,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.flowcentraltech.flowcentral.connect.common.constants.DataSourceErrorCodeConstants;
 import com.flowcentraltech.flowcentral.connect.common.data.DataSourceRequest;
-import com.flowcentraltech.flowcentral.connect.common.data.DataSourceResponse;
+import com.flowcentraltech.flowcentral.connect.common.data.JsonDataSourceResponse;
 import com.flowcentraltech.flowcentral.connect.common.data.ProcedureRequest;
-import com.flowcentraltech.flowcentral.connect.common.data.ProcedureResponse;
+import com.flowcentraltech.flowcentral.connect.common.data.JsonProcedureResponse;
 import com.flowcentraltech.flowcentral.connect.springboot.service.SpringBootInterconnectService;
 
 /**
@@ -51,14 +51,14 @@ public class SpringBootInterconnectController {
     }
 
     @PostMapping(path = "/datasource")
-    public DataSourceResponse processDataSourceRequest(@RequestBody DataSourceRequest req) {
-        DataSourceResponse resp = null;
+    public JsonDataSourceResponse processDataSourceRequest(@RequestBody DataSourceRequest req) {
+        JsonDataSourceResponse resp = null;
         try {
             return springBootInterconnectService.processDataSourceRequest(req);
         } catch (Exception e) {
             String errorMessage = e.getMessage();
             LOGGER.log(Level.SEVERE, errorMessage, e);
-            resp = new DataSourceResponse();
+            resp = new JsonDataSourceResponse();
             resp.setErrorCode(DataSourceErrorCodeConstants.PROVIDER_SERVICE_EXCEPTION);
             resp.setErrorMsg(errorMessage);
         }
@@ -67,14 +67,14 @@ public class SpringBootInterconnectController {
     }
 
     @PostMapping(path = "/procedure")
-    public ProcedureResponse processDataSourceRequest(@RequestBody ProcedureRequest req) {
-    	ProcedureResponse resp = null;
+    public JsonProcedureResponse processDataSourceRequest(@RequestBody ProcedureRequest req) {
+    	JsonProcedureResponse resp = null;
         try {
             return springBootInterconnectService.executeProcedureRequest(req);
         } catch (Exception e) {
             String errorMessage = e.getMessage();
             LOGGER.log(Level.SEVERE, errorMessage, e);
-            resp = new ProcedureResponse();
+            resp = new JsonProcedureResponse();
             resp.setErrorCode(DataSourceErrorCodeConstants.PROVIDER_SERVICE_EXCEPTION);
             resp.setErrorMsg(errorMessage);
         }

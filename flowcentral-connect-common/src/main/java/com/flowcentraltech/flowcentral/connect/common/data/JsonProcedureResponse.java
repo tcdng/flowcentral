@@ -16,11 +16,11 @@
 package com.flowcentraltech.flowcentral.connect.common.data;
 
 /**
- * Procedure response.
+ * JSON procedure response.
  * 
  * @author FlowCentral Technologies Limited
  * @since 1.0
  */
-public class ProcedureResponse extends BaseResponse {
+public class JsonProcedureResponse extends JsonDataSourceResponse {
 
 }

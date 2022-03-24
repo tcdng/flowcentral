@@ -3481,6 +3481,15 @@
 			</propertySet>
 			<propertySet
 				label="$m{studio.appappletprop.createentity.workflowproperties}">
+				<property name="createForm.submit.caption"
+					description="$m{studio.appappletprop.manageentitysingleform.createform.submitcaption}"
+					inputWidget="application.text" />
+				<property name="createForm.submitnext.caption"
+					description="$m{studio.appappletprop.manageentitysingleform.createform.submitnextcaption}"
+					inputWidget="application.text" />
+				<property name="createForm.submit.buttonhighlight"
+					description="$m{studio.appappletprop.manageentitysingleform.createform.submitbuttonhighlight}"
+					inputWidget="application.checkbox" />
 				<property name="createForm.submit.policy"
 					description="$m{studio.appappletprop.createentity.createform.submitpolicy}"
 					inputWidget="studio.propertyentityactionpolicylist" />
@@ -3557,6 +3566,15 @@
 			</propertySet>
 			<propertySet
 				label="$m{studio.appappletprop.createentitysingleform.workflowproperties}">
+				<property name="createForm.submit.caption"
+					description="$m{studio.appappletprop.manageentitysingleform.createform.submitcaption}"
+					inputWidget="application.text" />
+				<property name="createForm.submitnext.caption"
+					description="$m{studio.appappletprop.manageentitysingleform.createform.submitnextcaption}"
+					inputWidget="application.text" />
+				<property name="createForm.submit.buttonhighlight"
+					description="$m{studio.appappletprop.manageentitysingleform.createform.submitbuttonhighlight}"
+					inputWidget="application.checkbox" />
 				<property name="createForm.submit.policy"
 					description="$m{studio.appappletprop.createentitysingleform.createform.submitpolicy}"
 					inputWidget="studio.propertyentityactionpolicylist" />

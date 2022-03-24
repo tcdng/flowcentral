@@ -43,13 +43,13 @@ import org.springframework.transaction.annotation.Transactional;
 import com.flowcentraltech.flowcentral.connect.common.EntityInstFinder;
 import com.flowcentraltech.flowcentral.connect.common.constants.RestrictionType;
 import com.flowcentraltech.flowcentral.connect.common.data.DataSourceRequest;
-import com.flowcentraltech.flowcentral.connect.common.data.DataSourceResponse;
+import com.flowcentraltech.flowcentral.connect.common.data.JsonDataSourceResponse;
 import com.flowcentraltech.flowcentral.connect.common.data.EntityFieldInfo;
 import com.flowcentraltech.flowcentral.connect.common.data.EntityInfo;
 import com.flowcentraltech.flowcentral.connect.common.data.FilterRestrictionDef;
 import com.flowcentraltech.flowcentral.connect.common.data.OrderDef;
 import com.flowcentraltech.flowcentral.connect.common.data.ProcedureRequest;
-import com.flowcentraltech.flowcentral.connect.common.data.ProcedureResponse;
+import com.flowcentraltech.flowcentral.connect.common.data.JsonProcedureResponse;
 import com.flowcentraltech.flowcentral.connect.common.data.QueryDef;
 import com.flowcentraltech.flowcentral.connect.common.data.ResolvedCondition;
 import com.flowcentraltech.flowcentral.connect.configuration.constants.FieldDataType;
@@ -96,7 +96,7 @@ public class SpringBootInterconnectServiceImpl implements SpringBootInterconnect
 	}
 
 	@Override
-	public ProcedureResponse executeProcedureRequest(ProcedureRequest req) throws Exception {
+	public JsonProcedureResponse executeProcedureRequest(ProcedureRequest req) throws Exception {
 		Object reqBean = interconnect.getBeanFromJsonPayload(req);
 		SpringBootInterconnectProcedure procedure = context.getBean(req.getOperation(),
 				SpringBootInterconnectProcedure.class);
@@ -107,7 +107,7 @@ public class SpringBootInterconnectServiceImpl implements SpringBootInterconnect
 
 	@Override
 	@Transactional
-	public DataSourceResponse processDataSourceRequest(DataSourceRequest req) throws Exception {
+	public JsonDataSourceResponse processDataSourceRequest(DataSourceRequest req) throws Exception {
 		EntityInfo entityInfo = interconnect.getEntityInfo(req.getEntity());
 		Object[] result = null;
 		if (entityInfo.isWithHandler()) {

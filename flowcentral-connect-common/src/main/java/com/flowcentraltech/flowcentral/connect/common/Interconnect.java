@@ -39,13 +39,13 @@ import com.flowcentraltech.flowcentral.connect.common.constants.LingualStringTyp
 import com.flowcentraltech.flowcentral.connect.common.constants.RestrictionType;
 import com.flowcentraltech.flowcentral.connect.common.data.BaseRequest;
 import com.flowcentraltech.flowcentral.connect.common.data.DataSourceRequest;
-import com.flowcentraltech.flowcentral.connect.common.data.DataSourceResponse;
+import com.flowcentraltech.flowcentral.connect.common.data.JsonDataSourceResponse;
 import com.flowcentraltech.flowcentral.connect.common.data.DateRange;
 import com.flowcentraltech.flowcentral.connect.common.data.EntityFieldInfo;
 import com.flowcentraltech.flowcentral.connect.common.data.EntityInfo;
 import com.flowcentraltech.flowcentral.connect.common.data.OrderDef;
 import com.flowcentraltech.flowcentral.connect.common.data.ProcedureRequest;
-import com.flowcentraltech.flowcentral.connect.common.data.ProcedureResponse;
+import com.flowcentraltech.flowcentral.connect.common.data.JsonProcedureResponse;
 import com.flowcentraltech.flowcentral.connect.common.data.QueryDef;
 import com.flowcentraltech.flowcentral.connect.common.data.ResolvedCondition;
 import com.flowcentraltech.flowcentral.connect.configuration.xml.ApplicationConfig;
@@ -475,17 +475,17 @@ public class Interconnect {
         return null;
     }
 
-    public DataSourceResponse createDataSourceResponse(Object[] result, DataSourceRequest req) throws Exception {
+    public JsonDataSourceResponse createDataSourceResponse(Object[] result, DataSourceRequest req) throws Exception {
         checkInitialized();
-        DataSourceResponse resp = new DataSourceResponse();
+        JsonDataSourceResponse resp = new JsonDataSourceResponse();
         String[] payload = toJsonResultStringValues(result, req.getOperation(), req.getEntity());
         resp.setPayload(payload);
         return resp;
     }
 
-    public ProcedureResponse createProcedureResponse(Object[] result, ProcedureRequest req) throws Exception {
+    public JsonProcedureResponse createProcedureResponse(Object[] result, ProcedureRequest req) throws Exception {
         checkInitialized();
-        ProcedureResponse resp = new ProcedureResponse();
+        JsonProcedureResponse resp = new JsonProcedureResponse();
         String[] payload = toJsonResultStringValues(result, DataSourceOperation.LIST_LEAN, req.getEntity());
         resp.setPayload(payload);
         return resp;
