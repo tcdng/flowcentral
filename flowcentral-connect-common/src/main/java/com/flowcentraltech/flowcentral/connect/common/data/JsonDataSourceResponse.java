@@ -16,19 +16,30 @@
 package com.flowcentraltech.flowcentral.connect.common.data;
 
 /**
- * Data source response.
+ * JSON datasource response.
  * 
  * @author FlowCentral Technologies Limited
  * @since 1.0
  */
-public class DataSourceResponse extends BaseResponse {
+public class JsonDataSourceResponse extends BaseResponse {
+    
+    private String[] payload;
 
-    public DataSourceResponse(String errorCode, String errorMsg) {
+    public JsonDataSourceResponse(String errorCode, String errorMsg) {
         super(errorCode, errorMsg);
+        this.payload = new String[0];
     }
 
-    public DataSourceResponse() {
+    public JsonDataSourceResponse() {
 
+    }
+
+    public String[] getPayload() {
+        return payload;
+    }
+
+    public void setPayload(String[] payload) {
+        this.payload = payload;
     }
 
 }

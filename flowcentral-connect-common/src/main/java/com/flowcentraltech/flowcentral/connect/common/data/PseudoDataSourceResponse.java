@@ -16,43 +16,30 @@
 package com.flowcentraltech.flowcentral.connect.common.data;
 
 /**
- * Flow central interconnect base response class.
+ * Pseudo datasource response.
  * 
  * @author FlowCentral Technologies Limited
  * @since 1.0
  */
-public abstract class BaseResponse {
-
-    private String errorCode;
-
-    private String errorMsg;
-
-    public BaseResponse(String errorCode, String errorMsg) {
-        this.errorCode = errorCode;
-        this.errorMsg = errorMsg;
-    }
-
-    public BaseResponse() {
-
-    }
-
-    public String getErrorCode() {
-        return errorCode;
-    }
-
-    public void setErrorCode(String errorCode) {
-        this.errorCode = errorCode;
-    }
-
-    public String getErrorMsg() {
-        return errorMsg;
-    }
-
-    public void setErrorMsg(String errorMsg) {
-        this.errorMsg = errorMsg;
-    }
+public class PseudoDataSourceResponse extends BaseResponse {
     
-    public boolean error() {
-        return errorCode != null && errorMsg != null;
+    private Object[] payload;
+
+    public PseudoDataSourceResponse(String errorCode, String errorMsg) {
+        super(errorCode, errorMsg);
+        this.payload = new String[0];
     }
+
+    public PseudoDataSourceResponse() {
+
+    }
+
+    public Object[] getPayload() {
+        return payload;
+    }
+
+    public void setPayload(Object[] payload) {
+        this.payload = payload;
+    }
+
 }

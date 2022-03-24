@@ -23,7 +23,7 @@ import java.util.Locale;
 import com.flowcentraltech.flowcentral.common.business.EnvironmentDelegateUtilities;
 import com.flowcentraltech.flowcentral.common.business.policies.AbstractWfEnrichmentPolicy;
 import com.flowcentraltech.flowcentral.connect.common.data.ProcedureRequest;
-import com.flowcentraltech.flowcentral.connect.common.data.ProcedureResponse;
+import com.flowcentraltech.flowcentral.connect.common.data.JsonProcedureResponse;
 import com.tcdng.unify.core.UnifyException;
 import com.tcdng.unify.core.annotation.Configurable;
 import com.tcdng.unify.core.constant.PrintFormat;
@@ -62,7 +62,7 @@ public abstract class AbstractDelegateWfEnrichmentPolicy extends AbstractWfEnric
         ProcedureRequest req = new ProcedureRequest(operation);
         req.setEntity(utilities.resolveLongName(inst.getClass()));
         req.setPayload(utilities.encodeDelegateEntity(inst));
-        ProcedureResponse resp =  sendToDelegateProcedureService(req);
+        JsonProcedureResponse resp =  sendToDelegateProcedureService(req);
         Object[] payload = resp.getPayload();
         Entity respInst = null;
         if (payload != null && payload.length == 1) {
@@ -83,10 +83,10 @@ public abstract class AbstractDelegateWfEnrichmentPolicy extends AbstractWfEnric
         return Collections.emptyList();
     }
 
-    protected ProcedureResponse sendToDelegateProcedureService(ProcedureRequest req) throws UnifyException {
+    protected JsonProcedureResponse sendToDelegateProcedureService(ProcedureRequest req) throws UnifyException {
         String reqJSON = DataUtils.asJsonString(req, PrintFormat.NONE);
         String respJSON = sendToDelegateProcedureService(reqJSON);
-        ProcedureResponse resp = DataUtils.fromJsonString(ProcedureResponse.class, respJSON);
+        JsonProcedureResponse resp = DataUtils.fromJsonString(JsonProcedureResponse.class, respJSON);
         if (resp.error()) {
             // TODO Translate to local exception and throw
         }

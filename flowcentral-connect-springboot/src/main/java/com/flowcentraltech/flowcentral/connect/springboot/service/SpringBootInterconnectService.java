@@ -16,9 +16,9 @@
 package com.flowcentraltech.flowcentral.connect.springboot.service;
 
 import com.flowcentraltech.flowcentral.connect.common.data.DataSourceRequest;
-import com.flowcentraltech.flowcentral.connect.common.data.DataSourceResponse;
+import com.flowcentraltech.flowcentral.connect.common.data.JsonDataSourceResponse;
 import com.flowcentraltech.flowcentral.connect.common.data.ProcedureRequest;
-import com.flowcentraltech.flowcentral.connect.common.data.ProcedureResponse;
+import com.flowcentraltech.flowcentral.connect.common.data.JsonProcedureResponse;
 
 /**
  * Flow central spring boot interconnect service.
@@ -37,7 +37,7 @@ public interface SpringBootInterconnectService {
      * @throws Exception
      *                   if an error occurs
      */
-    DataSourceResponse processDataSourceRequest(DataSourceRequest req) throws Exception;
+    JsonDataSourceResponse processDataSourceRequest(DataSourceRequest req) throws Exception;
 
     /**
      * Executes a procedure request.
@@ -48,5 +48,5 @@ public interface SpringBootInterconnectService {
      * @throws Exception
      *                   if an error occurs
      */
-    ProcedureResponse executeProcedureRequest(ProcedureRequest req) throws Exception;
+    JsonProcedureResponse executeProcedureRequest(ProcedureRequest req) throws Exception;
 }
