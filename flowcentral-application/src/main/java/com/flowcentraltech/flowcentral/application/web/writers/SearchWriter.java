@@ -28,6 +28,7 @@ import com.tcdng.unify.core.annotation.Writes;
 import com.tcdng.unify.core.data.ValueStore;
 import com.tcdng.unify.web.ui.widget.AbstractMultiControl.ChildWidgetInfo;
 import com.tcdng.unify.web.ui.widget.Control;
+import com.tcdng.unify.web.ui.widget.EventHandler;
 import com.tcdng.unify.web.ui.widget.ResponseWriter;
 import com.tcdng.unify.web.ui.widget.Widget;
 import com.tcdng.unify.web.ui.widget.control.DynamicField;
@@ -142,6 +143,23 @@ public class SearchWriter extends AbstractControlWriter {
         ctrl.setValueStore(lineValueStore);
         writer.writeBehavior(ctrl);
         addPageAlias(searchWidget.getId(), ctrl);
+        
+        // TODO Depend on flal in search entries value object
+        if (!searchWidget.isContainerDisabled()) {
+            EventHandler[] eventHandlers = searchWidget.getUplAttribute(EventHandler[].class, "eventHandler");
+            if (eventHandlers != null) {
+                String id = ctrl.getId();
+                if (ctrl.isBindEventsToFacade()) {
+                    id = ctrl.getFacadeId();
+                }
+
+                //getRequestContext().setQuickReference(ctrl.getValueStore());
+                for (EventHandler eventHandler : eventHandlers) {
+                    writer.writeBehavior(eventHandler, id, ctrl.getBinding());
+                }
+            }
+        }
+        
         if (!getRequestContextUtil().isFocusOnWidget()) {
             ChildWidgetInfo info = new ArrayList<ChildWidgetInfo>(ctrl.getChildWidgetInfos()).get(0);
             final String cId = info.getWidget().isUseFacadeFocus() ? info.getWidget().getFacadeId()
