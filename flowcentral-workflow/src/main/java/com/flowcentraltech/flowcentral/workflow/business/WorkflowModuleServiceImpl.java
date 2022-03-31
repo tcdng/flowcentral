@@ -19,8 +19,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import com.flowcentraltech.flowcentral.application.business.AppletUtilities;
@@ -29,6 +31,7 @@ import com.flowcentraltech.flowcentral.application.business.ApplicationModuleSer
 import com.flowcentraltech.flowcentral.application.constants.AppletPropertyConstants;
 import com.flowcentraltech.flowcentral.application.constants.ApplicationModuleErrorConstants;
 import com.flowcentraltech.flowcentral.application.constants.ApplicationPrivilegeConstants;
+import com.flowcentraltech.flowcentral.application.constants.ProcessVariable;
 import com.flowcentraltech.flowcentral.application.data.AppletDef;
 import com.flowcentraltech.flowcentral.application.data.EntityClassDef;
 import com.flowcentraltech.flowcentral.application.data.EntityDef;
@@ -803,6 +806,10 @@ public class WorkflowModuleServiceImpl extends AbstractFlowCentralService
         final Long wfItemId = wfItem.getId();
         final Date now = getNow();
 
+        transitionItem.setVariable(ProcessVariable.FORWARDED_BY.variableKey(), wfItem.getForwardedBy());
+        transitionItem.setVariable(ProcessVariable.FORWARD_TO.variableKey(), wfItem.getForwardTo());
+        transitionItem.setVariable(ProcessVariable.HELD_BY.variableKey(), wfItem.getHeldBy());
+        
         wfItem.setHeldBy(null);
         try {
             logDebug("Transitioning item [{0}] in step [{1}] of type [{2}]...", wfItem.getWfItemDesc(),
@@ -815,7 +822,8 @@ public class WorkflowModuleServiceImpl extends AbstractFlowCentralService
             // Common set values
             WfSetValuesDef wfSetValuesDef = currWfStepDef.getWfSetValuesDef();
             if (wfSetValuesDef != null && wfSetValuesDef.isSetValues()) {
-                wfSetValuesDef.getSetValues().apply(appletUtil, entityDef, now, wfEntityInst, null);
+                wfSetValuesDef.getSetValues().apply(appletUtil, entityDef, now, wfEntityInst,
+                        transitionItem.getVariables(), null);
                 transitionItem.setUpdated();
             }
 
@@ -1118,14 +1126,17 @@ public class WorkflowModuleServiceImpl extends AbstractFlowCentralService
 
         private String forwardTo;
 
+        private Map<String, Object> variables;
+
         private boolean updated;
 
         private boolean deleted;
-
+        
         public TransitionItem(WfItem wfItem, WfDef wfDef, WorkEntity wfInst) {
             this.wfItem = wfItem;
             this.wfDef = wfDef;
             this.wfEntityInst = new WfEntityInst(wfInst);
+            this.variables = new HashMap<String, Object>();
         }
 
         public WfItem getWfItem() {
@@ -1152,6 +1163,14 @@ public class WorkflowModuleServiceImpl extends AbstractFlowCentralService
             this.forwardTo = forwardTo;
         }
 
+        public Map<String, Object> getVariables() {
+            return variables;
+        }
+
+        public void setVariable(String key, Object val) {
+            variables.put(key, val);
+        }
+        
         public boolean isUpdated() {
             return updated;
         }

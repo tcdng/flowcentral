@@ -18,6 +18,7 @@ package com.flowcentraltech.flowcentral.application.web.widgets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -247,6 +248,7 @@ public class MiniFormWidget extends AbstractMultiControl implements FormTriggerE
                 policy.onFormSwitch(formValueStore, focusFieldName);
             }
 
+            final Map<String, Object> variables = Collections.emptyMap();
             for (FormStatePolicyDef formStatePolicyDef : formDef.getOnSwitchFormStatePolicyDefList()) {
                 if (formStatePolicyDef.isTriggered(focusFieldName)) {
                     ObjectFilter objectFilter = formStatePolicyDef.isWithCondition()
@@ -274,7 +276,7 @@ public class MiniFormWidget extends AbstractMultiControl implements FormTriggerE
 
                         if (formStatePolicyDef.isSetValues()) {
                             formStatePolicyDef.getSetValuesDef().apply(au, formDef.getEntityDef(), now, formValueStore,
-                                    focusFieldName);
+                                    variables, focusFieldName);
                             setValuesExecuted = true;
                         }
                     }

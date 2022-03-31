@@ -19,6 +19,7 @@ package com.flowcentraltech.flowcentral.application.data;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import com.flowcentraltech.flowcentral.application.business.AppletUtilities;
 import com.flowcentraltech.flowcentral.application.business.EntitySetValuesGenerator;
@@ -81,13 +82,13 @@ public class SetValuesDef {
         return setValueList == null || setValueList.isEmpty();
     }
 
-    public void apply(AppletUtilities au, EntityDef entityDef, Date now, Entity inst, String trigger)
-            throws UnifyException {
-        apply(au, entityDef, now, new BeanValueStore(inst), trigger);
+    public void apply(AppletUtilities au, EntityDef entityDef, Date now, Entity inst, Map<String, Object> variables,
+            String trigger) throws UnifyException {
+        apply(au, entityDef, now, new BeanValueStore(inst), variables, trigger);
     }
 
-    public void apply(AppletUtilities au, EntityDef entityDef, Date now, ValueStore valueStore, String trigger)
-            throws UnifyException {
+    public void apply(AppletUtilities au, EntityDef entityDef, Date now, ValueStore valueStore,
+            Map<String, Object> variables, String trigger) throws UnifyException {
         if (!StringUtils.isBlank(valueGenerator)) {
             EntitySetValuesGenerator entityValueGenerator = au.getComponent(EntitySetValuesGenerator.class,
                     valueGenerator);
@@ -99,6 +100,10 @@ public class SetValuesDef {
             EntityFieldDataType fieldType = entityFieldDef.getDataType();
             if (entityFieldDef.isSupportSetValue()) {
                 switch (setValueDef.getType()) {
+                    case PROCESS_VARIABLE:
+                        Object val = variables.get(setValueDef.getParam());
+                        valueStore.store(setValueDef.getFieldName(), val);
+                        break;
                     case GENERATOR:
                         String generatorName = setValueDef.getParam();
                         String rule = null;
