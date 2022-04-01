@@ -19,6 +19,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.EnumSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.Stack;
 
@@ -881,6 +882,7 @@ public abstract class AbstractEntityFormApplet extends AbstractApplet implements
             form.getCtx().setFixedReference(childFkFieldName);
         }
 
+        final Map<String, Object> variables = Collections.emptyMap();
         if (formMode.isCreate()) {
             // Apply create state policy
             String onCreateStatePolicy = _currentFormAppletDef.getPropValue(String.class,
@@ -890,7 +892,7 @@ public abstract class AbstractEntityFormApplet extends AbstractApplet implements
                         .getOnCreateFormStatePolicyDef(onCreateStatePolicy);
                 if (onCreateFormStatePolicyDef.isSetValues()) {
                     onCreateFormStatePolicyDef.getSetValuesDef().apply(au, formDef.getEntityDef(), au.getNow(),
-                            formValueStore, null);
+                            formValueStore, variables, null);
                 }
             }
 
@@ -917,7 +919,7 @@ public abstract class AbstractEntityFormApplet extends AbstractApplet implements
         for (FormStatePolicyDef formStatePolicyDef : formDef.getOnFormConstructSetValuesFormStatePolicyDefList()) {
             if (formStatePolicyDef.isSetValues()) {
                 formStatePolicyDef.getSetValuesDef().apply(au, formDef.getEntityDef(), au.getNow(), formValueStore,
-                        null);
+                        variables, null);
             }
         }
 
@@ -1044,6 +1046,7 @@ public abstract class AbstractEntityFormApplet extends AbstractApplet implements
         final ValueStore _formValueStore = form.getCtx().getFormValueStore();
         final Date now = au.getNow();
         // Execute delayed set values
+        final Map<String, Object> variables = Collections.emptyMap();
         for (FormStatePolicyDef formStatePolicyDef : _formDef.getOnDelayedSetValuesFormStatePolicyDefList()) {
             ObjectFilter objectFilter = formStatePolicyDef.isWithCondition()
                     ? formStatePolicyDef.getOnCondition().getObjectFilter(_formDef.getEntityDef(),
@@ -1051,7 +1054,8 @@ public abstract class AbstractEntityFormApplet extends AbstractApplet implements
                     : null;
             if (objectFilter == null || objectFilter.match(_formValueStore)) {
                 if (formStatePolicyDef.isSetValues()) {
-                    formStatePolicyDef.getSetValuesDef().apply(au, _formDef.getEntityDef(), now, _formValueStore, null);
+                    formStatePolicyDef.getSetValuesDef().apply(au, _formDef.getEntityDef(), now, _formValueStore,
+                            variables, null);
                 }
             }
         }

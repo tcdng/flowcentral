@@ -21,7 +21,7 @@
     dialogActionComponents:$c{dialogActionPanel}
 
 !ui-panel:setValuesPanel style:$s{width:100%;}
-	layout:$d{!ui-vertical style:$s{width:100%;} showCaption:true captionSuffix:$s{:} inlineCaption:true}
+	layout:$d{!ui-vertical style:$s{width:100%;} showCaption:true captionSuffix:$s{:}}
 	components:$c{setValues}
 !fc-setvalues:setValues caption:$m{wfstepsetvaluespanel.values} binding:entries
 

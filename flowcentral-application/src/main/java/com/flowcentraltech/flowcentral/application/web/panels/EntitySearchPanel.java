@@ -89,9 +89,10 @@ public class EntitySearchPanel extends AbstractPanel {
         if (entitySearch.isBasicSearchOnly() || entityTable.isBasicSearchMode()) {
             setVisible("searchEntriesPanel", true);
             setVisible("searchFilterPanel", false);
-            setVisible("quickFilterBlock", false);
+            setVisible("quickFilterBlock", entitySearch.isShowQuickFilter());
             setVisible("footerActionPanel", entitySearch.isShowActionFooter());
             setVisible("switchToAdvanced", !entitySearch.isBasicSearchOnly());
+            setVisible("baseFilterTranslation", entitySearch.isWithBaseFilter());
         } else {
             setVisible("searchEntriesPanel", false);
             setVisible("searchFilterPanel", true);
@@ -197,8 +198,7 @@ public class EntitySearchPanel extends AbstractPanel {
     public void refresh() throws UnifyException {
         EntitySearch entitySearch = getEntitySearch();
         entitySearch.applyFilterToSearch();
-        entitySearch.hideFilterEditor();
-        hideSaveFilter();
+        hideFilterEditor();
         getRequestContextUtil().setContentScrollReset();
     }
 
@@ -206,14 +206,15 @@ public class EntitySearchPanel extends AbstractPanel {
     public void applyQuickFilter() throws UnifyException {
         EntitySearch entitySearch = getEntitySearch();
         entitySearch.applyQuickFilter();
-        entitySearch.hideFilterEditor();
-        hideSaveFilter();
+        entitySearch.clearSearchEntries();
+        hideFilterEditor();
         getRequestContextUtil().setContentScrollReset();
     }
 
     @Action
     public void search() throws UnifyException {
         EntitySearch entitySearch = getEntitySearch();
+        entitySearch.setAppAppletFilterId(null);
         entitySearch.applySearchEntriesToSearch();
         getRequestContextUtil().setContentScrollReset();
     }
@@ -221,7 +222,8 @@ public class EntitySearchPanel extends AbstractPanel {
     @Action
     public void clear() throws UnifyException {
         EntitySearch entitySearch = getEntitySearch();
-        entitySearch.getSearchEntries().clear();
+        entitySearch.setAppAppletFilterId(null);
+        entitySearch.clearSearchEntries();
         entitySearch.applySearchEntriesToSearch();;
         getRequestContextUtil().setContentScrollReset();
     }
@@ -229,6 +231,7 @@ public class EntitySearchPanel extends AbstractPanel {
     @Action
     public void runFilter() throws UnifyException {
         EntitySearch entitySearch = getEntitySearch();
+        entitySearch.setAppAppletFilterId(null);
         entitySearch.applyFilterToSearch();
         if (!entitySearch.isFilterEditorPinned()) {
             entitySearch.toggleFilterEditor();
@@ -273,6 +276,12 @@ public class EntitySearchPanel extends AbstractPanel {
     }
 
     private void hideSaveFilter() throws UnifyException {
+        setVisible("saveFilterPanel", false);
+    }
+    
+    private void hideFilterEditor() throws UnifyException {
+        getEntitySearch().hideFilterEditor();
+        setVisible("searchFilterBody", false);
         setVisible("saveFilterPanel", false);
     }
 }

@@ -42,6 +42,9 @@ public enum SetValueType implements EnumConst {
     IMMEDIATE_FIELD(
             "IMF",
             "$m{setvaluetype.issettofield}", true),
+    PROCESS_VARIABLE(
+            "PVR",
+            "$m{setvaluetype.issettoprocessvariable}", false),
     GENERATOR(
             "GEN",
             "$m{setvaluetype.isgeneratedfrom}", true);
@@ -78,6 +81,10 @@ public enum SetValueType implements EnumConst {
 
     public boolean isLingual() {
         return IMMEDIATE_LINGUAL.equals(this);
+    }
+
+    public boolean isProcessVariable() {
+        return PROCESS_VARIABLE.equals(this);
     }
 
     public String label() {

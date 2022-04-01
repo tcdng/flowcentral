@@ -127,6 +127,9 @@ public class SetValueEntry {
             throws UnifyException {
         if (currentIn == null) {
             switch (type) {
+                case PROCESS_VARIABLE:
+                    return new StringInput(
+                            "!ui-select blankOption:$s{} list:processvariablelist");
                 case GENERATOR:
                     return new StringInput(
                             "!ui-select blankOption:$s{} list:fieldsetvaluegenlist listParams:$s{entityDef}");
@@ -142,6 +145,9 @@ public class SetValueEntry {
 
         if (fieldChange || typeChange) {
             switch (type) {
+                case PROCESS_VARIABLE:
+                    return new StringInput(
+                            "!ui-select blankOption:$s{} list:processvariablelist");
                 case GENERATOR:
                     return new StringInput(
                             "!ui-select blankOption:$s{} list:fieldsetvaluegenlist listParams:$s{entityDef}");

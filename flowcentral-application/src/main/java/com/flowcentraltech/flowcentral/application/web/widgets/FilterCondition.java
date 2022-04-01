@@ -90,7 +90,7 @@ public class FilterCondition {
 
     public void setType(FilterConditionType type) {
         this.typeChange = !DataUtils.equals(this.type, type);
-        this.type = type;type.isLingual();
+        this.type = type;
     }
 
     public String getFieldName() {

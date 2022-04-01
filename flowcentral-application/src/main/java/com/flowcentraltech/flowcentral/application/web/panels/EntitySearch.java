@@ -107,11 +107,8 @@ public class EntitySearch extends AbstractPanelFormBinding {
         super(ctx, sweepingCommitPolicy, tabName);
         this.entityFilter = new Filter(null, null, tableDef.getEntityDef(), tableDef.getLabelSuggestionDef(),
                 FilterConditionListType.IMMEDIATE_FIELD);
-        this.searchEntries = new SearchEntries(tableDef.getEntityDef(), tableDef.getLabelSuggestionDef(), 4); // TODO
-                                                                                                              // Get
-                                                                                                              // columns
-                                                                                                              // from
-                                                                                                              // settings
+        // TODO Get columns from settings
+        this.searchEntries = new SearchEntries(tableDef.getEntityDef(), tableDef.getLabelSuggestionDef(), 4);
         this.entityTable = new EntityTable(ctx.getAu(), tableDef);
         this.appAppletId = appAppletId;
         this.editAction = editAction;
@@ -127,6 +124,7 @@ public class EntitySearch extends AbstractPanelFormBinding {
     }
 
     public void setBasicSearchMode(boolean basicSearchMode) throws UnifyException {
+        setAppAppletFilterId(null);
         entityTable.setBasicSearchMode(basicSearchMode);
         if (basicSearchMode) {
             if (searchEntries != null) {
@@ -149,6 +147,12 @@ public class EntitySearch extends AbstractPanelFormBinding {
         return searchEntries;
     }
 
+    public void clearSearchEntries() {
+        if (searchEntries != null) {
+            searchEntries.clear();
+        }
+    }
+    
     public EntityTable getEntityTable() {
         return entityTable;
     }
