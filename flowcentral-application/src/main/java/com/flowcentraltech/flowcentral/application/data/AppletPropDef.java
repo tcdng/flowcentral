@@ -73,4 +73,9 @@ public class AppletPropDef {
         
         return valueList;
     }
+
+    @Override
+    public String toString() {
+        return "AppletPropDef [name=" + name + ", value=" + value + ", valueList=" + valueList + "]";
+    }
 }
