@@ -24,6 +24,7 @@ import java.util.Map;
 import com.flowcentraltech.flowcentral.application.business.AppletUtilities;
 import com.flowcentraltech.flowcentral.application.business.EntitySetValuesGenerator;
 import com.flowcentraltech.flowcentral.application.business.FieldSetValueGenerator;
+import com.flowcentraltech.flowcentral.application.constants.ProcessVariable;
 import com.flowcentraltech.flowcentral.application.util.GeneratorNameParts;
 import com.flowcentraltech.flowcentral.application.util.GeneratorNameUtils;
 import com.flowcentraltech.flowcentral.common.util.LingualDateUtils;
@@ -101,8 +102,11 @@ public class SetValuesDef {
             if (entityFieldDef.isSupportSetValue()) {
                 switch (setValueDef.getType()) {
                     case PROCESS_VARIABLE:
-                        Object val = variables.get(setValueDef.getParam());
-                        valueStore.store(setValueDef.getFieldName(), val);
+                        ProcessVariable variable = DataUtils.convert(ProcessVariable.class, setValueDef.getParam());
+                        if (variable != null) {
+                            Object val = variables.get(variable.variableKey());
+                            valueStore.store(setValueDef.getFieldName(), val);
+                        }
                         break;
                     case GENERATOR:
                         String generatorName = setValueDef.getParam();

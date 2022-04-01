@@ -105,7 +105,6 @@ public class SpringBootInterconnectServiceImpl implements SpringBootInterconnect
 
     @Override
     public JsonProcedureResponse executeProcedureRequest(ProcedureRequest req) throws Exception {
-        LOGGER.log(Level.INFO, "Processing execute procedure request [{0}]...", prettyJson(req));
         Object reqBean = interconnect.getBeanFromJsonPayload(req);
         SpringBootInterconnectProcedure procedure = context.getBean(req.getOperation(),
                 SpringBootInterconnectProcedure.class);
@@ -117,7 +116,6 @@ public class SpringBootInterconnectServiceImpl implements SpringBootInterconnect
     @Override
     @Transactional
     public JsonDataSourceResponse processDataSourceRequest(DataSourceRequest req) throws Exception {
-        LOGGER.log(Level.INFO, "Processing datasource request [{0}]...", prettyJson(req));
         EntityInfo entityInfo = interconnect.getEntityInfo(req.getEntity());
         Object[] result = null;
         if (entityInfo.isWithHandler()) {
