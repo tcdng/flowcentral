@@ -594,6 +594,7 @@ public class ApplicationXmlGenerator extends AbstractStaticArtifactGenerator {
                         formActionConfig.setShowOnMaintain(appFormAction.isShowOnMaintain());
                         formActionConfig.setValidateForm(appFormAction.isValidateForm());
                         formActionConfig.setOrderIndex(appFormAction.getOrderIndex());
+                        formActionConfig.setType(appFormAction.getType());
                         actionConfigList.add(formActionConfig);
                     }
 
