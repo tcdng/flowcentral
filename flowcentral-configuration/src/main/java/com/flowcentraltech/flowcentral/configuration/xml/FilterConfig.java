@@ -19,6 +19,10 @@ import java.util.List;
 
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
+import com.flowcentraltech.flowcentral.configuration.constants.ChildListActionType;
+import com.flowcentraltech.flowcentral.configuration.xml.adapter.ChildListActionTypeXmlAdapter;
 
 /**
  * Filter configuration
@@ -35,6 +39,8 @@ public class FilterConfig {
     private String preferredForm;
     
     private String preferredChildListApplet;
+    
+    private ChildListActionType childListActionType;
     
     private boolean quickFilter;
 
@@ -74,6 +80,16 @@ public class FilterConfig {
     @XmlAttribute
     public  void setPreferredChildListApplet(String preferredChildListApplet) {
         this.preferredChildListApplet = preferredChildListApplet;
+    }
+
+    public ChildListActionType getChildListActionType() {
+        return childListActionType;
+    }
+
+    @XmlJavaTypeAdapter(ChildListActionTypeXmlAdapter.class)
+    @XmlAttribute
+    public void setChildListActionType(ChildListActionType childListActionType) {
+        this.childListActionType = childListActionType;
     }
 
     public boolean isQuickFilter() {

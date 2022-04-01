@@ -17,6 +17,7 @@ package com.flowcentraltech.flowcentral.application.entities;
 
 import com.flowcentraltech.flowcentral.common.constants.OwnershipType;
 import com.flowcentraltech.flowcentral.common.entities.BaseConfigNamedEntity;
+import com.flowcentraltech.flowcentral.configuration.constants.ChildListActionType;
 import com.tcdng.unify.core.annotation.Child;
 import com.tcdng.unify.core.annotation.Column;
 import com.tcdng.unify.core.annotation.ForeignKey;
@@ -40,6 +41,9 @@ public class AppAppletFilter extends BaseConfigNamedEntity {
     @ForeignKey
     private OwnershipType ownershipType;
 
+    @ForeignKey
+    private ChildListActionType childListActionType;
+    
     @Column(length = 64, nullable = true)
     private String owner;
 
@@ -54,6 +58,9 @@ public class AppAppletFilter extends BaseConfigNamedEntity {
 
     @ListOnly(key = "ownershipType", property = "description")
     private String ownershipTypeDesc;
+
+    @ListOnly(key = "childListActionType", property = "description")
+    private String childListActionTypeDesc;
 
     @Child(category = "applet")
     private AppFilter filter;
@@ -130,6 +137,22 @@ public class AppAppletFilter extends BaseConfigNamedEntity {
 
     public void setFilter(AppFilter filter) {
         this.filter = filter;
+    }
+
+    public ChildListActionType getChildListActionType() {
+        return childListActionType;
+    }
+
+    public void setChildListActionType(ChildListActionType childListActionType) {
+        this.childListActionType = childListActionType;
+    }
+
+    public String getChildListActionTypeDesc() {
+        return childListActionTypeDesc;
+    }
+
+    public void setChildListActionTypeDesc(String childListActionTypeDesc) {
+        this.childListActionTypeDesc = childListActionTypeDesc;
     }
 
 }

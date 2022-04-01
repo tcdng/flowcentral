@@ -100,6 +100,7 @@ import com.tcdng.unify.core.data.ValueStore;
 import com.tcdng.unify.core.data.ValueStoreReader;
 import com.tcdng.unify.core.database.Entity;
 import com.tcdng.unify.core.database.Query;
+import com.tcdng.unify.core.filter.ObjectFilter;
 import com.tcdng.unify.core.upl.UplComponent;
 import com.tcdng.unify.core.util.DataUtils;
 import com.tcdng.unify.core.util.ReflectUtils;
@@ -490,10 +491,13 @@ public class AppletUtilitiesImpl extends AbstractUnifyComponent implements Apple
                         break;
                     case CHILD_LIST: {
                         AppletDef _appletDef = getAppletDef(formTabDef.getApplet());
+                        final boolean newButtonVisible = !hideAddActionButton(form, applet.getFormAppletDef(),
+                                formTabDef.getApplet());
                         final String editAction = formTabDef.getEditAction() == null ? "/assignToChildItem"
                                 : formTabDef.getEditAction();
                         EntitySearch _entitySearch = constructEntitySearch(formContext, sweepingCommitPolicy,
                                 formTabDef.getName(), rootTitle, _appletDef, editAction, EntitySearch.ENABLE_ALL);
+                        _entitySearch.setNewButtonVisible(newButtonVisible);
                         if (_appletDef.isPropWithValue(AppletPropertyConstants.BASE_RESTRICTION)) {
                             _entitySearch.setBaseFilter(_appletDef.getFilterDef(
                                     _appletDef.getPropValue(String.class, AppletPropertyConstants.BASE_RESTRICTION)),
@@ -735,8 +739,11 @@ public class AppletUtilitiesImpl extends AbstractUnifyComponent implements Apple
                     }
                         break;
                     case CHILD_LIST: {
+                        final boolean newButtonVisible = !hideAddActionButton(form, applet.getFormAppletDef(),
+                                formTabDef.getApplet());
                         Restriction childRestriction = getChildRestriction(entityDef, formTabDef.getReference(), inst);
                         EntitySearch _entitySearch = (EntitySearch) tabSheetItem.getValObject();
+                        _entitySearch.setNewButtonVisible(newButtonVisible);
                         _entitySearch.setBaseRestriction(childRestriction, specialParamProvider);
                         _entitySearch.applyFilterToSearch();
                         tabSheetItem.setVisible(
@@ -961,7 +968,7 @@ public class AppletUtilitiesImpl extends AbstractUnifyComponent implements Apple
         entitySelect.setBaseRestriction(br);
         return entitySelect;
     }
-    
+
     @Override
     public EntityChild constructEntityChild(FormContext ctx, SweepingCommitPolicy sweepingCommitPolicy, String tabName,
             String rootTitle, AppletDef _appletDef) throws UnifyException {
@@ -1003,6 +1010,27 @@ public class AppletUtilitiesImpl extends AbstractUnifyComponent implements Apple
     @Override
     protected void onTerminate() throws UnifyException {
 
+    }
+
+    private boolean hideAddActionButton(HeaderWithTabsForm form, AppletDef _currFormAppletDef, String childAppletName)
+            throws UnifyException {
+        List<FilterDef> filterList = _currFormAppletDef.getChildListFilterDefs(childAppletName);
+        if (!filterList.isEmpty()) {
+            EntityDef entityDef = form.getFormDef().getEntityDef();
+            ValueStore formValueStore = form.getCtx().getFormValueStore();
+            SpecialParamProvider specialParamProvider = form.getCtx().getAppletContext().getSpecialParamProvider();
+            Date now = getNow();
+            for (FilterDef filterDef : filterList) {
+                if (filterDef.isHideAddWidgetChildListAction()) {
+                    ObjectFilter filter = filterDef.getObjectFilter(entityDef, specialParamProvider, now);
+                    if (filter.match(formValueStore)) {
+                        return true;
+                    }
+                }
+            }
+        }
+
+        return false;
     }
 
     @SuppressWarnings("unchecked")

@@ -326,16 +326,18 @@ public abstract class AbstractEntityFormApplet extends AbstractApplet implements
             SpecialParamProvider specialParamProvider = form.getCtx().getAppletContext().getSpecialParamProvider();
             Date now = au.getNow();
             for (FilterDef filterDef : filterList) {
-                ObjectFilter filter = filterDef.getObjectFilter(entityDef, specialParamProvider, now);
-                if (filter.match(formValueStore)) {
-                    AppletDef _childAppletDef = getAppletDef(_currFormTabDef.getApplet());
-                    String ref = _childAppletDef.getPropValue(String.class,
-                            AppletPropertyConstants.SEARCH_TABLE_MULTISELECT_NEW_REF);
-                    if (!StringUtils.isBlank(ref)) {
-                        return au.getRefDef(ref);
-                    }
+                if (filterDef.isShowMultiSelectChildListAction()) {
+                    ObjectFilter filter = filterDef.getObjectFilter(entityDef, specialParamProvider, now);
+                    if (filter.match(formValueStore)) {
+                        AppletDef _childAppletDef = getAppletDef(_currFormTabDef.getApplet());
+                        String ref = _childAppletDef.getPropValue(String.class,
+                                AppletPropertyConstants.SEARCH_TABLE_MULTISELECT_NEW_REF);
+                        if (!StringUtils.isBlank(ref)) {
+                            return au.getRefDef(ref);
+                        }
 
-                    break;
+                        break;
+                    }
                 }
             }
         }

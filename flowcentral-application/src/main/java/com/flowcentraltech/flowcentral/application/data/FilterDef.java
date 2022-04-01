@@ -21,6 +21,7 @@ import java.util.List;
 
 import com.flowcentraltech.flowcentral.application.util.InputWidgetUtils;
 import com.flowcentraltech.flowcentral.common.business.SpecialParamProvider;
+import com.flowcentraltech.flowcentral.configuration.constants.ChildListActionType;
 import com.tcdng.unify.core.UnifyException;
 import com.tcdng.unify.core.criterion.FilterConditionType;
 import com.tcdng.unify.core.criterion.Restriction;
@@ -52,21 +53,25 @@ public class FilterDef implements Listable {
 
     private String preferredChildListApplet;
     
+    private ChildListActionType childListActionType;
+   
     public FilterDef(FilterDef _filterDef) {
         this.filterRestrictionDefList = _filterDef.filterRestrictionDefList;
         this.name = _filterDef.name;
         this.description = _filterDef.description;
         this.preferredForm = _filterDef.preferredForm;
         this.preferredChildListApplet = _filterDef.preferredChildListApplet;
+        this.childListActionType = _filterDef.childListActionType;
     }
 
     private FilterDef(List<FilterRestrictionDef> filterRestrictionDefList, String name, String description,
-            String preferredForm, String preferredChildListApplet) {
+            String preferredForm, String preferredChildListApplet, ChildListActionType childListActionType) {
         this.filterRestrictionDefList = filterRestrictionDefList;
         this.name = name;
         this.description = description;
         this.preferredForm = preferredForm;
         this.preferredChildListApplet = preferredChildListApplet;
+        this.childListActionType = childListActionType;
     }
 
     @Override
@@ -95,6 +100,18 @@ public class FilterDef implements Listable {
         return preferredChildListApplet;
     }
 
+    public ChildListActionType getChildListActionType() {
+        return childListActionType;
+    }
+
+    public boolean isShowMultiSelectChildListAction() {
+        return ChildListActionType.SHOW_MULTISELECT.equals(childListActionType);
+    }
+
+    public boolean isHideAddWidgetChildListAction() {
+        return ChildListActionType.HIDE_ADDWIDGET.equals(childListActionType);
+    }
+    
     public boolean isWithPreferredForm() {
         return !StringUtils.isBlank(preferredForm);
     }
@@ -159,6 +176,8 @@ public class FilterDef implements Listable {
 
         private String preferredChildListApplet;
         
+        private ChildListActionType childListActionType;
+        
         private List<FilterRestrictionDef> filterRestrictionDefList;
 
         public Builder() {
@@ -185,6 +204,11 @@ public class FilterDef implements Listable {
             return this;
         }
 
+        public Builder childListActionType(ChildListActionType childListActionType) {
+            this.childListActionType = childListActionType;
+            return this;
+        }
+
         public Builder addRestrictionDef(FilterConditionType type, String fieldName, String paramA, String paramB,
                 int depth) {
             filterRestrictionDefList.add(new FilterRestrictionDef(type, fieldName, paramA, paramB, depth));
@@ -193,7 +217,7 @@ public class FilterDef implements Listable {
 
         public FilterDef build() throws UnifyException {
             return new FilterDef(DataUtils.unmodifiableList(filterRestrictionDefList), name, description,
-                    preferredForm, preferredChildListApplet);
+                    preferredForm, preferredChildListApplet, childListActionType);
         }
     }
 
