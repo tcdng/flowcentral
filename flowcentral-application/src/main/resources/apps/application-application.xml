@@ -581,7 +581,7 @@
 			<field name="childListActionType"
 				label="$m{application.appappletfilter.childlistactiontype}"
 				type="enum_ref" references="childlistactiontypelist"
-				inputWidget="application.enumlist" />
+				inputWidget="application.enumlist" nullable="true"/>
 			<field name="owner"
 				label="$m{application.appappletfilter.owner}" type="string"
 				nullable="true" />

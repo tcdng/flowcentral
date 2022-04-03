@@ -41,7 +41,7 @@ public class AppAppletFilter extends BaseConfigNamedEntity {
     @ForeignKey
     private OwnershipType ownershipType;
 
-    @ForeignKey
+    @ForeignKey(nullable = true)
     private ChildListActionType childListActionType;
     
     @Column(length = 64, nullable = true)
