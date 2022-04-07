@@ -35,6 +35,8 @@ public class TableColumnDef {
 
     private String cellEditor;
 
+    private int width;
+    
     private boolean switchOnChange;
 
     private boolean disabled;
@@ -44,12 +46,13 @@ public class TableColumnDef {
     private boolean sortable;
 
     public TableColumnDef(String label, String fieldName, String headerStyle, String cellRenderer, String cellEditor,
-            boolean switchOnChange, boolean disabled, boolean editable, boolean sortable) {
+            int width, boolean switchOnChange, boolean disabled, boolean editable, boolean sortable) {
         this.label = label;
         this.fieldName = fieldName;
         this.headerStyle = headerStyle;
         this.cellRenderer = cellRenderer;
         this.cellEditor = cellEditor;
+        this.width = width;
         this.switchOnChange = switchOnChange;
         this.disabled = disabled;
         this.editable = editable;
@@ -74,6 +77,10 @@ public class TableColumnDef {
 
     public String getCellEditor() {
         return cellEditor;
+    }
+
+    public int getWidth() {
+        return width;
     }
 
     public boolean isWithCellEditor() {

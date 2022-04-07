@@ -236,6 +236,11 @@
 			dataType="string" inputType="string"
 			editor="!ui-select list:studioappletbeantablepolicylist listParams:$l{propertyOwnerId} blankOption:$m{blank.none}"
 			renderer="!ui-label" />
+		<widgetType name="propertyapplettreetablegenlist"
+			description="$m{studio.widgettype.propertyapplettreetablegenlist}"
+			dataType="string" inputType="string"
+			editor="!ui-select list:studioapplettreetablegenlist listParams:$l{propertyOwnerId} blankOption:$m{blank.none}"
+			renderer="!ui-label" />
 		<widgetType name="propertyappletassignupdatepolicylist"
 			description="$m{studio.widgettype.propertyappletassignupdatepolicylist}"
 			dataType="string" inputType="string"
@@ -3624,6 +3629,9 @@
 				<property name="searchTable.new.multiselect.ref"
 					description="$m{studio.appappletprop.manageentity.searchtable.newmultiselectref}"
 					inputWidget="studio.entityreflist" />
+				<property name="searchTable.new.treemultiselect.gen"
+					description="$m{studio.appappletprop.manageentity.searchtable.newtreemultiselectgen}"
+					inputWidget="studio.propertyapplettreetablegenlist" />
 				<property name="searchTable"
 					description="$m{studio.appappletprop.manageentity.searchtable}"
 					inputWidget="studio.propertyapplettablelist" required="true" />
@@ -3770,6 +3778,9 @@
 				<property name="searchTable.new.multiselect.ref"
 					description="$m{studio.appappletprop.manageentity.searchtable.newmultiselectref}"
 					inputWidget="studio.entityreflist" />
+				<property name="searchTable.new.treemultiselect.gen"
+					description="$m{studio.appappletprop.manageentity.searchtable.newtreemultiselectgen}"
+					inputWidget="studio.propertyapplettreetablegenlist" />
 				<property name="searchTable"
 					description="$m{studio.appappletprop.manageentitysingleform.searchtable}"
 					inputWidget="studio.propertyapplettablelist" required="true" />

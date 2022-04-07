@@ -16,7 +16,7 @@
 
 package com.flowcentraltech.flowcentral.application.web.lists;
 
-import com.flowcentraltech.flowcentral.application.policies.EntityBasedFilterGenerator;
+import com.flowcentraltech.flowcentral.application.business.EntityBasedFilterGenerator;
 import com.flowcentraltech.flowcentral.common.web.lists.AbstractEntityTypeListCommand;
 import com.tcdng.unify.core.UnifyException;
 import com.tcdng.unify.core.annotation.Component;

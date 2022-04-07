@@ -500,6 +500,22 @@ textarea:focus {outline: none !important;box-shadow: 0 0 6px #5194f3;}
 .fc-beantable .table .mseld {background-color: transparent;}
 .fc-entitytable {}
 
+.fc-entitytreetable {}
+.fc-entitytreetable .table {table-layout:fixed; width:100%; border-collapse:collapse;}
+.fc-entitytreetable .table .odd {background-color:#f8f8f8;}
+.fc-entitytreetable .table .odd:hover {background-color:#d5e7fb;}
+.fc-entitytreetable .table .even {}
+.fc-entitytreetable .table .even:hover {background-color:#d5e7fb;}
+.fc-entitytreetable .table .cpre {width:20px;}
+.fc-entitytreetable .table .clabel {width:64px;}
+.fc-entitytreetable .table .cline {}
+.fc-entitytreetable .table .msel {background-color: #e3e7ea;}
+.fc-entitytreetable .table .msel span {width:16px; height:16px;}
+.fc-entitytreetable .table .msel input {display:none;}
+.fc-entitytreetable .table .mpre {}
+.fc-entitytreetable .table .mlabel {}
+.fc-entitytreetable .table .mline {}
+
 .fc-dispcounter {display:inline-block; background-color:#9ca4af; color:#ffffff; font-weight:bold; font-size:7pt;
 	padding:4px; border-radius:4px;margin-top:4px;}
 .fc-dispcountergreen {display:inline-block; background-color:#5ca44f; color:#ffffff; font-weight:bold; font-size:7pt;

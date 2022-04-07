@@ -14,7 +14,7 @@
  * the License.
  */
 
-package com.flowcentraltech.flowcentral.application.policies;
+package com.flowcentraltech.flowcentral.application.business;
 
 import com.flowcentraltech.flowcentral.common.business.RuleListComponent;
 import com.tcdng.unify.core.UnifyException;

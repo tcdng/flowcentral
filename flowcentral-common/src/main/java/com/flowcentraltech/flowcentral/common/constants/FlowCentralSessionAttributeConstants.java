@@ -34,6 +34,9 @@ public interface FlowCentralSessionAttributeConstants {
 
     /** Entity select */
     String ENTITYSELECT = "fc.entityselect";
+
+    /** Entity tree select */
+    String ENTITYTREESELECT = "fc.entitytreeselect";
     
     /** User name */
     String USERNAME = "fc.username";
