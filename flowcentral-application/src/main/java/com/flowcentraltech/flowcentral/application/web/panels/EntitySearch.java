@@ -102,6 +102,8 @@ public class EntitySearch extends AbstractPanelFormBinding {
 
     private boolean basicSearchOnly;
 
+    private boolean newButtonVisible;
+    
     public EntitySearch(FormContext ctx, SweepingCommitPolicy sweepingCommitPolicy, String tabName, TableDef tableDef,
             Long appAppletId, String editAction, int mode) {
         super(ctx, sweepingCommitPolicy, tabName);
@@ -113,6 +115,7 @@ public class EntitySearch extends AbstractPanelFormBinding {
         this.appAppletId = appAppletId;
         this.editAction = editAction;
         this.mode = mode;
+        this.newButtonVisible = true;
     }
 
     public AppletUtilities getAu() {
@@ -411,8 +414,12 @@ public class EntitySearch extends AbstractPanelFormBinding {
         this.basicSearchOnly = basicSearchOnly;
     }
 
+    public void setNewButtonVisible(boolean newButtonVisible) {
+        this.newButtonVisible = newButtonVisible;
+    }
+
     public boolean isNewButtonVisible() {
-        return getAppletCtx().isContextEditable() && (mode & SHOW_NEW_BUTTON) > 0;
+        return newButtonVisible && getAppletCtx().isContextEditable() && (mode & SHOW_NEW_BUTTON) > 0;
     }
 
     public boolean isEditButtonVisible() {

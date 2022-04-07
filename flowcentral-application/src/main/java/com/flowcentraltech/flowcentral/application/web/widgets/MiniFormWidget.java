@@ -156,29 +156,7 @@ public class MiniFormWidget extends AbstractMultiControl implements FormTriggerE
 
     @Override
     public String evaluateTrigger() throws UnifyException {
-        final MiniForm form = getMiniForm();
-        final FormContext ctx = form.getCtx();
-        String focusFieldName = null;
-        String focusWidgetId = ctx.getFocusWidgetId();
-        boolean isResolveFocus = focusWidgetId != null;
-        final boolean isFacade = isResolveFocus && focusWidgetId.startsWith("fac");
-        for (FormWidget formWidget : formWidgets.values()) {
-            if (isResolveFocus) {
-                if (isFacade) {
-                    if (focusWidgetId.equals(formWidget.widget.getFacadeId())) {
-                        focusFieldName = formWidget.getFieldName();
-                    }
-                } else {
-                    if (focusWidgetId.equals(formWidget.widget.getId())) {
-                        focusFieldName = formWidget.getFieldName();
-                    }
-                }
-
-                isResolveFocus = focusFieldName == null;
-            }
-        }
-        
-        return focusFieldName;
+        return getTrigger(false);
     }
 
     public void evaluateWidgetStates() throws UnifyException {
@@ -192,28 +170,7 @@ public class MiniFormWidget extends AbstractMultiControl implements FormTriggerE
             formSection.revertState();
         }
 
-        String focusFieldName = null;
-        String focusWidgetId = ctx.getFocusWidgetId();
-        boolean isResolveFocus = focusWidgetId != null;
-        final boolean isFacade = isResolveFocus && focusWidgetId.startsWith("fac");
-        for (FormWidget formWidget : formWidgets.values()) {
-            if (isResolveFocus) {
-                if (isFacade) {
-                    if (focusWidgetId.equals(formWidget.widget.getFacadeId())) {
-                        focusFieldName = formWidget.getFieldName();
-                    }
-                } else {
-                    if (focusWidgetId.equals(formWidget.widget.getId())) {
-                        focusFieldName = formWidget.getFieldName();
-                    }
-                }
-
-                isResolveFocus = focusFieldName == null;
-            }
-
-            formWidget.revertState();
-        }
-
+        String trigger = getTrigger(true);
         if (form.getScope().isMainForm()) {
             FormDef formDef = ctx.getFormDef();
             boolean setValuesExecuted = false;
@@ -221,7 +178,7 @@ public class MiniFormWidget extends AbstractMultiControl implements FormTriggerE
             if (formDef.isWithConsolidatedFormState()) {
                 ConsolidatedFormStatePolicy policy = ctx.getAu().getComponent(ConsolidatedFormStatePolicy.class,
                         formDef.getConsolidatedFormState());
-                TargetFormWidgetStates states = policy.evaluateWidgetStates(formValueStore.getReader(), focusFieldName);
+                TargetFormWidgetStates states = policy.evaluateWidgetStates(formValueStore.getReader(), trigger);
                 for (TargetFormState state : states.getTargetStateList()) {
                     if (state.isSectionRule()) {
                         for (String target : state.getTarget()) {
@@ -245,12 +202,12 @@ public class MiniFormWidget extends AbstractMultiControl implements FormTriggerE
                     setValuesExecuted = true;
                 }
                 
-                policy.onFormSwitch(formValueStore, focusFieldName);
+                policy.onFormSwitch(formValueStore, trigger);
             }
 
             final Map<String, Object> variables = Collections.emptyMap();
             for (FormStatePolicyDef formStatePolicyDef : formDef.getOnSwitchFormStatePolicyDefList()) {
-                if (formStatePolicyDef.isTriggered(focusFieldName)) {
+                if (formStatePolicyDef.isTriggered(trigger)) {
                     ObjectFilter objectFilter = formStatePolicyDef.isWithCondition()
                             ? formStatePolicyDef.getOnCondition().getObjectFilter(formDef.getEntityDef(),
                                     au.getSpecialParamProvider(), now)
@@ -276,7 +233,7 @@ public class MiniFormWidget extends AbstractMultiControl implements FormTriggerE
 
                         if (formStatePolicyDef.isSetValues()) {
                             formStatePolicyDef.getSetValuesDef().apply(au, formDef.getEntityDef(), now, formValueStore,
-                                    variables, focusFieldName);
+                                    variables, trigger);
                             setValuesExecuted = true;
                         }
                     }
@@ -298,6 +255,35 @@ public class MiniFormWidget extends AbstractMultiControl implements FormTriggerE
 
     }
 
+    private String getTrigger(boolean revertState) throws UnifyException {
+        getMiniForm();
+        String trigger = null;
+        String focusWidgetId = getRequestContextUtil().getTriggerWidgetId();
+        boolean isResolveFocus = focusWidgetId != null;
+        final boolean isFacade = isResolveFocus && focusWidgetId.startsWith("fac");
+        for (FormWidget formWidget : formWidgets.values()) {
+            if (isResolveFocus) {
+                if (isFacade) {
+                    if (focusWidgetId.equals(formWidget.widget.getFacadeId())) {
+                        trigger = formWidget.getFieldName();
+                    }
+                } else {
+                    if (focusWidgetId.equals(formWidget.widget.getId())) {
+                        trigger = formWidget.getFieldName();
+                    }
+                }
+
+                isResolveFocus = trigger == null;
+            }
+
+            if (revertState) {
+                formWidget.revertState();
+            }
+        }
+
+        return trigger;
+    }
+    
     private void allocateTabIndex(FormContext ctx) throws UnifyException {
         ctx.setFormFocused(false);
         if (ctx.isWithTabWidgetId()) { // Tab memory

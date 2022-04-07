@@ -377,7 +377,8 @@ public class ApplicationModuleServiceImpl extends AbstractFlowCentralService
                     for (AppAppletFilter appAppletFilter : appApplet.getFilterList()) {
                         adb.addFilterDef(InputWidgetUtils.getFilterDef(appAppletFilter.getName(),
                                 appAppletFilter.getDescription(), appAppletFilter.getPreferredForm(),
-                                appAppletFilter.getPreferredChildListApplet(), appAppletFilter.getFilter()));
+                                appAppletFilter.getPreferredChildListApplet(), appAppletFilter.getChildListActionType(),
+                                appAppletFilter.getFilter()));
                     }
 
                     adb.routeToApplet(appApplet.getRouteToApplet());
@@ -422,8 +423,9 @@ public class ApplicationModuleServiceImpl extends AbstractFlowCentralService
                 @Override
                 protected SuggestionTypeDef create(String longName, Object... arg1) throws Exception {
                     AppSuggestionType appSuggestionType = getApplicationEntity(AppSuggestionType.class, longName);
-                    return new SuggestionTypeDef(appSuggestionType.getParent(), longName, appSuggestionType.getDescription(),
-                            appSuggestionType.getId(), appSuggestionType.getVersionNo());
+                    return new SuggestionTypeDef(appSuggestionType.getParent(), longName,
+                            appSuggestionType.getDescription(), appSuggestionType.getId(),
+                            appSuggestionType.getVersionNo());
                 }
             };
 
@@ -1054,7 +1056,7 @@ public class ApplicationModuleServiceImpl extends AbstractFlowCentralService
         if (_entityDef.isAuditable()) {
             return new EntityAuditInfo(_entityDef.getAuditFieldNames(), true);
         }
-        
+
         return new EntityAuditInfo();
     }
 
@@ -3113,6 +3115,7 @@ public class ApplicationModuleServiceImpl extends AbstractFlowCentralService
                     appAppletFilter.setPreferredForm(filterConfig.getPreferredForm());
                     appAppletFilter.setPreferredChildListApplet(filterConfig.getPreferredChildListApplet());
                     appAppletFilter.setQuickFilter(filterConfig.isQuickFilter());
+                    appAppletFilter.setChildListActionType(filterConfig.getChildListActionType());
                     appAppletFilter.setConfigType(ConfigType.MUTABLE_INSTALL);
                     filterList.add(appAppletFilter);
                 } else {
@@ -3123,6 +3126,7 @@ public class ApplicationModuleServiceImpl extends AbstractFlowCentralService
                         oldAppAppletFilter.setPreferredForm(filterConfig.getPreferredForm());
                         oldAppAppletFilter.setPreferredChildListApplet(filterConfig.getPreferredChildListApplet());
                         oldAppAppletFilter.setQuickFilter(filterConfig.isQuickFilter());
+                        oldAppAppletFilter.setChildListActionType(filterConfig.getChildListActionType());
                     } else {
                         environment().findChildren(oldAppAppletFilter);
                     }

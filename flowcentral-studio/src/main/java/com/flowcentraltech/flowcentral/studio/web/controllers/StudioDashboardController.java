@@ -116,6 +116,7 @@ public class StudioDashboardController extends AbstractPageController<StudioDash
         application.setDescription(createAppForm.getApplicationDesc());
         application.setLabel(createAppForm.getApplicationLabel());
         application.setDevelopable(true);
+        application.setMenuAccess(true);
         applicationModuleService.createApplication(application, module);
         setApplicationSessionAttributes(application);
         return "reloadapplicationstudio";

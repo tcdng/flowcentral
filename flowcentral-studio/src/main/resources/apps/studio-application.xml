@@ -1406,8 +1406,10 @@
 						disabled="true" />
 					<field name="preferredForm"
 						inputWidget="studio.appletformlist" column="1" />
-					<field name="preferredChildListApplet"
+					<field name="preferredChildListApplet" switchOnChange="true"
 						inputWidget="studio.appletchildlistappletlist" column="1" />
+					<field name="childListActionType"
+						inputWidget="application.enumlist" column="1" visible = "false"/>
 					<field name="quickFilter" inputWidget="application.checkbox"
 						column="1" />
 				</section>
@@ -1417,6 +1419,16 @@
 				reference="app_applet" contentType="filter_condition" />
 			<tab name="changeLog" label="$m{application.form.audit}"
 				contentType="miniform_changelog" />
+			<formStatePolicy type="on_switch" name="childListActionPolicy"
+				description="$m{studio.appapplet.form.formstatepolicy.childlistaction}">
+				<onCondition>
+					<restriction type="is_not_null" field="preferredChildListApplet"/>
+				</onCondition>
+				<setStates>
+					<setState type="field" target="childListActionType"
+						visible="true" />
+				</setStates>
+			</formStatePolicy>
 		</form>
 		<form name="appEntityForm"
 			description="$m{studio.appentity.form}"

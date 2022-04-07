@@ -578,6 +578,10 @@
 				label="$m{application.appappletfilter.ownershiptype}"
 				type="enum_ref" references="ownershiptypelist"
 				inputWidget="application.enumlist" />
+			<field name="childListActionType"
+				label="$m{application.appappletfilter.childlistactiontype}"
+				type="enum_ref" references="childlistactiontypelist"
+				inputWidget="application.enumlist" nullable="true"/>
 			<field name="owner"
 				label="$m{application.appappletfilter.owner}" type="string"
 				nullable="true" />
@@ -592,6 +596,9 @@
 			<field name="ownershipTypeDesc"
 				label="$m{application.appappletfilter.ownershiptypedesc}"
 				type="list_only" key="ownershipType" property="description" />
+			<field name="childListActionTypeDesc"
+				label="$m{application.appappletfilter.childlistactiontypedesc}"
+				type="list_only" key="childListActionType" property="description" />
 			<field name="filter"
 				label="$m{application.appappletfilter.filter}" type="child"
 				category="applet" references="appFilterRef" />
