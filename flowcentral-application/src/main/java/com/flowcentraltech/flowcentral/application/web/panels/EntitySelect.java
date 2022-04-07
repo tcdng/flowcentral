@@ -110,9 +110,9 @@ public class EntitySelect {
         }
     }
 
-    public void multiselect() throws UnifyException {
+    public void applySelect() throws UnifyException {
         if (formValueStore != null && selectHandlerName != null) {
-            EntitySelectHandler handler = getEntityTable().getAu().getComponent(EntitySelectHandler.class,
+            EntitySelectHandler handler = entityTable.getAu().getComponent(EntitySelectHandler.class,
                     selectHandlerName);
             List<?> sel = entityTable.getSelectedItems();
             handler.applySelection(formValueStore, new BeanValueListStore(sel));

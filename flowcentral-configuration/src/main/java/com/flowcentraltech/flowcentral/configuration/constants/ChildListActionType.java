@@ -32,6 +32,8 @@ public enum ChildListActionType implements EnumConst {
 
     SHOW_MULTISELECT(
             "SMS"),
+    SHOW_TREEMULTISELECT(
+            "STM"),
     HIDE_ADDWIDGET(
             "HAW");
 
@@ -49,6 +51,10 @@ public enum ChildListActionType implements EnumConst {
     @Override
     public String defaultCode() {
         return SHOW_MULTISELECT.code;
+    }
+
+    public boolean isShowPopup() {
+        return SHOW_MULTISELECT.equals(this) || SHOW_TREEMULTISELECT.equals(this);
     }
 
     public static ChildListActionType fromCode(String code) {

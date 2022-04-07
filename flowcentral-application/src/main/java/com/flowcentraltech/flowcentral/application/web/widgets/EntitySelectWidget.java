@@ -18,11 +18,11 @@ package com.flowcentraltech.flowcentral.application.web.widgets;
 
 import com.flowcentraltech.flowcentral.application.business.AppletUtilities;
 import com.flowcentraltech.flowcentral.application.business.ApplicationModuleService;
+import com.flowcentraltech.flowcentral.application.business.EntityBasedFilterGenerator;
 import com.flowcentraltech.flowcentral.application.constants.ApplicationResultMappingConstants;
 import com.flowcentraltech.flowcentral.application.data.EntityClassDef;
 import com.flowcentraltech.flowcentral.application.data.RefDef;
 import com.flowcentraltech.flowcentral.application.data.TableDef;
-import com.flowcentraltech.flowcentral.application.policies.EntityBasedFilterGenerator;
 import com.flowcentraltech.flowcentral.application.web.panels.EntitySelect;
 import com.flowcentraltech.flowcentral.common.business.EnvironmentService;
 import com.flowcentraltech.flowcentral.common.constants.FlowCentralSessionAttributeConstants;

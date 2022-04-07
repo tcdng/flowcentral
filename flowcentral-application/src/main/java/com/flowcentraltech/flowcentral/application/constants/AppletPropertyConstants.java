@@ -36,6 +36,8 @@ public interface AppletPropertyConstants {
 
     String SEARCH_TABLE_MULTISELECT_NEW_REF= "searchTable.new.multiselect.ref";
 
+    String SEARCH_TABLE_TREEEMULTISELECT_NEW_GENERATOR = "searchTable.new.treemultiselect.gen";
+    
     String SEARCH_TABLE_EDIT = "searchTable.edit";
 
     String SEARCH_TABLE_REPORT = "searchTable.report";

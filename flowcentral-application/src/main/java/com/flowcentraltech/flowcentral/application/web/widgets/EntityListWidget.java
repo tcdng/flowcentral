@@ -17,9 +17,9 @@ package com.flowcentraltech.flowcentral.application.web.widgets;
 
 import java.util.List;
 
+import com.flowcentraltech.flowcentral.application.business.EntityBasedFilterGenerator;
 import com.flowcentraltech.flowcentral.application.data.EntityClassDef;
 import com.flowcentraltech.flowcentral.application.data.RefDef;
-import com.flowcentraltech.flowcentral.application.policies.EntityBasedFilterGenerator;
 import com.flowcentraltech.flowcentral.application.util.ApplicationNameUtils;
 import com.tcdng.unify.core.UnifyException;
 import com.tcdng.unify.core.annotation.Component;

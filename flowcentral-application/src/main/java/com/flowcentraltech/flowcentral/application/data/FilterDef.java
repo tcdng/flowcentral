@@ -104,8 +104,16 @@ public class FilterDef implements Listable {
         return childListActionType;
     }
 
+    public boolean isShowPopupChildListAction() {
+        return childListActionType != null && childListActionType.isShowPopup();
+    }
+    
     public boolean isShowMultiSelectChildListAction() {
         return ChildListActionType.SHOW_MULTISELECT.equals(childListActionType);
+    }
+
+    public boolean isShowTreeMultiSelectChildListAction() {
+        return ChildListActionType.SHOW_TREEMULTISELECT.equals(childListActionType);
     }
 
     public boolean isHideAddWidgetChildListAction() {

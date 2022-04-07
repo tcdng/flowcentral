@@ -38,7 +38,6 @@ import com.flowcentraltech.flowcentral.application.data.FormRelatedListDef;
 import com.flowcentraltech.flowcentral.application.data.FormStatePolicyDef;
 import com.flowcentraltech.flowcentral.application.data.FormTabDef;
 import com.flowcentraltech.flowcentral.application.data.PropertyRuleDef;
-import com.flowcentraltech.flowcentral.application.data.RefDef;
 import com.flowcentraltech.flowcentral.application.util.ApplicationEntityUtils;
 import com.flowcentraltech.flowcentral.application.validation.FormContextEvaluator;
 import com.flowcentraltech.flowcentral.application.web.data.FormContext;
@@ -317,7 +316,7 @@ public abstract class AbstractEntityFormApplet extends AbstractApplet implements
         newChildItem(childTabIndex, true);
     }
 
-    public RefDef newChildMultiSelectRef(int childTabIndex) throws UnifyException {
+    public ShowPopupInfo newChildShowPopup(int childTabIndex) throws UnifyException {
         FormTabDef _currFormTabDef = form.getFormDef().getFormTabDef(childTabIndex);
         List<FilterDef> filterList = currFormAppletDef.getChildListFilterDefs(_currFormTabDef.getApplet());
         if (!filterList.isEmpty()) {
@@ -326,14 +325,24 @@ public abstract class AbstractEntityFormApplet extends AbstractApplet implements
             SpecialParamProvider specialParamProvider = form.getCtx().getAppletContext().getSpecialParamProvider();
             Date now = au.getNow();
             for (FilterDef filterDef : filterList) {
-                if (filterDef.isShowMultiSelectChildListAction()) {
+                if (filterDef.isShowPopupChildListAction()) {
                     ObjectFilter filter = filterDef.getObjectFilter(entityDef, specialParamProvider, now);
                     if (filter.match(formValueStore)) {
                         AppletDef _childAppletDef = getAppletDef(_currFormTabDef.getApplet());
-                        String ref = _childAppletDef.getPropValue(String.class,
-                                AppletPropertyConstants.SEARCH_TABLE_MULTISELECT_NEW_REF);
-                        if (!StringUtils.isBlank(ref)) {
-                            return au.getRefDef(ref);
+                        ShowPopupInfo.Type type = null;
+                        String reference = null;
+                        if (filterDef.isShowMultiSelectChildListAction()) {
+                            type = ShowPopupInfo.Type.SHOW_MULTISELECT;
+                            reference = _childAppletDef.getPropValue(String.class,
+                                    AppletPropertyConstants.SEARCH_TABLE_MULTISELECT_NEW_REF);
+                        } else if (filterDef.isShowTreeMultiSelectChildListAction()) {
+                            type = ShowPopupInfo.Type.SHOW_TREEMULTISELECT;
+                            reference = _childAppletDef.getPropValue(String.class,
+                                    AppletPropertyConstants.SEARCH_TABLE_TREEEMULTISELECT_NEW_GENERATOR);
+                        }
+
+                        if (!StringUtils.isBlank(reference)) {
+                            return new ShowPopupInfo(type, reference);
                         }
 
                         break;
@@ -344,7 +353,7 @@ public abstract class AbstractEntityFormApplet extends AbstractApplet implements
 
         return null;
     }
-    
+
     private void newChildItem(int childTabIndex, boolean childList) throws UnifyException {
         FormTabDef _currFormTabDef = form.getFormDef().getFormTabDef(childTabIndex);
         AppletDef _childAppletDef = getAppletDef(_currFormTabDef.getApplet());
@@ -531,10 +540,10 @@ public abstract class AbstractEntityFormApplet extends AbstractApplet implements
             reviewFormContext(form.getCtx(), EvaluationMode.REQUIRED, FormReviewType.ON_CLOSE);
             return form.getCtx();
         }
-        
+
         return null;
     }
-    
+
     public EntityActionResult saveNewInst() throws UnifyException {
         return saveNewInst(ActionMode.ACTION_ONLY, FormReviewType.ON_SAVE);
     }
@@ -625,7 +634,7 @@ public abstract class AbstractEntityFormApplet extends AbstractApplet implements
             _form.setDisplayItemCounterClass("fc-dispcounterorange");
             return _form.getWarning();
         }
-        
+
         return getAu().resolveSessionMessage("$m{entityformapplet.displaycounter}", mIndex + 1,
                 entitySearch.getEntityTable().getDispItemList().size());
     }
@@ -810,16 +819,16 @@ public abstract class AbstractEntityFormApplet extends AbstractApplet implements
 
         String beanTitle = au.getEntityDescription(au.getEntityClassDef(formDef.getEntityDef().getLongName()), _inst,
                 null);
-        ListingForm listingForm = au.constructListingForm(this, getRootAppletDef().getDescription(),
-                beanTitle, formDef, _inst, makeFormBreadCrumbs());
+        ListingForm listingForm = au.constructListingForm(this, getRootAppletDef().getDescription(), beanTitle, formDef,
+                _inst, makeFormBreadCrumbs());
         return listingForm;
     }
 
     protected ListingForm constructListingForm(FormDef formDef, Entity _inst) throws UnifyException {
         String beanTitle = au.getEntityDescription(au.getEntityClassDef(formDef.getEntityDef().getLongName()), _inst,
                 null);
-        ListingForm listingForm = au.constructListingForm(this, getRootAppletDef().getDescription(),
-                beanTitle, formDef, _inst, makeFormBreadCrumbs());
+        ListingForm listingForm = au.constructListingForm(this, getRootAppletDef().getDescription(), beanTitle, formDef,
+                _inst, makeFormBreadCrumbs());
         return listingForm;
     }
 
@@ -878,7 +887,7 @@ public abstract class AbstractEntityFormApplet extends AbstractApplet implements
         if (submitButtonHighlight) {
             form.setSubmitStyleClass("fc-greenbutton");
         }
-        
+
         final ValueStore formValueStore = form.getCtx().getFormValueStore();
         if (isReference) {
             form.getCtx().setFixedReference(childFkFieldName);
@@ -916,7 +925,7 @@ public abstract class AbstractEntityFormApplet extends AbstractApplet implements
                     formDef.getConsolidatedFormState());
             policy.onFormConstruct(formValueStore);
         }
-        
+
         // Fire on form construct value generators
         for (FormStatePolicyDef formStatePolicyDef : formDef.getOnFormConstructSetValuesFormStatePolicyDefList()) {
             if (formStatePolicyDef.isSetValues()) {
@@ -976,6 +985,31 @@ public abstract class AbstractEntityFormApplet extends AbstractApplet implements
         return entitySearch.getEntityTable().getDispItemList().get(index);
     }
 
+    public static class ShowPopupInfo {
+        
+        public enum Type {
+            SHOW_MULTISELECT,
+            SHOW_TREEMULTISELECT
+        }
+        
+        private Type type;
+        
+        private String reference;
+
+        private ShowPopupInfo(Type type, String reference) {
+            this.type = type;
+            this.reference = reference;
+        }
+
+        public Type getType() {
+            return type;
+        }
+
+        public String getReference() {
+            return reference;
+        }
+    }
+    
     protected class FormState {
 
         private AppletDef appletDef;
@@ -1148,7 +1182,7 @@ public abstract class AbstractEntityFormApplet extends AbstractApplet implements
         if (viewMode.isCreateForm()) {
             entityActionResult = createInst();
             entityInstId = (Long) entityActionResult.getResult();
-            if(_entityDef.delegated()) {
+            if (_entityDef.delegated()) {
                 ((AbstractSequencedEntity) inst).setId(entityInstId);
             }
         }
@@ -1158,8 +1192,7 @@ public abstract class AbstractEntityFormApplet extends AbstractApplet implements
 
         if (formContext.isWithReviewErrors()) {
             enterMaintainForm(formContext, entityInstId);
-            entityActionResult = new EntityActionResult(
-                    new EntityActionContext(_entityDef, inst, null));
+            entityActionResult = new EntityActionResult(new EntityActionContext(_entityDef, inst, null));
         } else {
             String channel = _currFormAppletDef.getPropValue(String.class,
                     AppletPropertyConstants.MAINTAIN_FORM_SUBMIT_WORKFLOW_CHANNEL);
@@ -1171,9 +1204,9 @@ public abstract class AbstractEntityFormApplet extends AbstractApplet implements
                 policy = _currFormAppletDef.getPropValue(String.class,
                         AppletPropertyConstants.CREATE_FORM_SUBMIT_POLICY);
             }
-            
-            entityActionResult = getAu().getWorkItemUtilities()
-                    .submitToWorkflowChannel(_entityDef, channel, (WorkEntity) inst, policy);
+
+            entityActionResult = getAu().getWorkItemUtilities().submitToWorkflowChannel(_entityDef, channel,
+                    (WorkEntity) inst, policy);
             if (actionMode.isWithNext()) {
                 enterNextForm();
             } else {

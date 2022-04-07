@@ -15,13 +15,17 @@
  */
 package com.flowcentraltech.flowcentral.application.web.controllers;
 
+import com.flowcentraltech.flowcentral.application.business.EntityTreeSelectGenerator;
 import com.flowcentraltech.flowcentral.application.constants.AppletRequestAttributeConstants;
 import com.flowcentraltech.flowcentral.application.constants.ApplicationResultMappingConstants;
 import com.flowcentraltech.flowcentral.application.data.RefDef;
 import com.flowcentraltech.flowcentral.application.web.panels.EntitySelect;
+import com.flowcentraltech.flowcentral.application.web.panels.EntityTreeSelect;
 import com.flowcentraltech.flowcentral.application.web.panels.applet.AbstractEntityFormApplet;
+import com.flowcentraltech.flowcentral.application.web.panels.applet.AbstractEntityFormApplet.ShowPopupInfo;
 import com.flowcentraltech.flowcentral.common.constants.FlowCentralSessionAttributeConstants;
 import com.tcdng.unify.core.UnifyException;
+import com.tcdng.unify.core.data.ValueStore;
 import com.tcdng.unify.web.annotation.Action;
 import com.tcdng.unify.web.annotation.ResultMapping;
 import com.tcdng.unify.web.annotation.ResultMappings;
@@ -60,14 +64,29 @@ public abstract class AbstractEntityFormAppletController<T extends AbstractEntit
         AbstractEntityFormAppletPageBean<T> pageBean = getPageBean();
         AbstractEntityFormApplet applet = pageBean.getApplet();
         int childTabIndex = getRequestTarget(int.class);
-        RefDef refDef = applet.newChildMultiSelectRef(childTabIndex);
-        if (refDef != null) {
-            EntitySelect entitySelect = applet.getAu().constructEntitySelect(refDef,
-                    applet.getForm().getCtx().getFormValueStore(), null, 0);
-            entitySelect.setEnableFilter(false);
-            entitySelect.applyFilterToSearch();
-            setSessionAttribute(FlowCentralSessionAttributeConstants.ENTITYSELECT, entitySelect);
-            return ApplicationResultMappingConstants.SHOW_ENTITY_MULTISELECT;
+        ShowPopupInfo showPopupInfo = applet.newChildShowPopup(childTabIndex);
+        if (showPopupInfo != null) {
+            ValueStore formValueStore = applet.getForm().getCtx().getFormValueStore();
+            switch (showPopupInfo.getType()) {
+                case SHOW_MULTISELECT: {
+                    RefDef refDef = getAu().getRefDef(showPopupInfo.getReference());
+                    EntitySelect entitySelect = applet.getAu().constructEntitySelect(refDef,
+                            formValueStore, null, 0);
+                    entitySelect.setEnableFilter(false);
+                    entitySelect.applyFilterToSearch();
+                    setSessionAttribute(FlowCentralSessionAttributeConstants.ENTITYSELECT, entitySelect);
+                    return ApplicationResultMappingConstants.SHOW_ENTITY_MULTISELECT;
+                }
+                case SHOW_TREEMULTISELECT: {
+                    EntityTreeSelectGenerator generator = getAu().getComponent(EntityTreeSelectGenerator.class,
+                            showPopupInfo.getReference());
+                    EntityTreeSelect entityTreeSelect = generator.generate(getAu(), formValueStore);
+                    setSessionAttribute(FlowCentralSessionAttributeConstants.ENTITYTREESELECT, entityTreeSelect);
+                    return ApplicationResultMappingConstants.SHOW_ENTITY_TREEMULTISELECT;
+                }
+                default:
+                    break;
+            }
         }
 
         applet.newChildListItem(childTabIndex);

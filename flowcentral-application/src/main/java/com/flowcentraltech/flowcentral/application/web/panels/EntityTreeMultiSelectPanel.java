@@ -26,48 +26,29 @@ import com.tcdng.unify.web.constant.ResultMappingConstants;
 import com.tcdng.unify.web.ui.widget.AbstractPanel;
 
 /**
- * Entity multi-select panel.
+ * Entity tree multi-select panel.
  * 
  * @author FlowCentral Technologies Limited
  * @since 1.0
  */
-@Component("fc-entitymultiselectpanel")
-@UplBinding("web/application/upl/entitymultiselectpanel.upl")
-public class EntityMultiSelectPanel extends AbstractPanel {
-
-    @Override
-    public void switchState() throws UnifyException {
-        super.switchState();
-        EntitySelect entitySelect = getEntitySelect();
-        if (entitySelect != null) {
-            setVisible("searchFilterPanel", entitySelect.isEnableFilter());
-        }
-    }
-
-    @Action
-    public void search() throws UnifyException {
-        EntitySelect entitySelect = getEntitySelect();
-        entitySelect.applyFilterToSearch();
-    }
+@Component("fc-entitytreemultiselectpanel")
+@UplBinding("web/application/upl/entitytreemultiselectpanel.upl")
+public class EntityTreeMultiSelectPanel extends AbstractPanel {
 
     @Action
     public void select() throws UnifyException {
-        EntitySelect entitySelect = (EntitySelect) removeSessionAttribute(
-                FlowCentralSessionAttributeConstants.ENTITYSELECT);
-        entitySelect.applySelect();
-        removeSessionAttribute(FlowCentralSessionAttributeConstants.ENTITYSELECT);
-        setRequestAttribute(AppletRequestAttributeConstants.RELOAD_ONSWITCH, Boolean.TRUE); // TODO Get from entity select flag
+        EntityTreeSelect entityTreeSelect = (EntityTreeSelect) removeSessionAttribute(
+                FlowCentralSessionAttributeConstants.ENTITYTREESELECT);
+        entityTreeSelect.applySelect();
+        removeSessionAttribute(FlowCentralSessionAttributeConstants.ENTITYTREESELECT);
+        setRequestAttribute(AppletRequestAttributeConstants.RELOAD_ONSWITCH, Boolean.TRUE);
         setCommandResultMapping(ApplicationResultMappingConstants.REFRESH_CONTENT);
     }
 
     @Action
     public void close() throws UnifyException {
-        removeSessionAttribute(FlowCentralSessionAttributeConstants.ENTITYSELECT);
+        removeSessionAttribute(FlowCentralSessionAttributeConstants.ENTITYTREESELECT);
         setCommandResultMapping(ResultMappingConstants.HIDE_POPUP);
-    }
-
-    private EntitySelect getEntitySelect() throws UnifyException {
-        return getValue(EntitySelect.class);
     }
 
 }

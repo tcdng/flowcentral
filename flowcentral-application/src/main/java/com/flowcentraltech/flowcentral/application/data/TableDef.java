@@ -188,6 +188,17 @@ public class TableDef extends BaseApplicationEntityDef {
         return columnDefList.get(index);
     }
 
+    public TableColumnDef getColumnDef(String fieldName) {
+        for (TableColumnDef tableColumnDef: columnDefList) {
+            if (tableColumnDef.getFieldName().equals(fieldName)) {
+                return tableColumnDef;
+            }
+        }
+        
+        throw new RuntimeException(
+                "Field with name [" + fieldName + "] is unknown for table definition [" + getLongName() + "].");
+    }
+
     public static Builder newBuilder(EntityDef entityDef, String label, boolean serialNo, boolean sortable,
             String longName, String description, Long id, long version) {
         return new Builder(entityDef, label, serialNo, sortable, longName, description, id, version);
@@ -327,12 +338,12 @@ public class TableDef extends BaseApplicationEntityDef {
                 if (i == (len - 1)) {
                     tableColumnDef = new TableColumnDef(tempDef.getLabel(), fieldName,
                             "width:" + (100 - usedPercent) + "%;", renderer, editor,
-                            tempDef.isSwitchOnChange(), tempDef.isDisabled(), tempDef.isEditable(),
+                            (100 - usedPercent), tempDef.isSwitchOnChange(), tempDef.isDisabled(), tempDef.isEditable(),
                             tempDef.isSortable());
                 } else {
                     int width = (tempDef.getWidthRatio() * 100) / totalWidth;
                     tableColumnDef = new TableColumnDef(tempDef.getLabel(), fieldName,
-                            "width:" + width + "%;", renderer, editor, tempDef.isSwitchOnChange(),
+                            "width:" + width + "%;", renderer, editor, width, tempDef.isSwitchOnChange(),
                             tempDef.isDisabled(), tempDef.isEditable(), tempDef.isSortable());
                     usedPercent += width;
                 }
