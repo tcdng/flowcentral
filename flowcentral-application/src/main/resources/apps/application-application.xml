@@ -438,6 +438,9 @@
 		<reference name="appTableColumnRef"
 			description="$m{application.apptablecolumn.reference}"
 			entity="appTableColumn" searchField="field" />
+		<reference name="appTableActionRef"
+			description="$m{application.apptableaction.reference}"
+			entity="appTableAction" searchField="label" />
 		<reference name="appFormRef"
 			description="$m{application.appform.reference}" entity="appForm"
 			searchField="description" />
@@ -905,6 +908,9 @@
 			<field name="columnList"
 				label="$m{application.apptable.columns}" type="child_list"
 				references="appTableColumnRef" />
+			<field name="actionList"
+				label="$m{application.apptable.actions}" type="child_list"
+				references="appTableActionRef" />
 			<uniqueConstraint name="nameUc"
 				description="$m{application.apptable.uc.name}"
 				fieldList="applicationId,name" />
@@ -931,6 +937,23 @@
 			<uniqueConstraint name="fieldUc"
 				description="$m{application.apptablecolumn.uc.field}"
 				fieldList="appTableId,field" />
+		</entity>
+		<entity name="appTableAction"
+			description="$m{application.apptableaction}"
+			label="$m{application.apptableaction.label}"
+			type="com.flowcentraltech.flowcentral.application.entities.AppTableAction">
+			<field name="appTableId"
+				label="$m{application.apptableaction.apptableid}" type="ref"
+				references="appTableRef" inputWidget="application.entitylist" />
+			<field name="label"
+				label="$m{application.apptableaction.actionlabel}" type="string" />
+			<field name="policy"
+				label="$m{application.apptableaction.policy}" type="string" />
+			<field name="orderIndex"
+				label="$m{application.apptableaction.orderindex}" type="integer"/>
+			<uniqueConstraint name="labelUc"
+				description="$m{application.apptableaction.uc.label}"
+				fieldList="appTableId,label" />
 		</entity>
 		<entity name="appForm" description="$m{application.appform}"
 			label="$m{application.appform.label}"

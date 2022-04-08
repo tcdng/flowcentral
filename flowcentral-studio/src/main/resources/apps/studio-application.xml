@@ -316,6 +316,11 @@
 			dataType="string" inputType="string"
 			editor="!ui-select list:studioentityactionpolicylist listParams:$l{propertyOwnerId} blankOption:$m{blank.none}"
 			renderer="!ui-label" />
+		<widgetType name="tableentitylistactionpolicylist"
+			description="$m{studio.widgettype.tableentitylistactionpolicylist}"
+			dataType="string" inputType="string"
+			editor="!ui-select list:studioentitylistactionpolicylist listParams:$l{propertyOwnerId} blankOption:$m{blank.none}"
+			renderer="!ui-label" />
 		<widgetType name="reportconfigfieldlist"
 			description="$m{studio.widgettype.reportconfigfieldlist}"
 			dataType="string" inputType="string"
@@ -565,6 +570,23 @@
 			<property name="createForm.save.next" value="false" />
 			<property name="createForm.save.close" value="false" />
 			<property name="maintainForm" value="appTableColumnForm" />
+			<property name="maintainForm.update" value="false" />
+			<property name="maintainForm.delete" value="false" />
+		</applet>
+		<applet name="manageAppTableAction"
+			description="$m{studio.apptableaction.manage}"
+			label="$m{studio.apptableaction.manage.label}"
+			type="manage_entitylist" entity="application.appTableAction"
+			menuAccess="false">
+			<property name="searchTable" value="appTableActionTable" />
+			<property name="searchTable.new" value="false" />
+			<property name="searchTable.edit" value="true" />
+			<property name="searchTable.report" value="false" />
+			<property name="createForm" value="appTableActionForm" />
+			<property name="createForm.save" value="false" />
+			<property name="createForm.save.next" value="false" />
+			<property name="createForm.save.close" value="false" />
+			<property name="maintainForm" value="appTableActionForm" />
 			<property name="maintainForm.update" value="false" />
 			<property name="maintainForm.delete" value="false" />
 		</applet>
@@ -945,6 +967,17 @@
 			<column field="linkAct" renderWidget="application.text"
 				widthRatio="1" />
 			<column field="widthRatio" renderWidget="application.integer"
+				widthRatio="1" />
+		</table>
+		<table name="appTableActionTable"
+			description="$m{studio.apptableaction.table}"
+			label="$m{studio.apptableaction.table.label}"
+			entity="application.appTableAction">
+			<column field="label" renderWidget="application.text"
+				widthRatio="1" />
+			<column field="policy" renderWidget="application.text"
+				widthRatio="1" />
+			<column field="orderIndex" renderWidget="application.integer"
 				widthRatio="1" />
 		</table>
 		<table name="appFormElementTable"
@@ -2542,6 +2575,10 @@
 			<tab name="design" label="$m{studio.apptable.form.design}"
 				contentType="child_list" applet="manageAppTableColumn"
 				reference="columnList" editAction="/designChildItem" />
+			<tab name="actions"
+				label="$m{studio.apptable.form.actions}"
+				contentType="child_list" applet="manageAppTableAction"
+				reference="actionList" />
 			<tab name="changeLog" label="$m{application.form.audit}"
 				contentType="miniform_changelog" />
 			<formStatePolicy type="on_switch"
@@ -2593,6 +2630,24 @@
 					<field name="linkAct" inputWidget="application.text"
 						column="1" />
 					<field name="widthRatio" inputWidget="application.integer"
+						column="1" />
+				</section>
+			</tab>
+		</form>
+		<form name="appTableActionForm"
+			description="$m{studio.apptableaction.form}"
+			entity="application.appTableAction">
+			<tab name="basicDetails"
+				label="$m{studio.apptableaction.form.basicdetails}"
+				contentType="miniform">
+				<section name="tableColumnDetails" columns="type_2">
+					<field name="appTableId"
+						inputWidget="application.entitysearch" column="0" required="true" />
+					<field name="label" inputWidget="application.text" column="0"
+						required="true" />
+					<field name="policy" inputWidget="studio.tableentitylistactionpolicylist"
+						column="1" required="true" />
+					<field name="orderIndex" inputWidget="application.integer"
 						column="1" />
 				</section>
 			</tab>
