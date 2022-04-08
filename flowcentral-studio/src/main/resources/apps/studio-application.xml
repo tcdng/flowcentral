@@ -2643,6 +2643,10 @@
 				<section name="tableColumnDetails" columns="type_2">
 					<field name="appTableId"
 						inputWidget="application.entitysearch" column="0" required="true" />
+					<field name="name" inputWidget="application.name" column="0"
+						required="true" saveAs="true" />
+					<field name="description" inputWidget="application.text"
+						column="0" required="true" saveAs="true" />
 					<field name="label" inputWidget="application.text" column="0"
 						required="true" />
 					<field name="policy" inputWidget="studio.tableentitylistactionpolicylist"

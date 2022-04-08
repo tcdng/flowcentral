@@ -50,7 +50,7 @@ public class StudioEntityListActionPolicyListCommand extends AbstractEntityTypeL
             return applicationModuleService.getAppTableEntity(param.getValue());
         }
 
-        return null;
+        return "all";
     }
 
 }
