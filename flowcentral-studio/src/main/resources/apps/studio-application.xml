@@ -579,16 +579,16 @@
 			type="manage_entitylist" entity="application.appTableAction"
 			menuAccess="false">
 			<property name="searchTable" value="appTableActionTable" />
-			<property name="searchTable.new" value="false" />
-			<property name="searchTable.edit" value="true" />
+			<property name="searchTable.new" value="true" />
+			<property name="searchTable.edit" value="false" />
 			<property name="searchTable.report" value="false" />
 			<property name="createForm" value="appTableActionForm" />
-			<property name="createForm.save" value="false" />
-			<property name="createForm.save.next" value="false" />
-			<property name="createForm.save.close" value="false" />
+			<property name="createForm.save" value="true" />
+			<property name="createForm.save.next" value="true" />
+			<property name="createForm.save.close" value="true" />
 			<property name="maintainForm" value="appTableActionForm" />
-			<property name="maintainForm.update" value="false" />
-			<property name="maintainForm.delete" value="false" />
+			<property name="maintainForm.update" value="true" />
+			<property name="maintainForm.delete" value="true" />
 		</applet>
 		<applet name="manageAppFormElement"
 			description="$m{studio.appformelement.manage}"
@@ -974,7 +974,7 @@
 			label="$m{studio.apptableaction.table.label}"
 			entity="application.appTableAction">
 			<column field="label" renderWidget="application.text"
-				widthRatio="1" />
+				widthRatio="1" linkAct="maintainAct" />
 			<column field="policy" renderWidget="application.text"
 				widthRatio="1" />
 			<column field="orderIndex" renderWidget="application.integer"
