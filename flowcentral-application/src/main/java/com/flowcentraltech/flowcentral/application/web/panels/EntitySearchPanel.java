@@ -92,7 +92,7 @@ public class EntitySearchPanel extends AbstractPanel {
             setVisible("quickFilterBlock", entitySearch.isShowQuickFilter());
             setVisible("footerActionPanel", entitySearch.isShowActionFooter());
             setVisible("switchToAdvanced", !entitySearch.isBasicSearchOnly());
-            setVisible("baseFilterTranslation", entitySearch.isWithBaseFilter());
+            setVisible("searchEntriesHeader", entitySearch.isWithBaseFilter());
         } else {
             setVisible("searchEntriesPanel", false);
             setVisible("searchFilterPanel", true);

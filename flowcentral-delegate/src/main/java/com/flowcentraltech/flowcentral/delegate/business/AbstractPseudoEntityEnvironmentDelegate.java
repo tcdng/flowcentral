@@ -50,6 +50,12 @@ public abstract class AbstractPseudoEntityEnvironmentDelegate<T extends Entity> 
     }
 
     @Override
+    public void executeProcedure(String operation, String... payload) throws UnifyException {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
     protected BaseResponse sendToDelegateDatasourceService(DataSourceRequest req) throws UnifyException {
         Object[] payload = EMPTY_PAYLOAD;
         switch (req.getOperation()) {

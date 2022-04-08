@@ -1200,6 +1200,11 @@ public class ApplicationModuleServiceImpl extends AbstractFlowCentralService
     }
 
     @Override
+    public String getAppTableEntity(Long appTableId) throws UnifyException {
+        return environment().value(String.class, "entity", new AppTableQuery().id(appTableId));
+    }
+
+    @Override
     public List<AppAppletFilter> findAppAppletFilters(Long appAppletId) throws UnifyException {
         return environment().findAll(new AppAppletFilterQuery().appAppletId(appAppletId));
     }

@@ -486,11 +486,12 @@ public class Interconnect {
     public JsonProcedureResponse createProcedureResponse(Object[] result, ProcedureRequest req) throws Exception {
         checkInitialized();
         JsonProcedureResponse resp = new JsonProcedureResponse();
-        String[] payload = toJsonResultStringValues(result, DataSourceOperation.LIST_LEAN, req.getEntity());
+        String[] payload = req.isUseRawPayload() ? getRawResult(result)
+                : toJsonResultStringValues(result, DataSourceOperation.LIST_LEAN, req.getEntity());
         resp.setPayload(payload);
         return resp;
     }
-
+    
     public QueryDef getQueryDef(String query) throws Exception {
         checkInitialized();
         if (query != null) {
@@ -670,6 +671,19 @@ public class Interconnect {
             return strResult;
         }
 
+        return null;
+    }
+
+    private String[] getRawResult(Object[] result) {
+        if (result != null) {
+            String[] _result = new String[result.length];
+            for(int i = 0; i < _result.length; i++) {
+                _result[i] = String.valueOf(result[i]);
+            }
+            
+            return _result;
+        }
+        
         return null;
     }
 

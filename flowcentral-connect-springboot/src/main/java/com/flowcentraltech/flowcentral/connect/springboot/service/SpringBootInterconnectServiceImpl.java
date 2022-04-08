@@ -105,7 +105,7 @@ public class SpringBootInterconnectServiceImpl implements SpringBootInterconnect
 
     @Override
     public JsonProcedureResponse executeProcedureRequest(ProcedureRequest req) throws Exception {
-        Object reqBean = interconnect.getBeanFromJsonPayload(req);
+        Object reqBean = req.isUseRawPayload() ? req.getPayload() : interconnect.getBeanFromJsonPayload(req);
         SpringBootInterconnectProcedure procedure = context.getBean(req.getOperation(),
                 SpringBootInterconnectProcedure.class);
         procedure.execute(reqBean, req.isReadOnly());
