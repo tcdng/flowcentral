@@ -319,7 +319,7 @@
 		<widgetType name="tableentitylistactionpolicylist"
 			description="$m{studio.widgettype.tableentitylistactionpolicylist}"
 			dataType="string" inputType="string"
-			editor="!ui-select list:studioentitylistactionpolicylist listParams:$l{propertyOwnerId} blankOption:$m{blank.none}"
+			editor="!ui-select list:studioentitylistactionpolicylist listParams:$l{appTableId} blankOption:$m{blank.none}"
 			renderer="!ui-label" />
 		<widgetType name="reportconfigfieldlist"
 			description="$m{studio.widgettype.reportconfigfieldlist}"
