@@ -20,6 +20,8 @@ import com.flowcentraltech.flowcentral.application.constants.AppletRequestAttrib
 import com.flowcentraltech.flowcentral.connect.common.data.BaseResponse;
 import com.flowcentraltech.flowcentral.connect.common.data.DataSourceRequest;
 import com.flowcentraltech.flowcentral.connect.common.data.JsonDataSourceResponse;
+import com.flowcentraltech.flowcentral.connect.common.data.JsonProcedureResponse;
+import com.flowcentraltech.flowcentral.connect.common.data.ProcedureRequest;
 import com.flowcentraltech.flowcentral.delegate.constants.DelegateErrorCodeConstants;
 import com.tcdng.unify.core.UnifyException;
 import com.tcdng.unify.core.constant.LocaleType;
@@ -33,6 +35,14 @@ import com.tcdng.unify.core.util.DataUtils;
  * @since 1.0
  */
 public abstract class AbstractJsonEnvironmentDelegate extends AbstractEnvironmentDelegate {
+
+    @Override
+    public void executeProcedure(String operation, String... payload) throws UnifyException {
+        ProcedureRequest req = new ProcedureRequest(operation);
+        req.setPayload(payload);
+        req.setUseRawPayload(true);
+        sendToDelegateProcedureService(req);
+    }
 
     protected BaseResponse sendToDelegateDatasourceService(DataSourceRequest req) throws UnifyException {
         JsonDataSourceResponse resp = null;
@@ -58,6 +68,19 @@ public abstract class AbstractJsonEnvironmentDelegate extends AbstractEnvironmen
         
         return resp;
     }
+
+    protected JsonProcedureResponse sendToDelegateProcedureService(ProcedureRequest req) throws UnifyException {
+        String reqJSON = DataUtils.asJsonString(req, PrintFormat.NONE);
+        String respJSON = sendToDelegateProcedureService(reqJSON);
+        JsonProcedureResponse resp = DataUtils.fromJsonString(JsonProcedureResponse.class, respJSON);
+        if (resp.error()) {
+            // TODO Translate to local exception and throw
+        }
+
+        return resp;
+    }
+
+    protected abstract String sendToDelegateProcedureService(String jsonReq) throws UnifyException;
 
     protected abstract String sendToDelegateDatasourceService(String jsonReq) throws UnifyException;
 

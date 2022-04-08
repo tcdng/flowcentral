@@ -31,6 +31,8 @@ public class ProcedureRequest extends BaseRequest {
     
     private Long versionNo;
     
+    private boolean useRawPayload;
+    
     private boolean readOnly;
     
     public ProcedureRequest(String operation, Long id, Long versionNo) {
@@ -79,10 +81,18 @@ public class ProcedureRequest extends BaseRequest {
 		this.readOnly = readOnly;
 	}
 
-	@Override
+	public boolean isUseRawPayload() {
+        return useRawPayload;
+    }
+
+    public void setUseRawPayload(boolean useRawPayload) {
+        this.useRawPayload = useRawPayload;
+    }
+
+    @Override
 	public String toString() {
 		return "ProcedureRequest [operation=" + operation + ", entity=" + getEntity() + ", id=" + id + ", versionNo="
-				+ versionNo + ", payload=" + Arrays.toString(getPayload()) + ", readOnly=" + readOnly + "]";
+				+ versionNo + ", payload=" + Arrays.toString(getPayload()) + ", readOnly=" + readOnly + ", useRawPayload=" + useRawPayload + "]";
 	}
 
 }

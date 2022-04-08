@@ -16,6 +16,7 @@
 
 package com.flowcentraltech.flowcentral.common.business;
 
+import com.tcdng.unify.core.UnifyException;
 import com.tcdng.unify.core.database.Database;
 
 /**
@@ -26,4 +27,15 @@ import com.tcdng.unify.core.database.Database;
  */
 public interface EnvironmentDelegate extends Database {
 
+    /**
+     * Executes a procedure.
+     * 
+     * @param operation
+     *                  the operation name
+     * @param payload
+     *                  the payload
+     * @throws UnifyException
+     *                        if an error occurs
+     */
+    void executeProcedure(String operation, String... payload) throws UnifyException;
 }
