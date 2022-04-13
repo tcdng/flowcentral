@@ -84,7 +84,7 @@ public class SpringBootInterconnectServiceImpl implements SpringBootInterconnect
     private EntityManager defEm;
 
     @Autowired
-    public SpringBootInterconnectServiceImpl(SpringBootInterconnect interconnect, EntityManager em, Environment env,
+    public SpringBootInterconnectServiceImpl(SpringBootInterconnect interconnect, Environment env,
             ApplicationContext context) {
         this.interconnect = interconnect;
         this.ems = new HashMap<String, EntityManager>();
@@ -103,7 +103,7 @@ public class SpringBootInterconnectServiceImpl implements SpringBootInterconnect
     @Override
     @Transactional
     public <T> T findById(EntityInfo entityInfo, Object id) throws Exception {
-        return em(entityInfo).find((Class<T>) entityInfo.getImplClass(), id);
+        return getEM(entityInfo).find((Class<T>) entityInfo.getImplClass(), id);
     }
 
     @Override
@@ -120,7 +120,7 @@ public class SpringBootInterconnectServiceImpl implements SpringBootInterconnect
     @Transactional
     public JsonDataSourceResponse processDataSourceRequest(DataSourceRequest req) throws Exception {
         final EntityInfo entityInfo = interconnect.getEntityInfo(req.getEntity());
-        final EntityManager em = em(entityInfo);
+        final EntityManager em = getEM(entityInfo);
         Object[] result = null;
         if (entityInfo.isWithHandler()) {
             SpringBootInterconnectEntityDataSourceHandler handler = context.getBean(entityInfo.getHandler(),
@@ -234,7 +234,7 @@ public class SpringBootInterconnectServiceImpl implements SpringBootInterconnect
 
     private <T> CriteriaQuery<T> createQuery(Class<T> entityClass, DataSourceRequest req) throws Exception {
         EntityInfo entityInfo = interconnect.getEntityInfo(req.getEntity());
-        CriteriaBuilder cb = em(entityInfo).getCriteriaBuilder();
+        CriteriaBuilder cb = getEM(entityInfo).getCriteriaBuilder();
         CriteriaQuery<T> cq = cb.createQuery(entityClass);
         Root<T> root = cq.from(entityClass);
         cq.select(root);
@@ -262,7 +262,7 @@ public class SpringBootInterconnectServiceImpl implements SpringBootInterconnect
 
     private <T> CriteriaQuery<Tuple> createTupleQuery(Class<T> entityClass, DataSourceRequest req) throws Exception {
         EntityInfo entityInfo = interconnect.getEntityInfo(req.getEntity());
-        CriteriaBuilder cb = em(entityInfo).getCriteriaBuilder();
+        CriteriaBuilder cb = getEM(entityInfo).getCriteriaBuilder();
         CriteriaQuery<Tuple> cq = cb.createTupleQuery();
         Root<T> root = cq.from(entityClass);
         cq.multiselect(root.get(req.getFieldName()));
@@ -276,7 +276,7 @@ public class SpringBootInterconnectServiceImpl implements SpringBootInterconnect
 
     private <T> CriteriaQuery<Long> createLongQuery(Class<T> entityClass, DataSourceRequest req) throws Exception {
         EntityInfo entityInfo = interconnect.getEntityInfo(req.getEntity());
-        CriteriaBuilder cb = em(entityInfo).getCriteriaBuilder();
+        CriteriaBuilder cb = getEM(entityInfo).getCriteriaBuilder();
         CriteriaQuery<Long> cq = cb.createQuery(Long.class);
         Root<T> root = cq.from(entityClass);
         cq.select(cb.count(root));
@@ -290,7 +290,7 @@ public class SpringBootInterconnectServiceImpl implements SpringBootInterconnect
 
     private <T> CriteriaDelete<T> createDeleteQuery(Class<T> entityClass, DataSourceRequest req) throws Exception {
         EntityInfo entityInfo = interconnect.getEntityInfo(req.getEntity());
-        CriteriaBuilder cb = em(entityInfo).getCriteriaBuilder();
+        CriteriaBuilder cb = getEM(entityInfo).getCriteriaBuilder();
         CriteriaDelete<T> cq = cb.createCriteriaDelete(entityClass);
         Root<T> root = cq.from(entityClass);
         Predicate restrictions = createRestriction(cb, root, entityInfo, req);
@@ -697,7 +697,7 @@ public class SpringBootInterconnectServiceImpl implements SpringBootInterconnect
         }
     }
 
-    private EntityManager em(EntityInfo entityInfo) {
+    private EntityManager getEM(EntityInfo entityInfo) {
         if (entityInfo.getEntityManagerFactory() != null) {
             EntityManager em = ems.get(entityInfo.getEntityManagerFactory());
             if (em == null) {
