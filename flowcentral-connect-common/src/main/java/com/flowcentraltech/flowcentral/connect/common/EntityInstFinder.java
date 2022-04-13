@@ -15,6 +15,8 @@
  */
 package com.flowcentraltech.flowcentral.connect.common;
 
+import com.flowcentraltech.flowcentral.connect.common.data.EntityInfo;
+
 /**
  * Entity instance finder.
  * 
@@ -26,13 +28,13 @@ public interface EntityInstFinder {
     /**
      * Finds an entity instance by ID.
      * 
-     * @param entityClass
-     *                    the entity class
+     * @param entityInfo
+     *                    the entity information
      * @param id
      *                    the entity ID
      * @return the entity instance if found otherwise null;
      * @throws Exception
      *                   if an error occurs
      */
-    <T> T findById(Class<T> entityClass, Object id) throws Exception;
+    <T> T findById(EntityInfo entityInfo, Object id) throws Exception;
 }

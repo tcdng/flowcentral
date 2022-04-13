@@ -31,6 +31,8 @@ import com.flowcentraltech.flowcentral.connect.configuration.constants.FieldData
  */
 public class EntityInfo {
 
+    private String entityManagerFactory;
+
     private String name;
 
     private String description;
@@ -55,8 +57,9 @@ public class EntityInfo {
 
     private List<EntityFieldInfo> childListFieldList;
 
-	public EntityInfo(String name, String description, String idFieldName, String versionNoFieldName,
-			String handler, Class<?> implClass, Map<String, EntityFieldInfo> fieldsByName) {
+    public EntityInfo(String entityManagerFactory, String name, String description, String idFieldName,
+            String versionNoFieldName, String handler, Class<?> implClass, Map<String, EntityFieldInfo> fieldsByName) {
+        this.entityManagerFactory = entityManagerFactory;
         this.name = name;
         this.description = description;
         this.idFieldName = idFieldName;
@@ -90,6 +93,10 @@ public class EntityInfo {
         this.childListFieldList = Collections.unmodifiableList(this.childListFieldList);
     }
 
+    public String getEntityManagerFactory() {
+        return entityManagerFactory;
+    }
+
     public String getName() {
         return name;
     }
@@ -107,14 +114,14 @@ public class EntityInfo {
     }
 
     public String getHandler() {
-		return handler;
-	}
+        return handler;
+    }
 
     public boolean isWithHandler() {
-    	return handler != null && !handler.trim().isEmpty();
+        return handler != null && !handler.trim().isEmpty();
     }
-    
-	public Class<?> getImplClass() {
+
+    public Class<?> getImplClass() {
         return implClass;
     }
 
@@ -151,11 +158,13 @@ public class EntityInfo {
         return entityFieldInfo;
     }
 
-    public static Builder newBuilder() {
-        return new Builder();
+    public static Builder newBuilder(String entityManagerFactory) {
+        return new Builder(entityManagerFactory);
     }
 
     public static class Builder {
+
+        private String entityManagerFactory;
 
         private String name;
 
@@ -171,7 +180,8 @@ public class EntityInfo {
 
         private Map<String, EntityFieldInfo> fieldsByName;
 
-        public Builder() {
+        public Builder(String entityManagerFactory) {
+            this.entityManagerFactory = entityManagerFactory;
             this.fieldsByName = new HashMap<String, EntityFieldInfo>();
         }
 
@@ -233,13 +243,14 @@ public class EntityInfo {
             if (implementation == null) {
                 throw new RuntimeException("Entity information implementation is required");
             }
-            
+
             if (idFieldName == null) {
                 throw new RuntimeException("Entity information ID field name is required");
             }
-            
+
             Class<?> implClass = Class.forName(implementation);
-            return new EntityInfo(name, description, idFieldName, versionNoFieldName, handler, implClass, fieldsByName);
+            return new EntityInfo(entityManagerFactory, name, description, idFieldName, versionNoFieldName, handler,
+                    implClass, fieldsByName);
         }
     }
 
