@@ -36,11 +36,11 @@ public interface BeanTablePolicy extends UnifyComponent {
      * @param valueStore
      *                   the data value store object
      * @param selected
-     *                   selected item IDs
+     *                   selected item index
      * @throws UnifyException
      *                        if an error occurs
      */
-    void onLoad(ValueStore valueStore, Set<Long> selected) throws UnifyException;
+    void onLoad(ValueStore valueStore, Set<Integer> selected) throws UnifyException;
 
     /**
      * Handles on data change.
@@ -48,9 +48,9 @@ public interface BeanTablePolicy extends UnifyComponent {
      * @param valueStore
      *                   the data value store object
      * @param selected
-     *                   selected item IDs
+     *                   selected item index
      * @throws UnifyException
      *                        if an error occurs
      */
-    void onChange(ValueStore valueStore, Set<Long> selected) throws UnifyException;
+    void onChange(ValueStore valueStore, Set<Integer> selected) throws UnifyException;
 }

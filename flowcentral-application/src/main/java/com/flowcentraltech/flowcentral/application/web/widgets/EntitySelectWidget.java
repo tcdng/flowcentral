@@ -93,6 +93,9 @@ public class EntitySelectWidget extends AbstractPopupTextField {
         }
 
         entitySelect.applyFilterToSearch();
+        String title = resolveSessionMessage("$m{entityselect.select.entity}",
+                entitySelect.getEntityTable().getEntityDef().getLabel());
+        entitySelect.setTitle(title);
         setSessionAttribute(FlowCentralSessionAttributeConstants.ENTITYSELECT, entitySelect);
         setCommandResultMapping(ApplicationResultMappingConstants.SHOW_ENTITY_SELECT);
     }

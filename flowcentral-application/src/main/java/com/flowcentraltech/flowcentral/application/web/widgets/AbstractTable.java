@@ -65,7 +65,7 @@ public abstract class AbstractTable<T, U> {
     
     protected final AppletUtilities au;
     
-    private Set<Long> selected;
+    private Set<Integer> selected;
     
     private TableSelect<?> tableSelect;
     
@@ -128,12 +128,12 @@ public abstract class AbstractTable<T, U> {
         return tableDef.getDefaultReportColumnList();
     }
 
-    public void setSelected(Set<Long> selected) {
+    public void setSelected(Set<Integer> selected) {
         this.selected = selected;
     }
 
-    public boolean isSelected(Long id) {
-        return id != null && selected.contains(id);
+    public boolean isSelected(Integer index) {
+        return selected.contains(index);
     }
     
     public boolean isSupportsBasicSearch() {
@@ -269,9 +269,9 @@ public abstract class AbstractTable<T, U> {
         return numberOfPages == 0 || pageIndex >= numberOfPages - 1;
     }
 
-    protected abstract void onLoadSourceObject(T sourceObject, Set<Long> selected) throws UnifyException;
+    protected abstract void onLoadSourceObject(T sourceObject, Set<Integer> selected) throws UnifyException;
 
-    protected abstract void onFireOnChange(T sourceObject, Set<Long> selected) throws UnifyException;
+    protected abstract void onFireOnChange(T sourceObject, Set<Integer> selected) throws UnifyException;
 
     protected abstract int getSourceObjectSize(T sourceObject) throws UnifyException;
 

@@ -41,6 +41,8 @@ public class EntitySelect {
 
     private final String fieldName;
 
+    private String title;
+
     private String label;
 
     private String filter;
@@ -63,6 +65,14 @@ public class EntitySelect {
         this.fieldName = searchFieldName;
         this.formValueStore = formValueStore;
         this.selectHandlerName = selectHandlerName;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public String getLabel() {

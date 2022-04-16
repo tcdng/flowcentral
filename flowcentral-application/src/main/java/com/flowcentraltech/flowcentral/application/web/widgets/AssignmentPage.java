@@ -180,9 +180,10 @@ public class AssignmentPage {
             List<Entity> resultList = (List<Entity>) ctx.getEnvironment()
                     .listAll(Query.of((Class<? extends Entity>) entityClassDef.getEntityClass())
                             .addEquals(assignmentPageDef.getBaseField(), baseId));
-            Set<Long> selected = new HashSet<Long>();
-            for (Entity inst : resultList) {
-                selected.add((Long) inst.getId());
+            Set<Integer> selected = new HashSet<Integer>();
+            final int len = resultList.size();
+            for (int i = 0; i < len; i++) {
+                selected.add(i);
             }
 
             List<Long> assignedIdList = ctx.getEnvironment().getAssignedList(

@@ -353,7 +353,7 @@ public class TableWriter extends AbstractControlWriter {
             throws UnifyException {
         if (tableWidget.isMultiSelect()) {
             final Control selectCtrl = tableWidget.getSelectCtrl();
-            final boolean selected = tableWidget.getTable().isSelected(id);
+            final boolean selected = tableWidget.getTable().isSelected(index);
             writer.write("<td class=\"mseld\">");
             String namingIndexId = selectCtrl.getNamingIndexedId(index);
             writer.write("<span ");

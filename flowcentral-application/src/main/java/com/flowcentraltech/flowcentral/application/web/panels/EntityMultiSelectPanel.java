@@ -55,7 +55,6 @@ public class EntityMultiSelectPanel extends AbstractPanel {
         EntitySelect entitySelect = (EntitySelect) removeSessionAttribute(
                 FlowCentralSessionAttributeConstants.ENTITYSELECT);
         entitySelect.applySelect();
-        removeSessionAttribute(FlowCentralSessionAttributeConstants.ENTITYSELECT);
         setRequestAttribute(AppletRequestAttributeConstants.RELOAD_ONSWITCH, Boolean.TRUE); // TODO Get from entity select flag
         setCommandResultMapping(ApplicationResultMappingConstants.REFRESH_CONTENT);
     }

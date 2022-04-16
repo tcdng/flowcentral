@@ -73,12 +73,12 @@ public class EntityTable extends AbstractTable<Restriction, Entity> {
     }
 
     @Override
-    protected void onLoadSourceObject(Restriction sourceObject, Set<Long> selected) throws UnifyException {
+    protected void onLoadSourceObject(Restriction sourceObject, Set<Integer> selected) throws UnifyException {
 
     }
 
     @Override
-    protected void onFireOnChange(Restriction sourceObject, Set<Long> selected) throws UnifyException {
+    protected void onFireOnChange(Restriction sourceObject, Set<Integer> selected) throws UnifyException {
         
     }
 
