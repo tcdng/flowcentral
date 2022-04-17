@@ -70,10 +70,12 @@ public abstract class AbstractEntityFormAppletController<T extends AbstractEntit
             switch (showPopupInfo.getType()) {
                 case SHOW_MULTISELECT: {
                     RefDef refDef = getAu().getRefDef(showPopupInfo.getReference());
-                    EntitySelect entitySelect = applet.getAu().constructEntitySelect(refDef,
-                            formValueStore, null, 0);
+                    EntitySelect entitySelect = applet.getAu().constructEntitySelect(refDef, formValueStore, null, 0);
                     entitySelect.setEnableFilter(false);
                     entitySelect.applyFilterToSearch();
+                    String title = resolveSessionMessage("$m{entitymultiselectpanel.select.entity}",
+                            entitySelect.getEntityTable().getEntityDef().getLabel());
+                    entitySelect.setTitle(title);
                     setSessionAttribute(FlowCentralSessionAttributeConstants.ENTITYSELECT, entitySelect);
                     return ApplicationResultMappingConstants.SHOW_ENTITY_MULTISELECT;
                 }

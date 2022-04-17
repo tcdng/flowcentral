@@ -32,6 +32,8 @@ public class ApplicationConfig {
 
     private String description;
 
+    private String entityManagerFactory;
+
     private EntitiesConfig entitiesConfig;
 
     public String getName() {
@@ -50,6 +52,15 @@ public class ApplicationConfig {
     @XmlAttribute(required = true)
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getEntityManagerFactory() {
+        return entityManagerFactory;
+    }
+
+    @XmlAttribute
+    public void setEntityManagerFactory(String entityManagerFactory) {
+        this.entityManagerFactory = entityManagerFactory;
     }
 
     public EntitiesConfig getEntitiesConfig() {

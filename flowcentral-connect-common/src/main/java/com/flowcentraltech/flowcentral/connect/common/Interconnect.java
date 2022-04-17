@@ -100,6 +100,7 @@ public class Interconnect {
                     entities = new HashMap<String, EntityInfo>();
                     List<ApplicationConfig> applicationConfigList = XmlUtils.readInterconnectConfig(configurationFile);
                     for (ApplicationConfig applicationConfig : applicationConfigList) {
+                        final String appEntityManagerFactory = applicationConfig.getEntityManagerFactory();
                         EntitiesConfig entitiesConfig = applicationConfig.getEntitiesConfig();
                         if (entitiesConfig != null) {
                             List<EntityConfig> entityConfigList = entitiesConfig.getEntityList();
@@ -108,7 +109,10 @@ public class Interconnect {
                                 LOGGER.log(Level.INFO, "Loading interconnect entity information for [{0}]...",
                                         applicationName);
                                 for (EntityConfig entityConfig : entityConfigList) {
-                                    EntityInfo.Builder eib = EntityInfo.newBuilder();
+                                    String entityManagerFactory = entityConfig.getEntityManagerFactory() == null
+                                            ? appEntityManagerFactory
+                                            : entityConfig.getEntityManagerFactory();
+                                    EntityInfo.Builder eib = EntityInfo.newBuilder(entityManagerFactory);
                                     eib.name(ensureLongName(applicationName, entityConfig.getName()))
                                             .description(entityConfig.getDescription())
                                             .implementation(entityConfig.getImplementation())
@@ -491,7 +495,7 @@ public class Interconnect {
         resp.setPayload(payload);
         return resp;
     }
-    
+
     public QueryDef getQueryDef(String query) throws Exception {
         checkInitialized();
         if (query != null) {
@@ -541,10 +545,10 @@ public class Interconnect {
 
             return orderDefList;
         }
-        
+
         return Collections.emptyList();
     }
-    
+
     public EntityInfo getEntityInfo(String entity) throws Exception {
         checkInitialized();
         EntityInfo entityInfo = entities.get(entity);
@@ -589,7 +593,7 @@ public class Interconnect {
                 Object id = map.get(entityFieldInfo.getName());
                 id = ConverterUtils.convert(entityFieldInfo.getJavaClass(), id);
                 if (id != null) {
-                    Object parentBean = entityInstFinder.findById(parentEntityInfo.getImplClass(), id);
+                    Object parentBean = entityInstFinder.findById(parentEntityInfo, id);
                     PropertyUtils.setProperty(bean, entityFieldInfo.getName(), parentBean);
                 }
             }
@@ -677,13 +681,13 @@ public class Interconnect {
     private String[] getRawResult(Object[] result) {
         if (result != null) {
             String[] _result = new String[result.length];
-            for(int i = 0; i < _result.length; i++) {
+            for (int i = 0; i < _result.length; i++) {
                 _result[i] = String.valueOf(result[i]);
             }
-            
+
             return _result;
         }
-        
+
         return null;
     }
 
@@ -695,8 +699,7 @@ public class Interconnect {
         if (refType.object()) {
             for (EntityFieldInfo entityFieldInfo : entityInfo.getRefFieldList()) {
                 EntityInfo parentEntityInfo = getEntityInfo(entityFieldInfo.getReferences());
-                Object id = getBeanProperty(bean,
-                        entityFieldInfo.getName() + "." + parentEntityInfo.getIdFieldName());
+                Object id = getBeanProperty(bean, entityFieldInfo.getName() + "." + parentEntityInfo.getIdFieldName());
                 map.put(entityFieldInfo.getName(), id);
             }
         } else {
@@ -713,8 +716,7 @@ public class Interconnect {
         // List-only
         if (list) {
             for (EntityFieldInfo entityFieldInfo : entityInfo.getListOnlyFieldList()) {
-                map.put(entityFieldInfo.getName(),
-                		getBeanProperty(bean, entityFieldInfo.getReferences()));
+                map.put(entityFieldInfo.getName(), getBeanProperty(bean, entityFieldInfo.getReferences()));
             }
         }
 
@@ -750,15 +752,15 @@ public class Interconnect {
         return map;
     }
 
-	private Object getBeanProperty(Object bean, String name) {
-		try {
-			return PropertyUtils.getNestedProperty(bean, name);
-		} catch (Exception e) {
-		}
+    private Object getBeanProperty(Object bean, String name) {
+        try {
+            return PropertyUtils.getNestedProperty(bean, name);
+        } catch (Exception e) {
+        }
 
-		return null;
-	}
-    
+        return null;
+    }
+
     private String ensureLongName(String applicationName, String name) {
         if (name != null && !name.trim().isEmpty() && name.indexOf('.') < 0) {
             return applicationName + "." + name;

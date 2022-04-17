@@ -31,7 +31,8 @@ import com.tcdng.unify.core.list.LongParam;
  * @since 1.0
  */
 @Component("studioentitylistactionpolicylist")
-public class StudioEntityListActionPolicyListCommand extends AbstractEntityTypeListCommand<EntityListActionPolicy, LongParam> {
+public class StudioEntityListActionPolicyListCommand
+        extends AbstractEntityTypeListCommand<EntityListActionPolicy, LongParam> {
 
     @Configurable
     private ApplicationModuleService applicationModuleService;
@@ -50,7 +51,7 @@ public class StudioEntityListActionPolicyListCommand extends AbstractEntityTypeL
             return applicationModuleService.getAppTableEntity(param.getValue());
         }
 
-        return "all";
+        return null;
     }
 
 }

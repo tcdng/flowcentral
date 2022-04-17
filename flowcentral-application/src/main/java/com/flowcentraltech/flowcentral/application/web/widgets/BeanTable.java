@@ -52,14 +52,14 @@ public class BeanTable extends AbstractTable<List<?>, Object> {
     }
 
     @Override
-    protected void onLoadSourceObject(List<?> sourceObject, Set<Long> selected) throws UnifyException {
+    protected void onLoadSourceObject(List<?> sourceObject, Set<Integer> selected) throws UnifyException {
         if (policy != null) {
             policy.onLoad(getValueStore(sourceObject), selected);
         }
     }
 
     @Override
-    protected void onFireOnChange(List<?> sourceObject, Set<Long> selected) throws UnifyException {
+    protected void onFireOnChange(List<?> sourceObject, Set<Integer> selected) throws UnifyException {
         if (policy != null) {
             policy.onChange(getValueStore(sourceObject), selected);
         }

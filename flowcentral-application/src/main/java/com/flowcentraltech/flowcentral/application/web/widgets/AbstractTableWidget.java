@@ -16,6 +16,7 @@
 package com.flowcentraltech.flowcentral.application.web.widgets;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -239,8 +240,11 @@ public abstract class AbstractTableWidget<T extends AbstractTable<V, U>, U, V>
         return selected;
     }
 
-    public void setSelected(Integer[] selected) {
+    public void setSelected(Integer[] selected) throws UnifyException {
         this.selected = selected;
+        Set<Integer> set = selected == null || selected.length == 0 ? Collections.emptySet()
+                : new HashSet<Integer>(Arrays.asList(selected));
+        getTable().setSelected(set);
     }
 
     public OrderType getSortType() {

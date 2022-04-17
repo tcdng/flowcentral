@@ -16,17 +16,19 @@
 package com.flowcentraltech.flowcentral.connect.springboot.service;
 
 import java.math.BigDecimal;
-import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
 import javax.persistence.Tuple;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -46,19 +48,17 @@ import org.springframework.transaction.annotation.Transactional;
 import com.flowcentraltech.flowcentral.connect.common.EntityInstFinder;
 import com.flowcentraltech.flowcentral.connect.common.constants.RestrictionType;
 import com.flowcentraltech.flowcentral.connect.common.data.DataSourceRequest;
-import com.flowcentraltech.flowcentral.connect.common.data.JsonDataSourceResponse;
 import com.flowcentraltech.flowcentral.connect.common.data.EntityFieldInfo;
 import com.flowcentraltech.flowcentral.connect.common.data.EntityInfo;
 import com.flowcentraltech.flowcentral.connect.common.data.FilterRestrictionDef;
+import com.flowcentraltech.flowcentral.connect.common.data.JsonDataSourceResponse;
+import com.flowcentraltech.flowcentral.connect.common.data.JsonProcedureResponse;
 import com.flowcentraltech.flowcentral.connect.common.data.OrderDef;
 import com.flowcentraltech.flowcentral.connect.common.data.ProcedureRequest;
-import com.flowcentraltech.flowcentral.connect.common.data.JsonProcedureResponse;
 import com.flowcentraltech.flowcentral.connect.common.data.QueryDef;
 import com.flowcentraltech.flowcentral.connect.common.data.ResolvedCondition;
 import com.flowcentraltech.flowcentral.connect.configuration.constants.FieldDataType;
 import com.flowcentraltech.flowcentral.connect.springboot.SpringBootInterconnect;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.tcdng.unify.convert.util.ConverterUtils;
 
 /**
@@ -75,17 +75,19 @@ public class SpringBootInterconnectServiceImpl implements SpringBootInterconnect
 
     private final SpringBootInterconnect interconnect;
 
-    private final EntityManager em;
-
     private final Environment env;
 
     private final ApplicationContext context;
 
+    private Map<String, EntityManager> ems;
+
+    private EntityManager defEm;
+
     @Autowired
-    public SpringBootInterconnectServiceImpl(SpringBootInterconnect interconnect, EntityManager em, Environment env,
+    public SpringBootInterconnectServiceImpl(SpringBootInterconnect interconnect, Environment env,
             ApplicationContext context) {
         this.interconnect = interconnect;
-        this.em = em;
+        this.ems = new HashMap<String, EntityManager>();
         this.env = env;
         this.context = context;
     }
@@ -97,10 +99,11 @@ public class SpringBootInterconnectServiceImpl implements SpringBootInterconnect
         interconnect.init(interconectConfigFile, this);
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     @Transactional
-    public <T> T findById(Class<T> entityClass, Object id) throws Exception {
-        return em.find(entityClass, id);
+    public <T> T findById(EntityInfo entityInfo, Object id) throws Exception {
+        return getEM(entityInfo).find((Class<T>) entityInfo.getImplClass(), id);
     }
 
     @Override
@@ -116,7 +119,8 @@ public class SpringBootInterconnectServiceImpl implements SpringBootInterconnect
     @Override
     @Transactional
     public JsonDataSourceResponse processDataSourceRequest(DataSourceRequest req) throws Exception {
-        EntityInfo entityInfo = interconnect.getEntityInfo(req.getEntity());
+        final EntityInfo entityInfo = interconnect.getEntityInfo(req.getEntity());
+        final EntityManager em = getEM(entityInfo);
         Object[] result = null;
         if (entityInfo.isWithHandler()) {
             SpringBootInterconnectEntityDataSourceHandler handler = context.getBean(entityInfo.getHandler(),
@@ -230,7 +234,7 @@ public class SpringBootInterconnectServiceImpl implements SpringBootInterconnect
 
     private <T> CriteriaQuery<T> createQuery(Class<T> entityClass, DataSourceRequest req) throws Exception {
         EntityInfo entityInfo = interconnect.getEntityInfo(req.getEntity());
-        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaBuilder cb = getEM(entityInfo).getCriteriaBuilder();
         CriteriaQuery<T> cq = cb.createQuery(entityClass);
         Root<T> root = cq.from(entityClass);
         cq.select(root);
@@ -258,7 +262,7 @@ public class SpringBootInterconnectServiceImpl implements SpringBootInterconnect
 
     private <T> CriteriaQuery<Tuple> createTupleQuery(Class<T> entityClass, DataSourceRequest req) throws Exception {
         EntityInfo entityInfo = interconnect.getEntityInfo(req.getEntity());
-        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaBuilder cb = getEM(entityInfo).getCriteriaBuilder();
         CriteriaQuery<Tuple> cq = cb.createTupleQuery();
         Root<T> root = cq.from(entityClass);
         cq.multiselect(root.get(req.getFieldName()));
@@ -272,7 +276,7 @@ public class SpringBootInterconnectServiceImpl implements SpringBootInterconnect
 
     private <T> CriteriaQuery<Long> createLongQuery(Class<T> entityClass, DataSourceRequest req) throws Exception {
         EntityInfo entityInfo = interconnect.getEntityInfo(req.getEntity());
-        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaBuilder cb = getEM(entityInfo).getCriteriaBuilder();
         CriteriaQuery<Long> cq = cb.createQuery(Long.class);
         Root<T> root = cq.from(entityClass);
         cq.select(cb.count(root));
@@ -286,7 +290,7 @@ public class SpringBootInterconnectServiceImpl implements SpringBootInterconnect
 
     private <T> CriteriaDelete<T> createDeleteQuery(Class<T> entityClass, DataSourceRequest req) throws Exception {
         EntityInfo entityInfo = interconnect.getEntityInfo(req.getEntity());
-        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaBuilder cb = getEM(entityInfo).getCriteriaBuilder();
         CriteriaDelete<T> cq = cb.createCriteriaDelete(entityClass);
         Root<T> root = cq.from(entityClass);
         Predicate restrictions = createRestriction(cb, root, entityInfo, req);
@@ -693,13 +697,31 @@ public class SpringBootInterconnectServiceImpl implements SpringBootInterconnect
         }
     }
 
-    private String prettyJson(Object src) {
-        if (src != null) {
-            Gson gson = new GsonBuilder().disableHtmlEscaping().serializeNulls().setDateFormat(DateFormat.LONG)
-                    .setPrettyPrinting().setVersion(1.0).create();
-            return gson.toJson(src, src.getClass());
+    private EntityManager getEM(EntityInfo entityInfo) {
+        if (entityInfo.getEntityManagerFactory() != null) {
+            EntityManager em = ems.get(entityInfo.getEntityManagerFactory());
+            if (em == null) {
+                synchronized (this) {
+                    if (em == null) {
+                        EntityManagerFactory emf = context.getBean(entityInfo.getEntityManagerFactory(),
+                                EntityManagerFactory.class);
+                        em = emf.createEntityManager();
+                        ems.put(entityInfo.getEntityManagerFactory(), em);
+                    }
+                }
+            }
+
+            return em;
         }
 
-        return "";
+        if (defEm == null) {
+            synchronized (this) {
+                if (defEm == null) {
+                    defEm = context.getBean(EntityManager.class);
+                }
+            }
+        }
+
+        return defEm;
     }
 }

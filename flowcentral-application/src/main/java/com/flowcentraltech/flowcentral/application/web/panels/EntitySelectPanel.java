@@ -55,7 +55,6 @@ public class EntitySelectPanel extends AbstractPanel {
         EntitySelect entitySelect = (EntitySelect) removeSessionAttribute(
                 FlowCentralSessionAttributeConstants.ENTITYSELECT);
         entitySelect.select(selectIndex);
-        removeSessionAttribute(FlowCentralSessionAttributeConstants.ENTITYSELECT);
         setCommandResultMapping(ApplicationResultMappingConstants.REFRESH_CONTENT);
     }
 
