@@ -22,12 +22,14 @@ import com.flowcentraltech.flowcentral.application.constants.ApplicationModuleSy
 import com.flowcentraltech.flowcentral.application.constants.ApplicationPrivilegeConstants;
 import com.flowcentraltech.flowcentral.application.data.EntityDef;
 import com.flowcentraltech.flowcentral.application.entities.AppEntity;
+import com.flowcentraltech.flowcentral.application.entities.AppEntityField;
 import com.flowcentraltech.flowcentral.application.entities.AppRef;
 import com.flowcentraltech.flowcentral.application.util.ApplicationNameUtils;
 import com.flowcentraltech.flowcentral.application.util.PrivilegeNameUtils;
 import com.flowcentraltech.flowcentral.common.business.policies.EntityActionContext;
 import com.flowcentraltech.flowcentral.common.business.policies.EntityActionResult;
 import com.flowcentraltech.flowcentral.common.constants.ConfigType;
+import com.flowcentraltech.flowcentral.configuration.constants.EntityFieldType;
 import com.flowcentraltech.flowcentral.report.business.ReportModuleService;
 import com.flowcentraltech.flowcentral.report.entities.ReportableDefinition;
 import com.flowcentraltech.flowcentral.report.entities.ReportableField;
@@ -38,6 +40,7 @@ import com.tcdng.unify.core.UserToken;
 import com.tcdng.unify.core.annotation.Component;
 import com.tcdng.unify.core.annotation.Configurable;
 import com.tcdng.unify.core.message.MessageResolver;
+import com.tcdng.unify.core.util.DataUtils;
 
 /**
  * Studio on create application entity policy.
@@ -66,7 +69,15 @@ public class StudioOnCreateAppEntityPolicy extends StudioOnCreateComponentPolicy
     protected void doExecutePreAction(EntityActionContext ctx) throws UnifyException {
         super.doExecutePreAction(ctx);
         AppEntity appEntity = (AppEntity) ctx.getInst();
-        appEntity.setFieldList(getAms().getEntityBaseTypeFieldList(appEntity.getBaseType(), ConfigType.CUSTOM));
+        if (DataUtils.isBlank(appEntity.getFieldList())) {
+            appEntity.setFieldList(getAms().getEntityBaseTypeFieldList(appEntity.getBaseType(), ConfigType.CUSTOM));
+        } else {
+            for (AppEntityField appEntityField : appEntity.getFieldList()) {
+                if (appEntityField.getType().isStatic()) {
+                    appEntityField.setType(EntityFieldType.CUSTOM);
+                }
+            }
+        }
     }
 
     @Override

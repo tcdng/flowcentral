@@ -1490,7 +1490,7 @@
 				<section name="entityDetails" columns="type_2">
 					<field name="applicationId"
 						inputWidget="application.entitysearch" column="0"
-						label="$m{studio.application}" disabled="true" required="true" />
+						label="$m{studio.application}" disabled="true" required="true" saveAs="true" />
 					<field name="name" inputWidget="application.name" column="0"
 						required="true" switchOnChange="true" saveAs="true" />
 					<field name="description" inputWidget="application.text"
