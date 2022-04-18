@@ -108,7 +108,7 @@ public class MiniFormWriter extends AbstractControlWriter {
         super.doWriteBehavior(writer, widget);
         final MiniFormWidget miniFormWidget = (MiniFormWidget) widget;
         final FormContext ctx = miniFormWidget.getCtx();
-        final EventHandler[] switchOnChangeHandlers = ctx.getFormSwitchOnChangeHandlers();
+        final List<EventHandler> switchOnChangeHandlers = ctx.getFormSwitchOnChangeHandlers();
         for (FormSection formSection : miniFormWidget.getFormSectionList()) {
             final int columns = formSection.getColumns();
             for (int col = 0; col < columns; col++) {

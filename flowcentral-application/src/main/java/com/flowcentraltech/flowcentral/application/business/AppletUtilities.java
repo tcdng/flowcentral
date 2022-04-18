@@ -22,6 +22,7 @@ import com.flowcentraltech.flowcentral.application.data.AppletDef;
 import com.flowcentraltech.flowcentral.application.data.AssignmentPageDef;
 import com.flowcentraltech.flowcentral.application.data.EntityClassDef;
 import com.flowcentraltech.flowcentral.application.data.EntityDef;
+import com.flowcentraltech.flowcentral.application.data.EntityFormEventHandlers;
 import com.flowcentraltech.flowcentral.application.data.FieldSequenceDef;
 import com.flowcentraltech.flowcentral.application.data.FilterDef;
 import com.flowcentraltech.flowcentral.application.data.FormDef;
@@ -64,7 +65,6 @@ import com.tcdng.unify.core.data.ParamConfig;
 import com.tcdng.unify.core.data.ValueStore;
 import com.tcdng.unify.core.database.Entity;
 import com.tcdng.unify.core.upl.UplComponent;
-import com.tcdng.unify.web.ui.widget.EventHandler;
 
 /**
  * Applet utilities component.
@@ -611,7 +611,7 @@ public interface AppletUtilities extends UnifyComponent {
      *                                   the form mode
      * @param breadCrumbs
      *                                   optional bread crumbs
-     * @param formSwitchOnChangeHandlers
+     * @param formEventHandlers
      *                                   optional form switch on change handler
      * @return constructed form
      * @throws UnifyException
@@ -619,7 +619,7 @@ public interface AppletUtilities extends UnifyComponent {
      */
     HeaderWithTabsForm constructHeaderWithTabsForm(AbstractEntityFormApplet applet, String rootTitle, String beanTitle,
             FormDef formDef, Entity inst, FormMode formMode, BreadCrumbs breadCrumbs,
-            EventHandler[] formSwitchOnChangeHandlers) throws UnifyException;
+            EntityFormEventHandlers formEventHandlers) throws UnifyException;
 
     /**
      * Constructs a headless tab form.

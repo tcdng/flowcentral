@@ -657,6 +657,9 @@
 			<uniqueConstraint name="descUc"
 				description="$m{application.appentity.uc.description}"
 				fieldList="description" />
+			<uniqueConstraint name="tableNameUc"
+				description="$m{application.appentity.uc.tablename}"
+				fieldList="tableName" />
 		</entity>
 		<entity name="appEntityField"
 			description="$m{application.appentityfield}"

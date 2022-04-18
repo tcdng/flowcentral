@@ -125,7 +125,7 @@ public class EditPropertyList {
     public void loadPropertyList(FormContext ctx) throws UnifyException {
         MapValues propValues = ctx.getAu().getPropertyListValues(inst, childFkFieldName, propertyRuleDef);
         inputForm = new MiniForm(MiniFormScope.PROPERTY_LIST,
-                new FormContext(ctx.getAppletContext(), ctx.getFormDef(), ctx.getFormSwitchOnChangeHandlers(), propValues),
+                new FormContext(ctx.getAppletContext(), ctx.getFormDef(), ctx.getFormEventHandlers(), propValues),
                 propertyRuleDef.getPropertyListDef(inst).getFormTabDef());
     }
 

@@ -1492,19 +1492,19 @@
 						inputWidget="application.entitysearch" column="0"
 						label="$m{studio.application}" disabled="true" required="true" />
 					<field name="name" inputWidget="application.name" column="0"
-						required="true" switchOnChange="true" />
+						required="true" switchOnChange="true" saveAs="true" />
 					<field name="description" inputWidget="application.text"
-						column="0" required="true" />
+						column="0" required="true" saveAs="true" />
 					<field name="label" inputWidget="application.text" column="0"
-						required="true" />
+						required="true"/>
 					<field name="configType" inputWidget="application.enumlist"
 						column="1" disabled="true" required="true" />
 					<field name="baseType" inputWidget="application.enumlist"
 						column="1" disabled="true" required="true" />
 					<field name="entityClass" inputWidget="application.text"
-						column="1" editable="false" required="true" />
+						column="1" editable="false" required="true" saveAs="true" />
 					<field name="tableName" inputWidget="application.text"
-						column="1" required="true" />
+						column="1" required="true" saveAs="true" />
 					<field name="delegate" inputWidget="environmentdelegatelist"
 						column="1" />
 					<field name="auditable" inputWidget="application.checkbox"

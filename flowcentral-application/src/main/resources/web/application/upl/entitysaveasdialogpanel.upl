@@ -22,6 +22,8 @@
 // Form panel
 !ui-panel:entityFormBodyPanel style:$s{width:100%;} components:$c{saveAsForm}
 !fc-miniform:saveAsForm binding:inputForm
+!ui-hidden:switchOnChangeHolder
+	eventHandler:$f{switchOnChangeEventHandler}
 
 // Action panel
 !ui-panel:entitySaveAsActionPanel layout:$d{!ui-horizontal} components:$g{moreActionButtons}

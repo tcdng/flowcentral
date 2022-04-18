@@ -122,7 +122,7 @@ public class EntityChild extends AbstractPanelFormBinding {
                 .listLean(Query.of((Class<? extends Entity>) entityClassDef.getEntityClass())
                         .addRestriction(restriction));
         if (childInst != null) {
-            FormContext _ctx = new FormContext(ctx.getAppletContext(), childFormDef, ctx.getFormSwitchOnChangeHandlers(),
+            FormContext _ctx = new FormContext(ctx.getAppletContext(), childFormDef, ctx.getFormEventHandlers(),
                     childInst);
             _ctx.revertTabStates();
             childForm = new MiniForm(MiniFormScope.CHILD_FORM, _ctx, childFormDef.getFormTabDef(0));

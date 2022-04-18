@@ -109,7 +109,7 @@ public enum StudioAppComponentType implements EnumConst {
             "/studioappcomponentapplet",
             "studiooncreateappentity-policy",
             "studioonupdateappentity-policy",
-            StudioAppComponentFlags.SUPPORTS_NEW,
+            StudioAppComponentFlags.SUPPORTS_NEW | StudioAppComponentFlags.SUPPORTS_SAVEAS,
             AppletType.STUDIO_FC_COMPONENT,
             AppEntity.class),
     REFERENCE(

@@ -23,6 +23,7 @@ import com.flowcentraltech.flowcentral.application.constants.AppletPropertyConst
 import com.flowcentraltech.flowcentral.application.data.AppletDef;
 import com.flowcentraltech.flowcentral.application.data.EntityClassDef;
 import com.flowcentraltech.flowcentral.application.data.EntityDef;
+import com.flowcentraltech.flowcentral.application.data.EntityFormEventHandlers;
 import com.flowcentraltech.flowcentral.application.data.FormDef;
 import com.flowcentraltech.flowcentral.application.web.data.FormContext;
 import com.flowcentraltech.flowcentral.application.web.panels.AbstractForm.FormMode;
@@ -44,7 +45,6 @@ import com.tcdng.unify.core.criterion.Restriction;
 import com.tcdng.unify.core.database.Entity;
 import com.tcdng.unify.core.database.Query;
 import com.tcdng.unify.core.util.ReflectUtils;
-import com.tcdng.unify.web.ui.widget.EventHandler;
 
 /**
  * Review wizard work items applet object.
@@ -71,9 +71,9 @@ public class ReviewWizardWorkItemsApplet extends AbstractEntityFormApplet {
     private int wfWizardStepIndex;
 
     public ReviewWizardWorkItemsApplet(AppletUtilities au, WorkflowModuleService wms, String pathVariable,
-            String userLoginId, EventHandler[] formSwitchOnChangeHandlers, EventHandler[] assnSwitchOnChangeHandlers)
+            String userLoginId, EntityFormEventHandlers formEventHandlers)
             throws UnifyException {
-        super(au, pathVariable, formSwitchOnChangeHandlers, assnSwitchOnChangeHandlers);
+        super(au, pathVariable, formEventHandlers);
         AppletDef _appletDef = getRootAppletDef();
         this.entitySearch = au.constructEntitySearch(new FormContext(getCtx()), this, null,
                 getRootAppletDef().getDescription(), _appletDef, null,

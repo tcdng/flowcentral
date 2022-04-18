@@ -18,11 +18,11 @@ package com.flowcentraltech.flowcentral.application.web.panels.applet;
 import com.flowcentraltech.flowcentral.application.business.AppletUtilities;
 import com.flowcentraltech.flowcentral.application.constants.AppletPropertyConstants;
 import com.flowcentraltech.flowcentral.application.data.AppletDef;
+import com.flowcentraltech.flowcentral.application.data.EntityFormEventHandlers;
 import com.flowcentraltech.flowcentral.application.data.FilterDef;
 import com.flowcentraltech.flowcentral.application.web.data.FormContext;
 import com.flowcentraltech.flowcentral.application.web.panels.EntitySearch;
 import com.tcdng.unify.core.UnifyException;
-import com.tcdng.unify.web.ui.widget.EventHandler;
 
 /**
  * Manage entity list applet object.
@@ -32,9 +32,9 @@ import com.tcdng.unify.web.ui.widget.EventHandler;
  */
 public class ManageEntityListApplet extends AbstractEntityFormApplet {
 
-    public ManageEntityListApplet(AppletUtilities au, String pathVariable, EventHandler[] formSwitchOnChangeHandlers,
-            EventHandler[] assnSwitchOnChangeHandlers) throws UnifyException {
-        super(au, pathVariable, formSwitchOnChangeHandlers, assnSwitchOnChangeHandlers);
+    public ManageEntityListApplet(AppletUtilities au, String pathVariable, EntityFormEventHandlers formEventHandlers)
+            throws UnifyException {
+        super(au, pathVariable, formEventHandlers);
         currFormAppletDef = getRootAppletDef();
         entitySearch = au.constructEntitySearch(new FormContext(getCtx()), this, null,
                 getRootAppletDef().getDescription(), currFormAppletDef, null, EntitySearch.ENABLE_ALL);

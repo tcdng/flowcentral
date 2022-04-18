@@ -17,6 +17,7 @@
 package com.flowcentraltech.flowcentral.studio.web.panels.applet;
 
 import com.flowcentraltech.flowcentral.application.business.AppletUtilities;
+import com.flowcentraltech.flowcentral.application.data.EntityFormEventHandlers;
 import com.flowcentraltech.flowcentral.application.data.FormDef;
 import com.flowcentraltech.flowcentral.application.entities.AppForm;
 import com.flowcentraltech.flowcentral.application.util.ApplicationNameUtils;
@@ -24,7 +25,6 @@ import com.flowcentraltech.flowcentral.application.web.widgets.BreadCrumbs;
 import com.flowcentraltech.flowcentral.studio.business.StudioModuleService;
 import com.flowcentraltech.flowcentral.studio.web.panels.FormEditorPage;
 import com.tcdng.unify.core.UnifyException;
-import com.tcdng.unify.web.ui.widget.EventHandler;
 
 /**
  * Studio application form applet object.
@@ -37,9 +37,9 @@ public class StudioAppFormApplet extends StudioAppComponentApplet {
     private FormEditorPage formEditorPage;
 
     public StudioAppFormApplet(StudioModuleService sms, AppletUtilities au, String pathVariable, String applicationName,
-            EventHandler[] formSwitchOnChangeHandlers, EventHandler[] assnSwitchOnChangeHandlers)
+            EntityFormEventHandlers formEventHandlers)
             throws UnifyException {
-        super(sms, au, pathVariable, applicationName, formSwitchOnChangeHandlers, assnSwitchOnChangeHandlers);
+        super(sms, au, pathVariable, applicationName, formEventHandlers);
     }
 
     public FormEditorPage getFormEditorPage() {
