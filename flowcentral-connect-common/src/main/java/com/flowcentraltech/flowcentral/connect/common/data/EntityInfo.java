@@ -33,6 +33,10 @@ public class EntityInfo {
 
     private String entityManagerFactory;
 
+    private String transactionManager;
+
+    private String entityManagerLongName;
+
     private String name;
 
     private String description;
@@ -57,9 +61,11 @@ public class EntityInfo {
 
     private List<EntityFieldInfo> childListFieldList;
 
-    public EntityInfo(String entityManagerFactory, String name, String description, String idFieldName,
+    public EntityInfo(String entityManagerFactory, String transactionManager, String name, String description, String idFieldName,
             String versionNoFieldName, String handler, Class<?> implClass, Map<String, EntityFieldInfo> fieldsByName) {
         this.entityManagerFactory = entityManagerFactory;
+        this.transactionManager = transactionManager;
+        this.entityManagerLongName = entityManagerFactory != null && transactionManager != null ? entityManagerFactory + "." + transactionManager : null;
         this.name = name;
         this.description = description;
         this.idFieldName = idFieldName;
@@ -93,8 +99,16 @@ public class EntityInfo {
         this.childListFieldList = Collections.unmodifiableList(this.childListFieldList);
     }
 
+    public String getEntityManagerLongName() {
+        return entityManagerLongName;
+    }
+    
     public String getEntityManagerFactory() {
         return entityManagerFactory;
+    }
+
+    public String getTransactionManager() {
+        return transactionManager;
     }
 
     public String getName() {
@@ -158,13 +172,15 @@ public class EntityInfo {
         return entityFieldInfo;
     }
 
-    public static Builder newBuilder(String entityManagerFactory) {
-        return new Builder(entityManagerFactory);
+    public static Builder newBuilder(String entityManagerFactory, String transactionManager) {
+        return new Builder(entityManagerFactory, transactionManager);
     }
 
     public static class Builder {
 
         private String entityManagerFactory;
+
+        private String transactionManager;
 
         private String name;
 
@@ -180,8 +196,9 @@ public class EntityInfo {
 
         private Map<String, EntityFieldInfo> fieldsByName;
 
-        public Builder(String entityManagerFactory) {
+        public Builder(String entityManagerFactory, String transactionManager) {
             this.entityManagerFactory = entityManagerFactory;
+            this.transactionManager = transactionManager;
             this.fieldsByName = new HashMap<String, EntityFieldInfo>();
         }
 
@@ -249,7 +266,7 @@ public class EntityInfo {
             }
 
             Class<?> implClass = Class.forName(implementation);
-            return new EntityInfo(entityManagerFactory, name, description, idFieldName, versionNoFieldName, handler,
+            return new EntityInfo(entityManagerFactory, transactionManager, name, description, idFieldName, versionNoFieldName, handler,
                     implClass, fieldsByName);
         }
     }
