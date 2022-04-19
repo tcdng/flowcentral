@@ -103,7 +103,6 @@ public class Interconnect {
                     List<ApplicationConfig> applicationConfigList = XmlUtils.readInterconnectConfig(configurationFile);
                     for (ApplicationConfig applicationConfig : applicationConfigList) {
                         final String appEntityManagerFactory = applicationConfig.getEntityManagerFactory();
-                        final String appTransactionManager = applicationConfig.getTransactionManager();
                         redirect = redirect == null ? redirect = applicationConfig.getRedirect() : redirect;
                         EntitiesConfig entitiesConfig = applicationConfig.getEntitiesConfig();
                         if (entitiesConfig != null) {
@@ -113,8 +112,7 @@ public class Interconnect {
                                 LOGGER.log(Level.INFO, "Loading interconnect entity information for [{0}]...",
                                         applicationName);
                                 for (EntityConfig entityConfig : entityConfigList) {
-                                    EntityInfo.Builder eib = EntityInfo.newBuilder(appEntityManagerFactory,
-                                            appTransactionManager);
+                                    EntityInfo.Builder eib = EntityInfo.newBuilder(appEntityManagerFactory);
                                     eib.name(ensureLongName(applicationName, entityConfig.getName()))
                                             .description(entityConfig.getDescription())
                                             .implementation(entityConfig.getImplementation())
