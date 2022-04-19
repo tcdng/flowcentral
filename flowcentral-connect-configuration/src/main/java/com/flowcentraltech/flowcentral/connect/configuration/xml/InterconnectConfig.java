@@ -32,6 +32,8 @@ public class InterconnectConfig {
 
     private String description;
 
+    private String redirect;
+
     private InterconnectAppConfigs interconnectAppConfigs;
 
     public String getName() {
@@ -50,6 +52,15 @@ public class InterconnectConfig {
     @XmlAttribute(required = true)
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getRedirect() {
+        return redirect;
+    }
+
+    @XmlAttribute
+    public void setRedirect(String redirect) {
+        this.redirect = redirect;
     }
 
     public InterconnectAppConfigs getInterconnectAppConfigs() {

@@ -18,7 +18,10 @@ package com.flowcentraltech.flowcentral.connect.springboot.controllers;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.annotation.PostConstruct;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -45,13 +48,23 @@ public class SpringBootInterconnectController {
 
     private final SpringBootInterconnectService springBootInterconnectService;
 
-    private final SpringBootInterconnectRedirect springBootInterconnectRedirect;
+    private final ApplicationContext context;
+
+    private SpringBootInterconnectRedirect springBootInterconnectRedirect;
     
     @Autowired
     public SpringBootInterconnectController(SpringBootInterconnectService springBootInterconnectService,
-            SpringBootInterconnectRedirect springBootInterconnectRedirect) {
+            ApplicationContext context) {
         this.springBootInterconnectService = springBootInterconnectService;
-        this.springBootInterconnectRedirect = springBootInterconnectRedirect;
+        this.context = context;
+    }
+
+    @PostConstruct
+    public void init() throws Exception {
+        String redirect = springBootInterconnectService.getRedirect();
+        if (redirect != null) {
+            springBootInterconnectRedirect = context.getBean(redirect, SpringBootInterconnectRedirect.class);
+        }
     }
 
     @PostMapping(path = "/datasource")
@@ -59,14 +72,16 @@ public class SpringBootInterconnectController {
         JsonDataSourceResponse resp = springBootInterconnectRedirect != null
                 ? springBootInterconnectRedirect.processDataSourceRequest(req)
                 : null;
-        try {
-            return springBootInterconnectService.processDataSourceRequest(req);
-        } catch (Exception e) {
-            String errorMessage = e.getMessage();
-            LOGGER.log(Level.SEVERE, errorMessage, e);
-            resp = new JsonDataSourceResponse();
-            resp.setErrorCode(DataSourceErrorCodeConstants.PROVIDER_SERVICE_EXCEPTION);
-            resp.setErrorMsg(errorMessage);
+        if (resp == null) {
+            try {
+                return springBootInterconnectService.processDataSourceRequest(req);
+            } catch (Exception e) {
+                String errorMessage = e.getMessage();
+                LOGGER.log(Level.SEVERE, errorMessage, e);
+                resp = new JsonDataSourceResponse();
+                resp.setErrorCode(DataSourceErrorCodeConstants.PROVIDER_SERVICE_EXCEPTION);
+                resp.setErrorMsg(errorMessage);
+            }
         }
 
         return resp;
@@ -77,14 +92,16 @@ public class SpringBootInterconnectController {
         JsonProcedureResponse resp = springBootInterconnectRedirect != null
                 ? springBootInterconnectRedirect.processDataSourceRequest(req)
                 : null;
-        try {
-            return springBootInterconnectService.executeProcedureRequest(req);
-        } catch (Exception e) {
-            String errorMessage = e.getMessage();
-            LOGGER.log(Level.SEVERE, errorMessage, e);
-            resp = new JsonProcedureResponse();
-            resp.setErrorCode(DataSourceErrorCodeConstants.PROVIDER_SERVICE_EXCEPTION);
-            resp.setErrorMsg(errorMessage);
+        if (resp == null) {
+            try {
+                return springBootInterconnectService.executeProcedureRequest(req);
+            } catch (Exception e) {
+                String errorMessage = e.getMessage();
+                LOGGER.log(Level.SEVERE, errorMessage, e);
+                resp = new JsonProcedureResponse();
+                resp.setErrorCode(DataSourceErrorCodeConstants.PROVIDER_SERVICE_EXCEPTION);
+                resp.setErrorMsg(errorMessage);
+            }
         }
 
         return resp;

@@ -64,6 +64,7 @@ public final class XmlUtils {
                 for (InterconnectAppConfig interconnectAppConfig : appConfigList) {
                     ApplicationConfig applicationConfig = XmlUtils.readConfig(ApplicationConfig.class,
                             interconnectAppConfig.getConfigFile());
+                    applicationConfig.setRedirect(interconnectConfig.getRedirect());
                     resultList.add(applicationConfig);
                 }
 

@@ -28,6 +28,8 @@ import com.flowcentraltech.flowcentral.connect.common.data.JsonProcedureResponse
  */
 public interface SpringBootInterconnectService {
 
+    String getRedirect();
+    
     /**
      * Processes a data source request.
      * 

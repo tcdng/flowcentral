@@ -78,6 +78,8 @@ public class Interconnect {
         }
     }
 
+    private String redirect;
+
     private Map<String, EntityInfo> entities;
 
     private final RefType refType;
@@ -101,6 +103,7 @@ public class Interconnect {
                     List<ApplicationConfig> applicationConfigList = XmlUtils.readInterconnectConfig(configurationFile);
                     for (ApplicationConfig applicationConfig : applicationConfigList) {
                         final String appEntityManagerFactory = applicationConfig.getEntityManagerFactory();
+                        redirect = redirect == null ? redirect = applicationConfig.getRedirect() : redirect;
                         EntitiesConfig entitiesConfig = applicationConfig.getEntitiesConfig();
                         if (entitiesConfig != null) {
                             List<EntityConfig> entityConfigList = entitiesConfig.getEntityList();
@@ -147,6 +150,10 @@ public class Interconnect {
         }
 
         return false;
+    }
+
+    public String getRedirect() {
+        return redirect;
     }
 
     public String[] breakdownCollectionString(String val) {

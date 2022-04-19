@@ -99,6 +99,11 @@ public class SpringBootInterconnectServiceImpl implements SpringBootInterconnect
         interconnect.init(interconectConfigFile, this);
     }
 
+    @Override
+    public String getRedirect() {
+        return interconnect.getRedirect();
+    }
+
     @SuppressWarnings("unchecked")
     @Override
     @Transactional
