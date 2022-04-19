@@ -45,14 +45,20 @@ public class SpringBootInterconnectController {
 
     private final SpringBootInterconnectService springBootInterconnectService;
 
+    private final SpringBootInterconnectRedirect springBootInterconnectRedirect;
+    
     @Autowired
-    public SpringBootInterconnectController(SpringBootInterconnectService springBootInterconnectService) {
+    public SpringBootInterconnectController(SpringBootInterconnectService springBootInterconnectService,
+            SpringBootInterconnectRedirect springBootInterconnectRedirect) {
         this.springBootInterconnectService = springBootInterconnectService;
+        this.springBootInterconnectRedirect = springBootInterconnectRedirect;
     }
 
     @PostMapping(path = "/datasource")
     public JsonDataSourceResponse processDataSourceRequest(@RequestBody DataSourceRequest req) {
-        JsonDataSourceResponse resp = null;
+        JsonDataSourceResponse resp = springBootInterconnectRedirect != null
+                ? springBootInterconnectRedirect.processDataSourceRequest(req)
+                : null;
         try {
             return springBootInterconnectService.processDataSourceRequest(req);
         } catch (Exception e) {
@@ -68,7 +74,9 @@ public class SpringBootInterconnectController {
 
     @PostMapping(path = "/procedure")
     public JsonProcedureResponse processDataSourceRequest(@RequestBody ProcedureRequest req) {
-    	JsonProcedureResponse resp = null;
+        JsonProcedureResponse resp = springBootInterconnectRedirect != null
+                ? springBootInterconnectRedirect.processDataSourceRequest(req)
+                : null;
         try {
             return springBootInterconnectService.executeProcedureRequest(req);
         } catch (Exception e) {
