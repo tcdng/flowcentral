@@ -15,7 +15,9 @@
  */
 package com.flowcentraltech.flowcentral.application.web.panels;
 
+import com.flowcentraltech.flowcentral.application.web.widgets.MiniFormWidget;
 import com.flowcentraltech.flowcentral.common.web.panels.BaseDialogPanel;
+import com.tcdng.unify.core.UnifyException;
 import com.tcdng.unify.core.annotation.Component;
 import com.tcdng.unify.core.annotation.UplBinding;
 
@@ -28,5 +30,15 @@ import com.tcdng.unify.core.annotation.UplBinding;
 @Component("fc-entitysaveasdialogpanel")
 @UplBinding("web/application/upl/entitysaveasdialogpanel.upl")
 public class EntitySaveAsDialogPanel extends BaseDialogPanel {
+
+    @Override
+    public void switchState() throws UnifyException {
+        super.switchState();
+
+        EntitySaveAs entitySaveAs = getValue(EntitySaveAs.class);
+        MiniFormWidget widget = getWidgetByShortName(MiniFormWidget.class, "saveAsForm");
+        entitySaveAs.getInputForm().getCtx().setTriggerEvaluator(widget);
+        entitySaveAs.getInputForm().getCtx().evaluateTabStates();
+    }
 
 }

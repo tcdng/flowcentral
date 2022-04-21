@@ -29,6 +29,7 @@ import java.util.Set;
 
 import com.flowcentraltech.flowcentral.application.business.AppletUtilities;
 import com.flowcentraltech.flowcentral.application.data.EntityDef;
+import com.flowcentraltech.flowcentral.application.data.EntityFormEventHandlers;
 import com.flowcentraltech.flowcentral.application.data.FormAnnotationDef;
 import com.flowcentraltech.flowcentral.application.data.FormDef;
 import com.flowcentraltech.flowcentral.application.data.FormReviewPolicyDef;
@@ -69,7 +70,7 @@ public class FormContext extends AbstractContext implements ErrorContext {
 
     private FormDef formDef;
 
-    private EventHandler[] formSwitchOnChangeHandlers;
+    private EntityFormEventHandlers formEventHandlers;
 
     private FormTriggerEvaluator triggerEvaluator;
 
@@ -119,15 +120,15 @@ public class FormContext extends AbstractContext implements ErrorContext {
         this(appletContext, null, null, entityDef, inst);
     }
 
-    public FormContext(AppletContext appletContext, FormDef formDef, EventHandler[] formSwitchOnChangeHandlers,
+    public FormContext(AppletContext appletContext, FormDef formDef, EntityFormEventHandlers formEventHandlers,
             Object inst) throws UnifyException {
-        this(appletContext, formDef, formSwitchOnChangeHandlers, formDef.getEntityDef(), inst);
+        this(appletContext, formDef, formEventHandlers, formDef.getEntityDef(), inst);
     }
 
-    private FormContext(AppletContext appletContext, FormDef formDef, EventHandler[] formSwitchOnChangeHandlers,
+    private FormContext(AppletContext appletContext, FormDef formDef, EntityFormEventHandlers formEventHandlers,
             EntityDef entityDef, Object inst) throws UnifyException {
         this.appletContext = appletContext;
-        this.formSwitchOnChangeHandlers = formSwitchOnChangeHandlers;
+        this.formEventHandlers = formEventHandlers;
         this.entityDef = entityDef;
         this.inst = inst;
         if (formDef != null) {
@@ -200,8 +201,13 @@ public class FormContext extends AbstractContext implements ErrorContext {
         formWidgetStateList.removeAll(list);
     }
 
-    public EventHandler[] getFormSwitchOnChangeHandlers() {
-        return formSwitchOnChangeHandlers;
+    public List<EventHandler> getFormSwitchOnChangeHandlers() {
+        return saveAsMode ? formEventHandlers.getSaveAsSwitchOnChangeHandlers()
+                : formEventHandlers.getFormSwitchOnChangeHandlers();
+    }
+
+    public EntityFormEventHandlers getFormEventHandlers() {
+        return formEventHandlers;
     }
 
     public void setInst(Object inst) {
@@ -595,7 +601,7 @@ public class FormContext extends AbstractContext implements ErrorContext {
     @Override
     public String toString() {
         return "FormContext [appletContext=" + appletContext + ", entityDef=" + entityDef + ", formDef=" + formDef
-                + ", formSwitchOnChangeHandlers=" + Arrays.toString(formSwitchOnChangeHandlers) + ", formValueStore="
+                + ", formEventHandlers=" + formEventHandlers + ", formValueStore="
                 + formValueStore + ", oldInst=" + oldInst + ", inst=" + inst + ", formTabs=" + formTabs
                 + ", invalidFields=" + invalidFields + ", reviewErrors=" + reviewErrors + ", reviewErrorsByTab="
                 + reviewErrorsByTab + ", validationErrors=" + validationErrors + ", formWidgetStateList="

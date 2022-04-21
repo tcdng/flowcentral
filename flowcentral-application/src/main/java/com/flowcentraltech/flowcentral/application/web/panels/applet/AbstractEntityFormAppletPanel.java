@@ -441,6 +441,11 @@ public abstract class AbstractEntityFormAppletPanel extends AbstractAppletPanel 
     }
 
     @Action
+    public void saveAsSwitchOnChange() throws UnifyException {
+        getEntityFormApplet().saveAsSwitchOnChange();
+    }
+    
+    @Action
     public void showFormFileAttachments() throws UnifyException {
         setCommandResultMapping("showfileattachments");
     }

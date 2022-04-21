@@ -26,6 +26,7 @@ import com.flowcentraltech.flowcentral.application.data.AssignmentPageDef;
 import com.flowcentraltech.flowcentral.application.data.EntityClassDef;
 import com.flowcentraltech.flowcentral.application.data.EntityDef;
 import com.flowcentraltech.flowcentral.application.data.EntityFieldDef;
+import com.flowcentraltech.flowcentral.application.data.EntityFormEventHandlers;
 import com.flowcentraltech.flowcentral.application.data.FieldSequenceDef;
 import com.flowcentraltech.flowcentral.application.data.FilterDef;
 import com.flowcentraltech.flowcentral.application.data.FormDef;
@@ -105,7 +106,6 @@ import com.tcdng.unify.core.util.DataUtils;
 import com.tcdng.unify.core.util.ReflectUtils;
 import com.tcdng.unify.core.util.StringUtils;
 import com.tcdng.unify.web.font.FontSymbolManager;
-import com.tcdng.unify.web.ui.widget.EventHandler;
 
 /**
  * Applet utilities implementation.
@@ -425,10 +425,10 @@ public class AppletUtilitiesImpl extends AbstractUnifyComponent implements Apple
     @Override
     public HeaderWithTabsForm constructHeaderWithTabsForm(AbstractEntityFormApplet applet, String rootTitle,
             String beanTitle, FormDef formDef, Entity inst, FormMode formMode, BreadCrumbs breadCrumbs,
-            EventHandler[] formSwitchOnChangeHandlers) throws UnifyException {
+            EntityFormEventHandlers formEventHandlers) throws UnifyException {
         final AppletContext appletContext = applet != null ? applet.getCtx() : new AppletContext(this);
         final SweepingCommitPolicy sweepingCommitPolicy = applet;
-        final FormContext formContext = new FormContext(appletContext, formDef, formSwitchOnChangeHandlers, inst);
+        final FormContext formContext = new FormContext(appletContext, formDef, formEventHandlers, inst);
         final HeaderWithTabsForm form = new HeaderWithTabsForm(formContext, breadCrumbs);
         form.setBeanTitle(beanTitle);
         form.setFormMode(formMode);

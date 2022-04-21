@@ -92,7 +92,7 @@ public class EntityInfo {
         this.childFieldList = Collections.unmodifiableList(this.childFieldList);
         this.childListFieldList = Collections.unmodifiableList(this.childListFieldList);
     }
-
+    
     public String getEntityManagerFactory() {
         return entityManagerFactory;
     }

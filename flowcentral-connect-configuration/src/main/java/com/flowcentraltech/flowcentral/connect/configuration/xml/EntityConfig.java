@@ -28,8 +28,6 @@ import javax.xml.bind.annotation.XmlElement;
  */
 public class EntityConfig {
 
-    private String entityManagerFactory;
-
     private String name;
 
     private String description;
@@ -43,15 +41,6 @@ public class EntityConfig {
     private String handler;
 
     private List<EntityFieldConfig> entityFieldList;
-
-    public String getEntityManagerFactory() {
-        return entityManagerFactory;
-    }
-
-    @XmlAttribute
-    public void setEntityManagerFactory(String entityManagerFactory) {
-        this.entityManagerFactory = entityManagerFactory;
-    }
 
     public String getName() {
         return name;

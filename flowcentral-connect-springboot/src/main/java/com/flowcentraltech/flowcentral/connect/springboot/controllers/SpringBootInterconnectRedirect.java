@@ -13,42 +13,37 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package com.flowcentraltech.flowcentral.connect.springboot.service;
+
+package com.flowcentraltech.flowcentral.connect.springboot.controllers;
 
 import com.flowcentraltech.flowcentral.connect.common.data.DataSourceRequest;
 import com.flowcentraltech.flowcentral.connect.common.data.JsonDataSourceResponse;
-import com.flowcentraltech.flowcentral.connect.common.data.ProcedureRequest;
 import com.flowcentraltech.flowcentral.connect.common.data.JsonProcedureResponse;
+import com.flowcentraltech.flowcentral.connect.common.data.ProcedureRequest;
 
 /**
- * Flow central spring boot interconnect service.
+ * Spring boot redirect component
  * 
  * @author FlowCentral Technologies Limited
  * @since 1.0
  */
-public interface SpringBootInterconnectService {
-
-    String getRedirect();
-    
-    /**
-     * Processes a data source request.
-     * 
-     * @param req
-     *                the request to process
-     * @return the data source response
-     * @throws Exception
-     *                   if an error occurs
-     */
-    JsonDataSourceResponse processDataSourceRequest(DataSourceRequest req) throws Exception;
+public interface SpringBootInterconnectRedirect {
 
     /**
-     * Executes a procedure request.
+     * Performs a redirect process datasource datasource request
      * 
      * @param req
-     *                the request to process
-     * @return the procedure response
-     * @throws Exception
-     *                   if an error occurs
+     *            the datasource request
+     * @return the response if successfully redirected otherwise null
      */
-    JsonProcedureResponse executeProcedureRequest(ProcedureRequest req) throws Exception;
+    JsonDataSourceResponse processDataSourceRequest(DataSourceRequest req);
+
+    /**
+     * Performs a redirect process datasource procedure request
+     * 
+     * @param req
+     *            the datasource request
+     * @return the response if successfully redirected otherwise null
+     */
+    JsonProcedureResponse processDataSourceRequest(ProcedureRequest req);
 }

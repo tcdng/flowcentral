@@ -111,7 +111,7 @@ public class TableWriter extends AbstractControlWriter {
         // External control behavior
         final AbstractTable<?, ?> table = tableWidget.getTable();
         if (table != null) {
-            final EventHandler[] switchOnChangeHandlers = table.getSwitchOnChangeHandlers();
+            final List<EventHandler> switchOnChangeHandlers = table.getSwitchOnChangeHandlers();
             final TableDef tableDef = table.getTableDef();
             List<ValueStore> valueList = tableWidget.getValueList();
             int len = valueList.size();
@@ -125,7 +125,8 @@ public class TableWriter extends AbstractControlWriter {
                         chWidget.setValueStore(valueStore);
                         writer.writeBehavior(chWidget);
                         if (switchOnChangeHandlers != null && tabelColumnDef.isSwitchOnChange()) {
-                            final String cId = chWidget.isBindEventsToFacade() ? chWidget.getFacadeId() : chWidget.getId();
+                            final String cId = chWidget.isBindEventsToFacade() ? chWidget.getFacadeId()
+                                    : chWidget.getId();
                             for (EventHandler eventHandler : switchOnChangeHandlers) {
                                 writer.writeBehavior(eventHandler, cId, tabelColumnDef.getFieldName());
                             }
@@ -166,7 +167,8 @@ public class TableWriter extends AbstractControlWriter {
             }
 
             if (table.getTotalItemCount() <= 0) {
-                writer.writeParam("pConDepList", DataUtils.toArray(String.class, tableWidget.getContentDependentList()));
+                writer.writeParam("pConDepList",
+                        DataUtils.toArray(String.class, tableWidget.getContentDependentList()));
             }
             writer.endFunction();
         }

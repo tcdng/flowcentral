@@ -18,6 +18,7 @@ package com.flowcentraltech.flowcentral.application.web.controllers;
 import com.flowcentraltech.flowcentral.application.business.EntityTreeSelectGenerator;
 import com.flowcentraltech.flowcentral.application.constants.AppletRequestAttributeConstants;
 import com.flowcentraltech.flowcentral.application.constants.ApplicationResultMappingConstants;
+import com.flowcentraltech.flowcentral.application.data.EntityFormEventHandlers;
 import com.flowcentraltech.flowcentral.application.data.RefDef;
 import com.flowcentraltech.flowcentral.application.web.panels.EntitySelect;
 import com.flowcentraltech.flowcentral.application.web.panels.EntityTreeSelect;
@@ -32,6 +33,8 @@ import com.tcdng.unify.web.annotation.ResultMappings;
 import com.tcdng.unify.web.constant.ReadOnly;
 import com.tcdng.unify.web.constant.ResetOnWrite;
 import com.tcdng.unify.web.constant.Secured;
+import com.tcdng.unify.web.ui.widget.EventHandler;
+import com.tcdng.unify.web.ui.widget.Widget;
 
 /**
  * Abstract base class for entity form applet controllers.
@@ -162,4 +165,16 @@ public abstract class AbstractEntityFormAppletController<T extends AbstractEntit
         setRequestAttribute(AppletRequestAttributeConstants.RELOAD_ONSWITCH, Boolean.TRUE);
     }
 
+    protected EntityFormEventHandlers getEntityFormEventHandlers() throws UnifyException {
+        EventHandler[] formSwitchOnChangeHandlers = getPageWidgetByShortName(Widget.class,
+                "appletPanel.formPanel.switchOnChangeHolder").getUplAttribute(EventHandler[].class, "eventHandler");
+        EventHandler[] assnSwitchOnChangeHandlers = getPageWidgetByShortName(Widget.class,
+                "appletPanel.assignmentPanel.switchOnChangeHolder").getUplAttribute(EventHandler[].class,
+                        "eventHandler");
+        EventHandler[] saveAsSwitchOnChangeHandlers = getPageWidgetByShortName(Widget.class,
+                "appletPanel.entitySaveAsPanel.switchOnChangeHolder").getUplAttribute(EventHandler[].class,
+                        "eventHandler");
+        return new EntityFormEventHandlers(formSwitchOnChangeHandlers, assnSwitchOnChangeHandlers,
+                saveAsSwitchOnChangeHandlers);
+    }
 }

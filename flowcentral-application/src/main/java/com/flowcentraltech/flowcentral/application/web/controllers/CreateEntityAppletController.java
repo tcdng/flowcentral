@@ -15,6 +15,7 @@
  */
 package com.flowcentraltech.flowcentral.application.web.controllers;
 
+import com.flowcentraltech.flowcentral.application.data.EntityFormEventHandlers;
 import com.flowcentraltech.flowcentral.application.web.panels.applet.CreateEntityApplet;
 import com.tcdng.unify.core.UnifyException;
 import com.tcdng.unify.core.annotation.Component;
@@ -25,8 +26,6 @@ import com.tcdng.unify.web.annotation.ResultMappings;
 import com.tcdng.unify.web.constant.ReadOnly;
 import com.tcdng.unify.web.constant.ResetOnWrite;
 import com.tcdng.unify.web.constant.Secured;
-import com.tcdng.unify.web.ui.widget.EventHandler;
-import com.tcdng.unify.web.ui.widget.Widget;
 
 /**
  * Create entity applet controller.
@@ -56,13 +55,8 @@ public class CreateEntityAppletController
 
         CreateEntityAppletPageBean pageBean = getPageBean();
         if (pageBean.getApplet() == null) {
-            EventHandler[] formSwitchOnChangeHandlers = getPageWidgetByShortName(Widget.class,
-                    "appletPanel.formPanel.switchOnChangeHolder").getUplAttribute(EventHandler[].class, "eventHandler");
-            EventHandler[] assnSwitchOnChangeHandlers = getPageWidgetByShortName(Widget.class,
-                    "appletPanel.assignmentPanel.switchOnChangeHolder").getUplAttribute(EventHandler[].class,
-                            "eventHandler");
-            CreateEntityApplet applet = new CreateEntityApplet(getAu(), getPathVariable(), formSwitchOnChangeHandlers,
-                    assnSwitchOnChangeHandlers);
+            EntityFormEventHandlers entityFormEventHandlers = getEntityFormEventHandlers();
+            CreateEntityApplet applet = new CreateEntityApplet(getAu(), getPathVariable(), entityFormEventHandlers);
             pageBean.setApplet(applet);
             if (pageBean.getAltCaption() == null) {
                 setPageTitle(applet);

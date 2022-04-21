@@ -32,6 +32,7 @@ import com.flowcentraltech.flowcentral.application.data.EntityAttachmentDef;
 import com.flowcentraltech.flowcentral.application.data.EntityClassDef;
 import com.flowcentraltech.flowcentral.application.data.EntityDef;
 import com.flowcentraltech.flowcentral.application.data.EntityFieldDef;
+import com.flowcentraltech.flowcentral.application.data.EntityFormEventHandlers;
 import com.flowcentraltech.flowcentral.application.data.FilterDef;
 import com.flowcentraltech.flowcentral.application.data.FormDef;
 import com.flowcentraltech.flowcentral.application.data.FormRelatedListDef;
@@ -79,7 +80,6 @@ import com.tcdng.unify.core.system.entities.AbstractSequencedEntity;
 import com.tcdng.unify.core.util.DataUtils;
 import com.tcdng.unify.core.util.ReflectUtils;
 import com.tcdng.unify.core.util.StringUtils;
-import com.tcdng.unify.web.ui.widget.EventHandler;
 import com.tcdng.unify.web.ui.widget.data.FileAttachmentsInfo;
 
 /**
@@ -191,9 +191,7 @@ public abstract class AbstractEntityFormApplet extends AbstractApplet implements
 
     protected ViewMode viewMode;
 
-    protected EventHandler[] formSwitchOnChangeHandlers;
-
-    protected EventHandler[] assnSwitchOnChangeHandlers;
+    protected EntityFormEventHandlers formEventHandlers;
 
     protected EntityFileAttachments formFileAttachments;
 
@@ -203,16 +201,15 @@ public abstract class AbstractEntityFormApplet extends AbstractApplet implements
 
     private final boolean collaboration;
 
-    public AbstractEntityFormApplet(AppletUtilities au, String pathVariable, EventHandler[] formSwitchOnChangeHandlers,
-            EventHandler[] assnSwitchOnChangeHandlers) throws UnifyException {
-        this(au, pathVariable, formSwitchOnChangeHandlers, assnSwitchOnChangeHandlers, false);
+    public AbstractEntityFormApplet(AppletUtilities au, String pathVariable, EntityFormEventHandlers formEventHandlers)
+            throws UnifyException {
+        this(au, pathVariable, formEventHandlers, false);
     }
 
-    public AbstractEntityFormApplet(AppletUtilities au, String pathVariable, EventHandler[] formSwitchOnChangeHandlers,
-            EventHandler[] assnSwitchOnChangeHandlers, boolean collaboration) throws UnifyException {
+    public AbstractEntityFormApplet(AppletUtilities au, String pathVariable, EntityFormEventHandlers formEventHandlers,
+            boolean collaboration) throws UnifyException {
         super(au, pathVariable);
-        this.formSwitchOnChangeHandlers = formSwitchOnChangeHandlers;
-        this.assnSwitchOnChangeHandlers = assnSwitchOnChangeHandlers;
+        this.formEventHandlers = formEventHandlers;
         this.formFileAttachments = new EntityFileAttachments();
         this.collaboration = collaboration;
     }
@@ -275,6 +272,10 @@ public abstract class AbstractEntityFormApplet extends AbstractApplet implements
 
     public void assignSwitchOnChange() throws UnifyException {
         assignmentPage.switchOnChange();
+    }
+
+    public void saveAsSwitchOnChange() throws UnifyException {
+        // TODO
     }
 
     public void previousInst() throws UnifyException {
@@ -773,8 +774,8 @@ public abstract class AbstractEntityFormApplet extends AbstractApplet implements
         EntityClassDef entityClassDef = getEntityClassDef(assignPageDef.getEntity());
         breadCrumbs.setLastCrumbTitle(entityClassDef.getEntityDef().getDescription());
         breadCrumbs.setLastCrumbSubTitle(subTitle);
-        return new AssignmentPage(getCtx(), assnSwitchOnChangeHandlers, this, assignPageDef, entityClassDef, id,
-                breadCrumbs, entryTable, entryTablePolicy, assignmentUpdatePolicy);
+        return new AssignmentPage(getCtx(), formEventHandlers.getAssnSwitchOnChangeHandlers(), this, assignPageDef,
+                entityClassDef, id, breadCrumbs, entryTable, entryTablePolicy, assignmentUpdatePolicy);
     }
 
     protected EditPropertyList constructNewEditPropertyList(PropertyRuleDef propertyRuleDef, Entity inst,
@@ -875,7 +876,7 @@ public abstract class AbstractEntityFormApplet extends AbstractApplet implements
         }
 
         final HeaderWithTabsForm form = au.constructHeaderWithTabsForm(this, getRootAppletDef().getDescription(),
-                beanTitle, formDef, inst, formMode, makeFormBreadCrumbs(), formSwitchOnChangeHandlers);
+                beanTitle, formDef, inst, formMode, makeFormBreadCrumbs(), formEventHandlers);
         String submitCaption = _currentFormAppletDef.getPropValue(String.class,
                 AppletPropertyConstants.CREATE_FORM_SUBMIT_CAPTION);
         String submitNextCaption = _currentFormAppletDef.getPropValue(String.class,
@@ -986,14 +987,14 @@ public abstract class AbstractEntityFormApplet extends AbstractApplet implements
     }
 
     public static class ShowPopupInfo {
-        
+
         public enum Type {
             SHOW_MULTISELECT,
             SHOW_TREEMULTISELECT
         }
-        
+
         private Type type;
-        
+
         private String reference;
 
         private ShowPopupInfo(Type type, String reference) {
@@ -1009,7 +1010,7 @@ public abstract class AbstractEntityFormApplet extends AbstractApplet implements
             return reference;
         }
     }
-    
+
     protected class FormState {
 
         private AppletDef appletDef;

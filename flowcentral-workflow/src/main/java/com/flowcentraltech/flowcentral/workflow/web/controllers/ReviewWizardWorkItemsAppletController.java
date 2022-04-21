@@ -15,6 +15,7 @@
  */
 package com.flowcentraltech.flowcentral.workflow.web.controllers;
 
+import com.flowcentraltech.flowcentral.application.data.EntityFormEventHandlers;
 import com.flowcentraltech.flowcentral.application.web.controllers.AbstractEntityFormAppletController;
 import com.flowcentraltech.flowcentral.workflow.business.WorkflowModuleService;
 import com.flowcentraltech.flowcentral.workflow.web.panels.applet.ReviewWizardWorkItemsApplet;
@@ -28,8 +29,6 @@ import com.tcdng.unify.web.annotation.ResultMappings;
 import com.tcdng.unify.web.constant.ReadOnly;
 import com.tcdng.unify.web.constant.ResetOnWrite;
 import com.tcdng.unify.web.constant.Secured;
-import com.tcdng.unify.web.ui.widget.EventHandler;
-import com.tcdng.unify.web.ui.widget.Widget;
 
 /**
  * Review wizard work items applet controller.
@@ -66,14 +65,9 @@ public class ReviewWizardWorkItemsAppletController
 
         ReviewWizardWorkItemsAppletPageBean pageBean = getPageBean();
         if (pageBean.getApplet() == null) {
-            EventHandler[] formSwitchOnChangeHandlers = getPageWidgetByShortName(Widget.class,
-                    "appletPanel.formPanel.switchOnChangeHolder").getUplAttribute(EventHandler[].class, "eventHandler");
-            EventHandler[] assnSwitchOnChangeHandlers = getPageWidgetByShortName(Widget.class,
-                    "appletPanel.assignmentPanel.switchOnChangeHolder").getUplAttribute(EventHandler[].class,
-                            "eventHandler");
+            EntityFormEventHandlers formEventHandlers = getEntityFormEventHandlers();
             ReviewWizardWorkItemsApplet applet = new ReviewWizardWorkItemsApplet(getAu(), workflowModuleService,
-                    getPathVariable(), getUserToken().getUserLoginId(), formSwitchOnChangeHandlers,
-                    assnSwitchOnChangeHandlers);
+                    getPathVariable(), getUserToken().getUserLoginId(), formEventHandlers);
             pageBean.setApplet(applet);
         }
     }

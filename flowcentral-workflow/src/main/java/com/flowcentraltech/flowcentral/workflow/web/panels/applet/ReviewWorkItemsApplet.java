@@ -19,6 +19,7 @@ import java.util.List;
 
 import com.flowcentraltech.flowcentral.application.business.AppletUtilities;
 import com.flowcentraltech.flowcentral.application.data.AppletDef;
+import com.flowcentraltech.flowcentral.application.data.EntityFormEventHandlers;
 import com.flowcentraltech.flowcentral.application.data.FormDef;
 import com.flowcentraltech.flowcentral.application.web.data.FormContext;
 import com.flowcentraltech.flowcentral.application.web.panels.AbstractForm;
@@ -37,7 +38,6 @@ import com.tcdng.unify.core.criterion.AndBuilder;
 import com.tcdng.unify.core.data.BeanValueStore;
 import com.tcdng.unify.core.database.Entity;
 import com.tcdng.unify.core.util.StringUtils;
-import com.tcdng.unify.web.ui.widget.EventHandler;
 
 /**
  * Review work items applet object.
@@ -60,9 +60,9 @@ public class ReviewWorkItemsApplet extends AbstractEntityFormApplet {
     private boolean userActionRight;
     
     public ReviewWorkItemsApplet(AppletUtilities au, WorkflowModuleService wms, String pathVariable, String userLoginId,
-            EventHandler[] formSwitchOnChangeHandlers, EventHandler[] assnSwitchOnChangeHandlers)
+            EntityFormEventHandlers formEventHandlers)
             throws UnifyException {
-        super(au, pathVariable, formSwitchOnChangeHandlers, assnSwitchOnChangeHandlers);
+        super(au, pathVariable, formEventHandlers);
         this.wms = wms;
         AppletDef _appletDef = getRootAppletDef();
         entitySearch = au.constructEntitySearch(new FormContext(getCtx()), this, null,

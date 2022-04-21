@@ -18,12 +18,12 @@ package com.flowcentraltech.flowcentral.studio.web.panels.applet;
 
 import com.flowcentraltech.flowcentral.application.business.AppletUtilities;
 import com.flowcentraltech.flowcentral.application.data.EntityDef;
+import com.flowcentraltech.flowcentral.application.data.EntityFormEventHandlers;
 import com.flowcentraltech.flowcentral.application.web.widgets.BreadCrumbs;
 import com.flowcentraltech.flowcentral.studio.business.StudioModuleService;
 import com.flowcentraltech.flowcentral.studio.web.panels.WorkflowEditorPage;
 import com.flowcentraltech.flowcentral.workflow.entities.Workflow;
 import com.tcdng.unify.core.UnifyException;
-import com.tcdng.unify.web.ui.widget.EventHandler;
 
 /**
  * Studio workflow applet object.
@@ -36,9 +36,8 @@ public class StudioWorkflowApplet extends StudioAppComponentApplet {
     private WorkflowEditorPage workflowEditorPage;
 
     public StudioWorkflowApplet(StudioModuleService sms, AppletUtilities au, String pathVariable,
-            String applicationName, EventHandler[] formSwitchOnChangeHandlers,
-            EventHandler[] assnSwitchOnChangeHandlers) throws UnifyException {
-        super(sms, au, pathVariable, applicationName, formSwitchOnChangeHandlers, assnSwitchOnChangeHandlers);
+            String applicationName, EntityFormEventHandlers formEventHandlers) throws UnifyException {
+        super(sms, au, pathVariable, applicationName, formEventHandlers);
     }
 
     public WorkflowEditorPage getWorkflowEditorPage() {

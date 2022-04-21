@@ -62,7 +62,7 @@ public class EntitySaveAs {
     }
 
     public void loadEntitySaveAs(FormContext ctx) throws UnifyException {
-        FormContext _ctx = new FormContext(ctx.getAppletContext(), ctx.getFormDef(), ctx.getFormSwitchOnChangeHandlers(),
+        FormContext _ctx = new FormContext(ctx.getAppletContext(), ctx.getFormDef(), ctx.getFormEventHandlers(),
                 inst);
         _ctx.setSaveAsMode(true);
         _ctx.revertTabStates();

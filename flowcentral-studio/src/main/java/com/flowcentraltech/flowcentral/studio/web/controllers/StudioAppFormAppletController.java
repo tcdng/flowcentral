@@ -15,6 +15,7 @@
  */
 package com.flowcentraltech.flowcentral.studio.web.controllers;
 
+import com.flowcentraltech.flowcentral.application.data.EntityFormEventHandlers;
 import com.flowcentraltech.flowcentral.application.web.controllers.AbstractEntityFormAppletController;
 import com.flowcentraltech.flowcentral.studio.business.StudioModuleService;
 import com.flowcentraltech.flowcentral.studio.constants.StudioSessionAttributeConstants;
@@ -27,8 +28,6 @@ import com.tcdng.unify.web.annotation.Action;
 import com.tcdng.unify.web.constant.ReadOnly;
 import com.tcdng.unify.web.constant.ResetOnWrite;
 import com.tcdng.unify.web.constant.Secured;
-import com.tcdng.unify.web.ui.widget.EventHandler;
-import com.tcdng.unify.web.ui.widget.Widget;
 
 /**
  * Studio application form applet controller.
@@ -67,14 +66,10 @@ public class StudioAppFormAppletController
 
         StudioAppFormAppletPageBean pageBean = getPageBean();
         if (pageBean.getApplet() == null) {
-            EventHandler[] formSwitchOnChangeHandlers = getPageWidgetByShortName(Widget.class,
-                    "appletPanel.formPanel.switchOnChangeHolder").getUplAttribute(EventHandler[].class, "eventHandler");
-            EventHandler[] assnSwitchOnChangeHandlers = getPageWidgetByShortName(Widget.class,
-                    "appletPanel.assignmentPanel.switchOnChangeHolder").getUplAttribute(EventHandler[].class,
-                            "eventHandler");
+            EntityFormEventHandlers formEventHandlers = getEntityFormEventHandlers();
             StudioAppFormApplet applet = new StudioAppFormApplet(studioModuleService, getAu(), getPathVariable(),
                     (String) getSessionAttribute(StudioSessionAttributeConstants.CURRENT_APPLICATION_NAME),
-                    formSwitchOnChangeHandlers, assnSwitchOnChangeHandlers);
+                    formEventHandlers);
             pageBean.setApplet(applet);
         }
     }

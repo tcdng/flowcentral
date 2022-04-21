@@ -32,6 +32,8 @@ public class ApplicationConfig {
 
     private String description;
 
+    private String redirect;
+
     private String entityManagerFactory;
 
     private EntitiesConfig entitiesConfig;
@@ -52,6 +54,15 @@ public class ApplicationConfig {
     @XmlAttribute(required = true)
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getRedirect() {
+        return redirect;
+    }
+
+    @XmlAttribute
+    public void setRedirect(String redirect) {
+        this.redirect = redirect;
     }
 
     public String getEntityManagerFactory() {

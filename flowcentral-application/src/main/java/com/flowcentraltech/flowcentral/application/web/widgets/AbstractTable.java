@@ -69,7 +69,7 @@ public abstract class AbstractTable<T, U> {
     
     private TableSelect<?> tableSelect;
     
-    private EventHandler[] switchOnChangeHandlers;
+    private List<EventHandler> switchOnChangeHandlers;
     
     public AbstractTable(AppletUtilities au, TableDef tableDef, Order defaultOrder, boolean entryMode) {
         this.au = au;
@@ -84,11 +84,11 @@ public abstract class AbstractTable<T, U> {
         this.tableSelect = tableSelect;
     }
 
-    public EventHandler[] getSwitchOnChangeHandlers() {
+    public List<EventHandler> getSwitchOnChangeHandlers() {
         return switchOnChangeHandlers;
     }
 
-    public void setSwitchOnChangeHandlers(EventHandler[] switchOnChangeHandlers) {
+    public void setSwitchOnChangeHandlers(List<EventHandler> switchOnChangeHandlers) {
         this.switchOnChangeHandlers = switchOnChangeHandlers;
     }
 

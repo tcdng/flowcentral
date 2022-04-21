@@ -29,6 +29,7 @@ import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityTransaction;
 import javax.persistence.Tuple;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -43,6 +44,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.flowcentraltech.flowcentral.connect.common.EntityInstFinder;
@@ -68,7 +70,7 @@ import com.tcdng.unify.convert.util.ConverterUtils;
  * @since 1.0
  */
 @Service
-@Transactional(rollbackFor = Exception.class)
+@Transactional(propagation = Propagation.NOT_SUPPORTED)
 public class SpringBootInterconnectServiceImpl implements SpringBootInterconnectService, EntityInstFinder {
 
     private final Logger LOGGER = Logger.getLogger(SpringBootInterconnectServiceImpl.class.getName());
@@ -79,15 +81,15 @@ public class SpringBootInterconnectServiceImpl implements SpringBootInterconnect
 
     private final ApplicationContext context;
 
-    private Map<String, EntityManager> ems;
+    private Map<String, PlatformInfo> platforms;
 
-    private EntityManager defEm;
+    private PlatformInfo defaultPlatform;
 
     @Autowired
     public SpringBootInterconnectServiceImpl(SpringBootInterconnect interconnect, Environment env,
             ApplicationContext context) {
         this.interconnect = interconnect;
-        this.ems = new HashMap<String, EntityManager>();
+        this.platforms = new HashMap<String, PlatformInfo>();
         this.env = env;
         this.context = context;
     }
@@ -99,11 +101,36 @@ public class SpringBootInterconnectServiceImpl implements SpringBootInterconnect
         interconnect.init(interconectConfigFile, this);
     }
 
+    @Override
+    public String getRedirect() {
+        return interconnect.getRedirect();
+    }
+
     @SuppressWarnings("unchecked")
     @Override
-    @Transactional
     public <T> T findById(EntityInfo entityInfo, Object id) throws Exception {
-        return getEM(entityInfo).find((Class<T>) entityInfo.getImplClass(), id);
+        PlatformInfo platform = getPlatform(entityInfo);
+        T result = null;
+        EntityManager em = null;
+        EntityTransaction tx = null;
+        try {
+            em = platform.emf.createEntityManager();
+            tx = em.getTransaction();
+            tx.begin();
+            result = em.find((Class<T>) entityInfo.getImplClass(), id);
+            tx.commit();
+            em.close();
+        } catch (Exception e) {
+            if (tx != null) {
+                tx.rollback();
+            }
+        } finally {
+            if (em != null) {
+                em.close();
+            }
+        }
+
+        return result;
     }
 
     @Override
@@ -117,124 +144,144 @@ public class SpringBootInterconnectServiceImpl implements SpringBootInterconnect
     }
 
     @Override
-    @Transactional
     public JsonDataSourceResponse processDataSourceRequest(DataSourceRequest req) throws Exception {
         final EntityInfo entityInfo = interconnect.getEntityInfo(req.getEntity());
-        final EntityManager em = getEM(entityInfo);
+        PlatformInfo platform = getPlatform(entityInfo);
+
         Object[] result = null;
         if (entityInfo.isWithHandler()) {
             SpringBootInterconnectEntityDataSourceHandler handler = context.getBean(entityInfo.getHandler(),
                     SpringBootInterconnectEntityDataSourceHandler.class);
             result = handler.process(entityInfo.getImplClass(), req);
         } else {
-            switch (req.getOperation()) {
-                case COUNT_ALL: {
-                    CriteriaQuery<Long> cq = createLongQuery(entityInfo.getImplClass(), req);
-                    Long count = em.createQuery(cq).getSingleResult();
-                    result = new Object[] { count };
-                }
-                    break;
-                case CREATE: {
-                    Object reqBean = interconnect.getBeanFromJsonPayload(req);
-                    em.persist(reqBean);
-                    em.flush();
-                    Object id = PropertyUtils.getProperty(reqBean, entityInfo.getIdFieldName());
-                    result = new Object[] { id };
-                }
-                    break;
-                case DELETE: {
-                    Object reqBean = interconnect.getBeanFromJsonPayload(req);
-                    if (req.version()) {
-                        PropertyUtils.setProperty(reqBean, entityInfo.getVersionNoFieldName(), req.getVersionNo());
-                    }
+            EntityManager em = null;
+            EntityTransaction tx = null;
+            try {
+                em = platform.emf.createEntityManager();
+                tx = em.getTransaction();
+                tx.begin();
 
-                    em.remove(reqBean);
-                }
-                    break;
-                case DELETE_ALL: {
-                    CriteriaDelete<?> cd = createDeleteQuery(entityInfo.getImplClass(), req);
-                    int count = em.createQuery(cd).executeUpdate();
-                    result = new Object[] { count };
-                }
-                    break;
-                case FIND:
-                case FIND_ALL:
-                case FIND_LEAN:
-                case LIST:
-                case LIST_ALL:
-                case LIST_LEAN: {
-                    CriteriaQuery<?> cq = createQuery(entityInfo.getImplClass(), req);
-                    TypedQuery<?> query = em.createQuery(cq);
-                    List<?> results = query.getResultList();
-                    if (!req.getOperation().isMultipleResult()) {
-                        if (results.size() > 1) {
-                            throw new RuntimeException("Mutiple records found on single item operation on entity ["
-                                    + req.getEntity() + "].");
+                switch (req.getOperation()) {
+                    case COUNT_ALL: {
+                        CriteriaQuery<Long> cq = createLongQuery(entityInfo.getImplClass(), em, req);
+                        Long count = em.createQuery(cq).getSingleResult();
+                        result = new Object[] { count };
+                    }
+                        break;
+                    case CREATE: {
+                        Object reqBean = interconnect.getBeanFromJsonPayload(req);
+                        em.persist(reqBean);
+                        em.flush();
+                        Object id = PropertyUtils.getProperty(reqBean, entityInfo.getIdFieldName());
+                        result = new Object[] { id };
+                    }
+                        break;
+                    case DELETE: {
+                        Object reqBean = interconnect.getBeanFromJsonPayload(req);
+                        if (req.version()) {
+                            PropertyUtils.setProperty(reqBean, entityInfo.getVersionNoFieldName(), req.getVersionNo());
+                        }
+
+                        em.remove(reqBean);
+                    }
+                        break;
+                    case DELETE_ALL: {
+                        CriteriaDelete<?> cd = createDeleteQuery(entityInfo.getImplClass(), em, req);
+                        int count = em.createQuery(cd).executeUpdate();
+                        result = new Object[] { count };
+                    }
+                        break;
+                    case FIND:
+                    case FIND_ALL:
+                    case FIND_LEAN:
+                    case LIST:
+                    case LIST_ALL:
+                    case LIST_LEAN: {
+                        CriteriaQuery<?> cq = createQuery(entityInfo.getImplClass(), em, req);
+                        TypedQuery<?> query = em.createQuery(cq);
+                        List<?> results = query.getResultList();
+                        if (!req.getOperation().isMultipleResult()) {
+                            if (results.size() > 1) {
+                                throw new RuntimeException("Mutiple records found on single item operation on entity ["
+                                        + req.getEntity() + "].");
+                            }
+                        }
+
+                        result = results.toArray(new Object[results.size()]);
+                    }
+                        break;
+                    case UPDATE:
+                    case UPDATE_LEAN: {
+                        Object reqBean = interconnect.getBeanFromJsonPayload(req);
+                        Object id = PropertyUtils.getProperty(reqBean, entityInfo.getIdFieldName());
+                        Object saveBean = em.find(entityInfo.getImplClass(), id);
+                        Object versionNo = req.version()
+                                ? PropertyUtils.getProperty(saveBean, entityInfo.getVersionNoFieldName())
+                                : null;
+                        // References
+                        interconnect.copy(entityInfo.getRefFieldList(), reqBean, saveBean);
+                        // Fields
+                        interconnect.copy(entityInfo.getFieldList(), reqBean, saveBean);
+
+                        if (!req.getOperation().isLean()) {
+                            // Child
+                            interconnect.copy(entityInfo.getChildFieldList(), reqBean, saveBean);
+                            // Child list
+                            interconnect.copy(entityInfo.getChildListFieldList(), reqBean, saveBean);
+                        }
+
+                        if (req.version()) {
+                            PropertyUtils.setProperty(saveBean, entityInfo.getVersionNoFieldName(), versionNo);
+                        }
+
+                        em.merge(saveBean);
+                        result = new Object[] { 1L };
+                    }
+                        break;
+                    case UPDATE_ALL:
+                        break;
+                    case VALUE:
+                    case VALUE_LIST: {
+                        CriteriaQuery<Tuple> cq = createTupleQuery(entityInfo.getImplClass(), em, req);
+                        List<Tuple> tupleResult = em.createQuery(cq).getResultList();
+                        if (!req.getOperation().isMultipleResult()) {
+                            if (tupleResult.size() > 1) {
+                                throw new RuntimeException("Mutiple records found on single item operation on entity ["
+                                        + req.getEntity() + "].");
+                            }
+                        }
+
+                        result = new Object[tupleResult.size()];
+                        for (int i = 0; i < result.length; i++) {
+                            result[i] = tupleResult.get(i).get(0);
                         }
                     }
+                        break;
+                    default:
+                        break;
 
-                    result = results.toArray(new Object[results.size()]);
                 }
-                    break;
-                case UPDATE:
-                case UPDATE_LEAN: {
-                    Object reqBean = interconnect.getBeanFromJsonPayload(req);
-                    Object id = PropertyUtils.getProperty(reqBean, entityInfo.getIdFieldName());
-                    Object saveBean = em.find(entityInfo.getImplClass(), id);
-                    Object versionNo = req.version()
-                            ? PropertyUtils.getProperty(saveBean, entityInfo.getVersionNoFieldName())
-                            : null;
-                    // References
-                    interconnect.copy(entityInfo.getRefFieldList(), reqBean, saveBean);
-                    // Fields
-                    interconnect.copy(entityInfo.getFieldList(), reqBean, saveBean);
 
-                    if (!req.getOperation().isLean()) {
-                        // Child
-                        interconnect.copy(entityInfo.getChildFieldList(), reqBean, saveBean);
-                        // Child list
-                        interconnect.copy(entityInfo.getChildListFieldList(), reqBean, saveBean);
-                    }
-
-                    if (req.version()) {
-                        PropertyUtils.setProperty(saveBean, entityInfo.getVersionNoFieldName(), versionNo);
-                    }
-
-                    em.merge(saveBean);
-                    result = new Object[] { 1L };
+                tx.commit();
+                em.close();
+            } catch (Exception e) {
+                if (tx != null) {
+                    tx.rollback();
                 }
-                    break;
-                case UPDATE_ALL:
-                    break;
-                case VALUE:
-                case VALUE_LIST: {
-                    CriteriaQuery<Tuple> cq = createTupleQuery(entityInfo.getImplClass(), req);
-                    List<Tuple> tupleResult = em.createQuery(cq).getResultList();
-                    if (!req.getOperation().isMultipleResult()) {
-                        if (tupleResult.size() > 1) {
-                            throw new RuntimeException("Mutiple records found on single item operation on entity ["
-                                    + req.getEntity() + "].");
-                        }
-                    }
-
-                    result = new Object[tupleResult.size()];
-                    for (int i = 0; i < result.length; i++) {
-                        result[i] = tupleResult.get(i).get(0);
-                    }
+            } finally {
+                if (em != null) {
+                    em.close();
                 }
-                    break;
-                default:
-                    break;
-
             }
         }
 
         return interconnect.createDataSourceResponse(result, req);
     }
 
-    private <T> CriteriaQuery<T> createQuery(Class<T> entityClass, DataSourceRequest req) throws Exception {
+    private <T> CriteriaQuery<T> createQuery(Class<T> entityClass, EntityManager em, DataSourceRequest req)
+            throws Exception {
         EntityInfo entityInfo = interconnect.getEntityInfo(req.getEntity());
-        CriteriaBuilder cb = getEM(entityInfo).getCriteriaBuilder();
+        CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<T> cq = cb.createQuery(entityClass);
         Root<T> root = cq.from(entityClass);
         cq.select(root);
@@ -260,9 +307,10 @@ public class SpringBootInterconnectServiceImpl implements SpringBootInterconnect
         return cq;
     }
 
-    private <T> CriteriaQuery<Tuple> createTupleQuery(Class<T> entityClass, DataSourceRequest req) throws Exception {
+    private <T> CriteriaQuery<Tuple> createTupleQuery(Class<T> entityClass, EntityManager em, DataSourceRequest req)
+            throws Exception {
         EntityInfo entityInfo = interconnect.getEntityInfo(req.getEntity());
-        CriteriaBuilder cb = getEM(entityInfo).getCriteriaBuilder();
+        CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Tuple> cq = cb.createTupleQuery();
         Root<T> root = cq.from(entityClass);
         cq.multiselect(root.get(req.getFieldName()));
@@ -274,9 +322,10 @@ public class SpringBootInterconnectServiceImpl implements SpringBootInterconnect
         return cq;
     }
 
-    private <T> CriteriaQuery<Long> createLongQuery(Class<T> entityClass, DataSourceRequest req) throws Exception {
+    private <T> CriteriaQuery<Long> createLongQuery(Class<T> entityClass, EntityManager em, DataSourceRequest req)
+            throws Exception {
         EntityInfo entityInfo = interconnect.getEntityInfo(req.getEntity());
-        CriteriaBuilder cb = getEM(entityInfo).getCriteriaBuilder();
+        CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Long> cq = cb.createQuery(Long.class);
         Root<T> root = cq.from(entityClass);
         cq.select(cb.count(root));
@@ -288,9 +337,10 @@ public class SpringBootInterconnectServiceImpl implements SpringBootInterconnect
         return cq;
     }
 
-    private <T> CriteriaDelete<T> createDeleteQuery(Class<T> entityClass, DataSourceRequest req) throws Exception {
+    private <T> CriteriaDelete<T> createDeleteQuery(Class<T> entityClass, EntityManager em, DataSourceRequest req)
+            throws Exception {
         EntityInfo entityInfo = interconnect.getEntityInfo(req.getEntity());
-        CriteriaBuilder cb = getEM(entityInfo).getCriteriaBuilder();
+        CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaDelete<T> cq = cb.createCriteriaDelete(entityClass);
         Root<T> root = cq.from(entityClass);
         Predicate restrictions = createRestriction(cb, root, entityInfo, req);
@@ -697,31 +747,42 @@ public class SpringBootInterconnectServiceImpl implements SpringBootInterconnect
         }
     }
 
-    private EntityManager getEM(EntityInfo entityInfo) {
+    private PlatformInfo getPlatform(EntityInfo entityInfo) {
         if (entityInfo.getEntityManagerFactory() != null) {
-            EntityManager em = ems.get(entityInfo.getEntityManagerFactory());
-            if (em == null) {
+            PlatformInfo platform = platforms.get(entityInfo.getEntityManagerFactory());
+            if (platform == null) {
                 synchronized (this) {
-                    if (em == null) {
+                    if (platform == null) {
                         EntityManagerFactory emf = context.getBean(entityInfo.getEntityManagerFactory(),
                                 EntityManagerFactory.class);
-                        em = emf.createEntityManager();
-                        ems.put(entityInfo.getEntityManagerFactory(), em);
+                        platform = new PlatformInfo(emf);
+                        platforms.put(entityInfo.getEntityManagerFactory(), platform);
                     }
                 }
             }
 
-            return em;
+            return platform;
         }
 
-        if (defEm == null) {
+        if (defaultPlatform == null) {
             synchronized (this) {
-                if (defEm == null) {
-                    defEm = context.getBean(EntityManager.class);
+                if (defaultPlatform == null) {
+                    EntityManagerFactory emf = context.getBean(EntityManagerFactory.class);
+                    defaultPlatform = new PlatformInfo(emf);
                 }
             }
         }
 
-        return defEm;
+        return defaultPlatform;
+    }
+
+    private class PlatformInfo {
+
+        private final EntityManagerFactory emf;
+
+        private PlatformInfo(EntityManagerFactory emf) {
+            this.emf = emf;
+        }
+
     }
 }

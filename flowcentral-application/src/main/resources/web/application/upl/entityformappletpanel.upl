@@ -98,6 +98,7 @@
 // Save As Panel
 !fc-entitysaveasdialogpanel:entitySaveAsPanel binding:entitySaveAs
 	moreActionButtons:$c{entitySaveAsBtn cancelEntitySaveAsBtn}
+	switchOnChangeEventHandler:$d{!ui-event event:onchange action:$c{saveAsSwitchOnChangeAct}}
 !ui-button:entitySaveAsBtn styleClass:$e{fc-bluebutton} caption:$m{button.save}
 	eventHandler:$d{!ui-event event:onclick action:$c{entitySaveAsAct}}
 !ui-button:cancelEntitySaveAsBtn caption:$m{button.cancel}
@@ -110,6 +111,8 @@
 	refresh:$c{formPanel.formBodyPanel}
 !ui-postcommand:assnSwitchOnChangeAct command:assignSwitchOnChange components:$c{assignmentPanel}
 	refresh:$c{assignmentPanel.assignmentBodyPanel}
+!ui-postcommand:saveAsSwitchOnChangeAct command:saveAsSwitchOnChange components:$c{entitySaveAsPanel}
+	refresh:$c{entitySaveAsPanel.entityFormBodyPanel}
 !ui-postcommand:saveAct command:save components:$c{formPanel}
 !ui-postcommand:saveNextAct command:saveAndNext components:$c{formPanel}
 !ui-postcommand:saveCloseAct command:saveAndClose components:$c{formPanel}

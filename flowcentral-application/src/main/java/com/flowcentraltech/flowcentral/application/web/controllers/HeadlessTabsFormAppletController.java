@@ -15,6 +15,7 @@
  */
 package com.flowcentraltech.flowcentral.application.web.controllers;
 
+import com.flowcentraltech.flowcentral.application.data.EntityFormEventHandlers;
 import com.flowcentraltech.flowcentral.application.web.panels.applet.HeadlessTabsFormApplet;
 import com.tcdng.unify.core.UnifyException;
 import com.tcdng.unify.core.annotation.Component;
@@ -22,8 +23,6 @@ import com.tcdng.unify.core.annotation.UplBinding;
 import com.tcdng.unify.web.constant.ReadOnly;
 import com.tcdng.unify.web.constant.ResetOnWrite;
 import com.tcdng.unify.web.constant.Secured;
-import com.tcdng.unify.web.ui.widget.EventHandler;
-import com.tcdng.unify.web.ui.widget.Widget;
 
 /**
  * Headless tabs form applet controller.
@@ -46,13 +45,9 @@ public class HeadlessTabsFormAppletController
 
         HeadlessTabsFormAppletPageBean pageBean = getPageBean();
         if (pageBean.getApplet() == null) {
-            EventHandler[] formSwitchOnChangeHandlers = getPageWidgetByShortName(Widget.class,
-                    "appletPanel.formPanel.switchOnChangeHolder").getUplAttribute(EventHandler[].class, "eventHandler");
-            EventHandler[] assnSwitchOnChangeHandlers = getPageWidgetByShortName(Widget.class,
-                    "appletPanel.assignmentPanel.switchOnChangeHolder").getUplAttribute(EventHandler[].class,
-                            "eventHandler");
+            EntityFormEventHandlers formEventHandlers = getEntityFormEventHandlers();
             HeadlessTabsFormApplet applet = new HeadlessTabsFormApplet(getAu(), getPathVariable(),
-                    formSwitchOnChangeHandlers, assnSwitchOnChangeHandlers);
+                    formEventHandlers);
             pageBean.setApplet(applet);
             if (pageBean.getAltCaption() == null) {
                 setPageTitle(applet);

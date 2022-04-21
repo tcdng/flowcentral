@@ -58,7 +58,7 @@ public class AssignmentPage {
 
     private final BreadCrumbs breadCrumbs;
 
-    private final EventHandler[] assnSwitchOnChangeHandlers;
+    private final List<EventHandler> assnSwitchOnChangeHandlers;
 
     private String displayItemCounter;
 
@@ -74,7 +74,7 @@ public class AssignmentPage {
 
     private String assgnUpdatePolicy;
 
-    public AssignmentPage(AppletContext ctx, EventHandler[] assnSwitchOnChangeHandlers,
+    public AssignmentPage(AppletContext ctx, List<EventHandler> assnSwitchOnChangeHandlers,
             SweepingCommitPolicy sweepingCommitPolicy, AssignmentPageDef assignmentPageDef,
             EntityClassDef entityClassDef, Object baseId, BreadCrumbs breadCrumbs, String entryTable,
             String entryTablePolicy, String assgnUpdatePolicy) {
