@@ -4,7 +4,7 @@
 
 	<groupId>com.flowcentraltech.flowcentral</groupId>
 	<artifactId>flowcentral</artifactId>
-	<version>1.0.12</version>
+	<version>1.0.13-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<name>flowcentral</name>
@@ -52,7 +52,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
-		<unify.version>2.1.19</unify.version>
+		<unify.version>2.1.20-SNAPSHOT</unify.version>
 	</properties>
 
 	<scm>
