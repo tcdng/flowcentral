@@ -42,6 +42,7 @@ import com.flowcentraltech.flowcentral.application.entities.AppAppletFilter;
 import com.flowcentraltech.flowcentral.application.entities.AppFieldSequence;
 import com.flowcentraltech.flowcentral.application.entities.AppFilter;
 import com.flowcentraltech.flowcentral.application.entities.AppSetValues;
+import com.flowcentraltech.flowcentral.application.entities.AppTableFilter;
 import com.flowcentraltech.flowcentral.common.business.SpecialParamProvider;
 import com.flowcentraltech.flowcentral.common.data.DateRange;
 import com.flowcentraltech.flowcentral.common.input.AbstractInput;
@@ -60,6 +61,7 @@ import com.flowcentraltech.flowcentral.configuration.xml.FilterConfig;
 import com.flowcentraltech.flowcentral.configuration.xml.FilterRestrictionConfig;
 import com.flowcentraltech.flowcentral.configuration.xml.SetValueConfig;
 import com.flowcentraltech.flowcentral.configuration.xml.SetValuesConfig;
+import com.flowcentraltech.flowcentral.configuration.xml.TableFilterConfig;
 import com.tcdng.unify.core.UnifyException;
 import com.tcdng.unify.core.UnifyOperationException;
 import com.tcdng.unify.core.constant.OrderType;
@@ -218,7 +220,7 @@ public final class InputWidgetUtils {
             case "application.suggestiontextsearch":
                 String type = !StringUtils.isBlank(efa.getSuggestionType()) ? efa.getSuggestionType() : "";
                 editor = String.format(editor, type);
-               break;
+                break;
             case "application.text":
             case "application.name":
             case "application.alphanumeric":
@@ -270,7 +272,7 @@ public final class InputWidgetUtils {
                 editor = String.format(editor, efa.getPrecision());
                 break;
             case "application.amountwhole":
-                int precision = efa.getScale() > 0 ? efa.getPrecision() - efa.getScale(): efa.getPrecision();
+                int precision = efa.getScale() > 0 ? efa.getPrecision() - efa.getScale() : efa.getPrecision();
                 editor = String.format(editor, precision);
                 break;
             case "application.amount":
@@ -575,11 +577,11 @@ public final class InputWidgetUtils {
 
             return sb.toString();
         }
-        
+
         return null;
     }
-    
-    public static Order getOrder(String definition) throws UnifyException{
+
+    public static Order getOrder(String definition) throws UnifyException {
         if (!StringUtils.isBlank(definition)) {
             Order order = new Order();
             BufferedReader reader = new BufferedReader(new StringReader(definition));
@@ -596,13 +598,13 @@ public final class InputWidgetUtils {
             } finally {
                 IOUtils.close(reader);
             }
-            
+
             return order;
         }
-        
+
         return null;
     }
-    
+
     public static FilterConfig getFilterConfig(AppAppletFilter appAppletFilter) throws UnifyException {
         FilterConfig filterConfig = InputWidgetUtils.getFilterConfig(appAppletFilter.getName(),
                 appAppletFilter.getDescription(), appAppletFilter.getPreferredForm(),
@@ -615,6 +617,18 @@ public final class InputWidgetUtils {
         return filterConfig;
     }
 
+    public static TableFilterConfig getFilterConfig(AppTableFilter appTableFilter) throws UnifyException {
+        if (appTableFilter != null) {
+            TableFilterConfig tableFilterConfig = new TableFilterConfig();
+            InputWidgetUtils.getFilterConfig(tableFilterConfig, appTableFilter.getName(),
+                    appTableFilter.getDescription(), null, null, null, appTableFilter.getFilter());
+            tableFilterConfig.setRowColor(appTableFilter.getRowColor());
+            return tableFilterConfig;
+        }
+
+        return null;
+    }
+
     public static FilterConfig getFilterConfig(AppFilter appFilter) throws UnifyException {
         return InputWidgetUtils.getFilterConfig(null, null, null, null, null, appFilter);
     }
@@ -623,9 +637,21 @@ public final class InputWidgetUtils {
             String preferredChildListApplet, ChildListActionType childListActionType, AppFilter appFilter)
             throws UnifyException {
         if (appFilter != null) {
+            FilterConfig filterConfig = new FilterConfig();
+            getFilterConfig(filterConfig, name, description, preferredForm, preferredChildListApplet,
+                    childListActionType, appFilter);
+            return filterConfig;
+        }
+
+        return null;
+    }
+
+    public static void getFilterConfig(FilterConfig filterConfig, String name, String description, String preferredForm,
+            String preferredChildListApplet, ChildListActionType childListActionType, AppFilter appFilter)
+            throws UnifyException {
+        if (appFilter != null) {
             FilterDef filterDef = InputWidgetUtils.getFilterDef(name, description, preferredForm,
                     preferredChildListApplet, childListActionType, appFilter);
-            FilterConfig filterConfig = new FilterConfig();
             filterConfig.setName(name);
             filterConfig.setDescription(description);
             List<FilterRestrictionConfig> restrictionList = new ArrayList<FilterRestrictionConfig>();
@@ -647,12 +673,9 @@ public final class InputWidgetUtils {
                 }
 
             }
+            
             filterConfig.setRestrictionList(restrictionList);
-
-            return filterConfig;
         }
-
-        return null;
     }
 
     private static int setSubRestrictions(FilterRestrictionConfig restrConfig, List<FilterRestrictionDef> defList,
@@ -692,8 +715,7 @@ public final class InputWidgetUtils {
         if (appFilter != null) {
             FilterDef.Builder fdb = FilterDef.newBuilder();
             fdb.name(name).description(description).preferredForm(preferredForm)
-                    .preferredChildListApplet(preferredChildListApplet)
-                    .childListActionType(childListActionType);
+                    .preferredChildListApplet(preferredChildListApplet).childListActionType(childListActionType);
             addFilterDefinition(fdb, appFilter.getDefinition());
             return fdb.build();
         }
@@ -701,8 +723,7 @@ public final class InputWidgetUtils {
         return null;
     }
 
-    public static FilterDef getFilterDef(String filterDefinition)
-            throws UnifyException {
+    public static FilterDef getFilterDef(String filterDefinition) throws UnifyException {
         if (filterDefinition != null) {
             FilterDef.Builder fdb = FilterDef.newBuilder();
             addFilterDefinition(fdb, filterDefinition);
@@ -712,8 +733,7 @@ public final class InputWidgetUtils {
         return null;
     }
 
-    private static void addFilterDefinition(FilterDef.Builder fdb, String filterDefinition)
-            throws UnifyException {
+    private static void addFilterDefinition(FilterDef.Builder fdb, String filterDefinition) throws UnifyException {
         if (filterDefinition != null) {
             BufferedReader reader = new BufferedReader(new StringReader(filterDefinition));
             try {

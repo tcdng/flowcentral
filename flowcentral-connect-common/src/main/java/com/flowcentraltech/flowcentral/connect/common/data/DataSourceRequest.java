@@ -48,17 +48,19 @@ public class DataSourceRequest extends BaseRequest {
     private int limit;
     
     public DataSourceRequest(DataSourceOperation operation, Long id, Long versionNo) {
+        this();
         this.operation = operation;
         this.id = id;
         this.versionNo = versionNo;
     }
 
     public DataSourceRequest(DataSourceOperation operation) {
+        this();
         this.operation = operation;
     }
 
     public DataSourceRequest() {
-        
+        this.limit = -1;
     }
     
     public DataSourceOperation getOperation() {

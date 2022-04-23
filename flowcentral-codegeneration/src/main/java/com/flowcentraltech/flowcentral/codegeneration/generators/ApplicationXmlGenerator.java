@@ -52,6 +52,7 @@ import com.flowcentraltech.flowcentral.application.entities.AppSuggestionType;
 import com.flowcentraltech.flowcentral.application.entities.AppTable;
 import com.flowcentraltech.flowcentral.application.entities.AppTableAction;
 import com.flowcentraltech.flowcentral.application.entities.AppTableColumn;
+import com.flowcentraltech.flowcentral.application.entities.AppTableFilter;
 import com.flowcentraltech.flowcentral.application.entities.AppWidgetType;
 import com.flowcentraltech.flowcentral.application.entities.Application;
 import com.flowcentraltech.flowcentral.application.util.ApplicationNameUtils;
@@ -104,6 +105,7 @@ import com.flowcentraltech.flowcentral.configuration.xml.SuggestionTypeConfig;
 import com.flowcentraltech.flowcentral.configuration.xml.SuggestionTypesConfig;
 import com.flowcentraltech.flowcentral.configuration.xml.TableActionConfig;
 import com.flowcentraltech.flowcentral.configuration.xml.TableColumnConfig;
+import com.flowcentraltech.flowcentral.configuration.xml.TableFilterConfig;
 import com.flowcentraltech.flowcentral.configuration.xml.WidgetTypeConfig;
 import com.flowcentraltech.flowcentral.configuration.xml.WidgetTypesConfig;
 import com.flowcentraltech.flowcentral.configuration.xml.util.ConfigurationUtils;
@@ -504,6 +506,20 @@ public class ApplicationXmlGenerator extends AbstractStaticArtifactGenerator {
                     }
 
                     appTableConfig.setColumnList(columnList);
+                }
+
+                // Filters
+                if (!DataUtils.isBlank(appTable.getFilterList())) {
+                    List<TableFilterConfig> filterList = new ArrayList<TableFilterConfig>();
+                    for (AppTableFilter appTableFilter : appTable.getFilterList()) {
+                        String filterKey = getDescriptionKey(descKey, "filter", appTableFilter.getName());
+                        ctx.addMessage(StaticMessageCategoryType.TABLE, filterKey, appTableFilter.getDescription());
+                        appTableFilter.setDescription("$m{" + filterKey + "}");
+                        TableFilterConfig tableFilterConfig = InputWidgetUtils.getFilterConfig(appTableFilter);
+                        filterList.add(tableFilterConfig);
+                    }
+
+                    appTableConfig.setFilterList(filterList);
                 }
 
                 // Actions

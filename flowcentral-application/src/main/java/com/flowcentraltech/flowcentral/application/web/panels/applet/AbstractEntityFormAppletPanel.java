@@ -349,7 +349,7 @@ public abstract class AbstractEntityFormAppletPanel extends AbstractAppletPanel 
                 switchContent("formPanel");
                 setVisible("cancelBtn", true);
                 final boolean allowSaveAndNext = viewMode != AbstractEntityFormApplet.ViewMode.NEW_CHILD_FORM
-                        && !form.getFormDef().isChildOrChildListTabs();
+                        /*&& !form.getFormDef().isChildOrChildListTabs()*/;
                 if (enableCreate) {
                     if (formAppletDef != null) {
                         setVisible("saveBtn", formAppletDef.getPropValue(boolean.class,

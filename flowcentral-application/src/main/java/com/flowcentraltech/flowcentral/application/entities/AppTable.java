@@ -66,6 +66,9 @@ public class AppTable extends BaseApplicationEntity {
     @ChildList
     private List<AppTableColumn> columnList;
 
+    @ChildList
+    private List<AppTableFilter> filterList;
+
     public String getLabel() {
         return label;
     }
@@ -160,6 +163,14 @@ public class AppTable extends BaseApplicationEntity {
 
     public void setColumnList(List<AppTableColumn> columnList) {
         this.columnList = columnList;
+    }
+
+    public List<AppTableFilter> getFilterList() {
+        return filterList;
+    }
+
+    public void setFilterList(List<AppTableFilter> filterList) {
+        this.filterList = filterList;
     }
 
 }

@@ -64,10 +64,14 @@ public class TableDef extends BaseApplicationEntityDef {
 
     private boolean basicSearch;
 
-    private TableDef(EntityDef entityDef, List<TableColumnDef> columnDefList, String label, int sortHistory,
-            int itemsPerPage, boolean serialNo, boolean sortable, boolean headerToUpperCase, boolean headerCenterAlign,
-            boolean basicSearch, boolean limitSelectToColumns, ApplicationEntityNameParts nameParts, String description,
-            Long id, long version) {
+    private Map<String, TableFilterDef> filterDefMap;
+
+    private List<TableFilterDef> rowColorFilterList;
+
+    private TableDef(EntityDef entityDef, List<TableColumnDef> columnDefList, Map<String, TableFilterDef> filterDefMap,
+            String label, int sortHistory, int itemsPerPage, boolean serialNo, boolean sortable,
+            boolean headerToUpperCase, boolean headerCenterAlign, boolean basicSearch, boolean limitSelectToColumns,
+            ApplicationEntityNameParts nameParts, String description, Long id, long version) {
         super(nameParts, description, id, version);
         this.entityDef = entityDef;
         this.columnDefList = columnDefList;
@@ -80,6 +84,13 @@ public class TableDef extends BaseApplicationEntityDef {
         this.headerCenterAlign = headerCenterAlign;
         this.basicSearch = basicSearch;
         this.limitSelectToColumns = limitSelectToColumns;
+        List<TableFilterDef> rowColorFilterList = new ArrayList<TableFilterDef>();
+        for (TableFilterDef filterDef : filterDefMap.values()) {
+            if (filterDef.isRowColor()) {
+                rowColorFilterList.add(filterDef);
+            }
+        }
+
         if (this.limitSelectToColumns) {
             this.select = new Select().add("id").add("versionNo");
         }
@@ -94,11 +105,30 @@ public class TableDef extends BaseApplicationEntityDef {
             }
         }
 
+        this.rowColorFilterList = DataUtils.unmodifiableList(rowColorFilterList);
         this.defaultReportColumnList = DataUtils.unmodifiableList(this.defaultReportColumnList);
     }
 
     public EntityDef getEntityDef() {
         return entityDef;
+    }
+
+    public List<TableFilterDef> getRowColorFilterList() {
+        return rowColorFilterList;
+    }
+
+    public boolean isRowColorFilters() {
+        return !rowColorFilterList.isEmpty();
+    }
+    
+    public TableFilterDef getFilterDef(String name) {
+        TableFilterDef filterDef = filterDefMap.get(name);
+        if (filterDef == null) {
+            throw new RuntimeException(
+                    "Filter with name [" + name + "] is unknown for applet definition [" + getName() + "].");
+        }
+
+        return filterDef;
     }
 
     public String getFieldLabel(int index) {
@@ -189,12 +219,12 @@ public class TableDef extends BaseApplicationEntityDef {
     }
 
     public TableColumnDef getColumnDef(String fieldName) {
-        for (TableColumnDef tableColumnDef: columnDefList) {
+        for (TableColumnDef tableColumnDef : columnDefList) {
             if (tableColumnDef.getFieldName().equals(fieldName)) {
                 return tableColumnDef;
             }
         }
-        
+
         throw new RuntimeException(
                 "Field with name [" + fieldName + "] is unknown for table definition [" + getLongName() + "].");
     }
@@ -207,6 +237,8 @@ public class TableDef extends BaseApplicationEntityDef {
     public static class Builder {
 
         private EntityDef entityDef;
+
+        private Map<String, TableFilterDef> filterDefMap;
 
         private List<TempColumnDef> columnDefList;
 
@@ -241,6 +273,7 @@ public class TableDef extends BaseApplicationEntityDef {
         public Builder(EntityDef entityDef, String label, boolean serialNo, boolean sortable, String longName,
                 String description, Long id, long version) {
             this.entityDef = entityDef;
+            this.filterDefMap = new HashMap<String, TableFilterDef>();
             this.label = label;
             this.serialNo = serialNo;
             this.sortable = sortable;
@@ -305,6 +338,19 @@ public class TableDef extends BaseApplicationEntityDef {
             return this;
         }
 
+        public Builder addFilterDef(TableFilterDef filterDef) {
+            if (filterDef != null) {
+                if (filterDefMap.containsKey(filterDef.getName())) {
+                    throw new RuntimeException(
+                            "Filter with name [" + filterDef.getName() + "] already exists in this definition.");
+                }
+
+                filterDefMap.put(filterDef.getName(), filterDef);
+            }
+
+            return this;
+        }
+
         public TableDef build() throws UnifyException {
             List<TableColumnDef> _columnDefList = new ArrayList<TableColumnDef>();
             int usedPercent = 0;
@@ -337,14 +383,14 @@ public class TableDef extends BaseApplicationEntityDef {
 
                 if (i == (len - 1)) {
                     tableColumnDef = new TableColumnDef(tempDef.getLabel(), fieldName,
-                            "width:" + (100 - usedPercent) + "%;", renderer, editor,
-                            (100 - usedPercent), tempDef.isSwitchOnChange(), tempDef.isDisabled(), tempDef.isEditable(),
+                            "width:" + (100 - usedPercent) + "%;", renderer, editor, (100 - usedPercent),
+                            tempDef.isSwitchOnChange(), tempDef.isDisabled(), tempDef.isEditable(),
                             tempDef.isSortable());
                 } else {
                     int width = (tempDef.getWidthRatio() * 100) / totalWidth;
-                    tableColumnDef = new TableColumnDef(tempDef.getLabel(), fieldName,
-                            "width:" + width + "%;", renderer, editor, width, tempDef.isSwitchOnChange(),
-                            tempDef.isDisabled(), tempDef.isEditable(), tempDef.isSortable());
+                    tableColumnDef = new TableColumnDef(tempDef.getLabel(), fieldName, "width:" + width + "%;",
+                            renderer, editor, width, tempDef.isSwitchOnChange(), tempDef.isDisabled(),
+                            tempDef.isEditable(), tempDef.isSortable());
                     usedPercent += width;
                 }
 
@@ -352,9 +398,10 @@ public class TableDef extends BaseApplicationEntityDef {
             }
 
             ApplicationEntityNameParts nameParts = ApplicationNameUtils.getApplicationEntityNameParts(longName);
-            return new TableDef(entityDef, DataUtils.unmodifiableList(_columnDefList), label, sortHistory, itemsPerPage,
-                    serialNo, sortable, headerToUpperCase, headerCenterAlign, basicSearch, limitSelectToColumns,
-                    nameParts, description, id, version);
+            return new TableDef(entityDef, DataUtils.unmodifiableList(_columnDefList),
+                    DataUtils.unmodifiableMap(filterDefMap), label, sortHistory, itemsPerPage, serialNo, sortable,
+                    headerToUpperCase, headerCenterAlign, basicSearch, limitSelectToColumns, nameParts, description, id,
+                    version);
         }
 
         private class TempColumnDef {

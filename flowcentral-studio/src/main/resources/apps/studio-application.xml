@@ -11,6 +11,11 @@
 			dataType="string" inputType="string"
 			editor="!ui-select list:studioenvironmentdelegatelist blankOption:$m{blank.none}"
 			renderer="!ui-label" />
+		<widgetType name="tablerowcolorlist"
+			description="$m{studio.widgettype.tablerowcolorlist}"
+			dataType="string" inputType="string"
+			editor="!ui-select list:studiotablerowcolorlist blankOption:$m{blank.none} colors:true"
+			renderer="!ui-label" />
 		<widgetType name="consformvalidationpolicylist"
 			description="$m{studio.widgettype.consformvalidationpolicylist}"
 			dataType="string" inputType="string"
@@ -590,6 +595,23 @@
 			<property name="maintainForm.update" value="true" />
 			<property name="maintainForm.delete" value="true" />
 		</applet>
+		<applet name="manageAppTableFilter"
+			description="$m{studio.apptablefilter.manage}"
+			label="$m{studio.apptablefilter.manage.label}"
+			type="manage_entitylist" entity="application.appTableFilter"
+			menuAccess="false">
+			<property name="searchTable" value="appTableFilterTable" />
+			<property name="searchTable.new" value="true" />
+			<property name="searchTable.edit" value="false" />
+			<property name="searchTable.report" value="false" />
+			<property name="createForm" value="appTableFilterForm" />
+			<property name="createForm.save" value="true" />
+			<property name="createForm.save.next" value="true" />
+			<property name="createForm.save.close" value="true" />
+			<property name="maintainForm" value="appTableFilterForm" />
+			<property name="maintainForm.update" value="true" />
+			<property name="maintainForm.delete" value="true" />
+		</applet>
 		<applet name="manageAppFormElement"
 			description="$m{studio.appformelement.manage}"
 			label="$m{studio.appformelement.manage.label}"
@@ -978,6 +1000,22 @@
 			<column field="policy" renderWidget="application.text"
 				widthRatio="1" />
 			<column field="orderIndex" renderWidget="application.integer"
+				widthRatio="1" />
+		</table>
+		<table name="appTableFilterTable"
+			description="$m{studio.apptablefilter.table}"
+			label="$m{studio.apptablefilter.table.label}"
+			entity="application.appTableFilter">
+			<column field="name" renderWidget="application.name"
+				widthRatio="1" linkAct="maintainAct" />
+			<column field="description" renderWidget="application.text"
+				widthRatio="1" linkAct="maintainAct" />
+			<column field="rowColor"
+				renderWidget="application.text"
+				label="$m{application.apptablefilter.rowcolor}" widthRatio="1" />
+			<column field="createDt" renderWidget="application.datetime"
+				widthRatio="1" />
+			<column field="updateDt" renderWidget="application.datetime"
 				widthRatio="1" />
 		</table>
 		<table name="appFormElementTable"
@@ -2575,6 +2613,10 @@
 			<tab name="design" label="$m{studio.apptable.form.design}"
 				contentType="child_list" applet="manageAppTableColumn"
 				reference="columnList" editAction="/designChildItem" />
+			<tab name="filters"
+				label="$m{studio.apptable.form.filters}"
+				contentType="child_list" applet="manageAppTableFilter"
+				reference="filterList" />
 			<tab name="actions"
 				label="$m{studio.apptable.form.actions}"
 				contentType="child_list" applet="manageAppTableAction"
@@ -2655,6 +2697,27 @@
 						column="1" />
 				</section>
 			</tab>
+		</form>
+		<form name="appTableFilterForm"
+			description="$m{studio.apptablefilter.form}"
+			entity="application.appTableFilter">
+			<tab name="basicDetails"
+				label="$m{studio.apptablefilter.form.basicdetails}"
+				contentType="miniform">
+				<section name="filterDetails" columns="type_2">
+					<field name="name" inputWidget="application.name" column="0"
+						required="true" />
+					<field name="description" inputWidget="application.text"
+						column="0" required="true" />
+					<field name="rowColor"
+						inputWidget="studio.tablerowcolorlist" column="1"/>
+				</section>
+			</tab>
+			<tab name="condition"
+				label="$m{studio.apptablefilter.form.condition}"
+				reference="app_table" contentType="filter_condition" />
+			<tab name="changeLog" label="$m{application.form.audit}"
+				contentType="miniform_changelog" />
 		</form>
 		<form name="appFormForm" description="$m{studio.appform.form}"
 			entity="application.appForm">

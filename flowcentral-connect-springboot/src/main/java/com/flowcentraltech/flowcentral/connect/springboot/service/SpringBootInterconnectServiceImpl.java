@@ -199,6 +199,14 @@ public class SpringBootInterconnectServiceImpl implements SpringBootInterconnect
                     case LIST_LEAN: {
                         CriteriaQuery<?> cq = createQuery(entityInfo.getImplClass(), em, req);
                         TypedQuery<?> query = em.createQuery(cq);
+                        if (req.getOffset() >= 0) {
+                            query.setFirstResult(req.getOffset());
+                        }
+                        
+                        if (req.getLimit() >= 0) {
+                            query.setMaxResults(req.getLimit());
+                        }
+                        
                         List<?> results = query.getResultList();
                         if (!req.getOperation().isMultipleResult()) {
                             if (results.size() > 1) {
