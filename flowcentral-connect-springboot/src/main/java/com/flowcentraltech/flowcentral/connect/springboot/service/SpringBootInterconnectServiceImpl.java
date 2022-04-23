@@ -203,7 +203,7 @@ public class SpringBootInterconnectServiceImpl implements SpringBootInterconnect
                             query.setFirstResult(req.getOffset());
                         }
                         
-                        if (req.getLimit() >= 0) {
+                        if (req.getLimit() > 0) {
                             query.setMaxResults(req.getLimit());
                         }
                         
