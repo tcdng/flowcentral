@@ -64,6 +64,7 @@ import com.flowcentraltech.flowcentral.application.data.SetStatesDef;
 import com.flowcentraltech.flowcentral.application.data.SetValuesDef;
 import com.flowcentraltech.flowcentral.application.data.SuggestionTypeDef;
 import com.flowcentraltech.flowcentral.application.data.TableDef;
+import com.flowcentraltech.flowcentral.application.data.TableFilterDef;
 import com.flowcentraltech.flowcentral.application.data.UniqueConstraintDef;
 import com.flowcentraltech.flowcentral.application.data.WidgetTypeDef;
 import com.flowcentraltech.flowcentral.application.entities.AppApplet;
@@ -132,6 +133,8 @@ import com.flowcentraltech.flowcentral.application.entities.AppTableAction;
 import com.flowcentraltech.flowcentral.application.entities.AppTableActionQuery;
 import com.flowcentraltech.flowcentral.application.entities.AppTableColumn;
 import com.flowcentraltech.flowcentral.application.entities.AppTableColumnQuery;
+import com.flowcentraltech.flowcentral.application.entities.AppTableFilter;
+import com.flowcentraltech.flowcentral.application.entities.AppTableFilterQuery;
 import com.flowcentraltech.flowcentral.application.entities.AppTableQuery;
 import com.flowcentraltech.flowcentral.application.entities.AppWidgetType;
 import com.flowcentraltech.flowcentral.application.entities.AppWidgetTypeQuery;
@@ -218,6 +221,7 @@ import com.flowcentraltech.flowcentral.configuration.xml.SetValuesConfig;
 import com.flowcentraltech.flowcentral.configuration.xml.SuggestionTypeConfig;
 import com.flowcentraltech.flowcentral.configuration.xml.TableActionConfig;
 import com.flowcentraltech.flowcentral.configuration.xml.TableColumnConfig;
+import com.flowcentraltech.flowcentral.configuration.xml.TableFilterConfig;
 import com.flowcentraltech.flowcentral.configuration.xml.WidgetTypeConfig;
 import com.flowcentraltech.flowcentral.system.business.SystemModuleService;
 import com.flowcentraltech.flowcentral.system.constants.SystemModuleSysParamConstants;
@@ -759,6 +763,15 @@ public class ApplicationModuleServiceImpl extends AbstractFlowCentralService
                     TableDef.Builder tdb = TableDef.newBuilder(entityDef, appTable.getLabel(), appTable.isSerialNo(),
                             appTable.isSortable(), longName, appTable.getDescription(), appTable.getId(),
                             appTable.getVersionNo());
+
+                    for (AppTableFilter appTableFilter : appTable.getFilterList()) {
+                        FilterDef _filterDef = InputWidgetUtils.getFilterDef(appTableFilter.getName(),
+                                appTableFilter.getDescription(), null,
+                                null, null,
+                                appTableFilter.getFilter());
+                        tdb.addFilterDef(new TableFilterDef(_filterDef, appTableFilter.getRowColor()));
+                    }
+                    
                     for (AppTableColumn appTableColumn : appTable.getColumnList()) {
                         final EntityFieldDef entityFieldDef = entityDef.getFieldDef(appTableColumn.getField());
                         String renderer = InputWidgetUtils
@@ -3454,6 +3467,38 @@ public class ApplicationModuleServiceImpl extends AbstractFlowCentralService
         } else {
             appTable.setColumnList(oldColumnList);
         }
+
+        List<AppTableFilter> filterList = null;
+        if (!DataUtils.isBlank(appTableConfig.getFilterList())) {
+            filterList = new ArrayList<AppTableFilter>();
+            Map<String, AppTableFilter> map = appTable.isIdBlank() ? Collections.emptyMap()
+                    : environment().findAllMap(String.class, "name",
+                            new AppTableFilterQuery().appTableId(appTable.getId()));
+            for (TableFilterConfig filterConfig : appTableConfig.getFilterList()) {
+                AppTableFilter oldAppAppletFilter = map.get(filterConfig.getName());
+                if (oldAppAppletFilter == null) {
+                    AppTableFilter appAppletFilter = new AppTableFilter();
+                    appAppletFilter.setName(filterConfig.getName());
+                    appAppletFilter.setDescription(resolveApplicationMessage(filterConfig.getDescription()));
+                    appAppletFilter.setFilter(InputWidgetUtils.newAppFilter(filterConfig));
+                    appAppletFilter.setRowColor(filterConfig.getRowColor());
+                    appAppletFilter.setConfigType(ConfigType.MUTABLE_INSTALL);
+                    filterList.add(appAppletFilter);
+                } else {
+                    if (ConfigUtils.isSetInstall(oldAppAppletFilter)) {
+                        oldAppAppletFilter.setDescription(resolveApplicationMessage(filterConfig.getDescription()));
+                        oldAppAppletFilter.setFilter(InputWidgetUtils.newAppFilter(filterConfig));
+                        oldAppAppletFilter.setRowColor(filterConfig.getRowColor());
+                    } else {
+                        environment().findChildren(oldAppAppletFilter);
+                    }
+
+                    filterList.add(oldAppAppletFilter);
+                }
+
+            }
+        }
+        appTable.setFilterList(filterList);
 
         List<AppTableAction> actionList = null;
         if (!DataUtils.isBlank(appTableConfig.getActionList())) {

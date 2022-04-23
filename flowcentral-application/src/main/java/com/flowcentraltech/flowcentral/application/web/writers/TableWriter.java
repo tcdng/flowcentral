@@ -15,14 +15,17 @@
  */
 package com.flowcentraltech.flowcentral.application.web.writers;
 
+import java.util.Date;
 import java.util.List;
 
 import com.flowcentraltech.flowcentral.application.constants.AppletRequestAttributeConstants;
 import com.flowcentraltech.flowcentral.application.constants.ApplicationModuleSysParamConstants;
 import com.flowcentraltech.flowcentral.application.data.TableColumnDef;
 import com.flowcentraltech.flowcentral.application.data.TableDef;
+import com.flowcentraltech.flowcentral.application.data.TableFilterDef;
 import com.flowcentraltech.flowcentral.application.web.widgets.AbstractTable;
 import com.flowcentraltech.flowcentral.application.web.widgets.AbstractTableWidget;
+import com.flowcentraltech.flowcentral.common.business.SpecialParamProvider;
 import com.flowcentraltech.flowcentral.system.business.SystemModuleService;
 import com.tcdng.unify.core.UnifyException;
 import com.tcdng.unify.core.annotation.Component;
@@ -82,14 +85,15 @@ public class TableWriter extends AbstractControlWriter {
                 writeTagStyleClass(writer, "table");
             }
             writer.write(">");
-            
-            String errMsg = (String) getRequestAttribute(AppletRequestAttributeConstants.SILENT_MULTIRECORD_SEARCH_ERROR_MSG);
-            if(!StringUtils.isBlank(errMsg)) {
+
+            String errMsg = (String) getRequestAttribute(
+                    AppletRequestAttributeConstants.SILENT_MULTIRECORD_SEARCH_ERROR_MSG);
+            if (!StringUtils.isBlank(errMsg)) {
                 writer.write("<div class=\"mwarn\"><span style=\"display:block;text-align:center;\">");
                 writer.write(errMsg);
                 writer.write("</span></div>");
             }
-            
+
             writeHeaderRow(writer, tableWidget);
             writeBodyRows(writer, tableWidget);
             writer.write("</table></div>");
@@ -247,7 +251,7 @@ public class TableWriter extends AbstractControlWriter {
             }
 
             writer.write("</tr>");
-        }       
+        }
     }
 
     private void writeHeaderMultiSelect(ResponseWriter writer, AbstractTableWidget<?, ?, ?> tableWidget)
@@ -299,6 +303,9 @@ public class TableWriter extends AbstractControlWriter {
                 writer.write("</span></td>");
                 writer.write("</tr>");
             } else {
+                final boolean rowColors = tableDef.isRowColorFilters();
+                final Date now = table.getAu().getNow();
+                final SpecialParamProvider specialParamProvider = table.getAu().getSpecialParamProvider();
                 for (int i = 0; i < len; i++) {
                     ValueStore valueStore = valueList.get(i);
                     Long id = valueStore.retrieve(Long.class, "id");
@@ -312,6 +319,20 @@ public class TableWriter extends AbstractControlWriter {
                     }
 
                     writeTagName(writer, tableWidget.getRowId());
+
+                    if (rowColors) {
+                        for (TableFilterDef tableFilterDef : tableDef.getRowColorFilterList()) {
+                            if (tableFilterDef.getFilterDef()
+                                    .getObjectFilter(tableDef.getEntityDef(), specialParamProvider, now)
+                                    .match(valueStore)) {
+                                writer.write(" style=\"background-color:");
+                                writer.write(tableFilterDef.getRowColor());
+                                writer.write(";\"");
+                                break;
+                            }
+                        }
+                    }
+
                     writer.write(">");
 
                     if (!entryMode) {

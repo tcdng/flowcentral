@@ -438,6 +438,9 @@
 		<reference name="appTableColumnRef"
 			description="$m{application.apptablecolumn.reference}"
 			entity="appTableColumn" searchField="field" />
+		<reference name="appTableFilterRef"
+			description="$m{application.apptablefilter.reference}"
+			entity="appTableFilter" searchField="description" />
 		<reference name="appTableActionRef"
 			description="$m{application.apptableaction.reference}"
 			entity="appTableAction" searchField="label" />
@@ -914,6 +917,9 @@
 			<field name="actionList"
 				label="$m{application.apptable.actions}" type="child_list"
 				references="appTableActionRef" />
+			<field name="filterList"
+				label="$m{application.apptable.filters}" type="child_list"
+				references="appTableFilterRef" />
 			<uniqueConstraint name="nameUc"
 				description="$m{application.apptable.uc.name}"
 				fieldList="applicationId,name" />
@@ -957,6 +963,26 @@
 			<uniqueConstraint name="labelUc"
 				description="$m{application.apptableaction.uc.label}"
 				fieldList="appTableId,label" />
+		</entity>
+		<entity name="appTableFilter"
+			description="$m{application.apptablefilter}"
+			label="$m{application.apptablefilter.label}"
+			type="com.flowcentraltech.flowcentral.application.entities.AppTableFilter">
+			<field name="appTableId"
+				label="$m{application.apptablefilter.apptableid}" type="ref"
+				references="appTableRef" inputWidget="application.entitylist" />
+			<field name="rowColor"
+				label="$m{application.apptablefilter.rowcolor}" type="string"
+				nullable="true" />
+			<field name="filter"
+				label="$m{application.apptablefilter.filter}" type="child"
+				category="applet" references="appFilterRef" />
+			<uniqueConstraint name="nameUc"
+				description="$m{application.apptablefilter.uc.name}"
+				fieldList="appTableId,name" />
+			<uniqueConstraint name="descUc"
+				description="$m{application.apptablefilter.uc.description}"
+				fieldList="appTableId,description" />
 		</entity>
 		<entity name="appForm" description="$m{application.appform}"
 			label="$m{application.appform.label}"

@@ -52,6 +52,8 @@ public class AppTableConfig extends BaseNameConfig {
 
     private List<FilterConfig> quickFilterList;
 
+    private List<TableFilterConfig> filterList;
+
     public AppTableConfig() {
         this.sortable = true;
         this.limitSelectToColumns = true;
@@ -164,6 +166,15 @@ public class AppTableConfig extends BaseNameConfig {
     @XmlElement(name = "quickFilter")
     public void setQuickFilterList(List<FilterConfig> quickFilterList) {
         this.quickFilterList = quickFilterList;
+    }
+
+    public List<TableFilterConfig> getFilterList() {
+        return filterList;
+    }
+
+    @XmlElement(name = "filter", required = true)
+    public void setFilterList(List<TableFilterConfig> filterList) {
+        this.filterList = filterList;
     }
 
 }
