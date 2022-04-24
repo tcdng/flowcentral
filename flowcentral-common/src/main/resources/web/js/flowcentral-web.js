@@ -687,6 +687,46 @@ fux.tableDisableMultiSelElements = function(rigTbl) {
 	ux.cbSwitchImg(selAllBox);
 }
 
+/* Tree Table*/
+fux.rigEntityTreeTable = function(rgp) {
+	var id = rgp.pId;
+	var tblToRig = _id(id);
+	if (!tblToRig) {
+		// TODO Show some error
+		return;
+	}
+
+	if (rgp.pMultiSel) {
+		//tblToRig.uSelAllId = rgp.pSelAllId;
+		tblToRig.uSelCtrlId = rgp.pSelCtrlId;
+		//tblToRig.uMultiSelDepList = rgp.pMultiSelDepList;
+		tblToRig.uVisibleSel = 0;
+
+		// Rig select
+//		const selAll = _id(rgp.pSelAllId);
+//		selAll._active = true;
+//		ux.cbWire(selAll);
+
+//		const selBoxes = _name(rgp.pSelCtrlId);
+//		tblToRig.uSelBoxes = selBoxes;
+//
+//		const evp = {uRigTbl:tblToRig};
+//		const selAllFac = _id("fac_" + rgp.pSelAllId);
+//		selAllFac.selAll = selAll;
+//		ux.addHdl(selAllFac, "change", fux.tableSelAllClick, evp);
+//
+//		for (var selBox of selBoxes) {
+//			selBox._active = true;
+//			ux.cbWire(selBox);
+//			
+//			const selBoxFac = _id("fac_" + selBox.id);
+//			selBoxFac.selBox = selBox;
+//			ux.addHdl(selBoxFac, "change", fux.tableMultiSelClick, evp);
+//		}
+	}
+
+}
+
 /** Initialization */
 fux.init = function() {
 	ux.registerExtension("fux", fux);

@@ -509,7 +509,7 @@ textarea:focus {outline: none !important;box-shadow: 0 0 6px #5194f3;}
 .fc-entitytreetable .table .cpre {width:20px;}
 .fc-entitytreetable .table .clabel {width:64px;}
 .fc-entitytreetable .table .cline {}
-.fc-entitytreetable .table .msel {background-color: #e3e7ea;}
+.fc-entitytreetable .table .msel {text-align:right;}
 .fc-entitytreetable .table .msel span {width:16px; height:16px;}
 .fc-entitytreetable .table .msel input {display:none;}
 .fc-entitytreetable .table .mpre {}
@@ -672,6 +672,11 @@ textarea:focus {outline: none !important;box-shadow: 0 0 6px #5194f3;}
 .fc-entitymultiselectpanel .entityview {height:360px;overflow-y:scroll;}
 .fc-entitymultiselectpanel .footer {display: inline-block;padding-left:4px;padding-bottom:8px;padding-top:8px;box-sizing: border-box;}
 .fc-entitymultiselectpanel .search {display: inline-block;padding-right: 6px; width:100%; font-size: 11px;font-weight: bold;color: #262c33;}
+
+/* Entity tree select panel */
+.fc-entitytreemultiselectpanel {width:640px; background-color:#ffffff;border: 1px solid #b8b8b8;}
+.fc-entitytreemultiselectpanel .entityview {height:360px;overflow-y:scroll;}
+.fc-entitytreemultiselectpanel .footer {display: inline-block;padding-left:4px;padding-bottom:8px;padding-top:8px;box-sizing: border-box;}
 
 /* Entity file attachments panel*/
 .fc-entityfileattachmentspanel {}

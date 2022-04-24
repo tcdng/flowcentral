@@ -56,6 +56,10 @@ public class EntityTreeTable {
         return levels.size();
     }
 
+    public EntityTreeItem getEntityTreeItem(int index) {
+        return items.get(index);
+    }
+    
     public List<EntityTreeItem> getItems() {
         return items;
     }
@@ -161,8 +165,9 @@ public class EntityTreeTable {
                 throw new RuntimeException("You must have at least one item before you can add items");
             }
 
-            Object parentInstId = parentItems.isEmpty() ? null : parentItems.peek().getInst().getId();
-            items.add(new EntityTreeItem(parentInstId, _inst, currentLevel, selected));
+            String instLongId = parentItems.isEmpty() ? String.valueOf(_inst.getId())
+                    : parentItems.peek().getInstLongId() + "." + _inst.getId();
+            items.add(new EntityTreeItem(instLongId, _inst, currentLevel, selected));
             return this;
         }
 
@@ -214,7 +219,7 @@ public class EntityTreeTable {
 
         private ValueStore instValueStore;
 
-        private Object parentInstId;
+        private String instLongId;
 
         private Entity inst;
 
@@ -222,8 +227,8 @@ public class EntityTreeTable {
 
         private boolean selected;
 
-        private EntityTreeItem(Object parentInstId, Entity inst, int level, boolean selected) {
-            this.parentInstId = parentInstId;
+        private EntityTreeItem(String instLongId, Entity inst, int level, boolean selected) {
+            this.instLongId = instLongId;
             this.inst = inst;
             this.level = level;
             this.selected = selected;
@@ -241,8 +246,8 @@ public class EntityTreeTable {
             return instValueStore;
         }
 
-        public Object getParentInstId() {
-            return parentInstId;
+        public String getInstLongId() {
+            return instLongId;
         }
 
         public Entity getInst() {
