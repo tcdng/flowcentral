@@ -145,6 +145,7 @@ public class SpringBootInterconnectServiceImpl implements SpringBootInterconnect
 
     @Override
     public JsonDataSourceResponse processDataSourceRequest(DataSourceRequest req) throws Exception {
+        LOGGER.log(Level.INFO, "Processing datasource request [{0}]...", interconnect.prettyJSON(req));
         final EntityInfo entityInfo = interconnect.getEntityInfo(req.getEntity());
         PlatformInfo platform = getPlatform(entityInfo);
 
@@ -203,7 +204,7 @@ public class SpringBootInterconnectServiceImpl implements SpringBootInterconnect
                             query.setFirstResult(req.getOffset());
                         }
                         
-                        if (req.getLimit() >= 0) {
+                        if (req.getLimit() > 0) {
                             query.setMaxResults(req.getLimit());
                         }
                         

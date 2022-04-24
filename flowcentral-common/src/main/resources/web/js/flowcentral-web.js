@@ -641,14 +641,24 @@ fux.tableMultiSelClick = function(uEv) {
 		var selBox = selBoxFac.selBox;
 		var rigTbl = uEv.evp.uRigTbl;
 		rigTbl.uLastSelClick = null;
-		if (selBox.checked == true) {
-			// selBox.uRow.className = rigTbl.uSelCls;
-			rigTbl.uVisibleSel++;
-		} else {
-			// selBox.uRow.className = selBox.uRowClass;
-			rigTbl.uVisibleSel--;
-		}
+		const checked = selBox.checked == true;
+		const inc = checked ? 1 : -1;
+		rigTbl.uVisibleSel += inc;
 
+		if (rigTbl.uChain) {
+			var chain = rigTbl.uChain;
+			var i = selBoxFac.index;
+			var level = chain[i];
+			var len = chain.length;
+			var selBoxes = rigTbl.uSelBoxes;
+			
+			while((++i) < len && level < chain[i]) {
+				selBoxes[i].checked = checked;
+				ux.cbSwitchImg(selBoxes[i]);
+				rigTbl.uVisibleSel += inc;
+			}
+		}
+		
 		fux.tableDisableMultiSelElements(rigTbl);
 	}
 }
@@ -663,14 +673,12 @@ fux.tableSelAllClick = function(uEv) {
 		for (var selBox of selBoxes) {
 			selBox.checked = selAllBox.checked;
 			ux.cbSwitchImg(selBox);
-			// selBox.uRow.className = rigTbl.uSelCls;
 		}
 	} else {
 		rigTbl.uVisibleSel = 0;
 		for (var selBox of selBoxes) {
 			selBox.checked = selAllBox.checked;
 			ux.cbSwitchImg(selBox);
-			// selBox.uRow.className = selBox.uRowClass;
 		}
 	}
 
@@ -681,10 +689,56 @@ fux.tableSelAllClick = function(uEv) {
 fux.tableDisableMultiSelElements = function(rigTbl) {
 	ux.setDisabledById(rigTbl.uMultiSelDepList, rigTbl.uVisibleSel <= 0);
 	var selAllBox = _id(rigTbl.uSelAllId);
-	if (selAllBox.checked && rigTbl.uVisibleSel < rigTbl.uSelBoxes.length) {
-		selAllBox.checked = false;
+	if (selAllBox) {
+		if (selAllBox.checked && rigTbl.uVisibleSel < rigTbl.uSelBoxes.length) {
+			selAllBox.checked = false;
+			ux.cbSwitchImg(selAllBox);
+		}
 	}
-	ux.cbSwitchImg(selAllBox);
+}
+
+/* Tree Table*/
+fux.rigEntityTreeTable = function(rgp) {
+	var id = rgp.pId;
+	var tblToRig = _id(id);
+	if (!tblToRig) {
+		// TODO Show some error
+		return;
+	}
+
+	if (rgp.pMultiSel) {
+		//tblToRig.uSelAllId = rgp.pSelAllId;
+		tblToRig.uSelCtrlId = rgp.pSelCtrlId;
+		//tblToRig.uMultiSelDepList = rgp.pMultiSelDepList;
+		tblToRig.uChain = rgp.pLvlChain;
+		tblToRig.uVisibleSel = 0;
+
+		// Rig select
+//		const selAll = _id(rgp.pSelAllId);
+//		selAll._active = true;
+//		ux.cbWire(selAll);
+
+		const selBoxes = _name(rgp.pSelCtrlId);
+		tblToRig.uSelBoxes = selBoxes;
+
+		const evp = {uRigTbl:tblToRig};
+//		const selAllFac = _id("fac_" + rgp.pSelAllId);
+//		selAllFac.selAll = selAll;
+//		ux.addHdl(selAllFac, "change", fux.tableSelAllClick, evp);
+//
+		
+		for (var i = 0; i < selBoxes.length; i++) {
+			var selBox = selBoxes[i];
+			selBox._active = true;
+			ux.cbWire(selBox);
+			
+			const selBoxFac = _id("fac_" + selBox.id);
+			selBoxFac.selBox = selBox;
+			selBoxFac.index = i;
+			ux.addHdl(selBoxFac, "change", fux.tableMultiSelClick, evp);
+		}
+	}
+
 }
 
 /** Initialization */

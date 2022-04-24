@@ -275,17 +275,17 @@
 		<widgetType name="date" listOption="true"
 			description="$m{application.widgettype.date}" dataType="date"
 			inputType="date"
-			editor="!ui-date formatter:$d{!fixeddatetimeformat pattern:$s{yyyy-MM-dd}}"
+			editor="!ui-date formatter:$d{!fixeddatetimeformat pattern:$s{yyyy-MM-dd}} clearable:true"
 			renderer="!ui-label formatter:$d{!fixeddatetimeformat pattern:$s{yyyy-MM-dd}}" />
 		<widgetType name="datefuture" listOption="true"
 			description="$m{application.widgettype.datefuture}" dataType="date"
 			inputType="date"
-			editor="!ui-date type:future formatter:$d{!fixeddatetimeformat pattern:$s{yyyy-MM-dd}}"
+			editor="!ui-date type:future formatter:$d{!fixeddatetimeformat pattern:$s{yyyy-MM-dd}} clearable:true"
 			renderer="!ui-label formatter:$d{!fixeddatetimeformat pattern:$s{yyyy-MM-dd}}" />
 		<widgetType name="datepast" listOption="true"
 			description="$m{application.widgettype.datepast}" dataType="date"
 			inputType="date"
-			editor="!ui-date type:past formatter:$d{!fixeddatetimeformat pattern:$s{yyyy-MM-dd}}"
+			editor="!ui-date type:past formatter:$d{!fixeddatetimeformat pattern:$s{yyyy-MM-dd}} clearable:true"
 			renderer="!ui-label formatter:$d{!fixeddatetimeformat pattern:$s{yyyy-MM-dd}}" />
 		<widgetType name="datetext"
 			description="$m{application.widgettype.datetext}" dataType="date"
@@ -295,7 +295,7 @@
 		<widgetType name="datetime" listOption="true"
 			description="$m{application.widgettype.datetime}"
 			dataType="timestamp_utc" inputType="datetime"
-			editor="!ui-date formatter:$d{!fixeddatetimeformat pattern:$s{yyyy-MM-dd}}"
+			editor="!ui-date formatter:$d{!fixeddatetimeformat pattern:$s{yyyy-MM-dd}} clearable:true"
 			renderer="!ui-label formatter:$d{!fixeddatetimeformat pattern:$s{yyyy-MM-dd HH:mm:ss}}" />
 		<widgetType name="datetimetext"
 			description="$m{application.widgettype.datetimetext}"
@@ -396,6 +396,9 @@
 		<reference name="appAppletPropRef"
 			description="$m{application.appappletprop.reference}"
 			entity="appAppletProp" searchField="name" />
+		<reference name="appAppletSetValuesRef"
+			description="$m{application.appappletsetvalues.reference}"
+			entity="appAppletSetValues" searchField="description" />
 		<reference name="appAppletFilterRef"
 			description="$m{application.appappletfilter.reference}"
 			entity="appAppletFilter" searchField="description" />
@@ -552,6 +555,9 @@
 			<field name="filterList"
 				label="$m{application.appapplet.filters}" type="child_list"
 				references="appAppletFilterRef" />
+			<field name="setValuesList"
+				label="$m{application.appapplet.setvalues}" type="child_list"
+				references="appAppletSetValuesRef" />
 			<uniqueConstraint name="nameUc"
 				description="$m{application.appapplet.uc.name}" fieldList="name" />
 			<uniqueConstraint name="descUc"
@@ -613,6 +619,23 @@
 				fieldList="appAppletId,name" />
 			<uniqueConstraint name="descUc"
 				description="$m{application.appappletfilter.uc.description}"
+				fieldList="appAppletId,description" />
+		</entity>
+		<entity name="appAppletSetValues"
+			description="$m{application.appappletsetvalues}"
+			label="$m{application.appappletsetvalues.label}"
+			type="com.flowcentraltech.flowcentral.application.entities.AppAppletSetValues">
+			<field name="appAppletId"
+				label="$m{application.appappletsetvalues.appappletid}" type="ref"
+				references="appAppletRef" inputWidget="application.entitylist" />
+			<field name="setValues"
+				label="$m{application.appappletsetvalues.setvalue}" type="child"
+				category="applet" references="appSetValuesRef" />
+			<uniqueConstraint name="nameUc"
+				description="$m{application.appappletsetvalues.uc.name}"
+				fieldList="appAppletId,name" />
+			<uniqueConstraint name="descUc"
+				description="$m{application.appappletsetvalues.uc.description}"
 				fieldList="appAppletId,description" />
 		</entity>
 		<entity name="appEntity"

@@ -17,6 +17,7 @@ package com.flowcentraltech.flowcentral.connect.common;
 
 import java.io.BufferedReader;
 import java.io.StringReader;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -39,13 +40,13 @@ import com.flowcentraltech.flowcentral.connect.common.constants.LingualStringTyp
 import com.flowcentraltech.flowcentral.connect.common.constants.RestrictionType;
 import com.flowcentraltech.flowcentral.connect.common.data.BaseRequest;
 import com.flowcentraltech.flowcentral.connect.common.data.DataSourceRequest;
-import com.flowcentraltech.flowcentral.connect.common.data.JsonDataSourceResponse;
 import com.flowcentraltech.flowcentral.connect.common.data.DateRange;
 import com.flowcentraltech.flowcentral.connect.common.data.EntityFieldInfo;
 import com.flowcentraltech.flowcentral.connect.common.data.EntityInfo;
+import com.flowcentraltech.flowcentral.connect.common.data.JsonDataSourceResponse;
+import com.flowcentraltech.flowcentral.connect.common.data.JsonProcedureResponse;
 import com.flowcentraltech.flowcentral.connect.common.data.OrderDef;
 import com.flowcentraltech.flowcentral.connect.common.data.ProcedureRequest;
-import com.flowcentraltech.flowcentral.connect.common.data.JsonProcedureResponse;
 import com.flowcentraltech.flowcentral.connect.common.data.QueryDef;
 import com.flowcentraltech.flowcentral.connect.common.data.ResolvedCondition;
 import com.flowcentraltech.flowcentral.connect.configuration.xml.ApplicationConfig;
@@ -53,6 +54,8 @@ import com.flowcentraltech.flowcentral.connect.configuration.xml.EntitiesConfig;
 import com.flowcentraltech.flowcentral.connect.configuration.xml.EntityConfig;
 import com.flowcentraltech.flowcentral.connect.configuration.xml.EntityFieldConfig;
 import com.flowcentraltech.flowcentral.connect.configuration.xml.util.XmlUtils;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.tcdng.unify.convert.util.ConverterUtils;
 
 /**
@@ -64,6 +67,14 @@ import com.tcdng.unify.convert.util.ConverterUtils;
 public class Interconnect {
 
     private static final Logger LOGGER = Logger.getLogger(Interconnect.class.getName());
+
+    private final Gson gson = new GsonBuilder()
+            .disableHtmlEscaping()
+            .serializeNulls()
+            .setDateFormat(DateFormat.LONG)
+            .setPrettyPrinting()
+            .setVersion(1.0)
+            .create();
 
     protected enum RefType {
         PRIMITIVE,
@@ -91,6 +102,10 @@ public class Interconnect {
     public Interconnect(RefType refType) {
         this.refType = refType;
         this.entities = Collections.emptyMap();
+    }
+    
+    public String prettyJSON(Object src) {
+        return gson.toJson(src, src.getClass());
     }
 
     public boolean init(String configurationFile, EntityInstFinder entityInstFinder) throws Exception {

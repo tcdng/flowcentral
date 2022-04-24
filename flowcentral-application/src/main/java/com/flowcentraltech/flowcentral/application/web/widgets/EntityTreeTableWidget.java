@@ -20,8 +20,6 @@ import java.util.List;
 import com.flowcentraltech.flowcentral.application.web.widgets.EntityTreeTable.EntityTreeItem;
 import com.tcdng.unify.core.UnifyException;
 import com.tcdng.unify.core.annotation.Component;
-import com.tcdng.unify.core.annotation.UplAttribute;
-import com.tcdng.unify.core.annotation.UplAttributes;
 import com.tcdng.unify.core.data.ValueStore;
 import com.tcdng.unify.web.ui.widget.AbstractValueListMultiControl;
 import com.tcdng.unify.web.ui.widget.Control;
@@ -33,9 +31,6 @@ import com.tcdng.unify.web.ui.widget.Control;
  * @since 1.0
  */
 @Component("fc-entitytreetable")
-@UplAttributes({@UplAttribute(name = "multiSelect", type = boolean.class),
-    @UplAttribute(name = "multiColumn", type = boolean.class),
-    @UplAttribute(name = "showLevelLabel", type = boolean.class)})
 public class EntityTreeTableWidget extends AbstractValueListMultiControl<ValueStore, EntityTreeItem> {
 
     private Control selectCtrl;
@@ -70,18 +65,6 @@ public class EntityTreeTableWidget extends AbstractValueListMultiControl<ValueSt
         }
     }
 
-    public boolean isMultiSelect() throws UnifyException {
-        return getUplAttribute(boolean.class, "multiSelect");
-    }
-
-    public boolean isMultiColumn() throws UnifyException {
-        return getUplAttribute(boolean.class, "multiColumn");
-    }
-
-    public boolean isShowLevelLabel() throws UnifyException {
-        return getUplAttribute(boolean.class, "showLevelLabel");
-    }
-
     public String getRowId() throws UnifyException {
         return getPrefixedId("row_");
     }
@@ -92,9 +75,7 @@ public class EntityTreeTableWidget extends AbstractValueListMultiControl<ValueSt
 
     @Override
     protected void doOnPageConstruct() throws UnifyException {
-        if (isMultiSelect()) {
-            selectCtrl = (Control) addInternalChildWidget("!ui-hidden binding:selected");
-        }
+        selectCtrl = (Control) addInternalChildWidget("!ui-hidden binding:selected");
     }
 
     @Override
