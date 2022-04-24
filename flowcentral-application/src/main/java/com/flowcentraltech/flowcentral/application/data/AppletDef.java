@@ -76,6 +76,8 @@ public class AppletDef extends BaseApplicationEntityDef {
 
     private Map<String, AppletPropDef> propDefMap;
 
+    private Map<String, AppletSetValuesDef> setValuesDefMap;
+
     private Map<String, FilterDef> filterDefMap;
 
     private List<FilterDef> preferredFormFilterList;
@@ -83,10 +85,11 @@ public class AppletDef extends BaseApplicationEntityDef {
     private Map<String, List<FilterDef>> childListAppletFilterDefMap;
 
     private AppletDef(AppletType type, List<AppletPropDef> propDefList, Map<String, AppletPropDef> propDefMap,
-            Map<String, FilterDef> filterDefMap, String entity, String label, String icon, String assignDescField,
-            String routeToApplet, String openPath, String originApplicationName, String originName, int displayIndex,
-            boolean openWindow, boolean menuAccess, boolean descriptiveButtons, ApplicationEntityNameParts nameParts,
-            String description, Long id, long version) {
+            Map<String, AppletSetValuesDef> setValuesDefMap, Map<String, FilterDef> filterDefMap, String entity,
+            String label, String icon, String assignDescField, String routeToApplet, String openPath,
+            String originApplicationName, String originName, int displayIndex, boolean openWindow, boolean menuAccess,
+            boolean descriptiveButtons, ApplicationEntityNameParts nameParts, String description, Long id,
+            long version) {
         super(nameParts, description, id, version);
         this.type = type;
         this.entity = entity;
@@ -104,6 +107,7 @@ public class AppletDef extends BaseApplicationEntityDef {
         this.descriptiveButtons = descriptiveButtons;
         this.propDefList = propDefList;
         this.propDefMap = propDefMap;
+        this.setValuesDefMap = setValuesDefMap;
         this.filterDefMap = filterDefMap;
         List<FilterDef> preferredFormFilterList = new ArrayList<FilterDef>();
         Map<String, List<FilterDef>> childListAppletFilterDefMap = new HashMap<String, List<FilterDef>>();
@@ -296,6 +300,16 @@ public class AppletDef extends BaseApplicationEntityDef {
         return appletPropDef;
     }
 
+    public AppletSetValuesDef getSetValues(String name) {
+        AppletSetValuesDef appletSetValuesDef = setValuesDefMap.get(name);
+        if (appletSetValuesDef == null) {
+            throw new RuntimeException(
+                    "Set values with name [" + name + "] is unknown for applet definition [" + getName() + "].");
+        }
+
+        return appletSetValuesDef;
+    }
+    
     public boolean isFilter(String name) {
         return filterDefMap.containsKey(name);
     }
@@ -331,6 +345,8 @@ public class AppletDef extends BaseApplicationEntityDef {
     public static class Builder {
 
         private Map<String, AppletPropDef> propDefMap;
+
+        private Map<String, AppletSetValuesDef> setValuesDefMap;
 
         private Map<String, FilterDef> filterDefMap;
 
@@ -373,6 +389,7 @@ public class AppletDef extends BaseApplicationEntityDef {
                 Long id, long version) {
             this.type = type;
             this.propDefMap = new HashMap<String, AppletPropDef>();
+            this.setValuesDefMap = new HashMap<String, AppletSetValuesDef>();
             this.filterDefMap = new HashMap<String, FilterDef>();
             this.entity = entity;
             this.label = label;
@@ -421,6 +438,15 @@ public class AppletDef extends BaseApplicationEntityDef {
             return this;
         }
 
+        public Builder addSetValuesDef(String name, String description, SetValuesDef setValuesDef) {
+            if (setValuesDefMap.containsKey(name)) {
+                throw new RuntimeException("Set values with name [" + name + "] already exists in this definition.");
+            }
+
+            setValuesDefMap.put(name, new AppletSetValuesDef(setValuesDef, name, description));
+            return this;
+        }
+
         public Builder addFilterDef(FilterDef filterDef) {
             if (filterDef != null) {
                 if (filterDefMap.containsKey(filterDef.getName())) {
@@ -440,9 +466,10 @@ public class AppletDef extends BaseApplicationEntityDef {
                 originApplicationName = nameParts.getApplicationName();
             }
             return new AppletDef(type, DataUtils.unmodifiableList(new ArrayList<AppletPropDef>(propDefMap.values())),
-                    DataUtils.unmodifiableMap(propDefMap), DataUtils.unmodifiableMap(filterDefMap), entity, label, icon,
-                    assignDescField, routeToApplet, openPath, originApplicationName, originName, displayIndex,
-                    openWindow, menuAccess, descriptiveButtons, nameParts, description, id, version);
+                    DataUtils.unmodifiableMap(propDefMap), DataUtils.unmodifiableMap(setValuesDefMap),
+                    DataUtils.unmodifiableMap(filterDefMap), entity, label, icon, assignDescField, routeToApplet,
+                    openPath, originApplicationName, originName, displayIndex, openWindow, menuAccess,
+                    descriptiveButtons, nameParts, description, id, version);
         }
     }
 

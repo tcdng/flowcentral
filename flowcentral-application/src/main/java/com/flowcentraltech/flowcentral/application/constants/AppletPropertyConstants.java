@@ -55,7 +55,7 @@ public interface AppletPropertyConstants {
     String CREATE_FORM_NEW_CAPTION= "createForm.new.caption";
 
     String CREATE_FORM_NEW_POLICY = "createForm.new.policy";
-//
+
     String CREATE_FORM_SUBMIT = "createForm.submit";
 
     String CREATE_FORM_SUBMIT_CAPTION = "createForm.submit.caption";
@@ -73,7 +73,7 @@ public interface AppletPropertyConstants {
     String CREATE_FORM_SUBMIT_BUTTON_HIGHLIGHT = "createForm.submit.buttonhighlight";
 
     String CREATE_FORM_SUBMIT_CONDITION = "createForm.submit.condition";
-//
+
     String CREATE_FORM_SAVE = "createForm.save";
 
     String CREATE_FORM_SAVE_NEXT = "createForm.save.next";
@@ -91,7 +91,7 @@ public interface AppletPropertyConstants {
     String MAINTAIN_FORM_UPDATE_POLICY = "maintainForm.update.policy";
 
     String MAINTAIN_FORM_UPDATE_CONDITION = "maintainForm.update.condition";
-//
+
     String MAINTAIN_FORM_SUBMIT = "maintainForm.submit";
 
     String MAINTAIN_FORM_SUBMIT_POLICY = "maintainForm.submit.policy";
@@ -103,8 +103,12 @@ public interface AppletPropertyConstants {
     String MAINTAIN_FORM_SUBMIT_NEXT = "maintainForm.submitnext";
 
     String MAINTAIN_FORM_SUBMIT_CONDITION = "maintainForm.submit.condition";
-//
+
     String MAINTAIN_FORM_DELETE = "maintainForm.delete";
+
+    String MAINTAIN_FORM_DELETE_PSEUDO = "maintainForm.delete.pseudo";
+
+    String MAINTAIN_FORM_DELETE_PSEUDO_SETVALUES = "maintainForm.delete.pseudo.setvalues";
 
     String MAINTAIN_FORM_DELETE_POLICY = "maintainForm.delete.policy";
 

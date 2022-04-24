@@ -73,6 +73,8 @@ import com.flowcentraltech.flowcentral.application.entities.AppAppletFilterQuery
 import com.flowcentraltech.flowcentral.application.entities.AppAppletProp;
 import com.flowcentraltech.flowcentral.application.entities.AppAppletPropQuery;
 import com.flowcentraltech.flowcentral.application.entities.AppAppletQuery;
+import com.flowcentraltech.flowcentral.application.entities.AppAppletSetValues;
+import com.flowcentraltech.flowcentral.application.entities.AppAppletSetValuesQuery;
 import com.flowcentraltech.flowcentral.application.entities.AppAssignmentPage;
 import com.flowcentraltech.flowcentral.application.entities.AppAssignmentPageQuery;
 import com.flowcentraltech.flowcentral.application.entities.AppEntity;
@@ -190,6 +192,7 @@ import com.flowcentraltech.flowcentral.configuration.xml.AppFormConfig;
 import com.flowcentraltech.flowcentral.configuration.xml.AppTableConfig;
 import com.flowcentraltech.flowcentral.configuration.xml.AppletConfig;
 import com.flowcentraltech.flowcentral.configuration.xml.AppletPropConfig;
+import com.flowcentraltech.flowcentral.configuration.xml.AppletSetValuesConfig;
 import com.flowcentraltech.flowcentral.configuration.xml.ChoiceConfig;
 import com.flowcentraltech.flowcentral.configuration.xml.EntityAttachmentConfig;
 import com.flowcentraltech.flowcentral.configuration.xml.EntityExpressionConfig;
@@ -383,6 +386,12 @@ public class ApplicationModuleServiceImpl extends AbstractFlowCentralService
                                 appAppletFilter.getDescription(), appAppletFilter.getPreferredForm(),
                                 appAppletFilter.getPreferredChildListApplet(), appAppletFilter.getChildListActionType(),
                                 appAppletFilter.getFilter()));
+                    }
+
+                    for (AppAppletSetValues appAppletSetValues : appApplet.getSetValuesList()) {
+                        adb.addSetValuesDef(appAppletSetValues.getName(), appAppletSetValues.getDescription(),
+                                InputWidgetUtils.getSetValuesDef(appAppletSetValues.getName(),
+                                        appAppletSetValues.getDescription(), null, appAppletSetValues.getSetValues()));
                     }
 
                     adb.routeToApplet(appApplet.getRouteToApplet());
@@ -766,12 +775,10 @@ public class ApplicationModuleServiceImpl extends AbstractFlowCentralService
 
                     for (AppTableFilter appTableFilter : appTable.getFilterList()) {
                         FilterDef _filterDef = InputWidgetUtils.getFilterDef(appTableFilter.getName(),
-                                appTableFilter.getDescription(), null,
-                                null, null,
-                                appTableFilter.getFilter());
+                                appTableFilter.getDescription(), null, null, null, appTableFilter.getFilter());
                         tdb.addFilterDef(new TableFilterDef(_filterDef, appTableFilter.getRowColor()));
                     }
-                    
+
                     for (AppTableColumn appTableColumn : appTable.getColumnList()) {
                         final EntityFieldDef entityFieldDef = entityDef.getFieldDef(appTableColumn.getField());
                         String renderer = InputWidgetUtils
@@ -1215,6 +1222,11 @@ public class ApplicationModuleServiceImpl extends AbstractFlowCentralService
     @Override
     public String getAppTableEntity(Long appTableId) throws UnifyException {
         return environment().value(String.class, "entity", new AppTableQuery().id(appTableId));
+    }
+
+    @Override
+    public List<AppAppletSetValues> findAppAppletSetValues(Long appAppletId) throws UnifyException {
+        return environment().findAll(new AppAppletSetValuesQuery().appAppletId(appAppletId));
     }
 
     @Override
@@ -3115,6 +3127,37 @@ public class ApplicationModuleServiceImpl extends AbstractFlowCentralService
             }
         }
         appApplet.setPropList(propList);
+
+        List<AppAppletSetValues> setValuesList = null;
+        if (!DataUtils.isBlank(appletConfig.getSetValuesList())) {
+            setValuesList = new ArrayList<AppAppletSetValues>();
+            Map<String, AppAppletSetValues> map = appApplet.isIdBlank() ? Collections.emptyMap()
+                    : environment().findAllMap(String.class, "name",
+                            new AppAppletSetValuesQuery().appAppletId(appApplet.getId()));
+            for (AppletSetValuesConfig appletSetValuesConfig : appletConfig.getSetValuesList()) {
+                AppAppletSetValues oldAppAppletSetValues = map.get(appletSetValuesConfig.getName());
+                if (oldAppAppletSetValues == null) {
+                    AppAppletSetValues appAppletSetValues = new AppAppletSetValues();
+                    appAppletSetValues.setName(appletSetValuesConfig.getName());
+                    appAppletSetValues.setSetValues(newAppSetValues(appletSetValuesConfig.getSetValues()));
+                    appAppletSetValues.setConfigType(ConfigType.MUTABLE_INSTALL);
+                    setValuesList.add(appAppletSetValues);
+                } else {
+                    if (ConfigUtils.isSetInstall(oldAppAppletSetValues)) {
+                        oldAppAppletSetValues
+                                .setDescription(resolveApplicationMessage(appletSetValuesConfig.getDescription()));
+                        oldAppAppletSetValues.setSetValues(newAppSetValues(appletSetValuesConfig.getSetValues()));
+                    } else {
+                        environment().findChildren(oldAppAppletSetValues);
+                    }
+
+                    setValuesList.add(oldAppAppletSetValues);
+                }
+
+            }
+        }
+
+        appApplet.setSetValuesList(setValuesList);
 
         List<AppAppletFilter> filterList = null;
         if (!DataUtils.isBlank(appletConfig.getFilterList())) {

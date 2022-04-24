@@ -316,6 +316,11 @@
 			dataType="string" inputType="string"
 			editor="!ui-select list:studioappletfilterlist listParams:$l{propertyOwnerId} blankOption:$m{blank.none}"
 			renderer="!ui-label" />
+		<widgetType name="propertyappletsetvalueslist"
+			description="$m{studio.widgettype.propertyappletsetvalueslist}"
+			dataType="string" inputType="string"
+			editor="!ui-select list:studioappletsetvalueslist listParams:$l{propertyOwnerId} blankOption:$m{blank.none}"
+			renderer="!ui-label" />
 		<widgetType name="propertyentityactionpolicylist"
 			description="$m{studio.widgettype.propertyentityactionpolicylist}"
 			dataType="string" inputType="string"
@@ -541,6 +546,23 @@
 			<property name="createForm.save.next" value="true" />
 			<property name="createForm.save.close" value="true" />
 			<property name="maintainForm" value="appAppletFilterForm" />
+			<property name="maintainForm.update" value="true" />
+			<property name="maintainForm.delete" value="true" />
+		</applet>
+		<applet name="manageAppAppletSetValues"
+			description="$m{studio.appappletsetvalues.manage}"
+			label="$m{studio.appappletsetvalues.manage.label}"
+			type="manage_entitylist" entity="application.appAppletSetValues"
+			menuAccess="false">
+			<property name="searchTable" value="appAppletSetValuesTable" />
+			<property name="searchTable.new" value="true" />
+			<property name="searchTable.edit" value="false" />
+			<property name="searchTable.report" value="false" />
+			<property name="createForm" value="appAppletSetValuesForm" />
+			<property name="createForm.save" value="true" />
+			<property name="createForm.save.next" value="true" />
+			<property name="createForm.save.close" value="true" />
+			<property name="maintainForm" value="appAppletSetValuesForm" />
 			<property name="maintainForm.update" value="true" />
 			<property name="maintainForm.delete" value="true" />
 		</applet>
@@ -978,6 +1000,19 @@
 			<column field="updateDt" renderWidget="application.datetime"
 				widthRatio="1" />
 		</table>
+		<table name="appAppletSetValuesTable"
+			description="$m{studio.appappletsetvalues.table}"
+			label="$m{studio.appappletsetvalues.table.label}"
+			entity="application.appAppletSetValues">
+			<column field="name" renderWidget="application.name"
+				widthRatio="1" linkAct="maintainAct" />
+			<column field="description" renderWidget="application.text"
+				widthRatio="1" linkAct="maintainAct" />
+			<column field="createDt" renderWidget="application.datetime"
+				widthRatio="1" />
+			<column field="updateDt" renderWidget="application.datetime"
+				widthRatio="1" />
+		</table>
 		<table name="appTableColumnTable"
 			description="$m{studio.apptablecolumn.table}"
 			label="$m{studio.apptablecolumn.table.label}"
@@ -1338,6 +1373,9 @@
 			<tab name="filters" label="$m{studio.appapplet.form.filters}"
 				contentType="child_list" applet="manageAppAppletFilter"
 				reference="filterList" />
+			<tab name="setValues" label="$m{studio.appapplet.form.setvalues}"
+				contentType="child_list" applet="manageAppAppletSetValues"
+				reference="setValuesList" />
 			<tab name="changeLog" label="$m{application.form.audit}"
 				contentType="miniform_changelog" />
 			<formValidationPolicy
@@ -1505,6 +1543,25 @@
 						visible="true" />
 				</setStates>
 			</formStatePolicy>
+		</form>
+		<form name="appAppletSetValuesForm"
+			description="$m{studio.appappletsetvalues.form}"
+			entity="application.appAppletSetValues">
+			<tab name="basicDetails"
+				label="$m{studio.appappletsetvalues.form.basicdetails}"
+				contentType="miniform">
+				<section name="setValuesDetails" columns="type_2">
+					<field name="name" inputWidget="application.name" column="0"
+						required="true" />
+					<field name="description" inputWidget="application.text"
+						column="1" required="true" />
+				</section>
+			</tab>
+			<tab name="setValues"
+				label="$m{studio.appappletsetvalues.form.setvalues}"
+				reference="app_applet" contentType="set_values" />
+			<tab name="changeLog" label="$m{application.form.audit}"
+				contentType="miniform_changelog" />
 		</form>
 		<form name="appEntityForm"
 			description="$m{studio.appentity.form}"
@@ -3811,6 +3868,9 @@
 				<property name="maintainForm.delete.condition"
 					description="$m{studio.appappletprop.manageentity.maintain.deletecondition}"
 					inputWidget="studio.propertyappletfilterlist" />
+				<property name="maintainForm.delete.pseudo.setvalues"
+					description="$m{studio.appappletprop.manageentity.maintain.deletepseudosetvalues}"
+					inputWidget="studio.propertyappletsetvalueslist" />
 				<property name="createForm.save"
 					description="$m{studio.appappletprop.manageentity.createform.save}"
 					inputWidget="application.checkbox" />
@@ -3828,6 +3888,9 @@
 					inputWidget="application.checkbox" />
 				<property name="maintainForm.delete"
 					description="$m{studio.appappletprop.manageentity.maintainform.delete}"
+					inputWidget="application.checkbox" />
+				<property name="maintainForm.delete.pseudo"
+					description="$m{studio.appappletprop.manageentity.maintainform.delete.pseudo}"
 					inputWidget="application.checkbox" />
 				<property name="maintainForm.attachments"
 					description="$m{studio.appappletprop.manageentity.maintainform.attachments}"

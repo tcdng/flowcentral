@@ -39,6 +39,7 @@ import com.flowcentraltech.flowcentral.application.entities.AppApplet;
 import com.flowcentraltech.flowcentral.application.entities.AppAppletFilter;
 import com.flowcentraltech.flowcentral.application.entities.AppAppletFilterQuery;
 import com.flowcentraltech.flowcentral.application.entities.AppAppletQuery;
+import com.flowcentraltech.flowcentral.application.entities.AppAppletSetValues;
 import com.flowcentraltech.flowcentral.application.entities.AppAssignmentPage;
 import com.flowcentraltech.flowcentral.application.entities.AppAssignmentPageQuery;
 import com.flowcentraltech.flowcentral.application.entities.AppEntity;
@@ -249,6 +250,17 @@ public interface ApplicationModuleService extends FlowCentralService {
      *                        if an error occurs
      */
     String getAppTableEntity(Long appTableId) throws UnifyException;
+
+    /**
+     * Finds application applet set values.
+     * 
+     * @param appAppletId
+     *                    the application applet ID
+     * @return list of applet set values
+     * @throws UnifyException
+     *                        if an error occurs
+     */
+    List<AppAppletSetValues> findAppAppletSetValues(Long appAppletId) throws UnifyException;
 
     /**
      * Finds application applet filters.

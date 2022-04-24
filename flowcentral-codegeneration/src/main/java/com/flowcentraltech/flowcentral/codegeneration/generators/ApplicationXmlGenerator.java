@@ -24,6 +24,7 @@ import com.flowcentraltech.flowcentral.application.business.ApplicationModuleSer
 import com.flowcentraltech.flowcentral.application.entities.AppApplet;
 import com.flowcentraltech.flowcentral.application.entities.AppAppletFilter;
 import com.flowcentraltech.flowcentral.application.entities.AppAppletProp;
+import com.flowcentraltech.flowcentral.application.entities.AppAppletSetValues;
 import com.flowcentraltech.flowcentral.application.entities.AppAssignmentPage;
 import com.flowcentraltech.flowcentral.application.entities.AppEntity;
 import com.flowcentraltech.flowcentral.application.entities.AppEntityAttachment;
@@ -71,6 +72,7 @@ import com.flowcentraltech.flowcentral.configuration.xml.AppTableConfig;
 import com.flowcentraltech.flowcentral.configuration.xml.AppTablesConfig;
 import com.flowcentraltech.flowcentral.configuration.xml.AppletConfig;
 import com.flowcentraltech.flowcentral.configuration.xml.AppletPropConfig;
+import com.flowcentraltech.flowcentral.configuration.xml.AppletSetValuesConfig;
 import com.flowcentraltech.flowcentral.configuration.xml.AppletsConfig;
 import com.flowcentraltech.flowcentral.configuration.xml.ChoiceConfig;
 import com.flowcentraltech.flowcentral.configuration.xml.EntityAttachmentConfig;
@@ -227,6 +229,21 @@ public class ApplicationXmlGenerator extends AbstractStaticArtifactGenerator {
                     }
 
                     appletConfig.setFilterList(filterList);
+                }
+
+                // Set values
+                if (!DataUtils.isBlank(appApplet.getSetValuesList())) {
+                    List<AppletSetValuesConfig> setValuesList = new ArrayList<AppletSetValuesConfig>();
+                    for (AppAppletSetValues appAppletSetValues : appApplet.getSetValuesList()) {
+                        AppletSetValuesConfig appletSetValuesConfig = new AppletSetValuesConfig();
+                        appletSetValuesConfig.setName(appAppletSetValues.getName());
+                        appletSetValuesConfig.setDescription(appAppletSetValues.getDescription());
+                        appletSetValuesConfig.setSetValues(
+                                InputWidgetUtils.getSetValuesConfig(null, appAppletSetValues.getSetValues()));
+                        setValuesList.add(appletSetValuesConfig);
+                    }
+
+                    appletConfig.setSetValuesList(setValuesList);
                 }
 
                 appletList.add(appletConfig);
@@ -819,8 +836,7 @@ public class ApplicationXmlGenerator extends AbstractStaticArtifactGenerator {
                         formReviewPolicyConfig.setName(appFormReviewPolicy.getName());
                         descKey = getDescriptionKey(formDescKey, "reviewpolicy", appFormReviewPolicy.getName());
                         String msgKey = descKey + ".message";
-                        ctx.addMessage(StaticMessageCategoryType.FORM, descKey,
-                                appFormReviewPolicy.getDescription());
+                        ctx.addMessage(StaticMessageCategoryType.FORM, descKey, appFormReviewPolicy.getDescription());
                         ctx.addMessage(StaticMessageCategoryType.FORM, msgKey, appFormReviewPolicy.getMessage());
                         formReviewPolicyConfig.setDescription("$m{" + descKey + "}");
                         formReviewPolicyConfig.setMessage("$m{" + msgKey + "}");
@@ -1031,7 +1047,7 @@ public class ApplicationXmlGenerator extends AbstractStaticArtifactGenerator {
             suggestionTypesConfig.setSuggestionTypeList(suggestionTypeList);
             appConfig.setSuggestionTypesConfig(suggestionTypesConfig);
         }
-        
+
         ConfigurationUtils.writeConfig(appConfig, zos);
         closeEntry(zos);
     }

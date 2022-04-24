@@ -194,7 +194,7 @@ public abstract class AbstractTable<T, U> {
     public int getPageIndex() {
         return pageIndex;
     }
-
+    
     public int getNumberOfPages() {
         return numberOfPages;
     }
@@ -216,7 +216,13 @@ public abstract class AbstractTable<T, U> {
     }
 
     public void reset() throws UnifyException {
+        int _pageIndex = pageIndex;
         calcPageDimensions();
+        if (_pageIndex >= 0) {
+            // Page memory
+            pageIndex = _pageIndex < numberOfPages ? _pageIndex : (numberOfPages > 0 ? numberOfPages - 1 : 0);
+        }
+
         getDispItems();
     }
 

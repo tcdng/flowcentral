@@ -396,6 +396,9 @@
 		<reference name="appAppletPropRef"
 			description="$m{application.appappletprop.reference}"
 			entity="appAppletProp" searchField="name" />
+		<reference name="appAppletSetValuesRef"
+			description="$m{application.appappletsetvalues.reference}"
+			entity="appAppletSetValues" searchField="description" />
 		<reference name="appAppletFilterRef"
 			description="$m{application.appappletfilter.reference}"
 			entity="appAppletFilter" searchField="description" />
@@ -552,6 +555,9 @@
 			<field name="filterList"
 				label="$m{application.appapplet.filters}" type="child_list"
 				references="appAppletFilterRef" />
+			<field name="setValuesList"
+				label="$m{application.appapplet.setvalues}" type="child_list"
+				references="appAppletSetValuesRef" />
 			<uniqueConstraint name="nameUc"
 				description="$m{application.appapplet.uc.name}" fieldList="name" />
 			<uniqueConstraint name="descUc"
@@ -613,6 +619,23 @@
 				fieldList="appAppletId,name" />
 			<uniqueConstraint name="descUc"
 				description="$m{application.appappletfilter.uc.description}"
+				fieldList="appAppletId,description" />
+		</entity>
+		<entity name="appAppletSetValues"
+			description="$m{application.appappletsetvalues}"
+			label="$m{application.appappletsetvalues.label}"
+			type="com.flowcentraltech.flowcentral.application.entities.AppAppletSetValues">
+			<field name="appAppletId"
+				label="$m{application.appappletsetvalues.appappletid}" type="ref"
+				references="appAppletRef" inputWidget="application.entitylist" />
+			<field name="setValues"
+				label="$m{application.appappletsetvalues.setvalue}" type="child"
+				category="applet" references="appSetValuesRef" />
+			<uniqueConstraint name="nameUc"
+				description="$m{application.appappletsetvalues.uc.name}"
+				fieldList="appAppletId,name" />
+			<uniqueConstraint name="descUc"
+				description="$m{application.appappletsetvalues.uc.description}"
 				fieldList="appAppletId,description" />
 		</entity>
 		<entity name="appEntity"
