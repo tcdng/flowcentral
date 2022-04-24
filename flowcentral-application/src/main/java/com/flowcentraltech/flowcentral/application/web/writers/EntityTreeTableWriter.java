@@ -45,12 +45,12 @@ public class EntityTreeTableWriter extends AbstractControlWriter {
     @Override
     protected void doWriteStructureAndContent(ResponseWriter writer, Widget widget) throws UnifyException {
         EntityTreeTableWidget tableWidget = (EntityTreeTableWidget) widget;
-        if (tableWidget.isMultiSelect()) {
-            writeHiddenPush(writer, tableWidget.getSelectCtrl(), PushType.CHECKBOX);
-        }
-
         EntityTreeTable table = tableWidget.getEntityTreeTable();
         if (table != null) {
+            if (table.isMultiSelect()) {
+                writeHiddenPush(writer, tableWidget.getSelectCtrl(), PushType.CHECKBOX);
+            }
+
             writer.write("<div");
             writeTagAttributes(writer, tableWidget);
             writer.write(">");
@@ -59,17 +59,17 @@ public class EntityTreeTableWriter extends AbstractControlWriter {
             writeTagStyleClass(writer, "table");
             writer.write(">");
 
-            if (tableWidget.isMultiColumn()) {
+            if (table.isMultiColumn()) {
                 // TODO
             } else {
                 writer.write("<colgroup>");
-                final int prefixColumns = tableWidget.isMultiSelect() ? table.getLevelCount()
+                final int prefixColumns = table.isMultiSelect() ? table.getLevelCount()
                         : table.getLevelCount() - 1;
                 for (int i = 0; i < prefixColumns; i++) {
                     writer.write("<col class=\"cpre\">");
                 }
 
-                if (tableWidget.isShowLevelLabel()) {
+                if (table.isShowLabel()) {
                     writer.write("<col class=\"clabel\">");
                 }
 
@@ -94,9 +94,10 @@ public class EntityTreeTableWriter extends AbstractControlWriter {
             writer.writeParam("pId", tableWidget.getId());
             writer.writeParam("pContId", tableWidget.getContainerId());
             writer.writeCommandURLParam("pCmdURL");
-            if (tableWidget.isMultiSelect()) {
+            if (table.isMultiSelect()) {
                 writer.writeParam("pSelCtrlId", tableWidget.getSelectCtrl().getId());
                 writer.writeParam("pMultiSel", true);
+                writer.writeParam("pLvlChain", table.getItemLevelChain());
             }
             writer.endFunction();
         }
@@ -106,35 +107,38 @@ public class EntityTreeTableWriter extends AbstractControlWriter {
         EntityTreeTable table = tableWidget.getEntityTreeTable();
         if (table != null) {
             List<EntityTreeItem> items = table.getItems();
-            final int prefixColumns = tableWidget.isMultiSelect() ? table.getLevelCount() : table.getLevelCount() - 1;
+            final int prefixColumns = table.isMultiSelect() ? table.getLevelCount() : table.getLevelCount() - 1;
             final int len = items.size();
-            final boolean multiSelect = tableWidget.isMultiSelect();
-            final boolean showLabel = tableWidget.isShowLevelLabel();
+            final boolean multiSelect = table.isMultiSelect();
+            final boolean showLabel = table.isShowLabel();
             boolean isEvenRow = true;
 
-            if (tableWidget.isMultiColumn()) {
+            if (table.isMultiColumn()) {
                 // TODO
             } else {
                 for (int i = 0; i < len; i++) {
                     EntityTreeItem item = items.get(i);
-                    EntityTreeLevel treeLevel = table.getLevel(item.getLevel());
+                    final int level = item.getLevel();
+                    EntityTreeLevel treeLevel = table.getLevel(level);
                     ValueStore valueStore = item.getInstValueStore();
                     Long id = valueStore.retrieve(Long.class, "id");
                     writer.write("<tr");
                     if (isEvenRow) {
                         writeTagStyleClass(writer, "even");
-                        isEvenRow = false;
                     } else {
                         writeTagStyleClass(writer, "odd");
-                        isEvenRow = true;
                     }
 
+                    if (level == 0) {
+                        isEvenRow = !isEvenRow;
+                    }
+                    
                     writeTagName(writer, tableWidget.getRowId());
                     writer.write(">");
 
                     writePreColumns(writer, tableWidget, item, id, i);
 
-                    int filler = prefixColumns - item.getLevel();
+                    int filler = prefixColumns - level;
                     if (multiSelect) {
                         filler--;
                     }
@@ -166,8 +170,9 @@ public class EntityTreeTableWriter extends AbstractControlWriter {
 
     private void writePreColumns(ResponseWriter writer, EntityTreeTableWidget tableWidget, EntityTreeItem item, Long id,
             int index) throws UnifyException {
+        EntityTreeTable table = tableWidget.getEntityTreeTable();
         final int depth = item.getLevel();
-        if (tableWidget.isMultiSelect()) {
+        if (table != null && table.isMultiSelect()) {
             final Control selectCtrl = tableWidget.getSelectCtrl();
             final boolean selected = item.isSelected();
             writer.write("<td class=\"msel\" colspan=\"");
