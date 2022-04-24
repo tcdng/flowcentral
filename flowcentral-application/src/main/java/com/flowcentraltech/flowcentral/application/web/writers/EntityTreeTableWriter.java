@@ -123,14 +123,14 @@ public class EntityTreeTableWriter extends AbstractControlWriter {
                     ValueStore valueStore = item.getInstValueStore();
                     Long id = valueStore.retrieve(Long.class, "id");
                     writer.write("<tr");
+                    if (level == 0) {
+                        isEvenRow = !isEvenRow;
+                    }
+                    
                     if (isEvenRow) {
                         writeTagStyleClass(writer, "even");
                     } else {
                         writeTagStyleClass(writer, "odd");
-                    }
-
-                    if (level == 0) {
-                        isEvenRow = !isEvenRow;
                     }
                     
                     writeTagName(writer, tableWidget.getRowId());
