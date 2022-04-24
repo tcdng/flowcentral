@@ -145,6 +145,7 @@ public class SpringBootInterconnectServiceImpl implements SpringBootInterconnect
 
     @Override
     public JsonDataSourceResponse processDataSourceRequest(DataSourceRequest req) throws Exception {
+        LOGGER.log(Level.INFO, "Processing datasource request [{0}]...", interconnect.prettyJSON(req));
         final EntityInfo entityInfo = interconnect.getEntityInfo(req.getEntity());
         PlatformInfo platform = getPlatform(entityInfo);
 
