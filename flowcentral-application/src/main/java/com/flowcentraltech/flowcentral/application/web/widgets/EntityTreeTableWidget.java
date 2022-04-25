@@ -20,7 +20,10 @@ import java.util.List;
 import com.flowcentraltech.flowcentral.application.web.widgets.EntityTreeTable.EntityTreeItem;
 import com.tcdng.unify.core.UnifyException;
 import com.tcdng.unify.core.annotation.Component;
+import com.tcdng.unify.core.annotation.UplAttribute;
+import com.tcdng.unify.core.annotation.UplAttributes;
 import com.tcdng.unify.core.data.ValueStore;
+import com.tcdng.unify.core.upl.UplElementReferences;
 import com.tcdng.unify.web.ui.widget.AbstractValueListMultiControl;
 import com.tcdng.unify.web.ui.widget.Control;
 
@@ -31,11 +34,15 @@ import com.tcdng.unify.web.ui.widget.Control;
  * @since 1.0
  */
 @Component("fc-entitytreetable")
+@UplAttributes({
+    @UplAttribute(name = "multiSelDependentList", type = UplElementReferences.class)})
 public class EntityTreeTableWidget extends AbstractValueListMultiControl<ValueStore, EntityTreeItem> {
 
     private Control selectCtrl;
 
     private Integer[] selected;
+
+    private List<String> multiSelDependentList;
 
     @Override
     public void addPageAliases() throws UnifyException {
@@ -58,7 +65,7 @@ public class EntityTreeTableWidget extends AbstractValueListMultiControl<ValueSt
         if (table != null) {
             table.unselectAll();
             if (selected != null) {
-                for(Integer i: selected) {
+                for (Integer i : selected) {
                     table.select(i);
                 }
             }
@@ -71,6 +78,13 @@ public class EntityTreeTableWidget extends AbstractValueListMultiControl<ValueSt
 
     public EntityTreeTable getEntityTreeTable() throws UnifyException {
         return getValue(EntityTreeTable.class);
+    }
+
+    public List<String> getMultiSelDependentList() throws UnifyException {
+        if (multiSelDependentList == null) {
+            multiSelDependentList = getPageNames(getUplAttribute(UplElementReferences.class, "multiSelDependentList"));
+        }
+        return multiSelDependentList;
     }
 
     @Override
@@ -91,6 +105,6 @@ public class EntityTreeTableWidget extends AbstractValueListMultiControl<ValueSt
 
     @Override
     protected void onCreateValueList(List<ValueStore> valueStoreList) throws UnifyException {
-        
+
     }
 }

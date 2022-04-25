@@ -44,17 +44,20 @@ public class EntityTreeTable {
     private List<EntityTreeItem> items;
 
     private List<Integer> itemLevelChain;
-    
+
+    private String title;
+
     private boolean multiSelect;
 
     private boolean multiColumn;
 
     private boolean showLabel;
 
-    private EntityTreeTable(List<EntityTreeLevel> levels, List<EntityTreeItem> items, boolean multiSelect,
+    private EntityTreeTable(List<EntityTreeLevel> levels, List<EntityTreeItem> items, String title, boolean multiSelect,
             boolean multiColumn, boolean showLabel) {
         this.levels = levels;
         this.items = items;
+        this.title = title;
         this.multiSelect = multiSelect;
         this.multiColumn = multiColumn;
         this.showLabel = showLabel;
@@ -82,13 +85,13 @@ public class EntityTreeTable {
             for (EntityTreeItem item : items) {
                 itemLevelChain.add(item.getLevel());
             }
-            
-            itemLevelChain =  Collections.unmodifiableList(itemLevelChain);
+
+            itemLevelChain = Collections.unmodifiableList(itemLevelChain);
         }
-        
+
         return DataUtils.toArray(Integer.class, itemLevelChain);
     }
-    
+
     public int getItemCount() {
         return items.size();
     }
@@ -111,6 +114,10 @@ public class EntityTreeTable {
         if (index >= 0 && index < items.size()) {
             items.get(index).setSelected(true);
         }
+    }
+
+    public String getTitle() {
+        return title;
     }
 
     public boolean isMultiSelect() {
@@ -137,6 +144,8 @@ public class EntityTreeTable {
 
         private Stack<EntityTreeItem> parentItems;
 
+        private String title;
+
         private boolean multiSelect;
 
         private boolean multiColumn;
@@ -154,6 +163,11 @@ public class EntityTreeTable {
 
         public int currentLevel() {
             return currentLevel;
+        }
+
+        public Builder title(String title) {
+            this.title = title;
+            return this;
         }
 
         public Builder multiSelect(boolean multiSelect) {
@@ -223,9 +237,7 @@ public class EntityTreeTable {
                 throw new RuntimeException("You must have at least one item before you can add items");
             }
 
-            String instLongId = parentItems.isEmpty() ? String.valueOf(_inst.getId())
-                    : parentItems.peek().getInstLongId() + "." + _inst.getId();
-            items.add(new EntityTreeItem(instLongId, _inst, currentLevel, selected));
+            items.add(new EntityTreeItem(_inst, currentLevel, selected));
             return this;
         }
 
@@ -235,7 +247,7 @@ public class EntityTreeTable {
             }
 
             return new EntityTreeTable(DataUtils.unmodifiableList(levels), DataUtils.unmodifiableList(items),
-                    multiSelect, multiColumn, showLabel);
+                    title, multiSelect, multiColumn, showLabel);
         }
     }
 
@@ -278,16 +290,13 @@ public class EntityTreeTable {
 
         private ValueStore instValueStore;
 
-        private String instLongId;
-
         private Entity inst;
 
         private int level;
 
         private boolean selected;
 
-        private EntityTreeItem(String instLongId, Entity inst, int level, boolean selected) {
-            this.instLongId = instLongId;
+        private EntityTreeItem(Entity inst, int level, boolean selected) {
             this.inst = inst;
             this.level = level;
             this.selected = selected;
@@ -303,10 +312,6 @@ public class EntityTreeTable {
             }
 
             return instValueStore;
-        }
-
-        public String getInstLongId() {
-            return instLongId;
         }
 
         public Entity getInst() {

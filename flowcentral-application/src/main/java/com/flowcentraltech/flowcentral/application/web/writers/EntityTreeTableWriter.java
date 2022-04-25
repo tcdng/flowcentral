@@ -25,6 +25,7 @@ import com.tcdng.unify.core.UnifyException;
 import com.tcdng.unify.core.annotation.Component;
 import com.tcdng.unify.core.annotation.Writes;
 import com.tcdng.unify.core.data.ValueStore;
+import com.tcdng.unify.core.util.DataUtils;
 import com.tcdng.unify.core.util.StringUtils;
 import com.tcdng.unify.web.ui.widget.Control;
 import com.tcdng.unify.web.ui.widget.PushType;
@@ -97,6 +98,8 @@ public class EntityTreeTableWriter extends AbstractControlWriter {
             if (table.isMultiSelect()) {
                 writer.writeParam("pSelCtrlId", tableWidget.getSelectCtrl().getId());
                 writer.writeParam("pMultiSel", true);
+                writer.writeParam("pMultiSelDepList",
+                        DataUtils.toArray(String.class, tableWidget.getMultiSelDependentList()));
                 writer.writeParam("pLvlChain", table.getItemLevelChain());
             }
             writer.endFunction();
@@ -111,8 +114,6 @@ public class EntityTreeTableWriter extends AbstractControlWriter {
             final int len = items.size();
             final boolean multiSelect = table.isMultiSelect();
             final boolean showLabel = table.isShowLabel();
-            boolean isEvenRow = true;
-
             if (table.isMultiColumn()) {
                 // TODO
             } else {
@@ -123,15 +124,7 @@ public class EntityTreeTableWriter extends AbstractControlWriter {
                     ValueStore valueStore = item.getInstValueStore();
                     Long id = valueStore.retrieve(Long.class, "id");
                     writer.write("<tr");
-                    if (level == 0) {
-                        isEvenRow = !isEvenRow;
-                    }
-                    
-                    if (isEvenRow) {
-                        writeTagStyleClass(writer, "even");
-                    } else {
-                        writeTagStyleClass(writer, "odd");
-                    }
+                    writeTagStyleClass(writer, "even");
                     
                     writeTagName(writer, tableWidget.getRowId());
                     writer.write(">");

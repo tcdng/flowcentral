@@ -86,6 +86,7 @@ public abstract class AbstractEntityFormAppletController<T extends AbstractEntit
                     EntityTreeSelectGenerator generator = getAu().getComponent(EntityTreeSelectGenerator.class,
                             showPopupInfo.getReference());
                     EntityTreeSelect entityTreeSelect = generator.generate(getAu(), formValueStore);
+                    entityTreeSelect.setTitle(entityTreeSelect.getEntityTreeTable().getTitle());
                     setSessionAttribute(FlowCentralSessionAttributeConstants.ENTITYTREESELECT, entityTreeSelect);
                     return ApplicationResultMappingConstants.SHOW_ENTITY_TREEMULTISELECT;
                 }

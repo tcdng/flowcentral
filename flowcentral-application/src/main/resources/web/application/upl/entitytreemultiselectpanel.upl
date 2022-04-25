@@ -17,13 +17,15 @@
 	components:$c{titleBar searchResultPanel footerActionPanel}
 
 // Header
-!ui-titlebar:titleBar caption:$m{entitymultiselectpanel.select} components:$c{closeBtn} draggable:true
+!ui-titlebar:titleBar caption:$m{entitymultiselectpanel.select} captionBinding:title
+	components:$c{closeBtn} draggable:true
 !ui-image:closeBtn src:$t{images/cross_white.png} styleClass:$e{tbbutton}
      eventHandler:$d{!ui-event event:onclick action:$c{tmCloseAct}}
 
 // Search result panel
 !ui-panel:searchResultPanel layout:$d{!ui-vertical style:$s{width:100%;}} components:$c{searchResultTbl}
 !fc-entitytreetable:searchResultTbl styleClass:$e{entityview} binding:entityTreeTable
+	multiSelDependentList:$c{selectBtn}
 
 // Footer action panel
 !ui-panel:footerActionPanel styleClass:$e{footer} layout:$d{!ui-horizontal} components:$c{selectBtn cancelBtn}
