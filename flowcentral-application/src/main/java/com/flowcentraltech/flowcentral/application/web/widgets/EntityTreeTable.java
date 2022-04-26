@@ -48,6 +48,8 @@ public class EntityTreeTable {
 
     private String title;
 
+    private String tableClass;
+    
     private boolean centerAlignHeaders;
 
     private boolean multiSelect;
@@ -85,6 +87,14 @@ public class EntityTreeTable {
 
     public List<EntityTreeItem> getItems() {
         return items;
+    }
+
+    public String getTableClass() {
+        return tableClass;
+    }
+
+    public void setTableClass(String tableClass) {
+        this.tableClass = tableClass;
     }
 
     public Integer[] getItemLevelChain() {

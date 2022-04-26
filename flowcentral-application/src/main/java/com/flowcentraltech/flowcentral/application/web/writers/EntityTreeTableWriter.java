@@ -64,12 +64,16 @@ public class EntityTreeTableWriter extends AbstractControlWriter {
                 writeHiddenPush(writer, tableWidget.getSelectCtrl(), PushType.CHECKBOX);
             }
 
+            final boolean classicMode = systemModuleService.getSysParameterValue(boolean.class,
+                    ApplicationModuleSysParamConstants.ALL_TABLE_IN_CLASSIC_MODE);
+            final String tableClass = classicMode ? "table classic" : "table";
+            table.setTableClass(tableClass);
             writer.write("<div");
             writeTagAttributes(writer, tableWidget);
             writer.write(">");
             writer.write("<div><table");
             writeTagId(writer, tableWidget);
-            writeTagStyleClass(writer, "table");
+            writeTagStyleClass(writer, tableClass);
             writer.write(">");
 
             if (table.isMultiColumn()) {
@@ -107,6 +111,7 @@ public class EntityTreeTableWriter extends AbstractControlWriter {
             writer.writeParam("pContId", tableWidget.getContainerId());
             writer.writeCommandURLParam("pCmdURL");
             if (table.isMultiSelect()) {
+                writer.writeParam("pSelAllId", tableWidget.getSelectAllId());
                 writer.writeParam("pSelCtrlId", tableWidget.getSelectCtrl().getId());
                 writer.writeParam("pMultiSel", true);
                 writer.writeParam("pMultiSelDepList",
@@ -119,7 +124,12 @@ public class EntityTreeTableWriter extends AbstractControlWriter {
 
     private void writeHeaderRow(ResponseWriter writer, EntityTreeTableWidget tableWidget, int level)
             throws UnifyException {
-        writer.write("<tr>");
+        writer.write("<tr ");
+        if (level > 0) {
+            writer.write(" class=\"small\"");
+        }
+        writer.write(">");
+
         EntityTreeTable table = tableWidget.getEntityTreeTable();
         if (table != null) {
             writeHeaderMultiSelect(writer, tableWidget, level);
@@ -137,9 +147,6 @@ public class EntityTreeTableWriter extends AbstractControlWriter {
                     writeTagStyle(writer, tabelColumnInfo.getStyle());
                 }
 
-                if (level > 0) {
-                    writer.write(" styleClass=\"small\"");
-                }
                 writer.write("><span>");
                 String caption = tabelColumnInfo.getLabel();
                 if (caption != null) {
@@ -165,17 +172,19 @@ public class EntityTreeTableWriter extends AbstractControlWriter {
         EntityTreeTable table = tableWidget.getEntityTreeTable();
         if (table.isMultiSelect()) {
             writer.write("<th class=\"mselh\">");
-            writer.write("<span");
-            writeTagId(writer, "fac_" + tableWidget.getSelectAllId());
-            if (tableWidget.isContainerDisabled()) {
-                writeTagStyleClass(writer, "g_cbd");
-            } else {
-                writeTagStyleClass(writer, "g_cbb");
+            if (level == 0) {
+                writer.write("<span");
+                writeTagId(writer, "fac_" + tableWidget.getSelectAllId());
+                if (tableWidget.isContainerDisabled()) {
+                    writeTagStyleClass(writer, "g_cbd");
+                } else {
+                    writeTagStyleClass(writer, "g_cbb");
+                }
+                writer.write("/>");
+                writer.write("<input type=\"checkbox\"");
+                writeTagId(writer, tableWidget.getSelectAllId());
+                writer.write("/>");
             }
-            writer.write("/>");
-            writer.write("<input type=\"checkbox\"");
-            writeTagId(writer, tableWidget.getSelectAllId());
-            writer.write("/>");
             writer.write("</th>");
         }
     }
@@ -201,9 +210,9 @@ public class EntityTreeTableWriter extends AbstractControlWriter {
                             colspan++;
                         }
 
-                        writer.write("<tr><td colspan = \"").write(colspan);
+                        writer.write("<tr><td class=\"inner\" colspan = \"").write(colspan);
                         writer.write("\"><table"); // Add left margin class
-                        writeTagStyleClass(writer, "table");
+                        writeTagStyleClass(writer, table.getTableClass());
                         writer.write(">");
                         writeHeaderRow(writer, tableWidget, currentDepth);
                         tableClosureCount++;

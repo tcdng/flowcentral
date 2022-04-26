@@ -719,25 +719,25 @@ fux.rigEntityTreeTable = function(rgp) {
 	}
 
 	if (rgp.pMultiSel) {
-		//tblToRig.uSelAllId = rgp.pSelAllId;
+		tblToRig.uSelAllId = rgp.pSelAllId;
 		tblToRig.uSelCtrlId = rgp.pSelCtrlId;
 		tblToRig.uMultiSelDepList = rgp.pMultiSelDepList;
 		tblToRig.uChain = rgp.pLvlChain;
 		tblToRig.uVisibleSel = 0;
 
 		// Rig select
-//		const selAll = _id(rgp.pSelAllId);
-//		selAll._active = true;
-//		ux.cbWire(selAll);
+		const selAll = _id(rgp.pSelAllId);
+		selAll._active = true;
+		ux.cbWire(selAll);
 
 		const selBoxes = _name(rgp.pSelCtrlId);
 		tblToRig.uSelBoxes = selBoxes;
 
 		const evp = {uRigTbl:tblToRig};
-//		const selAllFac = _id("fac_" + rgp.pSelAllId);
-//		selAllFac.selAll = selAll;
-//		ux.addHdl(selAllFac, "change", fux.tableSelAllClick, evp);
-//
+		const selAllFac = _id("fac_" + rgp.pSelAllId);
+		selAllFac.selAll = selAll;
+		ux.addHdl(selAllFac, "change", fux.tableSelAllClick, evp);
+
 		
 		for (var i = 0; i < selBoxes.length; i++) {
 			var selBox = selBoxes[i];
