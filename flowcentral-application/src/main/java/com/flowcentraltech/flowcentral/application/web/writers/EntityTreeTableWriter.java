@@ -30,7 +30,6 @@ import com.tcdng.unify.core.UnifyException;
 import com.tcdng.unify.core.annotation.Component;
 import com.tcdng.unify.core.annotation.Configurable;
 import com.tcdng.unify.core.annotation.Writes;
-import com.tcdng.unify.core.util.DataUtils;
 import com.tcdng.unify.core.util.StringUtils;
 import com.tcdng.unify.web.ui.widget.Control;
 import com.tcdng.unify.web.ui.widget.PushType;
@@ -114,8 +113,8 @@ public class EntityTreeTableWriter extends AbstractControlWriter {
                 writer.writeParam("pSelAllId", tableWidget.getSelectAllId());
                 writer.writeParam("pSelCtrlId", tableWidget.getSelectCtrl().getId());
                 writer.writeParam("pMultiSel", true);
-                writer.writeParam("pMultiSelDepList",
-                        DataUtils.toArray(String.class, tableWidget.getMultiSelDependentList()));
+                writer.writeParam("pMultiSelDepList", new String[] {} /*
+                        DataUtils.toArray(String.class, tableWidget.getMultiSelDependentList())*/);
                 writer.writeParam("pLvlChain", table.getItemLevelChain());
             }
             writer.endFunction();
@@ -303,7 +302,7 @@ public class EntityTreeTableWriter extends AbstractControlWriter {
             if (table.isMultiColumn()) {
                 writer.write("<td class=\"msel\">");
             } else {
-                writer.write("<td class=\"msel\" colspan=\"");
+                writer.write("<td class=\"msel pmsel\" colspan=\"");
                 writer.write(depth + 1);
                 writer.write("\">");
             }
