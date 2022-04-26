@@ -56,8 +56,8 @@ public class EntityTreeTable {
 
     private boolean showLabel;
 
-    private EntityTreeTable(List<EntityTreeLevel> levels, List<EntityTreeItem> items, String title, boolean centerAlignHeaders, boolean multiSelect,
-            boolean multiColumn, boolean showLabel) {
+    private EntityTreeTable(List<EntityTreeLevel> levels, List<EntityTreeItem> items, String title,
+            boolean centerAlignHeaders, boolean multiSelect, boolean multiColumn, boolean showLabel) {
         this.levels = levels;
         this.items = items;
         this.title = title;
@@ -265,8 +265,8 @@ public class EntityTreeTable {
                 throw new RuntimeException("You must have at least one tree level defined.");
             }
 
-            return new EntityTreeTable(DataUtils.unmodifiableList(levels), DataUtils.unmodifiableList(items),
-                    title, centerAlignHeaders, multiSelect, multiColumn, showLabel);
+            return new EntityTreeTable(DataUtils.unmodifiableList(levels), DataUtils.unmodifiableList(items), title,
+                    centerAlignHeaders, multiSelect, multiColumn, showLabel);
         }
     }
 
@@ -280,21 +280,30 @@ public class EntityTreeTable {
 
         private List<StringToken> lineFormat;
 
+        private int totalWidth;
+
         private EntityTreeLevel(String label, TableDef tableDef, List<TableColumnDef> columnDefList,
                 List<StringToken> lineFormat) {
             this.label = label;
             this.tableDef = tableDef;
             this.columnDefList = new ArrayList<TableColumnInfo>();
-            for (TableColumnDef tableColumnDef: columnDefList) {
-                this.columnDefList.add(new TableColumnInfo(tableColumnDef));
+            for (TableColumnDef tableColumnDef : columnDefList) {
+                String columnLabel = tableColumnDef.isWithLabel() ? tableColumnDef.getLabel()
+                        : tableDef.getEntityDef().getFieldDef(tableColumnDef.getFieldName()).getFieldLabel();
+                this.columnDefList.add(new TableColumnInfo(tableColumnDef, columnLabel));
+                this.totalWidth += tableColumnDef.getWidth();
             }
-            
+
             this.columnDefList = Collections.unmodifiableList(this.columnDefList);
             this.lineFormat = lineFormat;
         }
 
         public String getLabel() {
             return label;
+        }
+
+        public int getTotalWidth() {
+            return totalWidth;
         }
 
         public TableDef getTableDef() {
@@ -308,20 +317,25 @@ public class EntityTreeTable {
         public int getColumnCount() {
             return columnDefList.size();
         }
-        
+
         public List<StringToken> getLineFormat() {
             return lineFormat;
         }
     }
 
     public static class TableColumnInfo {
-        
+
         private TableColumnDef tableColumnDef;
 
         private Widget widget;
-        
-        public TableColumnInfo(TableColumnDef _tableColumnDef) {
+
+        private String label;
+
+        private String style;
+
+        public TableColumnInfo(TableColumnDef _tableColumnDef, String label) {
             this.tableColumnDef = _tableColumnDef;
+            this.label = label;
         }
 
         public Widget getWidget() {
@@ -334,9 +348,21 @@ public class EntityTreeTable {
 
         public TableColumnDef getTableColumnDef() {
             return tableColumnDef;
-        }        
+        }
+
+        public String getLabel() {
+            return label;
+        }
+
+        public String getStyle() {
+            return style;
+        }
+
+        public void setStyle(String style) {
+            this.style = style;
+        }
     }
-    
+
     public static class EntityTreeItem {
 
         private ValueStore instValueStore;

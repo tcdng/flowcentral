@@ -130,19 +130,18 @@ public class EntityTreeTableWriter extends AbstractControlWriter {
                     ApplicationModuleSysParamConstants.ALL_TABLE_HEADER_CENTER_ALIGNED);
             TableDef _tableDef = table.getLevel(level).getTableDef();
             for (TableColumnInfo tabelColumnInfo : table.getLevel(level).getColumnInfoList()) {
-                TableColumnDef tabelColumnDef = tabelColumnInfo.getTableColumnDef();
                 writer.write("<th");
                 if (sysHeaderCenterAlign || table.isCenterAlignHeaders()) {
-                    writeTagStyle(writer, tabelColumnDef.getHeaderStyle() + "text-align:center;");
+                    writeTagStyle(writer, tabelColumnInfo.getStyle() + "text-align:center;");
                 } else {
-                    writeTagStyle(writer, tabelColumnDef.getHeaderStyle());
+                    writeTagStyle(writer, tabelColumnInfo.getStyle());
                 }
 
                 if (level > 0) {
                     writer.write(" styleClass=\"small\"");
                 }
                 writer.write("><span>");
-                String caption = tabelColumnDef.getLabel();
+                String caption = tabelColumnInfo.getLabel();
                 if (caption != null) {
                     if (sysHeaderUppercase || _tableDef.isHeaderToUpperCase()) {
                         writer.writeWithHtmlEscape(caption.toUpperCase());

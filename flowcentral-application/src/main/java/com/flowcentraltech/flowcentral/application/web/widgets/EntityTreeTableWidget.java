@@ -96,13 +96,25 @@ public class EntityTreeTableWidget extends AbstractValueListMultiControl<ValueSt
             removeAllExternalChildWidgets();
             final boolean entryMode = false; // TODO
             for (EntityTreeLevel level : entityTreeTable.getLevels()) {
-                for (TableColumnInfo tabelColumnInfo : level.getColumnInfoList()) {
-                    TableColumnDef tableColumnDef = tabelColumnInfo.getTableColumnDef();
+                int usedPercent = 0;
+                int i = 0;
+                final int len = level.getColumnInfoList().size();
+                for (TableColumnInfo tableColumnInfo : level.getColumnInfoList()) {
+                    TableColumnDef tableColumnDef = tableColumnInfo.getTableColumnDef();
                     final boolean cellEditor = tableColumnDef.isWithCellEditor();
                     final String columnWidgetUpl = entryMode && cellEditor ? tableColumnDef.getCellEditor()
                             : tableColumnDef.getCellRenderer();
                     Widget widget = addExternalChildWidget(columnWidgetUpl);
-                    tabelColumnInfo.setWidget(widget);
+                    tableColumnInfo.setWidget(widget);
+                    
+                    int width = (tableColumnDef.getWidth() * 100) / level.getTotalWidth();
+                    if (i == (len - 1)) {
+                        tableColumnInfo.setStyle("width:" + (100 - usedPercent) + "%;");
+                        usedPercent += width;
+                    } else {
+                        tableColumnInfo.setStyle("width:" + width + "%;");
+                        usedPercent += width;
+                    }
                 }
             }
 
