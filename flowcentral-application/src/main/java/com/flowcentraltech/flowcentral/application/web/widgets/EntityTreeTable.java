@@ -30,6 +30,7 @@ import com.tcdng.unify.core.database.Entity;
 import com.tcdng.unify.core.util.DataUtils;
 import com.tcdng.unify.core.util.StringUtils;
 import com.tcdng.unify.core.util.StringUtils.StringToken;
+import com.tcdng.unify.web.ui.widget.Widget;
 
 /**
  * Entity tree table data object.
@@ -47,20 +48,27 @@ public class EntityTreeTable {
 
     private String title;
 
+    private boolean centerAlignHeaders;
+
     private boolean multiSelect;
 
     private boolean multiColumn;
 
     private boolean showLabel;
 
-    private EntityTreeTable(List<EntityTreeLevel> levels, List<EntityTreeItem> items, String title, boolean multiSelect,
+    private EntityTreeTable(List<EntityTreeLevel> levels, List<EntityTreeItem> items, String title, boolean centerAlignHeaders, boolean multiSelect,
             boolean multiColumn, boolean showLabel) {
         this.levels = levels;
         this.items = items;
         this.title = title;
+        this.centerAlignHeaders = centerAlignHeaders;
         this.multiSelect = multiSelect;
         this.multiColumn = multiColumn;
         this.showLabel = showLabel;
+    }
+
+    public List<EntityTreeLevel> getLevels() {
+        return levels;
     }
 
     public EntityTreeLevel getLevel(int index) {
@@ -120,6 +128,10 @@ public class EntityTreeTable {
         return title;
     }
 
+    public boolean isCenterAlignHeaders() {
+        return centerAlignHeaders;
+    }
+
     public boolean isMultiSelect() {
         return multiSelect;
     }
@@ -146,6 +158,8 @@ public class EntityTreeTable {
 
         private String title;
 
+        private boolean centerAlignHeaders;
+
         private boolean multiSelect;
 
         private boolean multiColumn;
@@ -167,6 +181,11 @@ public class EntityTreeTable {
 
         public Builder title(String title) {
             this.title = title;
+            return this;
+        }
+
+        public Builder centerAlignHeaders(boolean centerAlignHeaders) {
+            this.centerAlignHeaders = centerAlignHeaders;
             return this;
         }
 
@@ -247,7 +266,7 @@ public class EntityTreeTable {
             }
 
             return new EntityTreeTable(DataUtils.unmodifiableList(levels), DataUtils.unmodifiableList(items),
-                    title, multiSelect, multiColumn, showLabel);
+                    title, centerAlignHeaders, multiSelect, multiColumn, showLabel);
         }
     }
 
@@ -257,7 +276,7 @@ public class EntityTreeTable {
 
         private TableDef tableDef;
 
-        private List<TableColumnDef> columnDefList;
+        private List<TableColumnInfo> columnDefList;
 
         private List<StringToken> lineFormat;
 
@@ -265,7 +284,12 @@ public class EntityTreeTable {
                 List<StringToken> lineFormat) {
             this.label = label;
             this.tableDef = tableDef;
-            this.columnDefList = columnDefList;
+            this.columnDefList = new ArrayList<TableColumnInfo>();
+            for (TableColumnDef tableColumnDef: columnDefList) {
+                this.columnDefList.add(new TableColumnInfo(tableColumnDef));
+            }
+            
+            this.columnDefList = Collections.unmodifiableList(this.columnDefList);
             this.lineFormat = lineFormat;
         }
 
@@ -277,15 +301,42 @@ public class EntityTreeTable {
             return tableDef;
         }
 
-        public List<TableColumnDef> getColumnDefList() {
+        public List<TableColumnInfo> getColumnInfoList() {
             return columnDefList;
         }
 
+        public int getColumnCount() {
+            return columnDefList.size();
+        }
+        
         public List<StringToken> getLineFormat() {
             return lineFormat;
         }
     }
 
+    public static class TableColumnInfo {
+        
+        private TableColumnDef tableColumnDef;
+
+        private Widget widget;
+        
+        public TableColumnInfo(TableColumnDef _tableColumnDef) {
+            this.tableColumnDef = _tableColumnDef;
+        }
+
+        public Widget getWidget() {
+            return widget;
+        }
+
+        public void setWidget(Widget widget) {
+            this.widget = widget;
+        }
+
+        public TableColumnDef getTableColumnDef() {
+            return tableColumnDef;
+        }        
+    }
+    
     public static class EntityTreeItem {
 
         private ValueStore instValueStore;

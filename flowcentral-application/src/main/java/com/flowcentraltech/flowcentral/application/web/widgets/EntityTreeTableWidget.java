@@ -17,7 +17,10 @@ package com.flowcentraltech.flowcentral.application.web.widgets;
 
 import java.util.List;
 
+import com.flowcentraltech.flowcentral.application.data.TableColumnDef;
 import com.flowcentraltech.flowcentral.application.web.widgets.EntityTreeTable.EntityTreeItem;
+import com.flowcentraltech.flowcentral.application.web.widgets.EntityTreeTable.EntityTreeLevel;
+import com.flowcentraltech.flowcentral.application.web.widgets.EntityTreeTable.TableColumnInfo;
 import com.tcdng.unify.core.UnifyException;
 import com.tcdng.unify.core.annotation.Component;
 import com.tcdng.unify.core.annotation.UplAttribute;
@@ -26,6 +29,7 @@ import com.tcdng.unify.core.data.ValueStore;
 import com.tcdng.unify.core.upl.UplElementReferences;
 import com.tcdng.unify.web.ui.widget.AbstractValueListMultiControl;
 import com.tcdng.unify.web.ui.widget.Control;
+import com.tcdng.unify.web.ui.widget.Widget;
 
 /**
  * Entity tree table widget.
@@ -34,8 +38,7 @@ import com.tcdng.unify.web.ui.widget.Control;
  * @since 1.0
  */
 @Component("fc-entitytreetable")
-@UplAttributes({
-    @UplAttribute(name = "multiSelDependentList", type = UplElementReferences.class)})
+@UplAttributes({ @UplAttribute(name = "multiSelDependentList", type = UplElementReferences.class) })
 public class EntityTreeTableWidget extends AbstractValueListMultiControl<ValueStore, EntityTreeItem> {
 
     private Control selectCtrl;
@@ -43,6 +46,8 @@ public class EntityTreeTableWidget extends AbstractValueListMultiControl<ValueSt
     private Integer[] selected;
 
     private List<String> multiSelDependentList;
+
+    private EntityTreeTable oldEntityTreeTable;
 
     @Override
     public void addPageAliases() throws UnifyException {
@@ -76,8 +81,35 @@ public class EntityTreeTableWidget extends AbstractValueListMultiControl<ValueSt
         return getPrefixedId("row_");
     }
 
+    public String getColumnHeaderId() throws UnifyException {
+        return getPrefixedId("th_");
+    }
+
+    public String getSelectAllId() throws UnifyException {
+        return getPrefixedId("sela_");
+    }
+
+    @SuppressWarnings("unused")
     public EntityTreeTable getEntityTreeTable() throws UnifyException {
-        return getValue(EntityTreeTable.class);
+        EntityTreeTable entityTreeTable = getValue(EntityTreeTable.class);
+        if (entityTreeTable != null && entityTreeTable != oldEntityTreeTable) {
+            removeAllExternalChildWidgets();
+            final boolean entryMode = false; // TODO
+            for (EntityTreeLevel level : entityTreeTable.getLevels()) {
+                for (TableColumnInfo tabelColumnInfo : level.getColumnInfoList()) {
+                    TableColumnDef tableColumnDef = tabelColumnInfo.getTableColumnDef();
+                    final boolean cellEditor = tableColumnDef.isWithCellEditor();
+                    final String columnWidgetUpl = entryMode && cellEditor ? tableColumnDef.getCellEditor()
+                            : tableColumnDef.getCellRenderer();
+                    Widget widget = addExternalChildWidget(columnWidgetUpl);
+                    tabelColumnInfo.setWidget(widget);
+                }
+            }
+
+        }
+
+        oldEntityTreeTable = entityTreeTable;
+        return entityTreeTable;
     }
 
     public List<String> getMultiSelDependentList() throws UnifyException {

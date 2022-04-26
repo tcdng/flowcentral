@@ -657,6 +657,18 @@ fux.tableMultiSelClick = function(uEv) {
 				ux.cbSwitchImg(selBoxes[i]);
 				rigTbl.uVisibleSel += inc;
 			}
+			
+			if (checked) {
+				i = selBoxFac.index;
+				while ((--i) >= 0) {
+					if (level > chain[i]) {
+						selBoxes[i].checked = true;
+						ux.cbSwitchImg(selBoxes[i]);
+						rigTbl.uVisibleSel++;
+						level--;
+					}
+				}
+			}
 		}
 		
 		fux.tableDisableMultiSelElements(rigTbl);
@@ -709,7 +721,7 @@ fux.rigEntityTreeTable = function(rgp) {
 	if (rgp.pMultiSel) {
 		//tblToRig.uSelAllId = rgp.pSelAllId;
 		tblToRig.uSelCtrlId = rgp.pSelCtrlId;
-		//tblToRig.uMultiSelDepList = rgp.pMultiSelDepList;
+		tblToRig.uMultiSelDepList = rgp.pMultiSelDepList;
 		tblToRig.uChain = rgp.pLvlChain;
 		tblToRig.uVisibleSel = 0;
 
