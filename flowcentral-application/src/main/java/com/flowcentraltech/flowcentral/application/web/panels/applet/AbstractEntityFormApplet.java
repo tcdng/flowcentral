@@ -590,6 +590,9 @@ public abstract class AbstractEntityFormApplet extends AbstractApplet implements
         boolean pseudoDelete = _currFormAppletDef.getPropValue(boolean.class,
                 AppletPropertyConstants.MAINTAIN_FORM_DELETE_PSEUDO, false);
         EntityActionResult entityActionResult = null;
+        String deletePolicy = _currFormAppletDef != null
+                ? _currFormAppletDef.getPropValue(String.class, AppletPropertyConstants.MAINTAIN_FORM_DELETE_POLICY)
+                : form.getCtx().getAttribute(String.class, AppletPropertyConstants.MAINTAIN_FORM_DELETE_POLICY);
         if (pseudoDelete) {
             String pseudoDeleteSetValuesName = _currFormAppletDef.getPropValue(String.class,
                     AppletPropertyConstants.MAINTAIN_FORM_DELETE_PSEUDO_SETVALUES);
@@ -600,13 +603,10 @@ public abstract class AbstractEntityFormApplet extends AbstractApplet implements
             }
             
             EntityActionContext eCtx = new EntityActionContext(_entityDef, inst,
-                    RecordActionType.UPDATE, this, null);
+                    RecordActionType.UPDATE, this, deletePolicy);
             eCtx.setAll(form.getCtx());
             entityActionResult = getAu().getEnvironment().updateLean(eCtx);
         } else {
-            String deletePolicy = _currFormAppletDef != null
-                    ? _currFormAppletDef.getPropValue(String.class, AppletPropertyConstants.MAINTAIN_FORM_DELETE_POLICY)
-                    : form.getCtx().getAttribute(String.class, AppletPropertyConstants.MAINTAIN_FORM_DELETE_POLICY);
             EntityActionContext eCtx = new EntityActionContext(_entityDef, inst,
                     RecordActionType.DELETE, this, deletePolicy);
             eCtx.setAll(form.getCtx());
