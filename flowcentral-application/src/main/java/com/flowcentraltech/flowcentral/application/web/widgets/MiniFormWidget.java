@@ -399,11 +399,11 @@ public class MiniFormWidget extends AbstractMultiControl implements FormTriggerE
             }
 
             if (!rule.getEditable().isConforming()) {
-                editable = editable && rule.getEditable().isTrue();
+                editable = rule.getEditable().isTrue();
             }
 
             if (!rule.getDisabled().isConforming()) {
-                disabled = disabled || rule.getDisabled().isTrue();
+                disabled = rule.getDisabled().isTrue();
             }
         }
 
