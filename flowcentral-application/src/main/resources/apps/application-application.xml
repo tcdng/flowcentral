@@ -232,7 +232,7 @@
 			description="$m{application.widgettype.enumeration}"
 			dataType="string" inputType="string"
 			editor="!ui-select list:$s{%s} blankOption:$m{blank.none}"
-			renderer="ui-listlabel list:$s{%s}" />
+			renderer="!ui-listlabel list:$s{%s}" />
 		<widgetType name="enumreadonlytext"
 			description="$m{application.widgettype.enumerationreadonlytext}"
 			dataType="string" inputType="string"
