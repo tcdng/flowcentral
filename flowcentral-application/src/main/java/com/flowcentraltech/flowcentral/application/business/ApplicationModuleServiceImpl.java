@@ -3139,6 +3139,7 @@ public class ApplicationModuleServiceImpl extends AbstractFlowCentralService
                 if (oldAppAppletSetValues == null) {
                     AppAppletSetValues appAppletSetValues = new AppAppletSetValues();
                     appAppletSetValues.setName(appletSetValuesConfig.getName());
+                    appAppletSetValues.setDescription(appletSetValuesConfig.getDescription());
                     appAppletSetValues.setSetValues(newAppSetValues(appletSetValuesConfig.getSetValues()));
                     appAppletSetValues.setConfigType(ConfigType.MUTABLE_INSTALL);
                     setValuesList.add(appAppletSetValues);
