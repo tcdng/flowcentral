@@ -48,6 +48,21 @@
 		    <artifactId>commons-csv</artifactId>
 		    <version>1.4</version>
 		</dependency>
+		<dependency>
+			<groupId>com.tcdng.unify</groupId>
+			<artifactId>unify-fontawesome</artifactId>
+			<version>${unify.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.tcdng.unify</groupId>
+			<artifactId>unify-jasperreports</artifactId>
+			<version>${unify.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.tcdng.unify</groupId>
+			<artifactId>unify-nashorn</artifactId>
+			<version>${unify.version}</version>
+		</dependency>
 		<!-- Test dependencies -->
 		<dependency>
 			<groupId>com.flowcentraltech.flowcentral</groupId>
