@@ -4022,7 +4022,7 @@ public class ApplicationModuleServiceImpl extends AbstractFlowCentralService
                         item.setInputWidget(inputWidget);
 
                         String references = propConfig.getReferences();
-                        if (references != null && !"application.enumlist".equals(inputWidget)) {
+                        if (references != null && !InputWidgetUtils.isEnumerationWidget(inputWidget)) {
                             references = ApplicationNameUtils.ensureLongNameReference(applicationName, references);
                         }
 

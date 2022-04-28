@@ -16,6 +16,16 @@
 			dataType="string" inputType="string"
 			editor="!ui-select list:studiotablerowcolorlist blankOption:$m{blank.none} colors:true"
 			renderer="!ui-label" />
+		<widgetType name="yesnolist"
+			description="$m{studio.widgettype.yesnolist}"
+			dataType="string" inputType="string"
+			editor="!ui-select list:yesnolist blankOption:$m{blank.none}"
+			renderer="!ui-label" />
+		<widgetType name="passfaillist"
+			description="$m{studio.widgettype.passfaillist}"
+			dataType="string" inputType="string"
+			editor="!ui-select list:passfaillist blankOption:$m{blank.none}"
+			renderer="!ui-label" />
 		<widgetType name="consformvalidationpolicylist"
 			description="$m{studio.widgettype.consformvalidationpolicylist}"
 			dataType="string" inputType="string"

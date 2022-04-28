@@ -232,7 +232,17 @@
 			description="$m{application.widgettype.enumeration}"
 			dataType="string" inputType="string"
 			editor="!ui-select list:$s{%s} blankOption:$m{blank.none}"
-			renderer="!ui-label" />
+			renderer="ui-listlabel list:$s{%s}" />
+		<widgetType name="enumreadonlytext"
+			description="$m{application.widgettype.enumerationreadonlytext}"
+			dataType="string" inputType="string"
+			editor="!ui-listreadonlytext list:$s{%s}"
+			renderer="!ui-listlabel list:$s{%s}" />
+		<widgetType name="enumlistlabel"
+			description="$m{application.widgettype.enumerationlistlabel}"
+			dataType="string" inputType="string"
+			editor="!ui-listlabel list:$s{%s}"
+			renderer="!ui-listlabel list:$s{%s}" />
 		<widgetType name="entitylist"
 			description="$m{application.widgettype.entitylist}" dataType="string"
 			inputType="string"

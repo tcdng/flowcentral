@@ -139,7 +139,7 @@ public enum EntityFieldDataType implements EnumConst {
     ENUM_REF(
             "ER",
             DataType.STRING,
-            false,
+            true,
             true,
             true,
             true),

@@ -16,6 +16,7 @@
 package com.flowcentraltech.flowcentral.application.data;
 
 import com.flowcentraltech.flowcentral.application.util.ApplicationNameUtils;
+import com.flowcentraltech.flowcentral.application.util.InputWidgetUtils;
 import com.flowcentraltech.flowcentral.configuration.constants.InputType;
 import com.tcdng.unify.core.UnifyException;
 import com.tcdng.unify.core.constant.DataType;
@@ -73,8 +74,8 @@ public class WidgetTypeDef extends BaseApplicationEntityDef {
         return stretch;
     }
 
-    public boolean isEnumList() {
-        return "application.enumlist".equals(getName());
+    public boolean isEnumWidget() {
+        return InputWidgetUtils.isEnumerationWidget(getName());
     }
 
     @Override

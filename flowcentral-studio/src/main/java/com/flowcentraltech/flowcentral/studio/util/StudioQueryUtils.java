@@ -54,8 +54,8 @@ public final class StudioQueryUtils {
                 }
             } else if (entityFieldDataType.isEnumDataType()) {
                 query.addRestriction(new Or()
-                        .add(new And().add(new Equals("applicationName", "application"))
-                                .add(new Equals("name", "enumlist")))
+                        .add(new And().add(new Equals("applicationName", "application")).add(
+                                new Amongst("name", Arrays.asList("enumlist", "enumreadonlytext", "enumlistlabel"))))
                         .add(new And().add(new Equals("dataType", DataType.STRING))
                                 .add(new Equals("enumOption", Boolean.TRUE)).add(new Equals("listOption", true))));
             } else {
