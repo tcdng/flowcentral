@@ -82,6 +82,10 @@ textarea:focus {outline: none !important;box-shadow: 0 0 6px #5194f3;}
 .ui-text {padding-left:4px;}
 .ui-text:disabled {background: #f4f4f4;}
 
+/* List Read-only Text */
+.ui-listreadonlytext {padding-left: 0px;}
+.ui-listreadonlytext .tread {width:100%;}
+
 /* Text Area */
 .ui-textarea {padding: 4px;/*border-radius: 4px;*/border-color: #b0b0b0;}
 

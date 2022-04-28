@@ -7,7 +7,7 @@
 	<parent>
 		<groupId>com.flowcentraltech.flowcentral</groupId>
 		<artifactId>flowcentral</artifactId>
-		<version>1.0.14-SNAPSHOT</version>
+		<version>1.0.14</version>
 	</parent>
 
 	<artifactId>flowcentral-application</artifactId>
@@ -47,6 +47,21 @@
 		    <groupId>org.apache.commons</groupId>
 		    <artifactId>commons-csv</artifactId>
 		    <version>1.4</version>
+		</dependency>
+		<dependency>
+			<groupId>com.tcdng.unify</groupId>
+			<artifactId>unify-fontawesome</artifactId>
+			<version>${unify.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.tcdng.unify</groupId>
+			<artifactId>unify-jasperreports</artifactId>
+			<version>${unify.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.tcdng.unify</groupId>
+			<artifactId>unify-nashorn</artifactId>
+			<version>${unify.version}</version>
 		</dependency>
 		<!-- Test dependencies -->
 		<dependency>

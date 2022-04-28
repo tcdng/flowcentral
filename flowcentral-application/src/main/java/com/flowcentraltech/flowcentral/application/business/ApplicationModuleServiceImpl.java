@@ -3139,6 +3139,7 @@ public class ApplicationModuleServiceImpl extends AbstractFlowCentralService
                 if (oldAppAppletSetValues == null) {
                     AppAppletSetValues appAppletSetValues = new AppAppletSetValues();
                     appAppletSetValues.setName(appletSetValuesConfig.getName());
+                    appAppletSetValues.setDescription(appletSetValuesConfig.getDescription());
                     appAppletSetValues.setSetValues(newAppSetValues(appletSetValuesConfig.getSetValues()));
                     appAppletSetValues.setConfigType(ConfigType.MUTABLE_INSTALL);
                     setValuesList.add(appAppletSetValues);
@@ -4021,7 +4022,7 @@ public class ApplicationModuleServiceImpl extends AbstractFlowCentralService
                         item.setInputWidget(inputWidget);
 
                         String references = propConfig.getReferences();
-                        if (references != null && !"application.enumlist".equals(inputWidget)) {
+                        if (references != null && !InputWidgetUtils.isEnumerationWidget(inputWidget)) {
                             references = ApplicationNameUtils.ensureLongNameReference(applicationName, references);
                         }
 

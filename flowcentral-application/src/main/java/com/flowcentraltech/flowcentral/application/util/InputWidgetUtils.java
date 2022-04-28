@@ -25,8 +25,10 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.EnumMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import com.flowcentraltech.flowcentral.application.data.EntityDef;
 import com.flowcentraltech.flowcentral.application.data.EntityFieldAttributes;
@@ -92,6 +94,9 @@ import com.tcdng.unify.core.util.StringUtils;
  */
 public final class InputWidgetUtils {
 
+    private static final Set<String> ENUMERATION_WIDGETS = Collections.unmodifiableSet(new HashSet<String>(
+            Arrays.asList("application.enumlist", "application.enumlistlabel", "application.enumreadonlytext")));
+
     private static final Class<?>[] NEW_INPUT_PARAMS = new Class<?>[] { String.class };
 
     private static final Map<EntityFieldDataType, String> defaultFormInputWidgets;
@@ -122,6 +127,10 @@ public final class InputWidgetUtils {
 
     }
 
+    public static boolean isEnumerationWidget(String widgetName) {
+        return ENUMERATION_WIDGETS.contains(widgetName);
+    }
+    
     public static String getDefaultEntityFieldWidget(EntityFieldDataType type) {
         return defaultFormInputWidgets.get(type);
     }
@@ -286,6 +295,8 @@ public final class InputWidgetUtils {
                 editor = String.format(editor, efa.getPrecision(), efa.getScale());
                 break;
             case "application.enumlist":
+            case "application.enumreadonlytext":
+            case "application.enumlistlabel":
                 editor = String.format(editor, entityFieldDef.getReferences());
                 break;
             case "application.entitylist":
