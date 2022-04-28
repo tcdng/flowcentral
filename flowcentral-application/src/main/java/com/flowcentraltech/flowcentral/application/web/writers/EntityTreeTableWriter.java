@@ -17,14 +17,19 @@ package com.flowcentraltech.flowcentral.application.web.writers;
 
 import java.util.List;
 
+import com.flowcentraltech.flowcentral.application.constants.ApplicationModuleSysParamConstants;
+import com.flowcentraltech.flowcentral.application.data.TableColumnDef;
+import com.flowcentraltech.flowcentral.application.data.TableDef;
 import com.flowcentraltech.flowcentral.application.web.widgets.EntityTreeTable;
 import com.flowcentraltech.flowcentral.application.web.widgets.EntityTreeTable.EntityTreeItem;
 import com.flowcentraltech.flowcentral.application.web.widgets.EntityTreeTable.EntityTreeLevel;
+import com.flowcentraltech.flowcentral.application.web.widgets.EntityTreeTable.TableColumnInfo;
 import com.flowcentraltech.flowcentral.application.web.widgets.EntityTreeTableWidget;
+import com.flowcentraltech.flowcentral.system.business.SystemModuleService;
 import com.tcdng.unify.core.UnifyException;
 import com.tcdng.unify.core.annotation.Component;
+import com.tcdng.unify.core.annotation.Configurable;
 import com.tcdng.unify.core.annotation.Writes;
-import com.tcdng.unify.core.data.ValueStore;
 import com.tcdng.unify.core.util.StringUtils;
 import com.tcdng.unify.web.ui.widget.Control;
 import com.tcdng.unify.web.ui.widget.PushType;
@@ -42,6 +47,13 @@ import com.tcdng.unify.web.ui.widget.writer.AbstractControlWriter;
 @Component("fc-entitytreetable-writer")
 public class EntityTreeTableWriter extends AbstractControlWriter {
 
+    @Configurable
+    private SystemModuleService systemModuleService;
+
+    public final void setSystemModuleService(SystemModuleService systemModuleService) {
+        this.systemModuleService = systemModuleService;
+    }
+
     @Override
     protected void doWriteStructureAndContent(ResponseWriter writer, Widget widget) throws UnifyException {
         EntityTreeTableWidget tableWidget = (EntityTreeTableWidget) widget;
@@ -51,20 +63,23 @@ public class EntityTreeTableWriter extends AbstractControlWriter {
                 writeHiddenPush(writer, tableWidget.getSelectCtrl(), PushType.CHECKBOX);
             }
 
+            final boolean classicMode = systemModuleService.getSysParameterValue(boolean.class,
+                    ApplicationModuleSysParamConstants.ALL_TABLE_IN_CLASSIC_MODE);
+            final String tableClass = classicMode ? "table classic" : "table";
+            table.setTableClass(tableClass);
             writer.write("<div");
             writeTagAttributes(writer, tableWidget);
             writer.write(">");
             writer.write("<div><table");
             writeTagId(writer, tableWidget);
-            writeTagStyleClass(writer, "table");
+            writeTagStyleClass(writer, tableClass);
             writer.write(">");
 
             if (table.isMultiColumn()) {
-                // TODO
+                writeHeaderRow(writer, tableWidget, 0);
             } else {
                 writer.write("<colgroup>");
-                final int prefixColumns = table.isMultiSelect() ? table.getLevelCount()
-                        : table.getLevelCount() - 1;
+                final int prefixColumns = table.isMultiSelect() ? table.getLevelCount() : table.getLevelCount() - 1;
                 for (int i = 0; i < prefixColumns; i++) {
                     writer.write("<col class=\"cpre\">");
                 }
@@ -95,11 +110,81 @@ public class EntityTreeTableWriter extends AbstractControlWriter {
             writer.writeParam("pContId", tableWidget.getContainerId());
             writer.writeCommandURLParam("pCmdURL");
             if (table.isMultiSelect()) {
+                writer.writeParam("pSelAllId", tableWidget.getSelectAllId());
                 writer.writeParam("pSelCtrlId", tableWidget.getSelectCtrl().getId());
                 writer.writeParam("pMultiSel", true);
+                writer.writeParam("pMultiSelDepList", new String[] {} /*
+                        DataUtils.toArray(String.class, tableWidget.getMultiSelDependentList())*/);
                 writer.writeParam("pLvlChain", table.getItemLevelChain());
             }
             writer.endFunction();
+        }
+    }
+
+    private void writeHeaderRow(ResponseWriter writer, EntityTreeTableWidget tableWidget, int level)
+            throws UnifyException {
+        writer.write("<tr ");
+        if (level > 0) {
+            writer.write(" class=\"small\"");
+        }
+        writer.write(">");
+
+        EntityTreeTable table = tableWidget.getEntityTreeTable();
+        if (table != null) {
+            writeHeaderMultiSelect(writer, tableWidget, level);
+
+            final boolean sysHeaderUppercase = systemModuleService.getSysParameterValue(boolean.class,
+                    ApplicationModuleSysParamConstants.ALL_TABLE_HEADER_TO_UPPERCASE);
+            final boolean sysHeaderCenterAlign = systemModuleService.getSysParameterValue(boolean.class,
+                    ApplicationModuleSysParamConstants.ALL_TABLE_HEADER_CENTER_ALIGNED);
+            TableDef _tableDef = table.getLevel(level).getTableDef();
+            for (TableColumnInfo tabelColumnInfo : table.getLevel(level).getColumnInfoList()) {
+                writer.write("<th");
+                if (sysHeaderCenterAlign || table.isCenterAlignHeaders()) {
+                    writeTagStyle(writer, tabelColumnInfo.getStyle() + "text-align:center;");
+                } else {
+                    writeTagStyle(writer, tabelColumnInfo.getStyle());
+                }
+
+                writer.write("><span>");
+                String caption = tabelColumnInfo.getLabel();
+                if (caption != null) {
+                    if (sysHeaderUppercase || _tableDef.isHeaderToUpperCase()) {
+                        writer.writeWithHtmlEscape(caption.toUpperCase());
+                    } else {
+                        writer.writeWithHtmlEscape(caption);
+                    }
+                } else {
+                    writer.writeHtmlFixedSpace();
+                }
+
+                writer.write("</span>");
+                writer.write("</th>");
+            }
+
+            writer.write("</tr>");
+        }
+    }
+
+    private void writeHeaderMultiSelect(ResponseWriter writer, EntityTreeTableWidget tableWidget, int level)
+            throws UnifyException {
+        EntityTreeTable table = tableWidget.getEntityTreeTable();
+        if (table.isMultiSelect()) {
+            writer.write("<th class=\"mselh\">");
+            if (level == 0) {
+                writer.write("<span");
+                writeTagId(writer, "fac_" + tableWidget.getSelectAllId());
+                if (tableWidget.isContainerDisabled()) {
+                    writeTagStyleClass(writer, "g_cbd");
+                } else {
+                    writeTagStyleClass(writer, "g_cbb");
+                }
+                writer.write("/>");
+                writer.write("<input type=\"checkbox\"");
+                writeTagId(writer, tableWidget.getSelectAllId());
+                writer.write("/>");
+            }
+            writer.write("</th>");
         }
     }
 
@@ -111,32 +196,67 @@ public class EntityTreeTableWriter extends AbstractControlWriter {
             final int len = items.size();
             final boolean multiSelect = table.isMultiSelect();
             final boolean showLabel = table.isShowLabel();
-            boolean isEvenRow = true;
-
             if (table.isMultiColumn()) {
-                // TODO
+                int lastDepth = 0;
+                int tableClosureCount = 0;
+                for (int i = 0; i < len; i++) {
+                    EntityTreeItem item = items.get(i);
+                    int currentDepth = item.getLevel();
+                    if (currentDepth > lastDepth) {
+                        // Begin inner table
+                        int colspan = table.getLevel(currentDepth - 1).getColumnCount();
+                        if (multiSelect) {
+                            colspan++;
+                        }
+
+                        writer.write("<tr><td class=\"inner\" colspan = \"").write(colspan);
+                        writer.write("\"><table"); // Add left margin class
+                        writeTagStyleClass(writer, table.getTableClass());
+                        writer.write(">");
+                        writeHeaderRow(writer, tableWidget, currentDepth);
+                        tableClosureCount++;
+                        lastDepth++;
+                    } else {
+                        while (currentDepth < lastDepth) {
+                            writeTableClosure(writer);
+                            tableClosureCount--;
+                            lastDepth--;
+                        }
+                    }
+
+                    writer.write("<tr>");
+                    writePreColumns(writer, tableWidget, item, i);
+                    for (TableColumnInfo tabelColumnInfo : table.getLevel(currentDepth).getColumnInfoList()) {
+                        TableColumnDef tabelColumnDef = tabelColumnInfo.getTableColumnDef();
+                        Widget chWidget = tabelColumnInfo.getWidget();
+                        chWidget.setEditable(tabelColumnDef.isEditable());
+                        chWidget.setDisabled(tabelColumnDef.isDisabled());
+                        chWidget.setValueStore(item.getInstValueStore());
+                        writer.write("<td");
+                        writeTagStyle(writer, chWidget.getColumnStyle());
+                        writer.write(">");
+                        writer.writeStructureAndContent(chWidget);
+                        writer.write("</td>");
+                    }
+
+                    writer.write("</tr>");
+                }
+
+                while (tableClosureCount > 0) {
+                    writeTableClosure(writer);
+                    tableClosureCount--;
+                }
             } else {
                 for (int i = 0; i < len; i++) {
                     EntityTreeItem item = items.get(i);
                     final int level = item.getLevel();
                     EntityTreeLevel treeLevel = table.getLevel(level);
-                    ValueStore valueStore = item.getInstValueStore();
-                    Long id = valueStore.retrieve(Long.class, "id");
                     writer.write("<tr");
-                    if (isEvenRow) {
-                        writeTagStyleClass(writer, "even");
-                    } else {
-                        writeTagStyleClass(writer, "odd");
-                    }
-
-                    if (level == 0) {
-                        isEvenRow = !isEvenRow;
-                    }
-                    
+                    writeTagStyleClass(writer, "even");
                     writeTagName(writer, tableWidget.getRowId());
                     writer.write(">");
 
-                    writePreColumns(writer, tableWidget, item, id, i);
+                    writePreColumns(writer, tableWidget, item, i);
 
                     int filler = prefixColumns - level;
                     if (multiSelect) {
@@ -168,16 +288,25 @@ public class EntityTreeTableWriter extends AbstractControlWriter {
         }
     }
 
-    private void writePreColumns(ResponseWriter writer, EntityTreeTableWidget tableWidget, EntityTreeItem item, Long id,
+    private void writeTableClosure(ResponseWriter writer) throws UnifyException {
+        writer.write("</table></td></tr>");
+    }
+
+    private void writePreColumns(ResponseWriter writer, EntityTreeTableWidget tableWidget, EntityTreeItem item,
             int index) throws UnifyException {
         EntityTreeTable table = tableWidget.getEntityTreeTable();
         final int depth = item.getLevel();
         if (table != null && table.isMultiSelect()) {
             final Control selectCtrl = tableWidget.getSelectCtrl();
             final boolean selected = item.isSelected();
-            writer.write("<td class=\"msel\" colspan=\"");
-            writer.write(depth + 1);
-            writer.write("\">");
+            if (table.isMultiColumn()) {
+                writer.write("<td class=\"msel\">");
+            } else {
+                writer.write("<td class=\"msel pmsel\" colspan=\"");
+                writer.write(depth + 1);
+                writer.write("\">");
+            }
+
             String namingIndexId = selectCtrl.getNamingIndexedId(index);
             writer.write("<span ");
             writeTagId(writer, "fac_" + namingIndexId);

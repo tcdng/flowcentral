@@ -17,12 +17,19 @@ package com.flowcentraltech.flowcentral.application.web.widgets;
 
 import java.util.List;
 
+import com.flowcentraltech.flowcentral.application.data.TableColumnDef;
 import com.flowcentraltech.flowcentral.application.web.widgets.EntityTreeTable.EntityTreeItem;
+import com.flowcentraltech.flowcentral.application.web.widgets.EntityTreeTable.EntityTreeLevel;
+import com.flowcentraltech.flowcentral.application.web.widgets.EntityTreeTable.TableColumnInfo;
 import com.tcdng.unify.core.UnifyException;
 import com.tcdng.unify.core.annotation.Component;
+import com.tcdng.unify.core.annotation.UplAttribute;
+import com.tcdng.unify.core.annotation.UplAttributes;
 import com.tcdng.unify.core.data.ValueStore;
+import com.tcdng.unify.core.upl.UplElementReferences;
 import com.tcdng.unify.web.ui.widget.AbstractValueListMultiControl;
 import com.tcdng.unify.web.ui.widget.Control;
+import com.tcdng.unify.web.ui.widget.Widget;
 
 /**
  * Entity tree table widget.
@@ -31,11 +38,16 @@ import com.tcdng.unify.web.ui.widget.Control;
  * @since 1.0
  */
 @Component("fc-entitytreetable")
+@UplAttributes({ @UplAttribute(name = "multiSelDependentList", type = UplElementReferences.class) })
 public class EntityTreeTableWidget extends AbstractValueListMultiControl<ValueStore, EntityTreeItem> {
 
     private Control selectCtrl;
 
     private Integer[] selected;
+
+    private List<String> multiSelDependentList;
+
+    private EntityTreeTable oldEntityTreeTable;
 
     @Override
     public void addPageAliases() throws UnifyException {
@@ -58,7 +70,7 @@ public class EntityTreeTableWidget extends AbstractValueListMultiControl<ValueSt
         if (table != null) {
             table.unselectAll();
             if (selected != null) {
-                for(Integer i: selected) {
+                for (Integer i : selected) {
                     table.select(i);
                 }
             }
@@ -69,8 +81,54 @@ public class EntityTreeTableWidget extends AbstractValueListMultiControl<ValueSt
         return getPrefixedId("row_");
     }
 
+    public String getColumnHeaderId() throws UnifyException {
+        return getPrefixedId("th_");
+    }
+
+    public String getSelectAllId() throws UnifyException {
+        return getPrefixedId("sela_");
+    }
+
+    @SuppressWarnings("unused")
     public EntityTreeTable getEntityTreeTable() throws UnifyException {
-        return getValue(EntityTreeTable.class);
+        EntityTreeTable entityTreeTable = getValue(EntityTreeTable.class);
+        if (entityTreeTable != null && entityTreeTable != oldEntityTreeTable) {
+            removeAllExternalChildWidgets();
+            final boolean entryMode = false; // TODO
+            for (EntityTreeLevel level : entityTreeTable.getLevels()) {
+                int usedPercent = 0;
+                int i = 0;
+                final int len = level.getColumnInfoList().size();
+                for (TableColumnInfo tableColumnInfo : level.getColumnInfoList()) {
+                    TableColumnDef tableColumnDef = tableColumnInfo.getTableColumnDef();
+                    final boolean cellEditor = tableColumnDef.isWithCellEditor();
+                    final String columnWidgetUpl = entryMode && cellEditor ? tableColumnDef.getCellEditor()
+                            : tableColumnDef.getCellRenderer();
+                    Widget widget = addExternalChildWidget(columnWidgetUpl);
+                    tableColumnInfo.setWidget(widget);
+                    
+                    int width = (tableColumnDef.getWidth() * 100) / level.getTotalWidth();
+                    if (i == (len - 1)) {
+                        tableColumnInfo.setStyle("width:" + (100 - usedPercent) + "%;");
+                        usedPercent += width;
+                    } else {
+                        tableColumnInfo.setStyle("width:" + width + "%;");
+                        usedPercent += width;
+                    }
+                }
+            }
+
+        }
+
+        oldEntityTreeTable = entityTreeTable;
+        return entityTreeTable;
+    }
+
+    public List<String> getMultiSelDependentList() throws UnifyException {
+        if (multiSelDependentList == null) {
+            multiSelDependentList = getPageNames(getUplAttribute(UplElementReferences.class, "multiSelDependentList"));
+        }
+        return multiSelDependentList;
     }
 
     @Override
@@ -91,6 +149,6 @@ public class EntityTreeTableWidget extends AbstractValueListMultiControl<ValueSt
 
     @Override
     protected void onCreateValueList(List<ValueStore> valueStoreList) throws UnifyException {
-        
+
     }
 }

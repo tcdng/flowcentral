@@ -30,6 +30,7 @@ import com.tcdng.unify.core.database.Entity;
 import com.tcdng.unify.core.util.DataUtils;
 import com.tcdng.unify.core.util.StringUtils;
 import com.tcdng.unify.core.util.StringUtils.StringToken;
+import com.tcdng.unify.web.ui.widget.Widget;
 
 /**
  * Entity tree table data object.
@@ -44,20 +45,32 @@ public class EntityTreeTable {
     private List<EntityTreeItem> items;
 
     private List<Integer> itemLevelChain;
+
+    private String title;
+
+    private String tableClass;
     
+    private boolean centerAlignHeaders;
+
     private boolean multiSelect;
 
     private boolean multiColumn;
 
     private boolean showLabel;
 
-    private EntityTreeTable(List<EntityTreeLevel> levels, List<EntityTreeItem> items, boolean multiSelect,
-            boolean multiColumn, boolean showLabel) {
+    private EntityTreeTable(List<EntityTreeLevel> levels, List<EntityTreeItem> items, String title,
+            boolean centerAlignHeaders, boolean multiSelect, boolean multiColumn, boolean showLabel) {
         this.levels = levels;
         this.items = items;
+        this.title = title;
+        this.centerAlignHeaders = centerAlignHeaders;
         this.multiSelect = multiSelect;
         this.multiColumn = multiColumn;
         this.showLabel = showLabel;
+    }
+
+    public List<EntityTreeLevel> getLevels() {
+        return levels;
     }
 
     public EntityTreeLevel getLevel(int index) {
@@ -76,19 +89,27 @@ public class EntityTreeTable {
         return items;
     }
 
+    public String getTableClass() {
+        return tableClass;
+    }
+
+    public void setTableClass(String tableClass) {
+        this.tableClass = tableClass;
+    }
+
     public Integer[] getItemLevelChain() {
         if (itemLevelChain == null) {
             itemLevelChain = new ArrayList<Integer>();
             for (EntityTreeItem item : items) {
                 itemLevelChain.add(item.getLevel());
             }
-            
-            itemLevelChain =  Collections.unmodifiableList(itemLevelChain);
+
+            itemLevelChain = Collections.unmodifiableList(itemLevelChain);
         }
-        
+
         return DataUtils.toArray(Integer.class, itemLevelChain);
     }
-    
+
     public int getItemCount() {
         return items.size();
     }
@@ -111,6 +132,14 @@ public class EntityTreeTable {
         if (index >= 0 && index < items.size()) {
             items.get(index).setSelected(true);
         }
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public boolean isCenterAlignHeaders() {
+        return centerAlignHeaders;
     }
 
     public boolean isMultiSelect() {
@@ -137,6 +166,10 @@ public class EntityTreeTable {
 
         private Stack<EntityTreeItem> parentItems;
 
+        private String title;
+
+        private boolean centerAlignHeaders;
+
         private boolean multiSelect;
 
         private boolean multiColumn;
@@ -154,6 +187,16 @@ public class EntityTreeTable {
 
         public int currentLevel() {
             return currentLevel;
+        }
+
+        public Builder title(String title) {
+            this.title = title;
+            return this;
+        }
+
+        public Builder centerAlignHeaders(boolean centerAlignHeaders) {
+            this.centerAlignHeaders = centerAlignHeaders;
+            return this;
         }
 
         public Builder multiSelect(boolean multiSelect) {
@@ -223,9 +266,7 @@ public class EntityTreeTable {
                 throw new RuntimeException("You must have at least one item before you can add items");
             }
 
-            String instLongId = parentItems.isEmpty() ? String.valueOf(_inst.getId())
-                    : parentItems.peek().getInstLongId() + "." + _inst.getId();
-            items.add(new EntityTreeItem(instLongId, _inst, currentLevel, selected));
+            items.add(new EntityTreeItem(_inst, currentLevel, selected));
             return this;
         }
 
@@ -234,8 +275,8 @@ public class EntityTreeTable {
                 throw new RuntimeException("You must have at least one tree level defined.");
             }
 
-            return new EntityTreeTable(DataUtils.unmodifiableList(levels), DataUtils.unmodifiableList(items),
-                    multiSelect, multiColumn, showLabel);
+            return new EntityTreeTable(DataUtils.unmodifiableList(levels), DataUtils.unmodifiableList(items), title,
+                    centerAlignHeaders, multiSelect, multiColumn, showLabel);
         }
     }
 
@@ -245,15 +286,25 @@ public class EntityTreeTable {
 
         private TableDef tableDef;
 
-        private List<TableColumnDef> columnDefList;
+        private List<TableColumnInfo> columnDefList;
 
         private List<StringToken> lineFormat;
+
+        private int totalWidth;
 
         private EntityTreeLevel(String label, TableDef tableDef, List<TableColumnDef> columnDefList,
                 List<StringToken> lineFormat) {
             this.label = label;
             this.tableDef = tableDef;
-            this.columnDefList = columnDefList;
+            this.columnDefList = new ArrayList<TableColumnInfo>();
+            for (TableColumnDef tableColumnDef : columnDefList) {
+                String columnLabel = tableColumnDef.isWithLabel() ? tableColumnDef.getLabel()
+                        : tableDef.getEntityDef().getFieldDef(tableColumnDef.getFieldName()).getFieldLabel();
+                this.columnDefList.add(new TableColumnInfo(tableColumnDef, columnLabel));
+                this.totalWidth += tableColumnDef.getWidth();
+            }
+
+            this.columnDefList = Collections.unmodifiableList(this.columnDefList);
             this.lineFormat = lineFormat;
         }
 
@@ -261,12 +312,20 @@ public class EntityTreeTable {
             return label;
         }
 
+        public int getTotalWidth() {
+            return totalWidth;
+        }
+
         public TableDef getTableDef() {
             return tableDef;
         }
 
-        public List<TableColumnDef> getColumnDefList() {
+        public List<TableColumnInfo> getColumnInfoList() {
             return columnDefList;
+        }
+
+        public int getColumnCount() {
+            return columnDefList.size();
         }
 
         public List<StringToken> getLineFormat() {
@@ -274,11 +333,49 @@ public class EntityTreeTable {
         }
     }
 
+    public static class TableColumnInfo {
+
+        private TableColumnDef tableColumnDef;
+
+        private Widget widget;
+
+        private String label;
+
+        private String style;
+
+        public TableColumnInfo(TableColumnDef _tableColumnDef, String label) {
+            this.tableColumnDef = _tableColumnDef;
+            this.label = label;
+        }
+
+        public Widget getWidget() {
+            return widget;
+        }
+
+        public void setWidget(Widget widget) {
+            this.widget = widget;
+        }
+
+        public TableColumnDef getTableColumnDef() {
+            return tableColumnDef;
+        }
+
+        public String getLabel() {
+            return label;
+        }
+
+        public String getStyle() {
+            return style;
+        }
+
+        public void setStyle(String style) {
+            this.style = style;
+        }
+    }
+
     public static class EntityTreeItem {
 
         private ValueStore instValueStore;
-
-        private String instLongId;
 
         private Entity inst;
 
@@ -286,8 +383,7 @@ public class EntityTreeTable {
 
         private boolean selected;
 
-        private EntityTreeItem(String instLongId, Entity inst, int level, boolean selected) {
-            this.instLongId = instLongId;
+        private EntityTreeItem(Entity inst, int level, boolean selected) {
             this.inst = inst;
             this.level = level;
             this.selected = selected;
@@ -303,10 +399,6 @@ public class EntityTreeTable {
             }
 
             return instValueStore;
-        }
-
-        public String getInstLongId() {
-            return instLongId;
         }
 
         public Entity getInst() {

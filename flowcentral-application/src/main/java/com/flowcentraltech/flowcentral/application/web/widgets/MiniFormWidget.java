@@ -156,7 +156,7 @@ public class MiniFormWidget extends AbstractMultiControl implements FormTriggerE
 
     @Override
     public String evaluateTrigger() throws UnifyException {
-        return getTrigger(false);
+        return getTrigger();
     }
 
     public void evaluateWidgetStates() throws UnifyException {
@@ -170,11 +170,12 @@ public class MiniFormWidget extends AbstractMultiControl implements FormTriggerE
             formSection.revertState();
         }
 
-        String trigger = getTrigger(true);
+        List<FormStateRule> fieldRules = new ArrayList<FormStateRule>();
+        String trigger = getTrigger();
         if (form.getScope().isMainForm()) {
             FormDef formDef = ctx.getFormDef();
             boolean setValuesExecuted = false;
-
+            
             if (formDef.isWithConsolidatedFormState()) {
                 ConsolidatedFormStatePolicy policy = ctx.getAu().getComponent(ConsolidatedFormStatePolicy.class,
                         formDef.getConsolidatedFormState());
@@ -188,12 +189,7 @@ public class MiniFormWidget extends AbstractMultiControl implements FormTriggerE
                             }
                         }
                     } else if (state.isFieldRule()) {
-                        for (String target : state.getTarget()) {
-                            FormWidget formWidget = formWidgets.get(target);
-                            if (formWidget != null) {
-                                formWidget.applyStatePolicy(state);
-                            }
-                        }
+                        fieldRules.add(state);
                     }
                 }
                 
@@ -222,12 +218,7 @@ public class MiniFormWidget extends AbstractMultiControl implements FormTriggerE
                                     }
                                 }
                             } else if (setStateDef.isFieldRule()) {
-                                for (String target : setStateDef.getTarget()) {
-                                    FormWidget formWidget = formWidgets.get(target);
-                                    if (formWidget != null) {
-                                        formWidget.applyStatePolicy(setStateDef);
-                                    }
-                                }
+                                fieldRules.add(setStateDef);
                             }
                         }
 
@@ -245,6 +236,20 @@ public class MiniFormWidget extends AbstractMultiControl implements FormTriggerE
             }
         }
 
+        // Apply widget rules
+        for (FormWidget formWidget : formWidgets.values()) {
+            formWidget.revertState();
+        }
+        
+        for (FormStateRule rule: fieldRules) {
+            for (String target : rule.getTarget()) {
+                FormWidget formWidget = formWidgets.get(target);
+                if (formWidget != null) {
+                    formWidget.applyStatePolicy(rule);
+                }
+            }
+        }
+
         if (form.isAllocateTabIndex()) {
             allocateTabIndex(ctx);
         }
@@ -255,7 +260,7 @@ public class MiniFormWidget extends AbstractMultiControl implements FormTriggerE
 
     }
 
-    private String getTrigger(boolean revertState) throws UnifyException {
+    private String getTrigger() throws UnifyException {
         getMiniForm();
         String trigger = null;
         String focusWidgetId = getRequestContextUtil().getTriggerWidgetId();
@@ -274,10 +279,6 @@ public class MiniFormWidget extends AbstractMultiControl implements FormTriggerE
                 }
 
                 isResolveFocus = trigger == null;
-            }
-
-            if (revertState) {
-                formWidget.revertState();
             }
         }
 
@@ -399,11 +400,11 @@ public class MiniFormWidget extends AbstractMultiControl implements FormTriggerE
             }
 
             if (!rule.getEditable().isConforming()) {
-                editable = editable && rule.getEditable().isTrue();
+                editable = rule.getEditable().isTrue();
             }
-
+  
             if (!rule.getDisabled().isConforming()) {
-                disabled = disabled || rule.getDisabled().isTrue();
+                disabled = rule.getDisabled().isTrue();
             }
         }
 

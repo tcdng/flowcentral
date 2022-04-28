@@ -37,6 +37,8 @@ public class EntityTreeSelect {
     private EntityTreeTable entityTreeTable;
 
     private String selectHandlerName;
+
+    private String title;
     
     public EntityTreeSelect(AppletUtilities au, ValueStore formValueStore, EntityTreeTable entityTreeTable,
             String selectHandlerName) {
@@ -48,6 +50,14 @@ public class EntityTreeSelect {
 
     public EntityTreeTable getEntityTreeTable() {
         return entityTreeTable;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public void applySelect() throws UnifyException {

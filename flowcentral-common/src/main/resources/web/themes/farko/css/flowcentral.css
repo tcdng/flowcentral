@@ -506,15 +506,29 @@ textarea:focus {outline: none !important;box-shadow: 0 0 6px #5194f3;}
 .fc-entitytreetable .table .odd:hover {background-color:#d5e7fb;}
 .fc-entitytreetable .table .even {}
 .fc-entitytreetable .table .even:hover {background-color:#d5e7fb;}
-.fc-entitytreetable .table .cpre {width:20px;}
+.fc-entitytreetable .table th {text-align:left; font-weight: bold; padding: 4px 6px;font-size: 8pt;}
+.fc-entitytreetable .table th span {white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: block;}
+.fc-entitytreetable .table .inner {padding: 0px; padding-left: 44px;}
+.fc-entitytreetable .table .small {}
+.fc-entitytreetable .table .small th {text-align:left; font-weight: bold; padding: 8px 6px;}
+.fc-entitytreetable .table .small th span {white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: block;font-size:7pt;}
+.fc-entitytreetable .table td {height:24px; padding: 4px 6px; border-left:none;border-top: 1px solid #e8e8e8;border-bottom: 1px solid #e8e8e8;font-size:8pt;}
+.fc-entitytreetable .table .mselh {width: 32px;}
+.fc-entitytreetable .table .mselh span {width:16px; height:16px;}
+.fc-entitytreetable .table .mselh input {display:none;}
+.fc-entitytreetable .table .cpre {width:32px;}
 .fc-entitytreetable .table .clabel {width:64px;}
 .fc-entitytreetable .table .cline {}
-.fc-entitytreetable .table .msel {text-align:right;}
+.fc-entitytreetable .table .pmsel {text-align:right;}
+.fc-entitytreetable .table .msel {}
 .fc-entitytreetable .table .msel span {width:16px; height:16px;}
 .fc-entitytreetable .table .msel input {display:none;}
 .fc-entitytreetable .table .mpre {}
 .fc-entitytreetable .table .mlabel {}
 .fc-entitytreetable .table .mline {}
+.fc-entitytreetable .classic th {border: 1px solid #e8e8e8;background-color: #d5d5d5;}
+.fc-entitytreetable .classic td {border-right: 1px solid #e8e8e8;border-left: 1px solid #e8e8e8;}
+.fc-entitytreetable .classic .mselh {width: 32px;background-color: #e3e7ea;}
 
 .fc-dispcounter {display:inline-block; background-color:#9ca4af; color:#ffffff; font-weight:bold; font-size:7pt;
 	padding:4px; border-radius:4px;margin-top:4px;}
