@@ -2656,13 +2656,15 @@
 						required="true" saveAs="true" />
 					<field name="description" inputWidget="application.text"
 						column="0" required="true" saveAs="true" />
-					<field name="label" inputWidget="application.text" column="0" />
 					<field name="configType" inputWidget="application.enumlist"
 						column="1" disabled="true" required="true" />
 					<field name="entity" inputWidget="studio.entitybynamelist"
 						column="1" required="true" />
 					<field name="itemsPerPage" inputWidget="application.integer"
 						column="1" />
+				</section>
+				<section name="tableFlags" columns="type_1_2">
+					<field name="label" inputWidget="application.text" column="0" />
 					<field name="sortable" inputWidget="application.checkbox"
 						column="1" />
 					<field name="serialNo" inputWidget="application.checkbox"
@@ -2672,9 +2674,11 @@
 					<field name="headerCenterAlign"
 						inputWidget="application.checkbox" column="1" />
 					<field name="basicSearch" inputWidget="application.checkbox"
-						column="1" />
+						column="2" />
+					<field name="totalSummary" inputWidget="application.checkbox"
+						column="2" />
 					<field name="limitSelectToColumns" inputWidget="application.checkbox"
-						column="1" />
+						column="2" />
 				</section>
 			</tab>
 			<tab name="design" label="$m{studio.apptable.form.design}"

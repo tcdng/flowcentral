@@ -33,6 +33,8 @@ public class TableColumnConfig {
 
     private String linkAct;
 
+    private String order;
+
     private int widthRatio;
 
     private boolean switchOnChange;
@@ -42,6 +44,8 @@ public class TableColumnConfig {
     private boolean editable;
 
     private boolean sortable;
+
+    private boolean summary;
 
     public TableColumnConfig() {
         this.sortable = true;
@@ -81,6 +85,15 @@ public class TableColumnConfig {
     @XmlAttribute
     public void setLinkAct(String linkAct) {
         this.linkAct = linkAct;
+    }
+
+    public String getOrder() {
+        return order;
+    }
+
+    @XmlAttribute
+    public void setOrder(String order) {
+        this.order = order;
     }
 
     public int getWidthRatio() {
@@ -126,6 +139,15 @@ public class TableColumnConfig {
     @XmlAttribute
     public void setSortable(boolean sortable) {
         this.sortable = sortable;
+    }
+
+    public boolean isSummary() {
+        return summary;
+    }
+
+    @XmlAttribute
+    public void setSummary(boolean summary) {
+        this.summary = summary;
     }
 
 }

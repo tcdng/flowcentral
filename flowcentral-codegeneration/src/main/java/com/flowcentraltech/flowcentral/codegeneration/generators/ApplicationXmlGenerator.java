@@ -498,6 +498,7 @@ public class ApplicationXmlGenerator extends AbstractStaticArtifactGenerator {
                 appTableConfig.setHeaderToUpperCase(appTable.isHeaderToUpperCase());
                 appTableConfig.setHeaderCenterAlign(appTable.isHeaderCenterAlign());
                 appTableConfig.setBasicSearch(appTable.isBasicSearch());
+                appTableConfig.setTotalSummary(appTable.isTotalSummary());
                 appTableConfig.setLimitSelectToColumns(appTable.isLimitSelectToColumns());
 
                 // Columns
@@ -514,11 +515,13 @@ public class ApplicationXmlGenerator extends AbstractStaticArtifactGenerator {
 
                         tableColumnConfig.setRenderWidget(appTableColumn.getRenderWidget());
                         tableColumnConfig.setLinkAct(appTableColumn.getLinkAct());
+                        tableColumnConfig.setOrder(appTableColumn.getOrder());
                         tableColumnConfig.setWidthRatio(appTableColumn.getWidthRatio());
                         tableColumnConfig.setSwitchOnChange(appTableColumn.isSwitchOnChange());
                         tableColumnConfig.setDisabled(appTableColumn.isDisabled());
                         tableColumnConfig.setEditable(appTableColumn.isEditable());
                         tableColumnConfig.setSortable(appTableColumn.isSortable());
+                        tableColumnConfig.setSummary(appTableColumn.isSummary());
                         columnList.add(tableColumnConfig);
                     }
 

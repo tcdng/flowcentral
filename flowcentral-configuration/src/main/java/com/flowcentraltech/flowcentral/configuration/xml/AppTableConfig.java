@@ -44,6 +44,8 @@ public class AppTableConfig extends BaseNameConfig {
 
     private boolean basicSearch;
 
+    private boolean totalSummary;
+
     private boolean limitSelectToColumns;
 
     private List<TableActionConfig> actionList;
@@ -130,6 +132,15 @@ public class AppTableConfig extends BaseNameConfig {
     @XmlAttribute
     public void setBasicSearch(boolean basicSearch) {
         this.basicSearch = basicSearch;
+    }
+
+    public boolean isTotalSummary() {
+        return totalSummary;
+    }
+
+    @XmlAttribute
+    public void setTotalSummary(boolean totalSummary) {
+        this.totalSummary = totalSummary;
     }
 
     public boolean isLimitSelectToColumns() {

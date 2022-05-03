@@ -15,6 +15,7 @@
  */
 package com.flowcentraltech.flowcentral.application.data;
 
+import com.tcdng.unify.core.constant.OrderType;
 import com.tcdng.unify.core.util.StringUtils;
 
 /**
@@ -35,8 +36,10 @@ public class TableColumnDef {
 
     private String cellEditor;
 
+    private OrderType order;
+
     private int width;
-    
+
     private boolean switchOnChange;
 
     private boolean disabled;
@@ -45,18 +48,23 @@ public class TableColumnDef {
 
     private boolean sortable;
 
+    private boolean summary;
+
     public TableColumnDef(String label, String fieldName, String headerStyle, String cellRenderer, String cellEditor,
-            int width, boolean switchOnChange, boolean disabled, boolean editable, boolean sortable) {
+            OrderType order, int width, boolean switchOnChange, boolean disabled, boolean editable, boolean sortable,
+            boolean summary) {
         this.label = label;
         this.fieldName = fieldName;
         this.headerStyle = headerStyle;
         this.cellRenderer = cellRenderer;
         this.cellEditor = cellEditor;
+        this.order = order;
         this.width = width;
         this.switchOnChange = switchOnChange;
         this.disabled = disabled;
         this.editable = editable;
         this.sortable = sortable;
+        this.summary = summary;
     }
 
     public String getLabel() {
@@ -79,6 +87,10 @@ public class TableColumnDef {
         return cellEditor;
     }
 
+    public OrderType getOrder() {
+        return order;
+    }
+
     public int getWidth() {
         return width;
     }
@@ -86,7 +98,7 @@ public class TableColumnDef {
     public boolean isWithCellEditor() {
         return cellEditor != null;
     }
-    
+
     public boolean isWithLabel() {
         return !StringUtils.isBlank(label);
     }
@@ -107,9 +119,15 @@ public class TableColumnDef {
         return sortable;
     }
 
+    public boolean isSummary() {
+        return summary;
+    }
+
     @Override
     public String toString() {
         return "TableColumnDef [label=" + label + ", fieldName=" + fieldName + ", headerStyle=" + headerStyle
-                + ", cellRenderer=" + cellRenderer + ", cellInput=" + cellEditor + ", sortable=" + sortable + "]";
+                + ", cellRenderer=" + cellRenderer + ", cellEditor=" + cellEditor + ", order=" + order + ", width="
+                + width + ", switchOnChange=" + switchOnChange + ", disabled=" + disabled + ", editable=" + editable
+                + ", sortable=" + sortable + ", summary=" + summary + "]";
     }
 }

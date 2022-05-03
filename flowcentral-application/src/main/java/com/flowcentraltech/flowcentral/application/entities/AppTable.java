@@ -58,6 +58,9 @@ public class AppTable extends BaseApplicationEntity {
     private boolean basicSearch;
 
     @Column
+    private boolean totalSummary;
+
+    @Column
     private boolean limitSelectToColumns;
 
     @ChildList
@@ -139,6 +142,14 @@ public class AppTable extends BaseApplicationEntity {
 
     public void setBasicSearch(boolean basicSearch) {
         this.basicSearch = basicSearch;
+    }
+
+    public boolean isTotalSummary() {
+        return totalSummary;
+    }
+
+    public void setTotalSummary(boolean totalSummary) {
+        this.totalSummary = totalSummary;
     }
 
     public boolean isLimitSelectToColumns() {

@@ -85,11 +85,13 @@ public class TableEditor {
             this.columnList = new ArrayList<TableColumn>();
         }
 
-        public Builder addColumn(String fieldName, String renderWidget, String label, String linkAct, int widthRatio,
-                boolean switchOnChange, boolean disabled, boolean editable, boolean sortable) {
+        public Builder addColumn(String fieldName, String renderWidget, String label, String linkAct, String order,
+                int widthRatio, boolean switchOnChange, boolean disabled, boolean editable, boolean sortable,
+                boolean summary) {
             if (entityDef.isWithFieldDef(fieldName)) {
                 columnList.add(new TableColumn(entityDef.getFieldDef(fieldName).getFieldLabel(), fieldName,
-                        renderWidget, label, linkAct, widthRatio, switchOnChange, disabled, editable, sortable));
+                        renderWidget, label, linkAct, order, widthRatio, switchOnChange, disabled, editable, sortable,
+                        summary));
             }
 
             return this;
@@ -133,6 +135,8 @@ public class TableEditor {
 
         private String link;
 
+        private String order;
+
         private int width;
 
         private boolean switchOnChange;
@@ -143,18 +147,22 @@ public class TableEditor {
 
         private boolean sort;
 
-        public TableColumn(String fldLabel, String fldNm, String widget, String label, String link, int width,
-                boolean switchOnChange, boolean disabled, boolean editable, boolean sort) {
+        private boolean summary;
+
+        public TableColumn(String fldLabel, String fldNm, String widget, String label, String link, String order,
+                int width, boolean switchOnChange, boolean disabled, boolean editable, boolean sort, boolean summary) {
             this.fldLabel = fldLabel;
             this.fldNm = fldNm;
             this.widget = widget;
             this.label = label;
             this.link = link;
+            this.order = order;
             this.width = width;
             this.switchOnChange = switchOnChange;
             this.disabled = disabled;
             this.editable = editable;
             this.sort = sort;
+            this.summary = summary;
         }
 
         public TableColumn() {
@@ -207,6 +215,22 @@ public class TableEditor {
 
         public void setWidth(int width) {
             this.width = width;
+        }
+
+        public String getOrder() {
+            return order;
+        }
+
+        public void setOrder(String order) {
+            this.order = order;
+        }
+
+        public boolean isSummary() {
+            return summary;
+        }
+
+        public void setSummary(boolean summary) {
+            this.summary = summary;
         }
 
         public boolean isSwitchOnChange() {

@@ -107,11 +107,13 @@ public class TableEditorPage extends AbstractStudioEditorPage implements TabShee
                 appTableColumn.setRenderWidget(tableColumn.getWidget());
                 appTableColumn.setLabel(tableColumn.getLabel());
                 appTableColumn.setLinkAct(tableColumn.getLink());
+                appTableColumn.setOrder(tableColumn.getOrder());
                 appTableColumn.setWidthRatio(tableColumn.getWidth());
                 appTableColumn.setSwitchOnChange(tableColumn.isSwitchOnChange());
                 appTableColumn.setEditable(tableColumn.isEditable());
                 appTableColumn.setDisabled(tableColumn.isDisabled());
                 appTableColumn.setSortable(tableColumn.isSort());
+                appTableColumn.setSummary(tableColumn.isSummary());
                 columnList.add(appTableColumn);
             }
         }
@@ -125,8 +127,9 @@ public class TableEditorPage extends AbstractStudioEditorPage implements TabShee
         for (AppTableColumn appTableColumn : getAu().getEnvironment()
                 .findAll(Query.of(AppTableColumn.class).addEquals("appTableId", baseId).addOrder("id"))) {
             teb.addColumn(appTableColumn.getField(), appTableColumn.getRenderWidget(), appTableColumn.getLabel(),
-                    appTableColumn.getLinkAct(), appTableColumn.getWidthRatio(), appTableColumn.isSwitchOnChange(),
-                    appTableColumn.isDisabled(), appTableColumn.isEditable(), appTableColumn.isSortable());
+                    appTableColumn.getLinkAct(), appTableColumn.getOrder(), appTableColumn.getWidthRatio(),
+                    appTableColumn.isSwitchOnChange(), appTableColumn.isDisabled(), appTableColumn.isEditable(),
+                    appTableColumn.isSortable(), appTableColumn.isSummary());
         }
 
         TabSheetDef.Builder tsdb = TabSheetDef.newBuilder(null, 1L);
@@ -136,7 +139,6 @@ public class TableEditorPage extends AbstractStudioEditorPage implements TabShee
                 "fc-tablepreviewpanel", RendererType.STANDALONE_PANEL);
         tableEditor = teb.build();
         tablePreview = new TablePreview(getAu(), tableEditor);
-//        tablePreview.reload();
         final String appletName = null;
         tabSheet = new TabSheet(tsdb.build(),
                 Arrays.asList(new TabSheetItem("tableEditor", appletName, tableEditor, DESIGN_INDEX, true),

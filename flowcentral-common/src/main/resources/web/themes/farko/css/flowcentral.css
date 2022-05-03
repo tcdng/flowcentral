@@ -502,6 +502,9 @@ textarea:focus {outline: none !important;box-shadow: 0 0 6px #5194f3;}
 
 .fc-beantable {}
 .fc-beantable .table .mseld {background-color: transparent;}
+.fc-beantable .total {font-weight:bold;}
+.fc-beantable .total .blank {border-right: none;border-left: none;}
+
 .fc-entitytable {}
 
 .fc-entitytreetable {}

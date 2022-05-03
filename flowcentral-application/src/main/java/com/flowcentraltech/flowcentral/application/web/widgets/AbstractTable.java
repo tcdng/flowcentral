@@ -21,13 +21,16 @@ import java.util.Set;
 
 import com.flowcentraltech.flowcentral.application.business.AppletUtilities;
 import com.flowcentraltech.flowcentral.application.data.EntityDef;
+import com.flowcentraltech.flowcentral.application.data.EntityFieldTotalSummary;
 import com.flowcentraltech.flowcentral.application.data.LabelSuggestionDef;
 import com.flowcentraltech.flowcentral.application.data.TableColumnDef;
 import com.flowcentraltech.flowcentral.application.data.TableDef;
 import com.flowcentraltech.flowcentral.common.data.DefaultReportColumn;
 import com.tcdng.unify.core.UnifyException;
 import com.tcdng.unify.core.criterion.Order;
+import com.tcdng.unify.core.data.ValueStore;
 import com.tcdng.unify.web.ui.widget.EventHandler;
+import com.tcdng.unify.web.ui.widget.Widget;
 
 /**
  * Convenient abstract base class for table object.
@@ -62,15 +65,17 @@ public abstract class AbstractTable<T, U> {
     private boolean basicSearchMode;
 
     private boolean entryMode;
-    
+
+    private TableTotalSummary tableTotalSummary;
+
     protected final AppletUtilities au;
-    
+
     private Set<Integer> selected;
-    
+
     private TableSelect<?> tableSelect;
-    
+
     private List<EventHandler> switchOnChangeHandlers;
-    
+
     public AbstractTable(AppletUtilities au, TableDef tableDef, Order defaultOrder, boolean entryMode) {
         this.au = au;
         this.tableDef = tableDef;
@@ -96,10 +101,10 @@ public abstract class AbstractTable<T, U> {
         if (tableSelect != null) {
             return tableSelect.getSelectedItems();
         }
-        
+
         return Collections.emptyList();
     }
-    
+
     public final AppletUtilities getAu() {
         return au;
     }
@@ -135,7 +140,7 @@ public abstract class AbstractTable<T, U> {
     public boolean isSelected(Integer index) {
         return selected.contains(index);
     }
-    
+
     public boolean isSupportsBasicSearch() {
         return tableDef.isBasicSearch();
     }
@@ -147,11 +152,64 @@ public abstract class AbstractTable<T, U> {
     public boolean isBasicSearchMode() {
         return basicSearchMode;
     }
-    
+
+    public boolean isTotalSummary() {
+        return tableDef.isTotalSummary();
+    }
+
     public boolean isEntryMode() {
         return entryMode;
     }
 
+    public TableTotalSummary getTableTotalSummary() {
+        return tableTotalSummary;
+    }
+
+    public void setTableTotalSummary(TableTotalSummary tableTotalSummary) {
+        this.tableTotalSummary = tableTotalSummary;
+    }
+
+    public void clearSummaries() throws UnifyException {
+        if (tableTotalSummary != null) {
+            for (EntityFieldTotalSummary summary : tableTotalSummary.getSummaries().values()) {
+                summary.clear();
+            }
+        }
+    }
+
+    public void addTotalSummary(String fieldName, Object val) throws UnifyException {
+        if (tableTotalSummary != null && tableTotalSummary.getSummaries().containsKey(fieldName)) {
+            EntityFieldTotalSummary summary = tableTotalSummary.getSummaries().get(fieldName);
+            summary.add(val);
+        }
+    }
+
+    public void loadTotalSummaryValueStore() throws UnifyException {
+        if (tableTotalSummary != null) {
+            ValueStore totalSummaryValueStore = tableTotalSummary.getTotalSummaryValueStore();
+            for (EntityFieldTotalSummary summary : tableTotalSummary.getSummaries().values()) {
+                totalSummaryValueStore.store(summary.getFieldName(), summary.getTotal());
+            }
+        }
+    }
+
+    public boolean isTotalLabelColumn(String fieldName) {
+        return fieldName.equals(tableTotalSummary.getTotalLabelColumn());
+    }
+
+    public String getTotalLabel() throws UnifyException {
+        return  au.resolveSessionMessage("$m{tablewidget.total}");
+    }
+    
+    public Widget getSummaryWidget(String fieldName) {
+        if (tableTotalSummary != null && tableTotalSummary.getSummaries().containsKey(fieldName)) {
+            EntityFieldTotalSummary summary = tableTotalSummary.getSummaries().get(fieldName);
+            return summary.getRenderer();
+        }
+        
+        return null;
+    }
+    
     public void setSourceObject(T sourceObject) throws UnifyException {
         this.sourceObject = sourceObject;
         onLoadSourceObject(sourceObject, selected);
@@ -163,12 +221,16 @@ public abstract class AbstractTable<T, U> {
         onFireOnChange(sourceObject, selected);
     }
 
+    public void setDefaultOrder(Order defaultOrder) {
+        this.defaultOrder = defaultOrder;
+    }
+
     public T getSourceObject() {
         return sourceObject;
     }
 
     public Order getOrder() {
-        return order != null ? order: defaultOrder;
+        return order != null ? order : defaultOrder;
     }
 
     public void setOrder(Order order) {
@@ -182,7 +244,7 @@ public abstract class AbstractTable<T, U> {
     public U getDisplayItem(int displayIndex) {
         return dispItemList.get(displayIndex);
     }
-    
+
     public int getDispStartIndex() {
         return dispStartIndex;
     }
@@ -194,7 +256,7 @@ public abstract class AbstractTable<T, U> {
     public int getPageIndex() {
         return pageIndex;
     }
-    
+
     public int getNumberOfPages() {
         return numberOfPages;
     }
@@ -223,6 +285,7 @@ public abstract class AbstractTable<T, U> {
             pageIndex = _pageIndex < numberOfPages ? _pageIndex : (numberOfPages > 0 ? numberOfPages - 1 : 0);
         }
 
+        orderOnReset();
         getDispItems();
     }
 
@@ -284,6 +347,8 @@ public abstract class AbstractTable<T, U> {
     protected abstract List<U> getDisplayItems(T sourceObject, int dispStartIndex, int dispEndIndex)
             throws UnifyException;
 
+    protected abstract void orderOnReset() throws UnifyException;
+    
     private void calcPageDimensions() throws UnifyException {
         pageIndex = 0;
         totalItemCount = getSourceObjectSize(sourceObject);

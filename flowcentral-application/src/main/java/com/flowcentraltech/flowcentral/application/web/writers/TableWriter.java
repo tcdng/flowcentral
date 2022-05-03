@@ -280,6 +280,9 @@ public class TableWriter extends AbstractControlWriter {
             final int pageIndex = table.getDispStartIndex() + 1;
             final TableDef tableDef = table.getTableDef();
             final boolean isSerialNo = tableDef.isSerialNo();
+            final boolean totalSummary = table.isTotalSummary();
+            table.clearSummaries();
+
             boolean isEvenRow = true;
             List<ValueStore> valueList = tableWidget.getValueList();
             int len = valueList.size();
@@ -358,6 +361,12 @@ public class TableWriter extends AbstractControlWriter {
                             writer.write(">");
                             writer.writeStructureAndContent(chWidget);
                             writer.write("</td>");
+
+                            if (totalSummary) {
+                                table.addTotalSummary(tabelColumnDef.getFieldName(),
+                                        valueStore.retrieve(tabelColumnDef.getFieldName()));
+                            }
+
                             index++;
                         }
                     }
@@ -368,6 +377,53 @@ public class TableWriter extends AbstractControlWriter {
 
                     writer.write("</tr>");
                 }
+            }
+
+            // Total summary
+            if (totalSummary) {
+                table.loadTotalSummaryValueStore();
+                ValueStore totalSummaryValueStore = table.getTableTotalSummary().getTotalSummaryValueStore();
+
+                writer.write("<tr class=\"total\">");
+                if (!entryMode && tableWidget.isMultiSelect()) {
+                    writer.write("<td class=\"mseld\"><span></span></td>");
+                }
+
+                if (isSerialNo) {
+                    writer.write("<td class=\"mseriald\"><span></span></td>");
+                }
+
+                int index = 0;
+                for (ChildWidgetInfo widgetInfo : tableWidget.getChildWidgetInfos()) {
+                    if (widgetInfo.isExternal()) {
+                        TableColumnDef tabelColumnDef = tableDef.getColumnDef(index);
+                        Widget chWidget = table.getSummaryWidget(tabelColumnDef.getFieldName());
+                        if (chWidget != null) {
+                            chWidget.setEditable(false);
+                            chWidget.setValueStore(totalSummaryValueStore);
+                            writer.write("<td");
+                            writeTagStyle(writer, chWidget.getColumnStyle());
+                            writer.write(">");
+                            writer.writeStructureAndContent(chWidget);
+                            writer.write("</td>");
+                        } else {
+                            writer.write("<td class=\"blank\">");
+                            if (table.isTotalLabelColumn(tabelColumnDef.getFieldName())) {
+                                writer.writeWithHtmlEscape(table.getTotalLabel());
+                            }
+
+                            writer.write("</td>");
+                        }
+                        
+                        index++;
+                    }
+                }
+
+                if (entryMode && tableWidget.isMultiSelect()) {
+                    writer.write("<td class=\"mseld\"><span></span></td>");
+                }
+
+                writer.write("</tr>");
             }
         }
     }
