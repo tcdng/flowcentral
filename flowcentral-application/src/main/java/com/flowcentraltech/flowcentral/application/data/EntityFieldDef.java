@@ -382,6 +382,10 @@ public class EntityFieldDef implements Listable, EntityFieldAttributes {
         return dataType.isBoolean();
     }
 
+    public boolean isNumber() {
+        return dataType.isNumber();
+    }
+
     public boolean isEnumDataType() {
         return dataType.isEnumDataType();
     }
@@ -395,7 +399,7 @@ public class EntityFieldDef implements Listable, EntityFieldAttributes {
     }
 
     public boolean isString() {
-        return EntityFieldDataType.STRING.equals(dataType);
+        return dataType.isString();
     }
     
     public boolean isBase() {

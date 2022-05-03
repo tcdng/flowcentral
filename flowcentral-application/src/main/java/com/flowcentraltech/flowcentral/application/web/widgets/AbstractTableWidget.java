@@ -18,17 +18,24 @@ package com.flowcentraltech.flowcentral.application.web.widgets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
+import com.flowcentraltech.flowcentral.application.data.EntityFieldDef;
+import com.flowcentraltech.flowcentral.application.data.EntityFieldTotalSummary;
 import com.flowcentraltech.flowcentral.application.data.TableColumnDef;
 import com.flowcentraltech.flowcentral.application.data.TableDef;
 import com.tcdng.unify.core.UnifyException;
 import com.tcdng.unify.core.annotation.UplAttribute;
 import com.tcdng.unify.core.annotation.UplAttributes;
+import com.tcdng.unify.core.constant.DataType;
 import com.tcdng.unify.core.constant.OrderType;
 import com.tcdng.unify.core.criterion.Order;
+import com.tcdng.unify.core.data.MapValues;
+import com.tcdng.unify.core.data.MapValuesStore;
 import com.tcdng.unify.core.data.UniqueHistory;
 import com.tcdng.unify.core.data.ValueStore;
 import com.tcdng.unify.core.upl.UplElementReferences;
@@ -49,7 +56,7 @@ import com.tcdng.unify.web.ui.widget.panel.StandalonePanel;
  */
 @UplAttributes({ @UplAttribute(name = "contentDependentList", type = UplElementReferences.class),
         @UplAttribute(name = "multiSelDependentList", type = UplElementReferences.class),
-        @UplAttribute(name = "multiSelect", type = boolean.class) })
+        @UplAttribute(name = "multiSelect", type = boolean.class), @UplAttribute(name = "crud", type = boolean.class) })
 public abstract class AbstractTableWidget<T extends AbstractTable<V, U>, U, V>
         extends AbstractValueListMultiControl<ValueStore, U> implements TableSelect<U> {
 
@@ -76,6 +83,8 @@ public abstract class AbstractTableWidget<T extends AbstractTable<V, U>, U, V>
     private UniqueHistory<Sort> sortHistory;
 
     private Set<Widget> inputs;
+
+    private Map<String, Widget> renderers;
 
     public AbstractTableWidget(Class<T> tableClass, Class<U> itemClass) {
         this.tableClass = tableClass;
@@ -158,6 +167,10 @@ public abstract class AbstractTableWidget<T extends AbstractTable<V, U>, U, V>
         return getUplAttribute(boolean.class, "multiSelect");
     }
 
+    public boolean isCrud() throws UnifyException {
+        return getUplAttribute(boolean.class, "crud");
+    }
+
     public String getSelectAllId() throws UnifyException {
         return getPrefixedId("sela_");
     }
@@ -180,6 +193,7 @@ public abstract class AbstractTableWidget<T extends AbstractTable<V, U>, U, V>
 
             TableDef tableDef = table != null ? table.getTableDef() : null;
             if (oldTableDef != tableDef) {
+                clearRenderers();
                 removeAllExternalChildWidgets();
                 if (table != null) {
                     StandalonePanel standalonePanel = getStandalonePanel();
@@ -192,7 +206,7 @@ public abstract class AbstractTableWidget<T extends AbstractTable<V, U>, U, V>
                     }
 
                     final boolean entryMode = table.isEntryMode();
-                    for (TableColumnDef tableColumnDef : table.getColumnDefList()) {
+                    for (TableColumnDef tableColumnDef : tableDef.getColumnDefList()) {
                         final boolean cellEditor = tableColumnDef.isWithCellEditor();
                         final String columnWidgetUpl = entryMode && cellEditor ? tableColumnDef.getCellEditor()
                                 : tableColumnDef.getCellRenderer();
@@ -201,7 +215,7 @@ public abstract class AbstractTableWidget<T extends AbstractTable<V, U>, U, V>
                             if (inputs == null) {
                                 inputs = new HashSet<Widget>();
                             }
-                            
+
                             inputs.add(widget);
                         }
 
@@ -219,8 +233,55 @@ public abstract class AbstractTableWidget<T extends AbstractTable<V, U>, U, V>
 
             if (table != null) {
                 table.setTableSelect(this);
+
+                final boolean totalSummary = table.isTotalSummary();
+                final MapValues totalSummaryValues = totalSummary ? new MapValues() : null;
+                final Map<String, EntityFieldTotalSummary> summaries = totalSummary
+                        ? new HashMap<String, EntityFieldTotalSummary>()
+                        : Collections.emptyMap();
+                Order defaultOrder = new Order();
+                String totalLabelColumn = null;
+                for (TableColumnDef tableColumnDef : tableDef.getColumnDefList()) {
+                    if (tableColumnDef.getOrder() != null) {
+                        defaultOrder.add(tableColumnDef.getFieldName(), tableColumnDef.getOrder());
+                    }
+
+                    if (totalSummary) {
+                        EntityFieldDef entityFieldDef = tableDef.getFieldDef(tableColumnDef.getFieldName());
+                        DataType dataType = entityFieldDef.isWithResolvedTypeFieldDef()
+                                ? entityFieldDef.getResolvedTypeFieldDef().getDataType().dataType()
+                                : entityFieldDef.getDataType().dataType();
+                        if (dataType != null) {
+                            totalSummaryValues.addValue(entityFieldDef.getFieldName(), dataType.javaClass());
+                            if (entityFieldDef.isNumber()) {
+                                Widget renderer = getRenderer(tableColumnDef.getCellRenderer());
+                                EntityFieldTotalSummary entityFieldTotalSummary = new EntityFieldTotalSummary(
+                                        entityFieldDef, renderer);
+                                if (!tableDef.isWithSummaryFields()
+                                        || tableDef.isSummaryField(entityFieldDef.getFieldName())) {
+                                    summaries.put(entityFieldDef.getFieldName(), entityFieldTotalSummary);
+                                }
+                            }
+                        }
+
+                        if (summaries.isEmpty()) {
+                            totalLabelColumn = entityFieldDef.getFieldName();
+                        }
+                    }
+                }
+
+                if (defaultOrder.isParts()) {
+                    table.setDefaultOrder(defaultOrder);
+                    table.reset();
+                }
+
+                if (totalSummary) {
+                    TableTotalSummary tableTotalSummary = new TableTotalSummary(totalLabelColumn,
+                            new MapValuesStore(totalSummaryValues), summaries);
+                    table.setTableTotalSummary(tableTotalSummary);
+                }
             }
-            
+
             oldTable = table;
             sortHistory = null;
         }
@@ -262,7 +323,7 @@ public abstract class AbstractTableWidget<T extends AbstractTable<V, U>, U, V>
     public boolean isInputWidget(Widget widget) {
         return inputs != null && inputs.contains(widget);
     }
-    
+
     @Override
     public List<U> getSelectedItems() throws UnifyException {
         if (selected != null) {
@@ -308,6 +369,24 @@ public abstract class AbstractTableWidget<T extends AbstractTable<V, U>, U, V>
 
     protected Class<U> getItemClass() {
         return itemClass;
+    }
+
+    private void clearRenderers() {
+        renderers = null;
+    }
+
+    private Widget getRenderer(String renderer) throws UnifyException {
+        if (renderers == null) {
+            renderers = new HashMap<String, Widget>();
+        }
+
+        Widget _renderer = renderers.get(renderer);
+        if (_renderer == null) {
+            _renderer = addInternalChildWidget(renderer);
+            renderers.put(renderer, _renderer);
+        }
+
+        return _renderer;
     }
 
     private class Sort {

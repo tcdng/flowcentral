@@ -940,6 +940,8 @@
 				label="$m{application.apptable.headercenteralign}" type="boolean" />
 			<field name="basicSearch"
 				label="$m{application.apptable.basicsearch}" type="boolean" />
+			<field name="totalSummary"
+				label="$m{application.apptable.totalsummary}" type="boolean" />
 			<field name="limitSelectToColumns"
 				label="$m{application.apptable.limitselecttocolumns}" type="boolean" />
 			<field name="itemsPerPage"
@@ -974,8 +976,21 @@
 			<field name="linkAct"
 				label="$m{application.apptablecolumn.linkact}" type="string"
 				nullable="true" />
+			<field name="order"
+				label="$m{application.apptablecolumn.order}" type="string"
+				nullable="true" />
 			<field name="widthRatio"
 				label="$m{application.apptablecolumn.widthratio}" type="integer" />
+			<field name="switchOnChange"
+				label="$m{application.apptablecolumn.switchonchange}" type="boolean" />
+			<field name="disabled"
+				label="$m{application.apptablecolumn.disabled}" type="boolean" />
+			<field name="editable"
+				label="$m{application.apptablecolumn.editable}" type="boolean" />
+			<field name="sortable"
+				label="$m{application.apptablecolumn.sortable}" type="boolean" />
+			<field name="summary"
+				label="$m{application.apptablecolumn.summary}" type="boolean" />
 			<uniqueConstraint name="fieldUc"
 				description="$m{application.apptablecolumn.uc.field}"
 				fieldList="appTableId,field" />

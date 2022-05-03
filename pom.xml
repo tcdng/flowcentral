@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.flowcentraltech.flowcentral</groupId>
 	<artifactId>flowcentral</artifactId>
-	<version>1.0.14</version>
+	<version>1.0.15-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<name>flowcentral</name>
@@ -43,18 +45,18 @@
 		<module>flowcentral-dashboard</module>
 		<module>flowcentral-delegate</module>
 		<module>flowcentral-codegeneration</module>
-    	<module>flowcentral-connect-common</module>
-    	<module>flowcentral-connect-configuration</module>
+		<module>flowcentral-connect-common</module>
+		<module>flowcentral-connect-configuration</module>
 		<module>flowcentral-connect-springboot</module>
-    <module>flowcentral-javax</module>
-    <module>flowcentral-jetty</module>
-  </modules>
+		<module>flowcentral-javax</module>
+		<module>flowcentral-jetty</module>
+	</modules>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
-		<unify.version>2.1.21</unify.version>
+		<unify.version>2.1.22-SNAPSHOT</unify.version>
 	</properties>
 
 	<scm>
@@ -99,11 +101,11 @@
 								</goals>
 							</execution>
 						</executions>
-			            <configuration>
-			                <additionalOptions>
-			                    <additionalOption>-Xdoclint:none</additionalOption>
-			                </additionalOptions>
-			            </configuration>
+						<configuration>
+							<additionalOptions>
+								<additionalOption>-Xdoclint:none</additionalOption>
+							</additionalOptions>
+						</configuration>
 					</plugin>
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>

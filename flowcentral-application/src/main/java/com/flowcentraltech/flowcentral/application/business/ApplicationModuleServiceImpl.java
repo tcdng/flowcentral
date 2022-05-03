@@ -240,6 +240,7 @@ import com.tcdng.unify.core.annotation.Parameter;
 import com.tcdng.unify.core.annotation.Taskable;
 import com.tcdng.unify.core.annotation.Transactional;
 import com.tcdng.unify.core.constant.LocaleType;
+import com.tcdng.unify.core.constant.OrderType;
 import com.tcdng.unify.core.criterion.And;
 import com.tcdng.unify.core.criterion.Equals;
 import com.tcdng.unify.core.criterion.Restriction;
@@ -758,10 +759,10 @@ public class ApplicationModuleServiceImpl extends AbstractFlowCentralService
                                 getApplicationMessage("application.propertyitem.table.description"), 0L, 1L);
                         WidgetTypeDef widgetTypeDef = getWidgetTypeDef("application.text");
                         String renderer = widgetTypeDef.getRenderer();
-                        tdb.addColumnDef("name", renderer, 2, false, false, true, false);
-                        tdb.addColumnDef("description", renderer, 2, false, false, true, false);
+                        tdb.addColumnDef("name", renderer, null, 2, false, false, true, false, false);
+                        tdb.addColumnDef("description", renderer, null, 2, false, false, true, false, false);
                         tdb.addColumnDef(getApplicationMessage("application.propertyitem.value"), "displayValue",
-                                renderer, null, 2, false, false, true, false);
+                                renderer, null, null, 2, false, false, true, false, false);
 
                         tdb.itemsPerPage(-1);
                         return tdb.build();
@@ -787,10 +788,11 @@ public class ApplicationModuleServiceImpl extends AbstractFlowCentralService
                                 ? InputWidgetUtils.constructEditor(getWidgetTypeDef(appTableColumn.getRenderWidget()),
                                         entityFieldDef)
                                 : null;
+                        OrderType order = OrderType.fromCode(appTableColumn.getOrder());
                         tdb.addColumnDef(appTableColumn.getLabel(), appTableColumn.getField(), renderer, editor,
-                                appTableColumn.getLinkAct(), appTableColumn.getWidthRatio(),
+                                appTableColumn.getLinkAct(), order, appTableColumn.getWidthRatio(),
                                 appTableColumn.isSwitchOnChange(), appTableColumn.isDisabled(),
-                                appTableColumn.isEditable(), appTableColumn.isSortable());
+                                appTableColumn.isEditable(), appTableColumn.isSortable(), appTableColumn.isSummary());
                     }
 
                     tdb.sortHistory(appTable.getSortHistory());
@@ -798,6 +800,7 @@ public class ApplicationModuleServiceImpl extends AbstractFlowCentralService
                     tdb.headerToUpperCase(appTable.isHeaderToUpperCase());
                     tdb.headerCenterAlign(appTable.isHeaderCenterAlign());
                     tdb.basicSearch(appTable.isBasicSearch());
+                    tdb.totalSummary(appTable.isTotalSummary());
                     tdb.limitSelectToColumns(appTable.isLimitSelectToColumns());
                     return tdb.build();
                 }
@@ -2801,6 +2804,7 @@ public class ApplicationModuleServiceImpl extends AbstractFlowCentralService
                     appTable.setHeaderToUpperCase(appTableConfig.isHeaderToUpperCase());
                     appTable.setHeaderCenterAlign(appTableConfig.isHeaderCenterAlign());
                     appTable.setBasicSearch(appTableConfig.isBasicSearch());
+                    appTable.setTotalSummary(appTableConfig.isTotalSummary());
                     appTable.setLimitSelectToColumns(appTableConfig.isLimitSelectToColumns());
                     appTable.setConfigType(ConfigType.MUTABLE_INSTALL);
                     populateChildList(appTable, applicationName, appTableConfig);
@@ -2819,6 +2823,7 @@ public class ApplicationModuleServiceImpl extends AbstractFlowCentralService
                         oldAppTable.setHeaderToUpperCase(appTableConfig.isHeaderToUpperCase());
                         oldAppTable.setHeaderCenterAlign(appTableConfig.isHeaderCenterAlign());
                         oldAppTable.setBasicSearch(appTableConfig.isBasicSearch());
+                        oldAppTable.setTotalSummary(appTableConfig.isTotalSummary());
                         oldAppTable.setLimitSelectToColumns(appTableConfig.isLimitSelectToColumns());
                     }
 
@@ -3498,11 +3503,13 @@ public class ApplicationModuleServiceImpl extends AbstractFlowCentralService
                 appTableColumn.setRenderWidget(ApplicationNameUtils.ensureLongNameReference(applicationName,
                         tableColumnConfig.getRenderWidget()));
                 appTableColumn.setLinkAct(tableColumnConfig.getLinkAct());
+                appTableColumn.setOrder(tableColumnConfig.getOrder());
                 appTableColumn.setWidthRatio(tableColumnConfig.getWidthRatio());
                 appTableColumn.setSwitchOnChange(tableColumnConfig.isSwitchOnChange());
                 appTableColumn.setEditable(tableColumnConfig.isEditable());
                 appTableColumn.setDisabled(tableColumnConfig.isDisabled());
                 appTableColumn.setSortable(tableColumnConfig.isSortable());
+                appTableColumn.setSummary(tableColumnConfig.isSummary());
                 appTableColumn.setConfigType(ConfigType.MUTABLE_INSTALL);
                 columnList.add(appTableColumn);
             }

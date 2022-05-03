@@ -82,6 +82,11 @@ public class EntityTable extends AbstractTable<Restriction, Entity> {
         
     }
 
+    @Override
+    protected void orderOnReset() throws UnifyException {
+        
+    }
+
     @SuppressWarnings("unchecked")
     @Override
     protected int getSourceObjectSize(Restriction restriction) throws UnifyException {

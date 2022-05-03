@@ -45,6 +45,9 @@ public class AppTableColumn extends BaseConfigEntity {
     @Column(length = 64, nullable = true)
     private String linkAct;
 
+    @Column(name = "default_order", length = 32, nullable = true)
+    private String order;
+
     @Column
     private int widthRatio;
 
@@ -59,6 +62,9 @@ public class AppTableColumn extends BaseConfigEntity {
 
     @Column
     private boolean sortable;
+
+    @Column
+    private boolean summary;
 
     @Override
     public String getDescription() {
@@ -105,6 +111,14 @@ public class AppTableColumn extends BaseConfigEntity {
         this.linkAct = linkAct;
     }
 
+    public String getOrder() {
+        return order;
+    }
+
+    public void setOrder(String order) {
+        this.order = order;
+    }
+
     public int getWidthRatio() {
         return widthRatio;
     }
@@ -113,27 +127,27 @@ public class AppTableColumn extends BaseConfigEntity {
         this.widthRatio = widthRatio;
     }
 
-    public final boolean isSwitchOnChange() {
+    public boolean isSwitchOnChange() {
         return switchOnChange;
     }
 
-    public final void setSwitchOnChange(boolean switchOnChange) {
+    public void setSwitchOnChange(boolean switchOnChange) {
         this.switchOnChange = switchOnChange;
     }
 
-    public final boolean isDisabled() {
+    public boolean isDisabled() {
         return disabled;
     }
 
-    public final void setDisabled(boolean disabled) {
+    public void setDisabled(boolean disabled) {
         this.disabled = disabled;
     }
 
-    public final boolean isEditable() {
+    public boolean isEditable() {
         return editable;
     }
 
-    public final void setEditable(boolean editable) {
+    public void setEditable(boolean editable) {
         this.editable = editable;
     }
 
@@ -143,6 +157,14 @@ public class AppTableColumn extends BaseConfigEntity {
 
     public void setSortable(boolean sortable) {
         this.sortable = sortable;
+    }
+
+    public boolean isSummary() {
+        return summary;
+    }
+
+    public void setSummary(boolean summary) {
+        this.summary = summary;
     }
 
 }

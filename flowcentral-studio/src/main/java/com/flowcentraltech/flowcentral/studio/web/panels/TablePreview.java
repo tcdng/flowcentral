@@ -25,6 +25,7 @@ import com.flowcentraltech.flowcentral.studio.web.widgets.TableEditor;
 import com.flowcentraltech.flowcentral.studio.web.widgets.TableEditor.Design;
 import com.flowcentraltech.flowcentral.studio.web.widgets.TableEditor.TableColumn;
 import com.tcdng.unify.core.UnifyException;
+import com.tcdng.unify.core.constant.OrderType;
 import com.tcdng.unify.core.criterion.Restriction;
 
 /**
@@ -66,9 +67,10 @@ public class TablePreview {
                 for (TableColumn tableColumn : design.getColumns()) {
                     String renderer = InputWidgetUtils.constructRenderer(au.getWidgetTypeDef(tableColumn.getWidget()),
                             entityDef.getFieldDef(tableColumn.getFldNm()));
+                    OrderType order = OrderType.fromCode(tableColumn.getOrder());
                     tdb.addColumnDef(tableColumn.getLabel(), tableColumn.getFldNm(), renderer, tableColumn.getLink(),
-                            tableColumn.getWidth(), tableColumn.isSwitchOnChange(), tableColumn.isDisabled(),
-                            tableColumn.isEditable(), tableColumn.isSort());
+                            order, tableColumn.getWidth(), tableColumn.isSwitchOnChange(), tableColumn.isDisabled(),
+                            tableColumn.isEditable(), tableColumn.isSort(), tableColumn.isSummary());
                 }
             }
 

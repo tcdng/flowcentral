@@ -17,13 +17,16 @@ package com.flowcentraltech.flowcentral.application.data;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import com.flowcentraltech.flowcentral.application.util.ApplicationEntityNameParts;
 import com.flowcentraltech.flowcentral.application.util.ApplicationNameUtils;
 import com.flowcentraltech.flowcentral.common.data.DefaultReportColumn;
 import com.tcdng.unify.core.UnifyException;
+import com.tcdng.unify.core.constant.OrderType;
 import com.tcdng.unify.core.criterion.Select;
 import com.tcdng.unify.core.util.DataUtils;
 import com.tcdng.unify.core.util.StringUtils;
@@ -64,14 +67,19 @@ public class TableDef extends BaseApplicationEntityDef {
 
     private boolean basicSearch;
 
+    private boolean totalSummary;
+
     private Map<String, TableFilterDef> filterDefMap;
 
     private List<TableFilterDef> rowColorFilterList;
 
+    private Set<String> summaryFields;
+
     private TableDef(EntityDef entityDef, List<TableColumnDef> columnDefList, Map<String, TableFilterDef> filterDefMap,
             String label, int sortHistory, int itemsPerPage, boolean serialNo, boolean sortable,
-            boolean headerToUpperCase, boolean headerCenterAlign, boolean basicSearch, boolean limitSelectToColumns,
-            ApplicationEntityNameParts nameParts, String description, Long id, long version) {
+            boolean headerToUpperCase, boolean headerCenterAlign, boolean basicSearch, boolean totalSummary,
+            boolean limitSelectToColumns, ApplicationEntityNameParts nameParts, String description, Long id,
+            long version) {
         super(nameParts, description, id, version);
         this.entityDef = entityDef;
         this.columnDefList = columnDefList;
@@ -83,7 +91,9 @@ public class TableDef extends BaseApplicationEntityDef {
         this.headerToUpperCase = headerToUpperCase;
         this.headerCenterAlign = headerCenterAlign;
         this.basicSearch = basicSearch;
+        this.totalSummary = totalSummary;
         this.limitSelectToColumns = limitSelectToColumns;
+        this.summaryFields = new HashSet<String>();
         List<TableFilterDef> rowColorFilterList = new ArrayList<TableFilterDef>();
         for (TableFilterDef filterDef : filterDefMap.values()) {
             if (filterDef.isRowColor()) {
@@ -103,10 +113,15 @@ public class TableDef extends BaseApplicationEntityDef {
             if (this.limitSelectToColumns) {
                 this.select.add(tableColumnDef.getFieldName());
             }
+            
+            if (tableColumnDef.isSummary()) {
+                this.summaryFields.add(tableColumnDef.getFieldName());
+            }
         }
 
         this.rowColorFilterList = DataUtils.unmodifiableList(rowColorFilterList);
         this.defaultReportColumnList = DataUtils.unmodifiableList(this.defaultReportColumnList);
+        this.summaryFields = DataUtils.unmodifiableSet(this.summaryFields);
     }
 
     public EntityDef getEntityDef() {
@@ -117,10 +132,22 @@ public class TableDef extends BaseApplicationEntityDef {
         return rowColorFilterList;
     }
 
+    public Set<String> getSummaryFields() {
+        return summaryFields;
+    }
+
+    public boolean isSummaryField(String fieldName) {
+        return summaryFields.contains(fieldName);
+    }
+
+    public boolean isWithSummaryFields() {
+        return !summaryFields.isEmpty();
+    }
+    
     public boolean isRowColorFilters() {
         return !rowColorFilterList.isEmpty();
     }
-    
+
     public TableFilterDef getFilterDef(String name) {
         TableFilterDef filterDef = filterDefMap.get(name);
         if (filterDef == null) {
@@ -138,6 +165,10 @@ public class TableDef extends BaseApplicationEntityDef {
         }
 
         return entityDef.getFieldDef(columnDef.getFieldName()).getFieldLabel();
+    }
+
+    public EntityFieldDef getFieldDef(String name) {
+        return entityDef.getFieldDef(name);
     }
 
     public List<TableColumnDef> getColumnDefList() {
@@ -202,6 +233,10 @@ public class TableDef extends BaseApplicationEntityDef {
         return basicSearch;
     }
 
+    public boolean isTotalSummary() {
+        return totalSummary;
+    }
+
     public boolean isLimitSelectToColumns() {
         return limitSelectToColumns;
     }
@@ -260,6 +295,8 @@ public class TableDef extends BaseApplicationEntityDef {
 
         private boolean basicSearch;
 
+        private boolean totalSummary;
+
         private boolean limitSelectToColumns;
 
         private String longName;
@@ -309,32 +346,39 @@ public class TableDef extends BaseApplicationEntityDef {
             return this;
         }
 
+        public Builder totalSummary(boolean totalSummary) {
+            this.totalSummary = totalSummary;
+            return this;
+        }
+
         public Builder limitSelectToColumns(boolean limitSelectToColumns) {
             this.limitSelectToColumns = limitSelectToColumns;
             return this;
         }
 
-        public Builder addColumnDef(String fieldName, String renderer, int widthRatio, boolean switchOnChange,
-                boolean disabled, boolean editable, boolean sortable) {
-            return addColumnDef(null, fieldName, renderer, null, widthRatio, switchOnChange, disabled, editable,
-                    sortable);
+        public Builder addColumnDef(String fieldName, String renderer, OrderType order, int widthRatio,
+                boolean switchOnChange, boolean disabled, boolean editable, boolean sortable, boolean summary) {
+            return addColumnDef(null, fieldName, renderer, null, order, widthRatio, switchOnChange, disabled, editable,
+                    sortable, summary);
         }
 
-        public Builder addColumnDef(String label, String fieldName, String renderer, String editor, int widthRatio,
-                boolean switchOnChange, boolean disabled, boolean editable, boolean sortable) {
-            return addColumnDef(label, fieldName, renderer, editor, null, widthRatio, switchOnChange, disabled,
-                    editable, sortable);
+        public Builder addColumnDef(String label, String fieldName, String renderer, String editor, OrderType order,
+                int widthRatio, boolean switchOnChange, boolean disabled, boolean editable, boolean sortable,
+                boolean summary) {
+            return addColumnDef(label, fieldName, renderer, editor, null, order, widthRatio, switchOnChange, disabled,
+                    editable, sortable, summary);
         }
 
         public Builder addColumnDef(String label, String fieldName, String renderer, String editor, String linkAct,
-                int widthRatio, boolean switchOnChange, boolean disabled, boolean editable, boolean sortable) {
+                OrderType order, int widthRatio, boolean switchOnChange, boolean disabled, boolean editable,
+                boolean sortable, boolean summary) {
             if (widthRatio <= 0) {
                 widthRatio = 1;
             }
 
             totalWidth += widthRatio;
-            columnDefList.add(new TempColumnDef(label, fieldName, renderer, editor, linkAct, widthRatio, switchOnChange,
-                    disabled, editable, sortable));
+            columnDefList.add(new TempColumnDef(label, fieldName, renderer, editor, linkAct, order, widthRatio,
+                    switchOnChange, disabled, editable, sortable, summary));
             return this;
         }
 
@@ -383,14 +427,14 @@ public class TableDef extends BaseApplicationEntityDef {
 
                 if (i == (len - 1)) {
                     tableColumnDef = new TableColumnDef(tempDef.getLabel(), fieldName,
-                            "width:" + (100 - usedPercent) + "%;", renderer, editor, (100 - usedPercent),
-                            tempDef.isSwitchOnChange(), tempDef.isDisabled(), tempDef.isEditable(),
-                            tempDef.isSortable());
+                            "width:" + (100 - usedPercent) + "%;", renderer, editor, tempDef.getOrder(),
+                            (100 - usedPercent), tempDef.isSwitchOnChange(), tempDef.isDisabled(), tempDef.isEditable(),
+                            tempDef.isSortable(), tempDef.isSummary());
                 } else {
                     int width = (tempDef.getWidthRatio() * 100) / totalWidth;
                     tableColumnDef = new TableColumnDef(tempDef.getLabel(), fieldName, "width:" + width + "%;",
-                            renderer, editor, width, tempDef.isSwitchOnChange(), tempDef.isDisabled(),
-                            tempDef.isEditable(), tempDef.isSortable());
+                            renderer, editor, tempDef.getOrder(), width, tempDef.isSwitchOnChange(),
+                            tempDef.isDisabled(), tempDef.isEditable(), tempDef.isSortable(), tempDef.isSummary());
                     usedPercent += width;
                 }
 
@@ -400,8 +444,8 @@ public class TableDef extends BaseApplicationEntityDef {
             ApplicationEntityNameParts nameParts = ApplicationNameUtils.getApplicationEntityNameParts(longName);
             return new TableDef(entityDef, DataUtils.unmodifiableList(_columnDefList),
                     DataUtils.unmodifiableMap(filterDefMap), label, sortHistory, itemsPerPage, serialNo, sortable,
-                    headerToUpperCase, headerCenterAlign, basicSearch, limitSelectToColumns, nameParts, description, id,
-                    version);
+                    headerToUpperCase, headerCenterAlign, basicSearch, totalSummary, limitSelectToColumns, nameParts,
+                    description, id, version);
         }
 
         private class TempColumnDef {
@@ -416,6 +460,8 @@ public class TableDef extends BaseApplicationEntityDef {
 
             private String linkAct;
 
+            private OrderType order;
+
             private int widthRatio;
 
             private boolean switchOnChange;
@@ -426,18 +472,23 @@ public class TableDef extends BaseApplicationEntityDef {
 
             private boolean sortable;
 
+            private boolean summary;
+
             public TempColumnDef(String label, String fieldName, String renderer, String editor, String linkAct,
-                    int widthRatio, boolean switchOnChange, boolean disabled, boolean editable, boolean sortable) {
+                    OrderType order, int widthRatio, boolean switchOnChange, boolean disabled, boolean editable,
+                    boolean sortable, boolean summary) {
                 this.label = label;
                 this.fieldName = fieldName;
                 this.renderer = renderer;
                 this.editor = editor;
                 this.linkAct = linkAct;
+                this.order = order;
                 this.widthRatio = widthRatio;
                 this.switchOnChange = switchOnChange;
                 this.disabled = disabled;
                 this.editable = editable;
                 this.sortable = sortable;
+                this.summary = summary;
             }
 
             public String getLabel() {
@@ -460,6 +511,10 @@ public class TableDef extends BaseApplicationEntityDef {
                 return linkAct;
             }
 
+            public OrderType getOrder() {
+                return order;
+            }
+
             public int getWidthRatio() {
                 return widthRatio;
             }
@@ -478,6 +533,10 @@ public class TableDef extends BaseApplicationEntityDef {
 
             public boolean isSortable() {
                 return sortable;
+            }
+
+            public boolean isSummary() {
+                return summary;
             }
 
         }

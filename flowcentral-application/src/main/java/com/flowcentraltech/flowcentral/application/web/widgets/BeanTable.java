@@ -22,8 +22,11 @@ import java.util.Set;
 import com.flowcentraltech.flowcentral.application.business.AppletUtilities;
 import com.flowcentraltech.flowcentral.application.data.TableDef;
 import com.tcdng.unify.core.UnifyException;
+import com.tcdng.unify.core.criterion.Order;
+import com.tcdng.unify.core.criterion.Order.Part;
 import com.tcdng.unify.core.data.BeanValueListStore;
 import com.tcdng.unify.core.data.ValueStore;
+import com.tcdng.unify.core.util.DataUtils;
 
 /**
  * Bean table object.
@@ -87,6 +90,26 @@ public class BeanTable extends AbstractTable<List<?>, Object> {
         }
 
         return Collections.emptyList();
+    }
+
+    @Override
+    protected void orderOnReset() throws UnifyException {
+        List<?> sourceObject = getSourceObject();
+        if (sourceObject != null && !sourceObject.isEmpty()) {
+            Order order = getOrder();
+            if (order != null) {
+                Class<?> beanClass = sourceObject.get(0).getClass();
+                List<Part> parts = order.getParts();
+                for (int i = parts.size() - 1; i >= 0; i--) {
+                    Part part = parts.get(i);
+                    if (part.isAscending()) {
+                        DataUtils.sortAscending(sourceObject, beanClass, part.getField());
+                    } else {
+                        DataUtils.sortDescending(sourceObject, beanClass, part.getField());
+                    }
+                }
+            }
+        }
     }
 
     private ValueStore getValueStore(List<?> sourceObject) throws UnifyException {

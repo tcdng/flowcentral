@@ -38,8 +38,8 @@ import com.tcdng.unify.web.ui.widget.writer.AbstractControlWriter;
 public class TableEditorWriter extends AbstractControlWriter {
 
     private static final String[] COLUMN_PROPERTY_KEYS = { "tableeditor.field", "tableeditor.label", "tableeditor.link",
-            "tableeditor.widget", "tableeditor.widthratio", "tableeditor.switchonchange", "tableeditor.disabled",
-            "tableeditor.editable", "tableeditor.sortable" };
+            "tableeditor.order", "tableeditor.widget", "tableeditor.widthratio", "tableeditor.switchonchange",
+            "tableeditor.disabled", "tableeditor.editable", "tableeditor.sortable", "tableeditor.summary" };
 
     @Override
     protected void doWriteStructureAndContent(ResponseWriter writer, Widget widget) throws UnifyException {

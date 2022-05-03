@@ -89,7 +89,6 @@ import com.tcdng.unify.core.annotation.Configurable;
 import com.tcdng.unify.core.constant.LocaleType;
 import com.tcdng.unify.core.criterion.AbstractRestrictionTranslatorMapper;
 import com.tcdng.unify.core.criterion.Equals;
-import com.tcdng.unify.core.criterion.Order;
 import com.tcdng.unify.core.criterion.Restriction;
 import com.tcdng.unify.core.criterion.RestrictionTranslator;
 import com.tcdng.unify.core.data.FactoryMap;
@@ -115,8 +114,8 @@ import com.tcdng.unify.web.font.FontSymbolManager;
  */
 @Component(ApplicationModuleNameConstants.APPLET_UTILITIES)
 public class AppletUtilitiesImpl extends AbstractUnifyComponent implements AppletUtilities {
-
-    private static final Order ORDER_BY_ID = new Order().add("id");
+//
+//    private static final Order ORDER_BY_ID = new Order().add("id");
 
     @Configurable
     private RestrictionTranslator restrictionTranslator;
@@ -506,7 +505,7 @@ public class AppletUtilitiesImpl extends AbstractUnifyComponent implements Apple
                         Restriction childRestriction = getChildRestriction(entityDef, formTabDef.getReference(), inst);
                         _entitySearch.setChildTabIndex(tabIndex);
                         _entitySearch.setRelatedList(formTabDef.getApplet());
-                        _entitySearch.setOrder(ORDER_BY_ID);
+//                        _entitySearch.setOrder(ORDER_BY_ID);
                         _entitySearch.setBaseRestriction(childRestriction, specialParamProvider);
                         _entitySearch.applyFilterToSearch();
 
@@ -654,7 +653,7 @@ public class AppletUtilitiesImpl extends AbstractUnifyComponent implements Apple
             }
 
             _entitySearch.setChildTabIndex(i);
-            _entitySearch.setOrder(ORDER_BY_ID);
+//            _entitySearch.setOrder(ORDER_BY_ID);
             _entitySearch.setHeadlessList(appletName);
             _entitySearch.applyFilterToSearch();
 

@@ -723,12 +723,14 @@ fuxstudio.rigTableColumnEditorPanel = function(rgp) {
 	tce._field = _id(rgp.pFieldId);
 	tce._label = _id(rgp.pLabelId);
 	tce._link = _id(rgp.pLinkId);
+	tce._order = _id(rgp.pOrderId);
 	tce._widget = _id(rgp.pWidgetId);
 	tce._width = _id(rgp.pWidthId);
 	tce._switch = _id(rgp.pSwitchId);
 	tce._editable = _id(rgp.pEditableId);
 	tce._disabled = _id(rgp.pDisabledId);
 	tce._sortable = _id(rgp.pSortId);
+	tce._summary = _id(rgp.pSummaryId);
 	
 	tce.attach = function(evp) {
 		tce._evp = evp;
@@ -736,12 +738,14 @@ fuxstudio.rigTableColumnEditorPanel = function(rgp) {
 		tce._field.setValue(column.fldNm);
 		tce._label.setValue(column.label);
 		tce._link.setValue(column.link);
+		tce._order.setValue(column.order);
 		tce._widget.setValue(column.widget);
 		tce._width.setValue(column.width);
 		tce._switch.setValue(column.switchOnChange);
 		tce._editable.setValue(column.editable);
 		tce._disabled.setValue(column.disabled);
 		tce._sortable.setValue(column.sort);
+		tce._summary.setValue(column.summary);
 	};
 	
 	tce.apply = function() {
@@ -749,12 +753,14 @@ fuxstudio.rigTableColumnEditorPanel = function(rgp) {
 			const column = tce._evp.column;
 			column.label = tce._label.getValue();
 			column.link = tce._link.getValue();
+			column.order = tce._order.getValue();
 			column.widget = tce._widget.getValue();
 			column.width = parseInt(tce._width.getValue());
 			column.switchOnChange = tce._switch.getValue();
 			column.editable = tce._editable.getValue();
 			column.disabled = tce._disabled.getValue();
 			column.sort = tce._sortable.getValue();
+			column.summary = tce._summary.getValue();
 			tce._evp.editor.changeState();
 		}
 	};
@@ -891,12 +897,14 @@ fuxstudio.tblCreateSlot = function(evp) {
 	html += editor.editSlotFieldHtml(labels[0], column.fldNm);
 	html += editor.editSlotFieldHtml(labels[1], column.label);
 	html += editor.editSlotFieldHtml(labels[2], column.link);
-	html += editor.editSlotFieldHtml(labels[3], column.widget);
-	html += editor.editSlotFieldHtml(labels[4], column.width);
-	html += editor.editSlotFieldHtml(labels[5], "" + column.switchOnChange);
-	html += editor.editSlotFieldHtml(labels[6], "" + column.disabled);
-	html += editor.editSlotFieldHtml(labels[7], "" + column.editable);
-	html += editor.editSlotFieldHtml(labels[8], "" + column.sort);
+	html += editor.editSlotFieldHtml(labels[3], column.order);
+	html += editor.editSlotFieldHtml(labels[4], column.widget);
+	html += editor.editSlotFieldHtml(labels[5], column.width);
+	html += editor.editSlotFieldHtml(labels[6], "" + column.switchOnChange);
+	html += editor.editSlotFieldHtml(labels[7], "" + column.disabled);
+	html += editor.editSlotFieldHtml(labels[8], "" + column.editable);
+	html += editor.editSlotFieldHtml(labels[9], "" + column.sort);
+	html += editor.editSlotFieldHtml(labels[10], "" + column.summary);
 
 	const slot = document.createElement("div");
 	slot.className = "slot";

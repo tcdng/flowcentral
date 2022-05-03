@@ -49,6 +49,10 @@ public class TableColumnEditorPanel extends DetachedPanel {
         return getWidgetByShortName("editValLink").getId();
     }
 
+    public String getOrderId() throws UnifyException {
+        return getWidgetByShortName("editValOrder").getId();
+    }
+
     public String getWidgetId() throws UnifyException {
         return getWidgetByShortName("editValWidget").getId();
     }
@@ -71,6 +75,10 @@ public class TableColumnEditorPanel extends DetachedPanel {
 
     public String getSortableId() throws UnifyException {
         return getWidgetByShortName("editValSortable").getId();
+    }
+
+    public String getSummaryId() throws UnifyException {
+        return getWidgetByShortName("editValSummary").getId();
     }
 
     public String getApplyId() throws UnifyException {
