@@ -1113,6 +1113,9 @@
 			<field name="tabReference"
 				label="$m{application.appformelement.tabreference}" type="string"
 				nullable="true" />
+			<field name="filter"
+				label="$m{application.appformelement.filter}" type="string"
+				nullable="true" />
 			<field name="editAction"
 				label="$m{application.appformelement.editaction}" type="string"
 				nullable="true" />

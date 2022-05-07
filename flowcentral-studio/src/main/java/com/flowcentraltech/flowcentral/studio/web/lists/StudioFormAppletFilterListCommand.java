@@ -24,6 +24,7 @@ import com.flowcentraltech.flowcentral.application.web.lists.AbstractApplication
 import com.tcdng.unify.core.UnifyException;
 import com.tcdng.unify.core.annotation.Component;
 import com.tcdng.unify.core.data.Listable;
+import com.tcdng.unify.core.list.StringParam;
 
 /**
  * Studio form applet filter list command
@@ -32,17 +33,17 @@ import com.tcdng.unify.core.data.Listable;
  * @since 1.0
  */
 @Component("studioformappletfilterlist")
-public class StudioFormAppletFilterListCommand extends AbstractApplicationListCommand<FormAppletParams> {
+public class StudioFormAppletFilterListCommand extends AbstractApplicationListCommand<StringParam> {
 
     public StudioFormAppletFilterListCommand() {
-        super(FormAppletParams.class);
+        super(StringParam.class);
     }
 
     @Override
-    public List<? extends Listable> execute(Locale locale, FormAppletParams formAppletParams) throws UnifyException {
-        if (formAppletParams.isPresent()) {
+    public List<? extends Listable> execute(Locale locale, StringParam param) throws UnifyException {
+        if (param.isPresent()) {
             return applicationService()
-                    .findAppAppletFilters(formAppletParams.getAppletName());
+                    .findAppAppletFilters(param.getValue());
         }
 
         return Collections.emptyList();

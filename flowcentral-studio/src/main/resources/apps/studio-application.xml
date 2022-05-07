@@ -164,7 +164,7 @@
 		<widgetType name="formappletfilterlist"
 			description="$m{studio.widgettype.formappletfilterlist}"
 			dataType="string" inputType="string"
-			editor="!ui-select list:studioformappletfilterlist listParams:$l{appFormId applet} blankOption:$m{blank.none}"
+			editor="!ui-select list:studioformappletfilterlist listParams:$l{applet} blankOption:$m{blank.none}"
 			renderer="!ui-label" />
 		<widgetType name="rellisteditactionlist"
 			description="$m{studio.widgettype.rellisteditactionlist}"
@@ -2950,6 +2950,8 @@
 					<field name="tabApplet" inputWidget="application.name"
 						column="0" />
 					<field name="tabReference" inputWidget="application.name"
+						column="0" />
+					<field name="filter" inputWidget="application.name"
 						column="0" />
 					<field name="editAction" inputWidget="application.name"
 						column="0" />
