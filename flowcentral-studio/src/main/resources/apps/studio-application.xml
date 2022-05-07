@@ -3921,6 +3921,15 @@
 					inputWidget="application.checkbox" />
 			</propertySet>
 			<propertySet
+				label="$m{studio.appappletprop.manageentity.entrytablesettings}">
+				<property name="entryTable"
+					description="$m{studio.appappletprop.manageentity.entrytable}"
+					inputWidget="studio.propertyapplettablelist" />
+				<property name="entryTable.policy"
+					description="$m{studio.appappletprop.manageentity.entrytablepolicy}"
+					inputWidget="studio.propertyappletbeantablepolicylist" />
+			</propertySet>
+			<propertySet
 				label="$m{studio.appappletprop.manageentity.workflowproperties}">
 				<property name="createForm.submit.caption"
 					description="$m{studio.appappletprop.manageentity.createform.submitcaption}"
@@ -4127,6 +4136,9 @@
 				<property name="assignmentUpdatePolicy"
 					description="$m{studio.appappletprop.manageentity.assignmentupdatepolicy}"
 					inputWidget="studio.propertyappletassignupdatepolicylist" />
+				<property name="assignmentFixed"
+					description="$m{studio.appappletprop.manageentity.assignmentfixed}"
+					inputWidget="application.checkbox" />
 			</propertySet>
 		</propertyList>
 		<propertyList name="mplAppAppletPropList"

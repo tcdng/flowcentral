@@ -58,8 +58,6 @@ public class EntryTablePage {
 
     private final String entryTablePolicy;
 
-    private final String entryUpdatePolicy;
-
     private final FilterDef entryFilter;
 
     private String displayItemCounter;
@@ -70,8 +68,7 @@ public class EntryTablePage {
 
     public EntryTablePage(AppletContext ctx, List<EventHandler> entrySwitchOnChangeHandlers,
             SweepingCommitPolicy sweepingCommitPolicy, EntityClassDef entityClassDef, String baseField, Object baseId,
-            BreadCrumbs breadCrumbs, String entryTable, String entryTablePolicy, String entryUpdatePolicy,
-            FilterDef entryFilter) {
+            BreadCrumbs breadCrumbs, String entryTable, String entryTablePolicy, FilterDef entryFilter) {
         this.ctx = ctx;
         this.entrySwitchOnChangeHandlers = entrySwitchOnChangeHandlers;
         this.sweepingCommitPolicy = sweepingCommitPolicy;
@@ -81,7 +78,6 @@ public class EntryTablePage {
         this.breadCrumbs = breadCrumbs;
         this.entryTable = entryTable;
         this.entryTablePolicy = entryTablePolicy;
-        this.entryUpdatePolicy = entryUpdatePolicy;
         this.entryFilter = entryFilter;
     }
 
@@ -172,7 +168,7 @@ public class EntryTablePage {
     @SuppressWarnings("unchecked")
     public void commitEntryList(boolean reload) throws UnifyException {
         List<? extends Entity> assignedList = (List<? extends Entity>) getEntryBeanTable().getSourceObject();
-        ctx.getEnvironment().updateEntryList(sweepingCommitPolicy, entryUpdatePolicy,
+        ctx.getEnvironment().updateEntryList(sweepingCommitPolicy,
                 (Class<? extends Entity>) entityClassDef.getEntityClass(), baseField, baseId,
                 assignedList);
         if (reload) {

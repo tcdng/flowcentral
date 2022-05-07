@@ -504,7 +504,7 @@ public class EnvironmentServiceImpl extends AbstractBusinessService
 
     @Override
     public <T, U extends Entity> int updateEntryList(SweepingCommitPolicy sweepingCommitPolicy,
-            String assignmentUpdatePolicy, Class<U> entityClass, String baseField, Object baseId, List<T> instList)
+            Class<U> entityClass, String baseField, Object baseId, List<T> instList)
             throws UnifyException {
         final Database db = db(entityClass);
         if (!DataUtils.isBlank(instList)) {
@@ -516,10 +516,6 @@ public class EnvironmentServiceImpl extends AbstractBusinessService
 
         if (sweepingCommitPolicy != null) {
             sweepingCommitPolicy.bumpAllParentVersions(db, RecordActionType.UPDATE);
-        }
-
-        if (!StringUtils.isBlank(assignmentUpdatePolicy)) {
-            ((AssignmentUpdatePolicy) getComponent(assignmentUpdatePolicy)).postUpdate(entityClass, baseField, baseId);
         }
 
         return instList != null ? instList.size() : 0;

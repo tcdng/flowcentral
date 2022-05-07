@@ -710,8 +710,6 @@ public interface EnvironmentService extends BusinessService {
      * 
      * @param sweepingCommitPolicy
      *                             sweeping commit policy
-     * @param entryCommitPolicy
-     *                             entry commit policy
      * @param entityClass
      *                             the entity class
      * @param baseField
@@ -724,7 +722,7 @@ public interface EnvironmentService extends BusinessService {
      * @throws UnifyException
      *                        if an error occurs
      */
-    <T, U extends Entity> int updateEntryList(SweepingCommitPolicy sweepingCommitPolicy, String entryCommitPolicy,
+    <T, U extends Entity> int updateEntryList(SweepingCommitPolicy sweepingCommitPolicy,
             Class<U> entityClass, String baseField, Object baseId, List<T> instList) throws UnifyException;
 
     /**

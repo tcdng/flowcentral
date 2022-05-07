@@ -416,14 +416,12 @@ public abstract class AbstractEntityFormApplet extends AbstractApplet implements
         final String entryTable = _appletDef.getPropValue(String.class, AppletPropertyConstants.ENTRY_TABLE);
         final String entryTablePolicy = _appletDef.getPropValue(String.class,
                 AppletPropertyConstants.ENTRY_TABLE_POLICY);
-        final String entryUpdatePolicy = _appletDef.getPropValue(String.class,
-                AppletPropertyConstants.ENTRY_TABLE_UPDATE_POLICY);
         final String baseField = getAu().getChildFkFieldName(form.getFormDef().getEntityDef(),
                 currFormTabDef.getReference());
         final Object id = ((Entity) form.getFormBean()).getId();
         final String subTitle = ((Entity) form.getFormBean()).getDescription();
         saveCurrentForm();
-        entryTablePage = constructNewEntryPage(_appletDef.getEntity(), entryTable, entryTablePolicy, entryUpdatePolicy,
+        entryTablePage = constructNewEntryPage(_appletDef.getEntity(), entryTable, entryTablePolicy,
                 assgnFilter, baseField, id, subTitle);
         entryTablePage.loadEntryList();
         viewMode = ViewMode.ENTRY_TABLE_PAGE;
@@ -848,14 +846,14 @@ public abstract class AbstractEntityFormApplet extends AbstractApplet implements
     }
 
     private EntryTablePage constructNewEntryPage(String entity, String entryTable, String entryTablePolicy,
-            String entryUpdatePolicy, FilterDef entryFilter, String baseField, Object baseId, String subTitle)
+            FilterDef entryFilter, String baseField, Object baseId, String subTitle)
             throws UnifyException {
         BreadCrumbs breadCrumbs = form.getBreadCrumbs().advance();
         EntityClassDef entityClassDef = getEntityClassDef(entity);
         breadCrumbs.setLastCrumbTitle(entityClassDef.getEntityDef().getDescription());
         breadCrumbs.setLastCrumbSubTitle(subTitle);
         return new EntryTablePage(getCtx(), formEventHandlers.getEntrySwitchOnChangeHandlers(), this, entityClassDef,
-                baseField, baseId, breadCrumbs, entryTable, entryTablePolicy, entryUpdatePolicy, entryFilter);
+                baseField, baseId, breadCrumbs, entryTable, entryTablePolicy, entryFilter);
     }
 
     protected EditPropertyList constructNewEditPropertyList(PropertyRuleDef propertyRuleDef, Entity inst,
