@@ -1,4 +1,4 @@
-// UPL template for assignment page panel
+// UPL template for entry table panel
 // Copyright 2021-2022 FlowCentral Technologies Limited.
 // 
 // Licensed under the Apache License, Version 2.0 (the "License"); you may not
@@ -13,7 +13,7 @@
 // License for the specific language governing permissions and limitations under
 // the License.
 
-!fc-assignmentpagepanel layout:$d{!ui-vertical style:$s{width:100%;}} components:$c{headerBar assignmentBodyPanel}
+!fc-entrytablepagepanel layout:$d{!ui-vertical style:$s{width:100%;}} components:$c{headerBar entryBodyPanel}
 
 // Header Bar
 !ui-panel:headerBar styleClass:$s{hdbar} layout:$d{!ui-horizontal style:$s{width:100%;} widths:$l{42% none 42%}}
@@ -37,14 +37,13 @@
 	components:$f{moreActionButtons}
 
 !ui-button:saveBtn caption:$m{button.save}
-	eventHandler:$d{!ui-event event:onclick action:$c{saveAssignAct}}
+	eventHandler:$d{!ui-event event:onclick action:$c{saveEntryAct}}
 
-// Assignment box panel
-!ui-panel:assignmentBodyPanel components:$c{assignmentPage assignmentEntryTbl}
-!fc-assignmentpage:assignmentPage style:$s{width:780px; margin: 8px auto;}
-!fc-beantable:assignmentEntryTbl style:$s{width:920px; margin: 8px auto;}
+// Entry table panel
+!ui-panel:entryBodyPanel components:$c{entryTableEntryTbl}
+!fc-beantable:entryTableEntryTbl style:$s{width:920px; margin: 8px auto;}
 	multiSelect:true binding:entryBeanTable
 	
 // Actions
-!ui-postcommand:saveAssignAct command:saveAssignment components:$c{assignmentEntryTbl}
+!ui-postcommand:saveEntryAct command:saveEntry components:$c{entryTableEntryTbl}
 

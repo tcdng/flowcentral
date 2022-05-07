@@ -33,12 +33,12 @@ import com.tcdng.unify.core.util.StringUtils;
 import com.tcdng.unify.web.ui.widget.EventHandler;
 
 /**
- * Entry page object.
+ * Entry table page object.
  * 
  * @author FlowCentral Technologies Limited
  * @since 1.0
  */
-public class EntryPage {
+public class EntryTablePage {
 
     private final AppletContext ctx;
 
@@ -68,7 +68,7 @@ public class EntryPage {
 
     private BeanTable entryBeanTable;
 
-    public EntryPage(AppletContext ctx, List<EventHandler> entrySwitchOnChangeHandlers,
+    public EntryTablePage(AppletContext ctx, List<EventHandler> entrySwitchOnChangeHandlers,
             SweepingCommitPolicy sweepingCommitPolicy, EntityClassDef entityClassDef, String baseField, Object baseId,
             BreadCrumbs breadCrumbs, String entryTable, String entryTablePolicy, String entryUpdatePolicy,
             FilterDef entryFilter) {

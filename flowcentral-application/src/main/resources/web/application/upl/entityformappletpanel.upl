@@ -13,7 +13,7 @@
 // License for the specific language governing permissions and limitations under
 // the License.
 
-!fc-entityformappletpanel components:$c{formPanel assignmentPanel}
+!fc-entityformappletpanel components:$c{formPanel assignmentPanel entryTablePanel}
 	frmActionsHandler:$d{!ui-event event:onclick action:$c{formActionAct}}
 	
 // Form
@@ -87,6 +87,15 @@
 !ui-button:closeAssignBtn caption:$m{button.close}
 	eventHandler:$d{!ui-event event:onclick action:$c{navBackAct}}
 
+// Entry Table Page
+!fc-entrytablepagepanel:entryTablePanel binding:entryTablePage
+	moreActionButtons:$c{saveEntryCloseBtn closeEntryBtn}
+	switchOnChangeEventHandler:$d{!ui-event event:onchange action:$c{entrySwitchOnChangeAct}}
+!ui-button:saveEntryCloseBtn caption:$m{button.saveclose}
+	eventHandler:$d{!ui-event event:onclick action:$c{saveAssignCloseAct}}
+!ui-button:closeAssignBtn caption:$m{button.close}
+	eventHandler:$d{!ui-event event:onclick action:$c{navBackAct}}
+
 // Edit Property List
 !fc-editpropertylistpanel:editPropertyListPanel binding:editPropertyList
 	moreActionButtons:$c{savePropListCloseBtn closePropListBtn}
@@ -111,6 +120,8 @@
 	refresh:$c{formPanel.formBodyPanel}
 !ui-postcommand:assnSwitchOnChangeAct command:assignSwitchOnChange components:$c{assignmentPanel}
 	refresh:$c{assignmentPanel.assignmentBodyPanel}
+!ui-postcommand:entrySwitchOnChangeAct command:entrySwitchOnChange components:$c{entryTablePanel}
+	refresh:$c{entryTablePanel.entryBodyPanel}
 !ui-postcommand:saveAsSwitchOnChangeAct command:saveAsSwitchOnChange components:$c{entitySaveAsPanel}
 	refresh:$c{entitySaveAsPanel.entityFormBodyPanel}
 !ui-postcommand:saveAct command:save components:$c{formPanel}

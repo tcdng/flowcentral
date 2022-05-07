@@ -232,7 +232,8 @@ public abstract class AbstractEntityFormAppletPanel extends AbstractAppletPanel 
 
         switch (viewMode) {
             case ENTRY_TABLE_PAGE:
-                // TODO
+                switchContent("assignmentPanel");
+                // TODO /entryTablePanel
                 break;
             case ASSIGNMENT_PAGE:
                 switchContent("assignmentPanel");
@@ -441,6 +442,11 @@ public abstract class AbstractEntityFormAppletPanel extends AbstractAppletPanel 
     @Action
     public void assignSwitchOnChange() throws UnifyException {
         getEntityFormApplet().assignSwitchOnChange();
+    }
+
+    @Action
+    public void entrySwitchOnChange() throws UnifyException {
+        getEntityFormApplet().entrySwitchOnChange();
     }
 
     @Action
