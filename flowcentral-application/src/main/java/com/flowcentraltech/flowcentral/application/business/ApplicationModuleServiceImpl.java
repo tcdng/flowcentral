@@ -837,9 +837,9 @@ public class ApplicationModuleServiceImpl extends AbstractFlowCentralService
                             sectionIndex = -1;
                             fdb.addFormTab(appFormElement.getTabContentType(), appFormElement.getElementName(),
                                     appFormElement.getLabel(), appFormElement.getTabApplet(),
-                                    appFormElement.getTabReference(), appFormElement.getEditAction(),
-                                    appFormElement.isVisible(), appFormElement.isEditable(),
-                                    appFormElement.isDisabled());
+                                    appFormElement.getTabReference(), appFormElement.getFilter(),
+                                    appFormElement.getEditAction(), appFormElement.isVisible(),
+                                    appFormElement.isEditable(), appFormElement.isDisabled());
                         } else if (FormElementType.SECTION.equals(appFormElement.getType())) {
                             sectionIndex++;
                             fdb.addFormSection(tabIndex, appFormElement.getElementName(), appFormElement.getLabel(),
@@ -898,7 +898,7 @@ public class ApplicationModuleServiceImpl extends AbstractFlowCentralService
                     for (AppFormRelatedList appFormRelatedList : appForm.getRelatedList()) {
                         fdb.addRelatedList(appFormRelatedList.getName(), appFormRelatedList.getDescription(),
                                 appFormRelatedList.getLabel(), appFormRelatedList.getApplet(),
-                                appFormRelatedList.getEditAction());
+                                appFormRelatedList.getFilter(), appFormRelatedList.getEditAction());
                     }
 
                     for (AppFormStatePolicy appFormStatePolicy : appForm.getFieldStateList()) {
@@ -1235,6 +1235,14 @@ public class ApplicationModuleServiceImpl extends AbstractFlowCentralService
     @Override
     public List<AppAppletFilter> findAppAppletFilters(Long appAppletId) throws UnifyException {
         return environment().findAll(new AppAppletFilterQuery().appAppletId(appAppletId));
+    }
+
+    @Override
+    public List<AppAppletFilter> findAppAppletFilters(String appAppletName) throws UnifyException {
+        ApplicationEntityNameParts nameParts = ApplicationNameUtils.getApplicationEntityNameParts(appAppletName);
+        Long appAppletId = environment().value(Long.class, "id",
+                new AppAppletQuery().applicationName(nameParts.getApplicationName()).name(nameParts.getEntityName()));
+        return findAppAppletFilters(appAppletId);
     }
 
     @Override
@@ -3692,6 +3700,7 @@ public class ApplicationModuleServiceImpl extends AbstractFlowCentralService
                 appFormElement.setTabApplet(
                         ApplicationNameUtils.ensureLongNameReference(applicationName, formTabConfig.getApplet()));
                 appFormElement.setTabReference(formTabConfig.getReference());
+                appFormElement.setFilter(formTabConfig.getFilter());
                 appFormElement.setEditAction(formTabConfig.getEditAction());
                 appFormElement.setVisible(formTabConfig.isVisible());
                 appFormElement.setEditable(formTabConfig.isEditable());
@@ -3763,6 +3772,7 @@ public class ApplicationModuleServiceImpl extends AbstractFlowCentralService
                     appFormRelatedList.setLabel(resolveApplicationMessage(relatedListConfig.getLabel()));
                     appFormRelatedList.setApplet(ApplicationNameUtils.ensureLongNameReference(applicationName,
                             relatedListConfig.getApplet()));
+                    appFormRelatedList.setFilter(relatedListConfig.getFilter());
                     appFormRelatedList.setEditAction(relatedListConfig.getEditAction());
                     appFormRelatedList.setConfigType(ConfigType.MUTABLE_INSTALL);
                     relatedList.add(appFormRelatedList);
@@ -3773,6 +3783,7 @@ public class ApplicationModuleServiceImpl extends AbstractFlowCentralService
                         oldAppFormRelatedList.setLabel(resolveApplicationMessage(relatedListConfig.getLabel()));
                         oldAppFormRelatedList.setApplet(ApplicationNameUtils.ensureLongNameReference(applicationName,
                                 relatedListConfig.getApplet()));
+                        oldAppFormRelatedList.setFilter(relatedListConfig.getFilter());
                         oldAppFormRelatedList.setEditAction(relatedListConfig.getEditAction());
                     }
 

@@ -539,17 +539,18 @@ public class FormDef extends BaseApplicationEntityDef {
 
         public Builder addFormTab(TabContentType contentType, String name, String tabLabel, boolean visible,
                 boolean editable, boolean disabled) {
-            return addFormTab(contentType, name, tabLabel, null, null, null, visible, editable, disabled);
+            return addFormTab(contentType, name, tabLabel, null, null, null, null, visible, editable, disabled);
         }
 
         public Builder addFormTab(TabContentType contentType, String name, String tabLabel, String tabApplet,
-                String tabReference, String editAction, boolean visible, boolean editable, boolean disabled) {
+                String tabReference, String filter, String editAction, boolean visible, boolean editable,
+                boolean disabled) {
             if (tabLabels.contains(name)) {
                 throw new RuntimeException("Tab with name [" + name + "] already exists on this form.");
             }
 
-            formTabDefList.add(new TempFormTabDef(contentType, name, tabLabel, tabApplet, tabReference, editAction,
-                    visible, editable, disabled));
+            formTabDefList.add(new TempFormTabDef(contentType, name, tabLabel, tabApplet, tabReference, filter,
+                    editAction, visible, editable, disabled));
             tabLabels.add(tabLabel);
             return this;
         }
@@ -591,7 +592,7 @@ public class FormDef extends BaseApplicationEntityDef {
         }
 
         public Builder addRelatedList(String name, String description, String label, String appletName,
-                String editAction) {
+                String filter, String editAction) {
             if (formRelatedListDefList == null) {
                 formRelatedListDefList = new LinkedHashMap<String, FormRelatedListDef>();
             }
@@ -601,7 +602,8 @@ public class FormDef extends BaseApplicationEntityDef {
                         "Related list with name [" + name + "] already exists on this form[" + longName + "].");
             }
 
-            formRelatedListDefList.put(name, new FormRelatedListDef(name, description, label, appletName, editAction));
+            formRelatedListDefList.put(name,
+                    new FormRelatedListDef(name, description, label, appletName, filter, editAction));
             return this;
         }
 
@@ -740,8 +742,9 @@ public class FormDef extends BaseApplicationEntityDef {
 
                 formTabDefList.add(new FormTabDef(tempFormTabDef.getContentType(), tempFormTabDef.getName(),
                         tempFormTabDef.getTabLabel(), tempFormTabDef.getTabApplet(), tempFormTabDef.getTabReference(),
-                        tempFormTabDef.getEditAction(), DataUtils.unmodifiableList(formSectionDefList),
-                        tempFormTabDef.isVisible(), tempFormTabDef.isEditable(), tempFormTabDef.isDisabled()));
+                        tempFormTabDef.getFilter(), tempFormTabDef.getEditAction(),
+                        DataUtils.unmodifiableList(formSectionDefList), tempFormTabDef.isVisible(),
+                        tempFormTabDef.isEditable(), tempFormTabDef.isDisabled()));
             }
 
             if (formActionList != null) {
@@ -777,6 +780,8 @@ public class FormDef extends BaseApplicationEntityDef {
 
             private String tabReference;
 
+            private String filter;
+
             private String editAction;
 
             private boolean visible;
@@ -788,12 +793,14 @@ public class FormDef extends BaseApplicationEntityDef {
             private List<TempFormSectionDef> formSectionDefList;
 
             public TempFormTabDef(TabContentType contentType, String name, String tabLabel, String tabApplet,
-                    String tabReference, String editAction, boolean visible, boolean editable, boolean disabled) {
+                    String tabReference, String filter, String editAction, boolean visible, boolean editable,
+                    boolean disabled) {
                 this.contentType = contentType;
                 this.name = name;
                 this.tabLabel = tabLabel;
                 this.tabApplet = tabApplet;
                 this.tabReference = tabReference;
+                this.filter = filter;
                 this.editAction = editAction;
                 this.visible = visible;
                 this.editable = editable;
@@ -819,6 +826,10 @@ public class FormDef extends BaseApplicationEntityDef {
 
             public String getTabReference() {
                 return tabReference;
+            }
+
+            public String getFilter() {
+                return filter;
             }
 
             public String getEditAction() {

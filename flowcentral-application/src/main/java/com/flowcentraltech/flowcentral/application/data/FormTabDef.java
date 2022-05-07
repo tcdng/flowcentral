@@ -37,6 +37,8 @@ public class FormTabDef {
 
     private String applet;
 
+    private String filter;
+
     private String reference;
 
     private String editAction;
@@ -54,14 +56,15 @@ public class FormTabDef {
     private boolean disabled;
 
     private int listOnlyCheck;
-    
+
     public FormTabDef(TabContentType contentType, String name, String label, String applet, String reference,
-            String editAction, List<FormSectionDef> formSectionDefList, boolean visible, boolean editable,
-            boolean disabled) {
+            String filter, String editAction, List<FormSectionDef> formSectionDefList, boolean visible,
+            boolean editable, boolean disabled) {
         this.contentType = contentType;
         this.name = name;
         this.label = label;
         this.applet = applet;
+        this.filter = filter;
         this.reference = reference;
         this.editAction = editAction;
         this.formSectionDefList = formSectionDefList;
@@ -77,6 +80,7 @@ public class FormTabDef {
         this.name = srcFormTabDef.name;
         this.label = srcFormTabDef.label;
         this.applet = srcFormTabDef.applet;
+        this.filter = srcFormTabDef.filter;
         this.reference = srcFormTabDef.reference;
         this.editAction = srcFormTabDef.editAction;
         this.visible = srcFormTabDef.visible;
@@ -99,6 +103,10 @@ public class FormTabDef {
 
     public String getApplet() {
         return applet;
+    }
+
+    public String getFilter() {
+        return filter;
     }
 
     public String getReference() {
@@ -128,18 +136,18 @@ public class FormTabDef {
 
         return listOnlyCheck > 0;
     }
-    
+
     public List<FormSectionDef> getFormSectionDefList() {
         return formSectionDefList;
     }
 
     public List<FormFieldDef> getCondRefDefFormFieldDefList() {
         if (condRefDefFormFieldDefList == null) {
-            synchronized(this) {
+            synchronized (this) {
                 if (condRefDefFormFieldDefList == null) {
                     condRefDefFormFieldDefList = new ArrayList<FormFieldDef>();
-                    for (FormSectionDef formSectionDef: formSectionDefList) {
-                        for (FormFieldDef formFieldDef: formSectionDef.getFormFieldDefList()) {
+                    for (FormSectionDef formSectionDef : formSectionDefList) {
+                        for (FormFieldDef formFieldDef : formSectionDef.getFormFieldDefList()) {
                             if (formFieldDef.isWithInputRefDef() && formFieldDef.getInputRefDef().isWithCondition()) {
                                 condRefDefFormFieldDefList.add(formFieldDef);
                             }
@@ -157,7 +165,7 @@ public class FormTabDef {
     public boolean isWithCondRefDefFormFields() {
         return !getCondRefDefFormFieldDefList().isEmpty();
     }
-    
+
     public List<String> getFieldNameList() {
         if (fieldNameList == null) {
             fieldNameList = new ArrayList<String>();

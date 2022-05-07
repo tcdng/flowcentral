@@ -66,6 +66,8 @@ public abstract class AbstractTable<T, U> {
 
     private boolean entryMode;
 
+    private boolean fixedAssignment;
+    
     private TableTotalSummary tableTotalSummary;
 
     protected final AppletUtilities au;
@@ -159,6 +161,14 @@ public abstract class AbstractTable<T, U> {
 
     public boolean isEntryMode() {
         return entryMode;
+    }
+
+    public boolean isFixedAssignment() {
+        return fixedAssignment;
+    }
+
+    public void setFixedAssignment(boolean fixedAssignment) {
+        this.fixedAssignment = fixedAssignment;
     }
 
     public TableTotalSummary getTableTotalSummary() {

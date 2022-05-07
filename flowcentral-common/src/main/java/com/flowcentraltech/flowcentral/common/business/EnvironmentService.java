@@ -81,7 +81,7 @@ public interface EnvironmentService extends BusinessService {
      * Clears roll back on current transactions in database session.
      * 
      * @throws UnifyException
-     *             if an error occurs
+     *                        if an error occurs
      */
     void clearRollbackTransactions() throws UnifyException;
 
@@ -694,13 +694,38 @@ public interface EnvironmentService extends BusinessService {
      *                               the base Id
      * @param instList
      *                               the inst list to set
+     * @param fixedAssignment
+     *                               indicates the assignment is fixed
      * @return the number of records updated
      * @throws UnifyException
      *                        if an error occurs
      */
     <T, U extends Entity> int updateAssignedList(SweepingCommitPolicy sweepingCommitPolicy,
-            String assignmentCommitPolicy, Class<U> entityClass, String baseField, Object baseId, List<T> instList)
-            throws UnifyException;
+            String assignmentCommitPolicy, Class<U> entityClass, String baseField, Object baseId, List<T> instList,
+            boolean fixedAssignment) throws UnifyException;
+
+    /**
+     * Updates the entry list for particular field for specified entity using
+     * supplied base field and list.
+     * 
+     * @param sweepingCommitPolicy
+     *                             sweeping commit policy
+     * @param entryCommitPolicy
+     *                             entry commit policy
+     * @param entityClass
+     *                             the entity class
+     * @param baseField
+     *                             the base field
+     * @param baseId
+     *                             the base Id
+     * @param instList
+     *                             the inst list to set
+     * @return the number of records updated
+     * @throws UnifyException
+     *                        if an error occurs
+     */
+    <T, U extends Entity> int updateEntryList(SweepingCommitPolicy sweepingCommitPolicy, String entryCommitPolicy,
+            Class<U> entityClass, String baseField, Object baseId, List<T> instList) throws UnifyException;
 
     /**
      * Gets an entity value.

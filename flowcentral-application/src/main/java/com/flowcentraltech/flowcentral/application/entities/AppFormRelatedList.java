@@ -39,6 +39,9 @@ public class AppFormRelatedList extends BaseConfigNamedEntity {
     private String applet;
 
     @Column(length = 64, nullable = true)
+    private String filter;
+
+    @Column(length = 64, nullable = true)
     private String editAction;
 
     public Long getAppFormId() {
@@ -63,6 +66,14 @@ public class AppFormRelatedList extends BaseConfigNamedEntity {
 
     public void setLabel(String label) {
         this.label = label;
+    }
+
+    public String getFilter() {
+        return filter;
+    }
+
+    public void setFilter(String filter) {
+        this.filter = filter;
     }
 
     public String getEditAction() {

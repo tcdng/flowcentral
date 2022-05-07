@@ -31,13 +31,17 @@ public class FormRelatedListDef {
 
     private String applet;
 
+    private String filter;
+
     private String editAction;
 
-    public FormRelatedListDef(String name, String description, String label, String applet, String editAction) {
+    public FormRelatedListDef(String name, String description, String label, String applet, String filter,
+            String editAction) {
         this.description = description;
         this.name = name;
         this.label = label;
         this.applet = applet;
+        this.filter = filter;
         this.editAction = editAction;
     }
 
@@ -55,6 +59,10 @@ public class FormRelatedListDef {
 
     public String getApplet() {
         return applet;
+    }
+
+    public String getFilter() {
+        return filter;
     }
 
     public String getEditAction() {

@@ -27,6 +27,8 @@ public class RelatedListConfig extends BaseNameConfig {
 
     private String applet;
 
+    private String filter;
+
     private String editAction;
 
     public String getApplet() {
@@ -36,6 +38,15 @@ public class RelatedListConfig extends BaseNameConfig {
     @XmlAttribute(required = true)
     public void setApplet(String applet) {
         this.applet = applet;
+    }
+
+    public String getFilter() {
+        return filter;
+    }
+
+    @XmlAttribute
+    public void setFilter(String filter) {
+        this.filter = filter;
     }
 
     public String getEditAction() {

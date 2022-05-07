@@ -128,6 +128,14 @@ public interface AppletPropertyConstants {
 
     String ASSIGNMENT_UPDATE_POLICY = "assignmentUpdatePolicy";
 
+    String ASSIGNMENT_FIXED = "assignmentFixed";
+
+    String ENTRY_TABLE = "entryTable";
+
+    String ENTRY_TABLE_POLICY = "entryTable.policy";
+
+    String ENTRY_TABLE_UPDATE_POLICY = "entryTable.updatePolicy";
+
     String BASE_RESTRICTION = "baseRestriction";
 
     String PROPERTY_LIST_RULE = "propertyList.rule";

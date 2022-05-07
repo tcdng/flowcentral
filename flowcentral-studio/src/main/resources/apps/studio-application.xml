@@ -161,10 +161,15 @@
 			dataType="string" inputType="string"
 			editor="!ui-select list:studioformrelatedappletlist listParams:$l{appFormId} blankOption:$m{blank.none}"
 			renderer="!ui-label" />
-		<widgetType name="formrelatedfieldlist"
-			description="$m{studio.widgettype.formrelatedfieldlist}"
+		<widgetType name="formappletfilterlist"
+			description="$m{studio.widgettype.formappletfilterlist}"
 			dataType="string" inputType="string"
-			editor="!ui-select list:studioformrelatedfieldlist listParams:$l{appFormId applet} blankOption:$m{blank.none}"
+			editor="!ui-select list:studioformappletfilterlist listParams:$l{appFormId applet} blankOption:$m{blank.none}"
+			renderer="!ui-label" />
+		<widgetType name="rellisteditactionlist"
+			description="$m{studio.widgettype.rellisteditactionlist}"
+			dataType="string" inputType="string"
+			editor="!ui-select list:rellisteditactionlist blankOption:$m{blank.none}"
 			renderer="!ui-label" />
 		<widgetType name="formfieldlist"
 			description="$m{studio.widgettype.formfieldlist}" dataType="string"
@@ -3056,8 +3061,11 @@
 					<field name="applet"
 						inputWidget="studio.formrelatedappletlist" switchOnChange="true"
 						column="1" required="true" />
+					<field name="filter"
+						inputWidget="studio.formappletfilterlist"
+						column="1" required="true" />
 					<field name="editAction"
-						inputWidget="studio.formrelatedfieldlist" column="1" />
+						inputWidget="studio.rellisteditactionlist" column="1" />
 				</section>
 			</tab>
 		</form>

@@ -655,6 +655,7 @@ public class ApplicationXmlGenerator extends AbstractStaticArtifactGenerator {
 
                         formTabConfig.setApplet(appFormElement.getTabApplet());
                         formTabConfig.setReference(appFormElement.getTabReference());
+                        formTabConfig.setFilter(appFormElement.getFilter());
                         formTabConfig.setEditAction(appFormElement.getEditAction());
                         formTabConfig.setVisible(appFormElement.isVisible());
                         formTabConfig.setEditable(appFormElement.isEditable());
@@ -740,6 +741,7 @@ public class ApplicationXmlGenerator extends AbstractStaticArtifactGenerator {
                         relatedListConfig.setDescription("$m{" + descKey + "}");
                         relatedListConfig.setLabel("$m{" + labelKey + "}");
                         relatedListConfig.setApplet(appFormRelatedList.getApplet());
+                        relatedListConfig.setFilter(appFormRelatedList.getFilter());
                         relatedListConfig.setEditAction(appFormRelatedList.getEditAction());
                         relatedConfigList.add(relatedListConfig);
                     }

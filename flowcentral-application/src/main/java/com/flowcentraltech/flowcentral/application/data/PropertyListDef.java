@@ -95,8 +95,8 @@ public class PropertyListDef extends BaseApplicationEntityDef {
         }
 
         public Builder addItemDef(EntityFieldDef entityFieldDef, WidgetTypeDef widgetTypeDef, String setLabel,
-                String description, String renderer, String defaultVal, boolean required,
-                boolean mask, boolean encrypt) {
+                String description, String renderer, String defaultVal, boolean required, boolean mask,
+                boolean encrypt) {
             List<PropertyListItemDef> itemList = itemDefMap.get(setLabel);
             if (itemList == null) {
                 throw new RuntimeException("Property set with label [" + setLabel + "] is unknown in this definition.");
@@ -131,7 +131,7 @@ public class PropertyListDef extends BaseApplicationEntityDef {
             }
 
             FormTabDef formTabDef = new FormTabDef(TabContentType.MINIFORM, "details", description, null, null, null,
-                    formSectionDefList, true, true, false);
+                    null, formSectionDefList, true, true, false);
 
             ApplicationEntityNameParts nameParts = ApplicationNameUtils.getApplicationEntityNameParts(longName);
             return new PropertyListDef(formTabDef, DataUtils.unmodifiableList(itemList), nameParts, description, id,

@@ -1225,6 +1225,9 @@
 				label="$m{application.appformrelatedlist.label}" type="string" />
 			<field name="applet"
 				label="$m{application.appformrelatedlist.applet}" type="string" />
+			<field name="filter"
+				label="$m{application.appformrelatedlist.filter}" type="string"
+				nullable="true" />
 			<field name="editAction"
 				label="$m{application.appformrelatedlist.editaction}" type="string"
 				nullable="true" />

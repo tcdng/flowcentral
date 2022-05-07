@@ -59,6 +59,9 @@ public class AppFormElement extends BaseConfigEntity {
     private String tabReference;
 
     @Column(length = 64, nullable = true)
+    private String filter;
+
+    @Column(length = 64, nullable = true)
     private String editAction;
 
     @Column(length = 128, nullable = true)
@@ -167,6 +170,14 @@ public class AppFormElement extends BaseConfigEntity {
 
     public void setTabReference(String tabReference) {
         this.tabReference = tabReference;
+    }
+
+    public String getFilter() {
+        return filter;
+    }
+
+    public void setFilter(String filter) {
+        this.filter = filter;
     }
 
     public String getEditAction() {

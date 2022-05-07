@@ -231,6 +231,9 @@ public abstract class AbstractEntityFormAppletPanel extends AbstractAppletPanel 
         }
 
         switch (viewMode) {
+            case ENTRY_TABLE_PAGE:
+                // TODO
+                break;
             case ASSIGNMENT_PAGE:
                 switchContent("assignmentPanel");
                 setEditable("assignmentPanel", isContextEditable);

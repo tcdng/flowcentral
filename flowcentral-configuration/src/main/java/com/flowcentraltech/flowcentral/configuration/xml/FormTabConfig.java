@@ -42,6 +42,8 @@ public class FormTabConfig {
 
     private String reference;
 
+    private String filter;
+
     private String editAction;
 
     private boolean visible;
@@ -102,6 +104,15 @@ public class FormTabConfig {
     @XmlAttribute
     public void setReference(String reference) {
         this.reference = reference;
+    }
+
+    public String getFilter() {
+        return filter;
+    }
+
+    @XmlAttribute
+    public void setFilter(String filter) {
+        this.filter = filter;
     }
 
     public String getEditAction() {
