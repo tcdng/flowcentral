@@ -30,6 +30,7 @@ import com.flowcentraltech.flowcentral.application.data.EntityFieldDef;
 import com.flowcentraltech.flowcentral.application.data.FilterDef;
 import com.flowcentraltech.flowcentral.application.data.RefDef;
 import com.flowcentraltech.flowcentral.application.web.data.AppletContext;
+import com.flowcentraltech.flowcentral.common.business.policies.ChildListEditPolicy;
 import com.flowcentraltech.flowcentral.common.business.policies.SweepingCommitPolicy;
 import com.tcdng.unify.core.UnifyException;
 import com.tcdng.unify.core.criterion.Restriction;
@@ -64,9 +65,7 @@ public class AssignmentPage {
 
     private final String entryTable;
 
-    private final String entryTablePolicy;
-
-    private final String assgnUpdatePolicy;
+    private final String assnEditPolicy;
 
     private final FilterDef assgnFilter;
 
@@ -83,7 +82,7 @@ public class AssignmentPage {
     public AssignmentPage(AppletContext ctx, List<EventHandler> assnSwitchOnChangeHandlers,
             SweepingCommitPolicy sweepingCommitPolicy, AssignmentPageDef assignmentPageDef,
             EntityClassDef entityClassDef, Object baseId, BreadCrumbs breadCrumbs, String entryTable,
-            String entryTablePolicy, String assgnUpdatePolicy, FilterDef assgnFilter, boolean fixedAssignment) {
+            String assnEditPolicy, FilterDef assgnFilter, boolean fixedAssignment) {
         this.ctx = ctx;
         this.assnSwitchOnChangeHandlers = assnSwitchOnChangeHandlers;
         this.sweepingCommitPolicy = sweepingCommitPolicy;
@@ -92,8 +91,7 @@ public class AssignmentPage {
         this.baseId = baseId;
         this.breadCrumbs = breadCrumbs;
         this.entryTable = entryTable;
-        this.entryTablePolicy = entryTablePolicy;
-        this.assgnUpdatePolicy = assgnUpdatePolicy;
+        this.assnEditPolicy = assnEditPolicy;
         this.assgnFilter = assgnFilter;
         this.fixedAssignment = fixedAssignment;
     }
@@ -168,8 +166,8 @@ public class AssignmentPage {
     public BeanTable getEntryBeanTable() throws UnifyException {
         if (isEntryTableMode() && entryBeanTable == null) {
             entryBeanTable = new BeanTable(ctx.getAu(), ctx.getAu().getTableDef(entryTable), true);
-            if (!StringUtils.isBlank(entryTablePolicy)) {
-                BeanTablePolicy policy = ctx.getAu().getComponent(BeanTablePolicy.class, entryTablePolicy);
+            if (!StringUtils.isBlank(assnEditPolicy)) {
+                ChildListEditPolicy policy = ctx.getAu().getComponent(ChildListEditPolicy.class, assnEditPolicy);
                 entryBeanTable.setPolicy(policy);
             }
         }
@@ -187,15 +185,15 @@ public class AssignmentPage {
             final Date now = ctx.getAu().getNow();
             // Assigned list
             Query<? extends Entity> query = Query.of((Class<? extends Entity>) entityClassDef.getEntityClass())
-            .addEquals(assignmentPageDef.getBaseField(), baseId);
+                    .addEquals(assignmentPageDef.getBaseField(), baseId);
             if (assgnFilter != null) {
-                Restriction br = assgnFilter.getRestriction(entityClassDef.getEntityDef(), null, now);
+                Restriction br = assgnFilter.getRestriction(entityClassDef.getEntityDef(),
+                        ctx.getAu().getSpecialParamProvider(), now);
                 query.addRestriction(br);
             }
-            
-            List<Entity> resultList = (List<Entity>) ctx.getEnvironment()
-                    .listAll(query);
-            
+
+            List<Entity> resultList = (List<Entity>) ctx.getEnvironment().listAll(query);
+
             Set<Integer> selected = new HashSet<Integer>();
             final int len = resultList.size();
             for (int i = 0; i < len; i++) {
@@ -223,8 +221,8 @@ public class AssignmentPage {
                             .generate(new BeanValueStore(baseInst).getReader(), _assignRefDef.getFilterGeneratorRule());
                     query.addRestriction(br);
                 } else if (_assignRefDef.isWithFilter()) {
-                    Restriction br = _assignRefDef.getFilter().getRestriction(_assignEntityClassDef.getEntityDef(), null,
-                            now);
+                    Restriction br = _assignRefDef.getFilter().getRestriction(_assignEntityClassDef.getEntityDef(),
+                            null, now);
                     query.addRestriction(br);
                 }
 
@@ -259,19 +257,21 @@ public class AssignmentPage {
     @SuppressWarnings("unchecked")
     public void commitAssignedList(boolean reload) throws UnifyException {
         if (isEntryTableMode()) {
-            List<? extends Entity> assignedList = (List<? extends Entity>) getEntryBeanTable().getSelectedItems();
-            String updatePolicy = !StringUtils.isBlank(assgnUpdatePolicy) ? assgnUpdatePolicy
+            List<? extends Entity> assignedList = fixedAssignment
+                    ? (List<? extends Entity>) getEntryBeanTable().getSourceObject()
+                    : (List<? extends Entity>) getEntryBeanTable().getSelectedItems();
+            String assnUpdatePolicy = !StringUtils.isBlank(assnEditPolicy) ? assnEditPolicy
                     : assignmentPageDef.getUpdatePolicy();
-            ctx.getEnvironment().updateAssignedList(sweepingCommitPolicy, updatePolicy,
+            ctx.getEnvironment().updateAssignedList(sweepingCommitPolicy, assnUpdatePolicy,
                     (Class<? extends Entity>) entityClassDef.getEntityClass(), assignmentPageDef.getBaseField(), baseId,
                     assignedList, fixedAssignment);
             if (reload) {
                 loadAssignedList();
             }
         } else {
-            String updatePolicy = !StringUtils.isBlank(assgnUpdatePolicy) ? assgnUpdatePolicy
+            String assnUpdatePolicy = !StringUtils.isBlank(assnEditPolicy) ? assnEditPolicy
                     : assignmentPageDef.getUpdatePolicy();
-            ctx.getEnvironment().updateAssignedList(sweepingCommitPolicy, updatePolicy,
+            ctx.getEnvironment().updateAssignedList(sweepingCommitPolicy, assnUpdatePolicy,
                     (Class<? extends Entity>) entityClassDef.getEntityClass(), assignmentPageDef.getBaseField(), baseId,
                     assignmentPageDef.getAssignField(), assignedIdList);
         }

@@ -27,7 +27,7 @@ import com.flowcentraltech.flowcentral.common.business.EnvironmentDelegateUtilit
 import com.flowcentraltech.flowcentral.common.business.EnvironmentService;
 import com.flowcentraltech.flowcentral.common.business.QueryEncoder;
 import com.flowcentraltech.flowcentral.common.business.SuggestionProvider;
-import com.flowcentraltech.flowcentral.common.business.policies.AssignmentUpdatePolicy;
+import com.flowcentraltech.flowcentral.common.business.policies.ChildListEditPolicy;
 import com.flowcentraltech.flowcentral.common.business.policies.EntityActionContext;
 import com.flowcentraltech.flowcentral.common.business.policies.EntityActionPolicy;
 import com.flowcentraltech.flowcentral.common.business.policies.EntityActionResult;
@@ -463,7 +463,8 @@ public class EnvironmentServiceImpl extends AbstractBusinessService
         }
 
         if (!StringUtils.isBlank(assignmentUpdatePolicy)) {
-            ((AssignmentUpdatePolicy) getComponent(assignmentUpdatePolicy)).postUpdate(entityClass, baseField, baseId);
+            ((ChildListEditPolicy) getComponent(assignmentUpdatePolicy)).postAssignmentUpdate(entityClass, baseField,
+                    baseId);
         }
 
         return updated;
@@ -496,7 +497,8 @@ public class EnvironmentServiceImpl extends AbstractBusinessService
         }
 
         if (!StringUtils.isBlank(assignmentUpdatePolicy)) {
-            ((AssignmentUpdatePolicy) getComponent(assignmentUpdatePolicy)).postUpdate(entityClass, baseField, baseId);
+            ((ChildListEditPolicy) getComponent(assignmentUpdatePolicy)).postAssignmentUpdate(entityClass, baseField,
+                    baseId);
         }
 
         return instList != null ? instList.size() : 0;
@@ -504,7 +506,7 @@ public class EnvironmentServiceImpl extends AbstractBusinessService
 
     @Override
     public <T, U extends Entity> int updateEntryList(SweepingCommitPolicy sweepingCommitPolicy,
-            Class<U> entityClass, String baseField, Object baseId, List<T> instList)
+            String entryUpdatePolicy, Class<U> entityClass, String baseField, Object baseId, List<T> instList)
             throws UnifyException {
         final Database db = db(entityClass);
         if (!DataUtils.isBlank(instList)) {
@@ -516,6 +518,11 @@ public class EnvironmentServiceImpl extends AbstractBusinessService
 
         if (sweepingCommitPolicy != null) {
             sweepingCommitPolicy.bumpAllParentVersions(db, RecordActionType.UPDATE);
+        }
+
+        if (!StringUtils.isBlank(entryUpdatePolicy)) {
+            ((ChildListEditPolicy) getComponent(entryUpdatePolicy)).postEntryUpdate(entityClass, baseField, baseId,
+                    instList);
         }
 
         return instList != null ? instList.size() : 0;

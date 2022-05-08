@@ -92,8 +92,8 @@
 	moreActionButtons:$c{saveEntryCloseBtn closeEntryBtn}
 	switchOnChangeEventHandler:$d{!ui-event event:onchange action:$c{entrySwitchOnChangeAct}}
 !ui-button:saveEntryCloseBtn caption:$m{button.saveclose}
-	eventHandler:$d{!ui-event event:onclick action:$c{saveAssignCloseAct}}
-!ui-button:closeAssignBtn caption:$m{button.close}
+	eventHandler:$d{!ui-event event:onclick action:$c{saveEntryCloseAct}}
+!ui-button:closeEntryBtn caption:$m{button.close}
 	eventHandler:$d{!ui-event event:onclick action:$c{navBackAct}}
 
 // Edit Property List
@@ -138,6 +138,7 @@
 !ui-postcommand:maintainAct command:maintain debounce:true
 !ui-postcommand:listingAct command:listing debounce:true
 !ui-postcommand:saveAssignCloseAct command:saveAssignAndClose components:$c{assignmentPanel}
+!ui-postcommand:saveEntryCloseAct command:saveEntryAndClose components:$c{entryTablePanel}
 !ui-postcommand:savePropListCloseAct command:savePropListAndClose components:$c{editPropertyListPanel}
 !ui-postcommand:prepareEntitySaveAsAct command:prepareSaveEntityAs
 !ui-postcommand:entitySaveAsAct command:saveEntityAs components:$c{entitySaveAsPanel}

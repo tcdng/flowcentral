@@ -55,6 +55,7 @@ public class FormTabEditorPanel extends AbstractDialogPanel {
                 case CHILD_LIST:
                     referenceVisible = true;
                     appletVisible = true;
+                    editActionVisible = true;
                     break;
                 case FIELD_SEQUENCE:
                     break;

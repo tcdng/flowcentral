@@ -77,6 +77,7 @@ import com.flowcentraltech.flowcentral.common.business.policies.SweepingCommitPo
 import com.flowcentraltech.flowcentral.common.constants.CollaborationType;
 import com.flowcentraltech.flowcentral.common.constants.OwnershipType;
 import com.flowcentraltech.flowcentral.common.data.ParamValuesDef;
+import com.flowcentraltech.flowcentral.common.util.RestrictionUtils;
 import com.flowcentraltech.flowcentral.configuration.constants.EntityChildCategoryType;
 import com.flowcentraltech.flowcentral.configuration.constants.RendererType;
 import com.flowcentraltech.flowcentral.system.business.SystemModuleService;
@@ -503,6 +504,12 @@ public class AppletUtilitiesImpl extends AbstractUnifyComponent implements Apple
                         }
 
                         Restriction childRestriction = getChildRestriction(entityDef, formTabDef.getReference(), inst);
+                        Restriction tabRestriction = formTabDef.getFilter() != null
+                                ? _appletDef.getFilterDef(formTabDef.getFilter()).getRestriction(
+                                        _entitySearch.getEntityDef(), specialParamProvider, getNow())
+                                : null;
+                        childRestriction = RestrictionUtils.and(childRestriction, tabRestriction);
+
                         _entitySearch.setChildTabIndex(tabIndex);
                         _entitySearch.setRelatedList(formTabDef.getApplet());
 //                        _entitySearch.setOrder(ORDER_BY_ID);
@@ -739,8 +746,15 @@ public class AppletUtilitiesImpl extends AbstractUnifyComponent implements Apple
                     case CHILD_LIST: {
                         final boolean newButtonVisible = !hideAddActionButton(form, applet.getFormAppletDef(),
                                 formTabDef.getApplet());
-                        Restriction childRestriction = getChildRestriction(entityDef, formTabDef.getReference(), inst);
                         EntitySearch _entitySearch = (EntitySearch) tabSheetItem.getValObject();
+                        AppletDef _appletDef = getAppletDef(formTabDef.getApplet());
+                        Restriction childRestriction = getChildRestriction(entityDef, formTabDef.getReference(), inst);
+                        Restriction tabRestriction = formTabDef.getFilter() != null
+                                ? _appletDef.getFilterDef(formTabDef.getFilter()).getRestriction(
+                                        _entitySearch.getEntityDef(), specialParamProvider, getNow())
+                                : null;
+                        childRestriction = RestrictionUtils.and(childRestriction, tabRestriction);
+                        
                         _entitySearch.setNewButtonVisible(newButtonVisible);
                         _entitySearch.setBaseRestriction(childRestriction, specialParamProvider);
                         _entitySearch.applyFilterToSearch();

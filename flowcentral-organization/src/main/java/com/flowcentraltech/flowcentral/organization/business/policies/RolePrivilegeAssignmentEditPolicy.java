@@ -16,21 +16,25 @@
 
 package com.flowcentraltech.flowcentral.organization.business.policies;
 
-import com.flowcentraltech.flowcentral.common.business.policies.AbstractAssignmentUpdatePolicy;
+import java.util.List;
+import java.util.Set;
+
+import com.flowcentraltech.flowcentral.common.business.policies.AbstractChildListEditPolicy;
 import com.flowcentraltech.flowcentral.organization.business.OrganizationModuleService;
 import com.tcdng.unify.core.UnifyException;
 import com.tcdng.unify.core.annotation.Component;
 import com.tcdng.unify.core.annotation.Configurable;
+import com.tcdng.unify.core.data.ValueStore;
 import com.tcdng.unify.core.database.Entity;
 
 /**
- * Role privilege assignment commit policy.
+ * Role privilege assignment edit policy.
  * 
  * @author FlowCentral Technologies Limited
  * @since 1.0
  */
-@Component("roleprivilge-assignmentcommitpolicy")
-public class RolePrivilegeAssignmentCommitPolicy extends AbstractAssignmentUpdatePolicy {
+@Component("roleprivilge-assignmenteditpolicy")
+public class RolePrivilegeAssignmentEditPolicy extends AbstractChildListEditPolicy {
 
     @Configurable
     private OrganizationModuleService organizationModuleService;
@@ -40,9 +44,26 @@ public class RolePrivilegeAssignmentCommitPolicy extends AbstractAssignmentUpdat
     }
 
     @Override
-    public void postUpdate(Class<? extends Entity> entityClass, String baseField, Object baseId) throws UnifyException {
+    public void postAssignmentUpdate(Class<? extends Entity> entityClass, String baseFieldName, Object baseId)
+            throws UnifyException {
         String roleCode = organizationModuleService.getRoleCode((Long) baseId);
         organizationModuleService.invalidateRolePrivilegesCache(roleCode);
+    }
+
+    @Override
+    public void postEntryUpdate(Class<? extends Entity> entityClass, String baseFieldName, Object baseId,
+            List<?> instList) throws UnifyException {
+        
+    }
+
+    @Override
+    public void onEntryTableLoad(ValueStore valueStore, Set<Integer> selected) throws UnifyException {
+        
+    }
+
+    @Override
+    public void onEntryTableChange(ValueStore valueStore, Set<Integer> selected) throws UnifyException {
+        
     }
 
 }

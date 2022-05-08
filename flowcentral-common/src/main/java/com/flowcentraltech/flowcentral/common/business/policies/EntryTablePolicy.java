@@ -16,30 +16,41 @@
 
 package com.flowcentraltech.flowcentral.common.business.policies;
 
+import java.util.Set;
+
 import com.tcdng.unify.core.UnifyComponent;
 import com.tcdng.unify.core.UnifyException;
-import com.tcdng.unify.core.database.Entity;
+import com.tcdng.unify.core.data.ValueStore;
 
 /**
- * Assignment update policy.
+ * Entry table policy.
  * 
  * @author FlowCentral Technologies Limited
  * @since 1.0
  */
-public interface AssignmentUpdatePolicy extends UnifyComponent {
+public interface EntryTablePolicy extends UnifyComponent {
 
     /**
-     * Executes at the end of an assignment update.
+     * Handles on entry table data load.
      * 
-     * @param entityClass
-     *                      the entity class
-     * @param baseFieldName
-     *                      the base field name
-     * @param baseId
-     *                      the base (parent) object ID
+     * @param valueStore
+     *                   the data value store object
+     * @param selected
+     *                   selected item index
      * @throws UnifyException
      *                        if an error occurs
      */
-    void postUpdate(Class<? extends Entity> entityClass, String baseFieldName, Object baseId) throws UnifyException;
+    void onEntryTableLoad(ValueStore valueStore, Set<Integer> selected) throws UnifyException;
 
+    /**
+     * Handles on entry table data change.
+     * 
+     * @param valueStore
+     *                   the data value store object
+     * @param selected
+     *                   selected item index
+     * @throws UnifyException
+     *                        if an error occurs
+     */
+    void onEntryTableChange(ValueStore valueStore, Set<Integer> selected) throws UnifyException;
 }

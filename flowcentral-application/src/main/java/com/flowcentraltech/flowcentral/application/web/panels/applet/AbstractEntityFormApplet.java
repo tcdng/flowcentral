@@ -394,14 +394,12 @@ public abstract class AbstractEntityFormApplet extends AbstractApplet implements
         final AssignmentPageDef assignPageDef = getAssignmentPageDef(_appletDef,
                 AppletPropertyConstants.ASSIGNMENT_PAGE);
         final String entryTable = _appletDef.getPropValue(String.class, AppletPropertyConstants.ASSIGNMENT_ENTRY_TABLE);
-        final String entryTablePolicy = _appletDef.getPropValue(String.class,
+        final String assnEditPolicy = _appletDef.getPropValue(String.class,
                 AppletPropertyConstants.ASSIGNMENT_ENTRY_TABLE_POLICY);
-        final String assgnUpdatePolicy = _appletDef.getPropValue(String.class,
-                AppletPropertyConstants.ASSIGNMENT_UPDATE_POLICY);
         final Object id = ((Entity) form.getFormBean()).getId();
         final String subTitle = ((Entity) form.getFormBean()).getDescription();
         saveCurrentForm();
-        assignmentPage = constructNewAssignmentPage(assignPageDef, entryTable, entryTablePolicy, assgnUpdatePolicy,
+        assignmentPage = constructNewAssignmentPage(assignPageDef, entryTable, assnEditPolicy,
                 assgnFilter, fixedAssignment, id, subTitle);
         assignmentPage.loadAssignedList();
         viewMode = ViewMode.ASSIGNMENT_PAGE;
@@ -459,14 +457,12 @@ public abstract class AbstractEntityFormApplet extends AbstractApplet implements
         final AssignmentPageDef assignPageDef = getAssignmentPageDef(_appletDef,
                 AppletPropertyConstants.ASSIGNMENT_PAGE);
         final String entryTable = _appletDef.getPropValue(String.class, AppletPropertyConstants.ASSIGNMENT_ENTRY_TABLE);
-        final String entryTablePolicy = _appletDef.getPropValue(String.class,
+        final String assgnEditPolicy = _appletDef.getPropValue(String.class,
                 AppletPropertyConstants.ASSIGNMENT_ENTRY_TABLE_POLICY);
-        final String assgnUpdatePolicy = _appletDef.getPropValue(String.class,
-                AppletPropertyConstants.ASSIGNMENT_UPDATE_POLICY);
         final Object id = ((Entity) form.getFormBean()).getId();
         final String subTitle = ((Entity) form.getFormBean()).getDescription();
         saveCurrentForm();
-        assignmentPage = constructNewAssignmentPage(assignPageDef, entryTable, entryTablePolicy, assgnUpdatePolicy,
+        assignmentPage = constructNewAssignmentPage(assignPageDef, entryTable, assgnEditPolicy,
                 assgnFilter, fixedAssignment, id, subTitle);
         assignmentPage.loadAssignedList();
         viewMode = ViewMode.ASSIGNMENT_PAGE;
@@ -834,14 +830,14 @@ public abstract class AbstractEntityFormApplet extends AbstractApplet implements
     protected abstract AppletDef getAlternateFormAppletDef() throws UnifyException;
 
     protected AssignmentPage constructNewAssignmentPage(AssignmentPageDef assignPageDef, String entryTable,
-            String entryTablePolicy, String assignmentUpdatePolicy, FilterDef assgnFilter, boolean fixedAssignment,
+            String assnEditPolicy, FilterDef assgnFilter, boolean fixedAssignment,
             Object id, String subTitle) throws UnifyException {
         BreadCrumbs breadCrumbs = form.getBreadCrumbs().advance();
         EntityClassDef entityClassDef = getEntityClassDef(assignPageDef.getEntity());
         breadCrumbs.setLastCrumbTitle(entityClassDef.getEntityDef().getDescription());
         breadCrumbs.setLastCrumbSubTitle(subTitle);
         return new AssignmentPage(getCtx(), formEventHandlers.getAssnSwitchOnChangeHandlers(), this, assignPageDef,
-                entityClassDef, id, breadCrumbs, entryTable, entryTablePolicy, assignmentUpdatePolicy, assgnFilter,
+                entityClassDef, id, breadCrumbs, entryTable, assnEditPolicy, assgnFilter,
                 fixedAssignment);
     }
 

@@ -24,6 +24,7 @@ import com.flowcentraltech.flowcentral.application.data.EntityClassDef;
 import com.flowcentraltech.flowcentral.application.data.EntityDef;
 import com.flowcentraltech.flowcentral.application.data.FilterDef;
 import com.flowcentraltech.flowcentral.application.web.data.AppletContext;
+import com.flowcentraltech.flowcentral.common.business.policies.ChildListEditPolicy;
 import com.flowcentraltech.flowcentral.common.business.policies.SweepingCommitPolicy;
 import com.tcdng.unify.core.UnifyException;
 import com.tcdng.unify.core.criterion.Restriction;
@@ -56,7 +57,7 @@ public class EntryTablePage {
 
     private final String entryTable;
 
-    private final String entryTablePolicy;
+    private final String entryEditPolicy;
 
     private final FilterDef entryFilter;
 
@@ -68,7 +69,7 @@ public class EntryTablePage {
 
     public EntryTablePage(AppletContext ctx, List<EventHandler> entrySwitchOnChangeHandlers,
             SweepingCommitPolicy sweepingCommitPolicy, EntityClassDef entityClassDef, String baseField, Object baseId,
-            BreadCrumbs breadCrumbs, String entryTable, String entryTablePolicy, FilterDef entryFilter) {
+            BreadCrumbs breadCrumbs, String entryTable, String entryEditPolicy, FilterDef entryFilter) {
         this.ctx = ctx;
         this.entrySwitchOnChangeHandlers = entrySwitchOnChangeHandlers;
         this.sweepingCommitPolicy = sweepingCommitPolicy;
@@ -77,7 +78,7 @@ public class EntryTablePage {
         this.baseId = baseId;
         this.breadCrumbs = breadCrumbs;
         this.entryTable = entryTable;
-        this.entryTablePolicy = entryTablePolicy;
+        this.entryEditPolicy = entryEditPolicy;
         this.entryFilter = entryFilter;
     }
 
@@ -137,8 +138,8 @@ public class EntryTablePage {
     public BeanTable getEntryBeanTable() throws UnifyException {
         if (entryBeanTable == null) {
             entryBeanTable = new BeanTable(ctx.getAu(), ctx.getAu().getTableDef(entryTable), true);
-            if (!StringUtils.isBlank(entryTablePolicy)) {
-                BeanTablePolicy policy = ctx.getAu().getComponent(BeanTablePolicy.class, entryTablePolicy);
+            if (!StringUtils.isBlank(entryEditPolicy)) {
+                ChildListEditPolicy policy = ctx.getAu().getComponent(ChildListEditPolicy.class, entryEditPolicy);
                 entryBeanTable.setPolicy(policy);
             }
         }
@@ -153,7 +154,8 @@ public class EntryTablePage {
         Query<? extends Entity> query = Query.of((Class<? extends Entity>) entityClassDef.getEntityClass())
                 .addEquals(baseField, baseId);
         if (entryFilter != null) {
-            Restriction br = entryFilter.getRestriction(entityClassDef.getEntityDef(), null, now);
+            Restriction br = entryFilter.getRestriction(entityClassDef.getEntityDef(),
+                    ctx.getAu().getSpecialParamProvider(), now);
             query.addRestriction(br);
         }
 
@@ -168,9 +170,8 @@ public class EntryTablePage {
     @SuppressWarnings("unchecked")
     public void commitEntryList(boolean reload) throws UnifyException {
         List<? extends Entity> assignedList = (List<? extends Entity>) getEntryBeanTable().getSourceObject();
-        ctx.getEnvironment().updateEntryList(sweepingCommitPolicy,
-                (Class<? extends Entity>) entityClassDef.getEntityClass(), baseField, baseId,
-                assignedList);
+        ctx.getEnvironment().updateEntryList(sweepingCommitPolicy, entryEditPolicy,
+                (Class<? extends Entity>) entityClassDef.getEntityClass(), baseField, baseId, assignedList);
         if (reload) {
             loadEntryList();
         }

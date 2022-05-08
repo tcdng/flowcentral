@@ -254,17 +254,12 @@
 		<widgetType name="propertyappletbeantablepolicylist"
 			description="$m{studio.widgettype.propertyappletbeantablepolicylist}"
 			dataType="string" inputType="string"
-			editor="!ui-select list:studioappletbeantablepolicylist listParams:$l{propertyOwnerId} blankOption:$m{blank.none}"
+			editor="!ui-select list:studioappletchildlisteditpolicylist listParams:$l{propertyOwnerId} blankOption:$m{blank.none}"
 			renderer="!ui-label" />
 		<widgetType name="propertyapplettreetablegenlist"
 			description="$m{studio.widgettype.propertyapplettreetablegenlist}"
 			dataType="string" inputType="string"
 			editor="!ui-select list:studioapplettreetablegenlist listParams:$l{propertyOwnerId} blankOption:$m{blank.none}"
-			renderer="!ui-label" />
-		<widgetType name="propertyappletassignupdatepolicylist"
-			description="$m{studio.widgettype.propertyappletassignupdatepolicylist}"
-			dataType="string" inputType="string"
-			editor="!ui-select list:studioappletassignupdatepolicylist listParams:$l{propertyOwnerId} blankOption:$m{blank.none}"
 			renderer="!ui-label" />
 		<widgetType name="propertyappletformlist"
 			description="$m{studio.widgettype.propertyappletformlist}"
@@ -3844,6 +3839,9 @@
 				<property name="searchTable.new"
 					description="$m{studio.appappletprop.manageentity.searchtable.new}"
 					inputWidget="application.checkbox" />
+				<property name="searchTable.edit"
+					description="$m{studio.appappletprop.manageentity.searchtable.edit}"
+					inputWidget="application.checkbox" />
 				<property name="searchTable.quickFilter"
 					description="$m{studio.appappletprop.manageentity.searchtable.quickfilter}"
 					inputWidget="application.checkbox" />
@@ -4133,9 +4131,6 @@
 				<property name="assignmentEntryTable.policy"
 					description="$m{studio.appappletprop.manageentity.assignmententrytablepolicy}"
 					inputWidget="studio.propertyappletbeantablepolicylist" />
-				<property name="assignmentUpdatePolicy"
-					description="$m{studio.appappletprop.manageentity.assignmentupdatepolicy}"
-					inputWidget="studio.propertyappletassignupdatepolicylist" />
 				<property name="assignmentFixed"
 					description="$m{studio.appappletprop.manageentity.assignmentfixed}"
 					inputWidget="application.checkbox" />
