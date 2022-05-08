@@ -161,10 +161,15 @@
 			dataType="string" inputType="string"
 			editor="!ui-select list:studioformrelatedappletlist listParams:$l{appFormId} blankOption:$m{blank.none}"
 			renderer="!ui-label" />
-		<widgetType name="formrelatedfieldlist"
-			description="$m{studio.widgettype.formrelatedfieldlist}"
+		<widgetType name="formappletfilterlist"
+			description="$m{studio.widgettype.formappletfilterlist}"
 			dataType="string" inputType="string"
-			editor="!ui-select list:studioformrelatedfieldlist listParams:$l{appFormId applet} blankOption:$m{blank.none}"
+			editor="!ui-select list:studioformappletfilterlist listParams:$l{applet} blankOption:$m{blank.none}"
+			renderer="!ui-label" />
+		<widgetType name="rellisteditactionlist"
+			description="$m{studio.widgettype.rellisteditactionlist}"
+			dataType="string" inputType="string"
+			editor="!ui-select list:rellisteditactionlist blankOption:$m{blank.none}"
 			renderer="!ui-label" />
 		<widgetType name="formfieldlist"
 			description="$m{studio.widgettype.formfieldlist}" dataType="string"
@@ -249,17 +254,12 @@
 		<widgetType name="propertyappletbeantablepolicylist"
 			description="$m{studio.widgettype.propertyappletbeantablepolicylist}"
 			dataType="string" inputType="string"
-			editor="!ui-select list:studioappletbeantablepolicylist listParams:$l{propertyOwnerId} blankOption:$m{blank.none}"
+			editor="!ui-select list:studioappletchildlisteditpolicylist listParams:$l{propertyOwnerId} blankOption:$m{blank.none}"
 			renderer="!ui-label" />
 		<widgetType name="propertyapplettreetablegenlist"
 			description="$m{studio.widgettype.propertyapplettreetablegenlist}"
 			dataType="string" inputType="string"
 			editor="!ui-select list:studioapplettreetablegenlist listParams:$l{propertyOwnerId} blankOption:$m{blank.none}"
-			renderer="!ui-label" />
-		<widgetType name="propertyappletassignupdatepolicylist"
-			description="$m{studio.widgettype.propertyappletassignupdatepolicylist}"
-			dataType="string" inputType="string"
-			editor="!ui-select list:studioappletassignupdatepolicylist listParams:$l{propertyOwnerId} blankOption:$m{blank.none}"
 			renderer="!ui-label" />
 		<widgetType name="propertyappletformlist"
 			description="$m{studio.widgettype.propertyappletformlist}"
@@ -2946,6 +2946,8 @@
 						column="0" />
 					<field name="tabReference" inputWidget="application.name"
 						column="0" />
+					<field name="filter" inputWidget="application.name"
+						column="0" />
 					<field name="editAction" inputWidget="application.name"
 						column="0" />
 					<field name="fieldName" inputWidget="application.name"
@@ -3056,8 +3058,11 @@
 					<field name="applet"
 						inputWidget="studio.formrelatedappletlist" switchOnChange="true"
 						column="1" required="true" />
+					<field name="filter"
+						inputWidget="studio.formappletfilterlist"
+						column="1" required="true" />
 					<field name="editAction"
-						inputWidget="studio.formrelatedfieldlist" column="1" />
+						inputWidget="studio.rellisteditactionlist" column="1" />
 				</section>
 			</tab>
 		</form>
@@ -3834,6 +3839,9 @@
 				<property name="searchTable.new"
 					description="$m{studio.appappletprop.manageentity.searchtable.new}"
 					inputWidget="application.checkbox" />
+				<property name="searchTable.edit"
+					description="$m{studio.appappletprop.manageentity.searchtable.edit}"
+					inputWidget="application.checkbox" />
 				<property name="searchTable.quickFilter"
 					description="$m{studio.appappletprop.manageentity.searchtable.quickfilter}"
 					inputWidget="application.checkbox" />
@@ -3909,6 +3917,15 @@
 				<property name="maintainForm.attachments"
 					description="$m{studio.appappletprop.manageentity.maintainform.attachments}"
 					inputWidget="application.checkbox" />
+			</propertySet>
+			<propertySet
+				label="$m{studio.appappletprop.manageentity.entrytablesettings}">
+				<property name="entryTable"
+					description="$m{studio.appappletprop.manageentity.entrytable}"
+					inputWidget="studio.propertyapplettablelist" />
+				<property name="entryTable.policy"
+					description="$m{studio.appappletprop.manageentity.entrytablepolicy}"
+					inputWidget="studio.propertyappletbeantablepolicylist" />
 			</propertySet>
 			<propertySet
 				label="$m{studio.appappletprop.manageentity.workflowproperties}">
@@ -4114,9 +4131,9 @@
 				<property name="assignmentEntryTable.policy"
 					description="$m{studio.appappletprop.manageentity.assignmententrytablepolicy}"
 					inputWidget="studio.propertyappletbeantablepolicylist" />
-				<property name="assignmentUpdatePolicy"
-					description="$m{studio.appappletprop.manageentity.assignmentupdatepolicy}"
-					inputWidget="studio.propertyappletassignupdatepolicylist" />
+				<property name="assignmentFixed"
+					description="$m{studio.appappletprop.manageentity.assignmentfixed}"
+					inputWidget="application.checkbox" />
 			</propertySet>
 		</propertyList>
 		<propertyList name="mplAppAppletPropList"

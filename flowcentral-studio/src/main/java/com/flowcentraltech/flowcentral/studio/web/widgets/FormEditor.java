@@ -235,8 +235,8 @@ public class FormEditor {
         }
 
         public Builder addTab(String contentType, String name, String label, String applet, String reference,
-                String editAction, boolean visible, boolean editable, boolean disabled) {
-            currentTab = new FormTab(contentType, name, label, applet, reference, editAction, visible, editable,
+                String filter, String editAction, boolean visible, boolean editable, boolean disabled) {
+            currentTab = new FormTab(contentType, name, label, applet, reference, filter, editAction, visible, editable,
                     disabled);
             tabs.add(currentTab);
             return this;
@@ -250,13 +250,13 @@ public class FormEditor {
         }
 
         public Builder addField(String entity, EntityFieldDataType dataType, String name, String label,
-                String inputWidget, String reference, WidgetColor widgetColor, int column, boolean switchOnChange, boolean saveAs,
-                boolean required, boolean visible, boolean editable, boolean disabled) {
+                String inputWidget, String reference, WidgetColor widgetColor, int column, boolean switchOnChange,
+                boolean saveAs, boolean required, boolean visible, boolean editable, boolean disabled) {
             String color = widgetColor != null ? widgetColor.code() : null;
             currentSection.getFields()
                     .add(new FormField(entity, dataType.code(), name, label,
-                            formDef.getEntityDef().getFieldDef(name).getFieldLabel(), inputWidget, reference, color, column,
-                            switchOnChange, saveAs, required, visible, editable, disabled));
+                            formDef.getEntityDef().getFieldDef(name).getFieldLabel(), inputWidget, reference, color,
+                            column, switchOnChange, saveAs, required, visible, editable, disabled));
             return this;
         }
 
@@ -373,6 +373,8 @@ public class FormEditor {
 
         private String reference;
 
+        private String filter;
+
         private String editAction;
 
         private boolean visible;
@@ -383,7 +385,7 @@ public class FormEditor {
 
         private List<FormSection> sections;
 
-        public FormTab(String contentType, String name, String label, String applet, String reference,
+        public FormTab(String contentType, String name, String label, String applet, String reference, String filter,
                 String editAction, boolean visible, boolean editable, boolean disabled) {
             this();
             this.contentType = contentType;
@@ -391,6 +393,7 @@ public class FormEditor {
             this.label = label;
             this.applet = applet;
             this.reference = reference;
+            this.filter = filter;
             this.editAction = editAction;
             this.visible = visible;
             this.editable = editable;
@@ -463,6 +466,14 @@ public class FormEditor {
 
         public void setReference(String reference) {
             this.reference = reference;
+        }
+
+        public String getFilter() {
+            return filter;
+        }
+
+        public void setFilter(String filter) {
+            this.filter = filter;
         }
 
         public String getEditAction() {

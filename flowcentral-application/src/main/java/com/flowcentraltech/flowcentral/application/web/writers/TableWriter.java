@@ -144,6 +144,7 @@ public class TableWriter extends AbstractControlWriter {
                 }
             }
 
+            final boolean supportSelect = !table.isFixedAssignment();
             if (isContainerEditable && table.isEntryMode()) {
                 getRequestContextUtil().addOnSaveContentWidget(tableWidgetId);
             }
@@ -153,7 +154,7 @@ public class TableWriter extends AbstractControlWriter {
             writer.writeParam("pId", tableWidgetId);
             writer.writeParam("pContId", tableWidget.getContainerId());
             writer.writeCommandURLParam("pCmdURL");
-            if (tableWidget.isMultiSelect()) {
+            if (supportSelect && tableWidget.isMultiSelect()) {
                 writer.writeParam("pSelAllId", tableWidget.getSelectAllId());
                 writer.writeParam("pSelCtrlId", tableWidget.getSelectCtrl().getId());
                 writer.writeParam("pMultiSel", true);
@@ -184,7 +185,8 @@ public class TableWriter extends AbstractControlWriter {
         if (table != null) {
             final TableDef tableDef = table.getTableDef();
             final boolean entryMode = table.isEntryMode();
-            if (!entryMode) {
+            final boolean supportSelect = !table.isFixedAssignment();
+            if (supportSelect && !entryMode) {
                 writeHeaderMultiSelect(writer, tableWidget);
             }
 
@@ -246,7 +248,7 @@ public class TableWriter extends AbstractControlWriter {
                 }
             }
 
-            if (entryMode) {
+            if (supportSelect && entryMode) {
                 writeHeaderMultiSelect(writer, tableWidget);
             }
 
@@ -277,6 +279,7 @@ public class TableWriter extends AbstractControlWriter {
         final AbstractTable<?, ?> table = tableWidget.getTable();
         if (table != null) {
             final boolean entryMode = table.isEntryMode();
+            final boolean supportSelect = !table.isFixedAssignment();
             final int pageIndex = table.getDispStartIndex() + 1;
             final TableDef tableDef = table.getTableDef();
             final boolean isSerialNo = tableDef.isSerialNo();
@@ -338,7 +341,7 @@ public class TableWriter extends AbstractControlWriter {
 
                     writer.write(">");
 
-                    if (!entryMode) {
+                    if (supportSelect && !entryMode) {
                         writeRowMultiSelect(writer, tableWidget, id, i);
                     }
 
@@ -371,7 +374,7 @@ public class TableWriter extends AbstractControlWriter {
                         }
                     }
 
-                    if (entryMode) {
+                    if (supportSelect && entryMode) {
                         writeRowMultiSelect(writer, tableWidget, id, i);
                     }
 

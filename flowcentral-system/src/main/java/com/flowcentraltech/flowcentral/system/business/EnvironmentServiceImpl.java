@@ -27,7 +27,7 @@ import com.flowcentraltech.flowcentral.common.business.EnvironmentDelegateUtilit
 import com.flowcentraltech.flowcentral.common.business.EnvironmentService;
 import com.flowcentraltech.flowcentral.common.business.QueryEncoder;
 import com.flowcentraltech.flowcentral.common.business.SuggestionProvider;
-import com.flowcentraltech.flowcentral.common.business.policies.AssignmentUpdatePolicy;
+import com.flowcentraltech.flowcentral.common.business.policies.ChildListEditPolicy;
 import com.flowcentraltech.flowcentral.common.business.policies.EntityActionContext;
 import com.flowcentraltech.flowcentral.common.business.policies.EntityActionPolicy;
 import com.flowcentraltech.flowcentral.common.business.policies.EntityActionResult;
@@ -75,13 +75,13 @@ public class EnvironmentServiceImpl extends AbstractBusinessService
 
     @Configurable
     private QueryEncoder queryEncoder;
-    
+
     @Configurable
     private SuggestionProvider suggestionProvider;
-    
+
     @Configurable
     private EntityAuditInfoProvider entityAuditInfoProvider;
-    
+
     public EnvironmentServiceImpl() {
         this.delegateInfoByEntityClass = new ConcurrentHashMap<Class<? extends Entity>, EnvironmentDelegateInfo>();
         this.delegateInfoByLongName = new ConcurrentHashMap<String, EnvironmentDelegateInfo>();
@@ -146,7 +146,7 @@ public class EnvironmentServiceImpl extends AbstractBusinessService
     @Override
     public String[] encodeDelegateEntity(Entity inst) throws UnifyException {
         String json = DataUtils.asJsonString(inst, PrintFormat.NONE);
-        return new String[] {json};
+        return new String[] { json };
     }
 
     @Override
@@ -218,7 +218,7 @@ public class EnvironmentServiceImpl extends AbstractBusinessService
         if (suggestionProvider != null) {
             suggestionProvider.saveSuggestions(ctx.getEntityDef(), inst);
         }
-        
+
         return executeEntityPostActionPolicy(db(inst.getClass()), ctx);
     }
 
@@ -463,7 +463,8 @@ public class EnvironmentServiceImpl extends AbstractBusinessService
         }
 
         if (!StringUtils.isBlank(assignmentUpdatePolicy)) {
-            ((AssignmentUpdatePolicy) getComponent(assignmentUpdatePolicy)).postUpdate(entityClass, baseField, baseId);
+            ((ChildListEditPolicy) getComponent(assignmentUpdatePolicy)).postAssignmentUpdate(entityClass, baseField,
+                    baseId);
         }
 
         return updated;
@@ -471,18 +472,24 @@ public class EnvironmentServiceImpl extends AbstractBusinessService
 
     @Override
     public <T, U extends Entity> int updateAssignedList(SweepingCommitPolicy sweepingCommitPolicy,
-            String assignmentUpdatePolicy, Class<U> entityClass, String baseField, Object baseId, List<T> instList)
-            throws UnifyException {
+            String assignmentUpdatePolicy, Class<U> entityClass, String baseField, Object baseId, List<T> instList,
+            boolean fixedAssignment) throws UnifyException {
         final Database db = db(entityClass);
-        int updated = 0;
-        db.deleteAll(Query.of(entityClass).addEquals(baseField, baseId));
-        if (!DataUtils.isBlank(instList)) {
-            for (T inst : instList) {
-                DataUtils.setBeanProperty(inst, baseField, baseId);
-                db.create((Entity) inst);
+        if (fixedAssignment) {
+            if (!DataUtils.isBlank(instList)) {
+                for (T inst : instList) {
+                    DataUtils.setBeanProperty(inst, baseField, baseId);
+                    db.updateByIdVersion((Entity) inst);
+                }
             }
-
-            updated = instList.size();
+        } else {
+            db.deleteAll(Query.of(entityClass).addEquals(baseField, baseId));
+            if (!DataUtils.isBlank(instList)) {
+                for (T inst : instList) {
+                    DataUtils.setBeanProperty(inst, baseField, baseId);
+                    db.create((Entity) inst);
+                }
+            }
         }
 
         if (sweepingCommitPolicy != null) {
@@ -490,10 +497,35 @@ public class EnvironmentServiceImpl extends AbstractBusinessService
         }
 
         if (!StringUtils.isBlank(assignmentUpdatePolicy)) {
-            ((AssignmentUpdatePolicy) getComponent(assignmentUpdatePolicy)).postUpdate(entityClass, baseField, baseId);
+            ((ChildListEditPolicy) getComponent(assignmentUpdatePolicy)).postAssignmentUpdate(entityClass, baseField,
+                    baseId);
         }
 
-        return updated;
+        return instList != null ? instList.size() : 0;
+    }
+
+    @Override
+    public <T, U extends Entity> int updateEntryList(SweepingCommitPolicy sweepingCommitPolicy,
+            String entryUpdatePolicy, Class<U> entityClass, String baseField, Object baseId, List<T> instList)
+            throws UnifyException {
+        final Database db = db(entityClass);
+        if (!DataUtils.isBlank(instList)) {
+            for (T inst : instList) {
+                DataUtils.setBeanProperty(inst, baseField, baseId);
+                db.updateByIdVersion((Entity) inst);
+            }
+        }
+
+        if (sweepingCommitPolicy != null) {
+            sweepingCommitPolicy.bumpAllParentVersions(db, RecordActionType.UPDATE);
+        }
+
+        if (!StringUtils.isBlank(entryUpdatePolicy)) {
+            ((ChildListEditPolicy) getComponent(entryUpdatePolicy)).postEntryUpdate(entityClass, baseField, baseId,
+                    instList);
+        }
+
+        return instList != null ? instList.size() : 0;
     }
 
     @Override

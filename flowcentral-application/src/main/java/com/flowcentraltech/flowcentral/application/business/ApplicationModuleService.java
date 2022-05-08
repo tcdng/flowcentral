@@ -276,6 +276,17 @@ public interface ApplicationModuleService extends FlowCentralService {
     /**
      * Finds application applet filters.
      * 
+     * @param appAppletName
+     *                    the application applet name
+     * @return list of applet filters
+     * @throws UnifyException
+     *                        if an error occurs
+     */
+    List<AppAppletFilter> findAppAppletFilters(String appAppletName) throws UnifyException;
+
+    /**
+     * Finds application applet filters.
+     * 
      * @param query
      *              the application applet query
      * @return list of applet filters

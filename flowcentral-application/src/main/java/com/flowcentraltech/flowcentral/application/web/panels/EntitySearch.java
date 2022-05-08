@@ -164,6 +164,10 @@ public class EntitySearch extends AbstractPanelFormBinding {
         return entityTable.getTableDef().getLabel();
     }
 
+    public EntityDef getEntityDef() {
+        return entityTable.getTableDef().getEntityDef();
+    }
+
     public String getEntitySubTitle() {
         return entitySubTitle;
     }

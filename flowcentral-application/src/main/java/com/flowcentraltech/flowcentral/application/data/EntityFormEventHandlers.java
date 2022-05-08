@@ -34,15 +34,20 @@ public class EntityFormEventHandlers {
 
     private List<EventHandler> assnSwitchOnChangeHandlers;
 
+    private List<EventHandler> entrySwitchOnChangeHandlers;
+
     private List<EventHandler> saveAsSwitchOnChangeHandlers;
 
     public EntityFormEventHandlers(EventHandler[] formSwitchOnChangeHandlers, EventHandler[] assnSwitchOnChangeHandlers,
-            EventHandler[] saveAsSwitchOnChangeHandlers) {
+            EventHandler[] entrySwitchOnChangeHandlers, EventHandler[] saveAsSwitchOnChangeHandlers) {
         this.formSwitchOnChangeHandlers = formSwitchOnChangeHandlers != null
                 ? Collections.unmodifiableList(Arrays.asList(formSwitchOnChangeHandlers))
                 : Collections.emptyList();
         this.assnSwitchOnChangeHandlers = assnSwitchOnChangeHandlers != null
                 ? Collections.unmodifiableList(Arrays.asList(assnSwitchOnChangeHandlers))
+                : Collections.emptyList();
+        this.entrySwitchOnChangeHandlers = entrySwitchOnChangeHandlers != null
+                ? Collections.unmodifiableList(Arrays.asList(entrySwitchOnChangeHandlers))
                 : Collections.emptyList();
         this.saveAsSwitchOnChangeHandlers = saveAsSwitchOnChangeHandlers != null
                 ? Collections.unmodifiableList(Arrays.asList(saveAsSwitchOnChangeHandlers))
@@ -55,6 +60,10 @@ public class EntityFormEventHandlers {
 
     public List<EventHandler> getAssnSwitchOnChangeHandlers() {
         return assnSwitchOnChangeHandlers;
+    }
+
+    public List<EventHandler> getEntrySwitchOnChangeHandlers() {
+        return entrySwitchOnChangeHandlers;
     }
 
     public List<EventHandler> getSaveAsSwitchOnChangeHandlers() {

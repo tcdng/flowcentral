@@ -17,7 +17,7 @@
 package com.flowcentraltech.flowcentral.studio.web.lists;
 
 import com.flowcentraltech.flowcentral.application.business.ApplicationModuleService;
-import com.flowcentraltech.flowcentral.application.web.widgets.BeanTablePolicy;
+import com.flowcentraltech.flowcentral.common.business.policies.ChildListEditPolicy;
 import com.flowcentraltech.flowcentral.common.web.lists.AbstractEntityTypeListCommand;
 import com.tcdng.unify.core.UnifyException;
 import com.tcdng.unify.core.annotation.Component;
@@ -25,19 +25,19 @@ import com.tcdng.unify.core.annotation.Configurable;
 import com.tcdng.unify.core.list.LongParam;
 
 /**
- * Studio entity bean table policy list command
+ * Studio child list edit policy list command
  * 
  * @author FlowCentral Technologies Limited
  * @since 1.0
  */
-@Component("studioappletbeantablepolicylist")
-public class StudioEntityBeanTablePolicyListCommand extends AbstractEntityTypeListCommand<BeanTablePolicy, LongParam> {
+@Component("studioappletchildlisteditpolicylist")
+public class StudioChildListEditPolicyListCommand extends AbstractEntityTypeListCommand<ChildListEditPolicy, LongParam> {
 
     @Configurable
     private ApplicationModuleService applicationModuleService;
 
-    public StudioEntityBeanTablePolicyListCommand() {
-        super(BeanTablePolicy.class, LongParam.class);
+    public StudioChildListEditPolicyListCommand() {
+        super(ChildListEditPolicy.class, LongParam.class);
     }
 
     public final void setApplicationModuleService(ApplicationModuleService applicationModuleService) {

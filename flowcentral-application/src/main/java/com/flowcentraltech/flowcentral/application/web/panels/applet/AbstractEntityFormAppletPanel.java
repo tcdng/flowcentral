@@ -35,6 +35,7 @@ import com.flowcentraltech.flowcentral.application.web.panels.EntitySaveAs;
 import com.flowcentraltech.flowcentral.application.web.panels.EntitySearchValueMarkerConstants;
 import com.flowcentraltech.flowcentral.application.web.panels.HeaderWithTabsForm;
 import com.flowcentraltech.flowcentral.application.web.widgets.AssignmentPage;
+import com.flowcentraltech.flowcentral.application.web.widgets.EntryTablePage;
 import com.flowcentraltech.flowcentral.application.web.widgets.TabSheet;
 import com.flowcentraltech.flowcentral.application.web.widgets.TabSheet.TabSheetItem;
 import com.flowcentraltech.flowcentral.application.web.widgets.TabSheetWidget;
@@ -231,6 +232,12 @@ public abstract class AbstractEntityFormAppletPanel extends AbstractAppletPanel 
         }
 
         switch (viewMode) {
+            case ENTRY_TABLE_PAGE:
+                switchContent("entryTablePanel");
+                setEditable("entryTablePanel", isContextEditable);
+                setVisible("entryTablePanel.saveBtn", isContextEditable);
+                setVisible("saveEntryCloseBtn", isContextEditable);
+                break;
             case ASSIGNMENT_PAGE:
                 switchContent("assignmentPanel");
                 setEditable("assignmentPanel", isContextEditable);
@@ -441,6 +448,11 @@ public abstract class AbstractEntityFormAppletPanel extends AbstractAppletPanel 
     }
 
     @Action
+    public void entrySwitchOnChange() throws UnifyException {
+        getEntityFormApplet().entrySwitchOnChange();
+    }
+
+    @Action
     public void saveAsSwitchOnChange() throws UnifyException {
         getEntityFormApplet().saveAsSwitchOnChange();
     }
@@ -498,6 +510,15 @@ public abstract class AbstractEntityFormAppletPanel extends AbstractAppletPanel 
         assignmentPage.commitAssignedList(false);
         applet.navBackToPrevious();
         hintUser("$m{entityformapplet.assignment.success.hint}", assignmentPage.getSubTitle());
+    }
+
+    @Action
+    public void saveEntryAndClose() throws UnifyException {
+        AbstractEntityFormApplet applet = getEntityFormApplet();
+        EntryTablePage entryTablePage = applet.getEntryTablePage();
+        entryTablePage.commitEntryList(false);
+        applet.navBackToPrevious();
+        hintUser("$m{entityformapplet.entrytable.success.hint}", entryTablePage.getSubTitle());
     }
 
     @Action

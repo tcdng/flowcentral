@@ -23,7 +23,7 @@
 	layout:$d{!ui-vertical style:$s{table-layout:fixed;}}
     formCaptionSuffix:$s{:} formBinding:$g{dialogFormBinding} formColumns:2
 	formSection:$d{!ui-section components:$c{frmContType frmName frmLabel
-		frmReference frmApplet frmEditAction frmVisible frmEditable frmDisabled}}
+		frmReference frmApplet frmFilter frmEditAction frmVisible frmEditable frmDisabled}}
 
 !ui-select:frmContType styleClass:$e{fc-formfield} caption:$m{formeditor.tab.contenttype}
 	list:studiotabcontenttypelist blankOption:$s{} binding:contentType required:true
@@ -35,7 +35,11 @@
 	eventHandler:$d{!ui-event event:onchange action:$c{typeChangeAct}}
 !ui-select:frmApplet styleClass:$e{fc-formfield} caption:$m{formeditor.tab.applet}
 	list:studiotabappletlist listParams:$l{reference entity} blankOption:$s{} binding:applet required:true
-!ui-text:frmEditAction styleClass:$e{fc-formfield} caption:$m{formeditor.tab.editaction} maxLen:64 binding:editAction required:true
+	eventHandler:$d{!ui-event event:onchange action:$c{typeChangeAct}}
+!ui-select:frmFilter styleClass:$e{fc-formfield} caption:$m{formeditor.tab.filter}
+	list:studioformappletfilterlist listParams:$l{applet} blankOption:$s{} binding:filter
+!ui-select:frmEditAction styleClass:$e{fc-formfield} caption:$m{formeditor.tab.editaction}
+	list:childlisteditactionlist blankOption:$s{} binding:editAction
 !ui-checkbox:frmVisible caption:$m{formeditor.tab.visible} binding:visible layoutCaption:true
 !ui-checkbox:frmEditable caption:$m{formeditor.tab.editable} binding:editable layoutCaption:true
 !ui-checkbox:frmDisabled caption:$m{formeditor.tab.disabled} binding:disabled layoutCaption:true

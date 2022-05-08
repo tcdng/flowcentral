@@ -22,22 +22,18 @@ import com.tcdng.unify.core.UnifyException;
 import com.tcdng.unify.core.annotation.Configurable;
 
 /**
- * Convenient abstract base class for assignment update policies.
+ * Convenient abstract base class for child list edit policies.
  * 
  * @author FlowCentral Technologies Limited
  * @since 1.0
  */
-public abstract class AbstractAssignmentUpdatePolicy extends AbstractUnifyComponent implements AssignmentUpdatePolicy {
+public abstract class AbstractChildListEditPolicy extends AbstractUnifyComponent implements ChildListEditPolicy {
 
     @Configurable
     private EnvironmentService environmentService;
 
     public final void setEnvironmentService(EnvironmentService environmentService) {
         this.environmentService = environmentService;
-    }
-    
-    protected EnvironmentService environment() {
-        return environmentService;
     }
 
     @Override
@@ -48,6 +44,10 @@ public abstract class AbstractAssignmentUpdatePolicy extends AbstractUnifyCompon
     @Override
     protected void onTerminate() throws UnifyException {
 
+    }
+
+    protected EnvironmentService environment() {
+        return environmentService;
     }
 
 }

@@ -21,6 +21,7 @@ import java.util.Set;
 
 import com.flowcentraltech.flowcentral.application.business.AppletUtilities;
 import com.flowcentraltech.flowcentral.application.data.TableDef;
+import com.flowcentraltech.flowcentral.common.business.policies.ChildListEditPolicy;
 import com.tcdng.unify.core.UnifyException;
 import com.tcdng.unify.core.criterion.Order;
 import com.tcdng.unify.core.criterion.Order.Part;
@@ -36,7 +37,7 @@ import com.tcdng.unify.core.util.DataUtils;
  */
 public class BeanTable extends AbstractTable<List<?>, Object> {
 
-    private BeanTablePolicy policy;
+    private ChildListEditPolicy policy;
 
     private ValueStore valueStore;
 
@@ -50,21 +51,21 @@ public class BeanTable extends AbstractTable<List<?>, Object> {
         super(au, tableDef, null, entryMode);
     }
 
-    public void setPolicy(BeanTablePolicy policy) {
+    public void setPolicy(ChildListEditPolicy policy) {
         this.policy = policy;
     }
 
     @Override
     protected void onLoadSourceObject(List<?> sourceObject, Set<Integer> selected) throws UnifyException {
         if (policy != null) {
-            policy.onLoad(getValueStore(sourceObject), selected);
+            policy.onEntryTableLoad(getValueStore(sourceObject), selected);
         }
     }
 
     @Override
     protected void onFireOnChange(List<?> sourceObject, Set<Integer> selected) throws UnifyException {
         if (policy != null) {
-            policy.onChange(getValueStore(sourceObject), selected);
+            policy.onEntryTableChange(getValueStore(sourceObject), selected);
         }
     }
 

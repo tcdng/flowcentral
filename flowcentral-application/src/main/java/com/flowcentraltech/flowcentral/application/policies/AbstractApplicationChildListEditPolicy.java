@@ -14,45 +14,29 @@
  * the License.
  */
 
-package com.flowcentraltech.flowcentral.studio.web.lists;
+package com.flowcentraltech.flowcentral.application.policies;
 
 import com.flowcentraltech.flowcentral.application.business.ApplicationModuleService;
-import com.flowcentraltech.flowcentral.common.business.policies.AssignmentUpdatePolicy;
-import com.flowcentraltech.flowcentral.common.web.lists.AbstractEntityTypeListCommand;
-import com.tcdng.unify.core.UnifyException;
-import com.tcdng.unify.core.annotation.Component;
+import com.flowcentraltech.flowcentral.common.business.policies.AbstractChildListEditPolicy;
 import com.tcdng.unify.core.annotation.Configurable;
-import com.tcdng.unify.core.list.LongParam;
 
 /**
- * Studio applet assignment update policy list command
+ * Convenient abstract base class for application child list edit policies.
  * 
  * @author FlowCentral Technologies Limited
  * @since 1.0
  */
-@Component("studioappletassignupdatepolicylist")
-public class StudioAppletAssignUpdatePolicyListCommand
-        extends AbstractEntityTypeListCommand<AssignmentUpdatePolicy, LongParam> {
+public abstract class AbstractApplicationChildListEditPolicy extends AbstractChildListEditPolicy {
 
     @Configurable
     private ApplicationModuleService applicationModuleService;
-
-    public StudioAppletAssignUpdatePolicyListCommand() {
-        super(AssignmentUpdatePolicy.class, LongParam.class);
-    }
 
     public final void setApplicationModuleService(ApplicationModuleService applicationModuleService) {
         this.applicationModuleService = applicationModuleService;
     }
 
-    @Override
-    protected String getEntityName(LongParam param) throws UnifyException {
-        if (param.isPresent()) {
-            final Long appAppletId = param.getValue();
-            return applicationModuleService.getAppAppletEntity(appAppletId);
-        }
-
-        return null;
+    protected ApplicationModuleService applicationService() {
+        return applicationModuleService;
     }
 
 }

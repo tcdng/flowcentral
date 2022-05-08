@@ -533,7 +533,7 @@
 		<assignmentPage name="rolePrivilegeAssignment"
 			description="$m{organization.role.privilege.assignment}"
 			label="$m{organization.role.privilege.assignment}" entity="rolePrivilege"
-			commitPolicy = "roleprivilge-assignmentcommitpolicy"
+			commitPolicy = "roleprivilge-assignmenteditpolicy"
 			baseField="roleId" assignField="privilegeId"
 			filterCaption1="$m{organization.role.privilege.category}"
 			filterCaption2="$m{organization.role.privilege.application}"
