@@ -506,6 +506,8 @@ textarea:focus {outline: none !important;box-shadow: 0 0 6px #5194f3;}
 .fc-beantable .total .blank {border-right: none;border-left: none;}
 
 .fc-entitytable {}
+.fc-entitytable .total {font-weight:bold;}
+.fc-entitytable .total .blank {border-right: none;border-left: none;}
 
 .fc-entitytreetable {}
 .fc-entitytreetable .table {table-layout:fixed; width:100%; border-collapse:collapse;}
