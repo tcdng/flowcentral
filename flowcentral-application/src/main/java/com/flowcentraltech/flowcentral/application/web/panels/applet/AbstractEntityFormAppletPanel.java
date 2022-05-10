@@ -356,7 +356,7 @@ public abstract class AbstractEntityFormAppletPanel extends AbstractAppletPanel 
                 switchContent("formPanel");
                 setVisible("cancelBtn", true);
                 final boolean allowSaveAndNext = viewMode != AbstractEntityFormApplet.ViewMode.NEW_CHILD_FORM
-                        /*&& !form.getFormDef().isChildOrChildListTabs()*/;
+                /* && !form.getFormDef().isChildOrChildListTabs() */;
                 if (enableCreate) {
                     if (formAppletDef != null) {
                         setVisible("saveBtn", formAppletDef.getPropValue(boolean.class,
@@ -456,7 +456,7 @@ public abstract class AbstractEntityFormAppletPanel extends AbstractAppletPanel 
     public void saveAsSwitchOnChange() throws UnifyException {
         getEntityFormApplet().saveAsSwitchOnChange();
     }
-    
+
     @Action
     public void showFormFileAttachments() throws UnifyException {
         setCommandResultMapping("showfileattachments");
@@ -517,8 +517,12 @@ public abstract class AbstractEntityFormAppletPanel extends AbstractAppletPanel 
         AbstractEntityFormApplet applet = getEntityFormApplet();
         EntryTablePage entryTablePage = applet.getEntryTablePage();
         entryTablePage.commitEntryList(false);
-        applet.navBackToPrevious();
-        hintUser("$m{entityformapplet.entrytable.success.hint}", entryTablePage.getSubTitle());
+        if (entryTablePage.isWithValidationErrors()) {
+            hintUser(MODE.ERROR, "$m{entityformapplet.entrytable.errors.hint}", entryTablePage.getSubTitle());
+        } else {
+            applet.navBackToPrevious();
+            hintUser("$m{entityformapplet.entrytable.success.hint}", entryTablePage.getSubTitle());
+        }
     }
 
     @Action
@@ -593,7 +597,7 @@ public abstract class AbstractEntityFormAppletPanel extends AbstractAppletPanel 
             if (!ctx.isWithReviewErrors()) {
                 entityActionResult.setSuccessHint("$m{entityformapplet.submit.success.hint}");
             }
-            
+
             handleEntityActionResult(entityActionResult, ctx);
         }
     }
@@ -754,7 +758,7 @@ public abstract class AbstractEntityFormAppletPanel extends AbstractAppletPanel 
         if (ctx.getFormDef().isInputForm()) {
             evaluateCurrentFormContext(ctx, evaluationMode);
         }
-        
+
         return ctx;
     }
 

@@ -506,6 +506,8 @@ textarea:focus {outline: none !important;box-shadow: 0 0 6px #5194f3;}
 .fc-beantable .total .blank {border-right: none;border-left: none;}
 
 .fc-entitytable {}
+.fc-entitytable .total {font-weight:bold;}
+.fc-entitytable .total .blank {border-right: none;border-left: none;}
 
 .fc-entitytreetable {}
 .fc-entitytreetable .table {table-layout:fixed; width:100%; border-collapse:collapse;}
@@ -703,6 +705,9 @@ textarea:focus {outline: none !important;box-shadow: 0 0 6px #5194f3;}
 .fc-entityfileattachmentspanel {}
 .fc-entityfileattachmentspanel .abody{width:560px; height:220px; padding:1px; overflow-y:scroll;}
 
+.fc-entrytablepagepanel {}
+.fc-entrytablepagepanel .caption {font-size: 8pt; font-weight:bold; margin-bottom:2px; padding: 2px 4px; color:#454545;}
+    
 /* Record order panel */
 .fc-recordorderpanel {}
 	

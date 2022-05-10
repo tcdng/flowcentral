@@ -16,6 +16,7 @@
 
 package com.flowcentraltech.flowcentral.application.web.widgets;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -26,10 +27,14 @@ import com.flowcentraltech.flowcentral.application.data.FilterDef;
 import com.flowcentraltech.flowcentral.application.web.data.AppletContext;
 import com.flowcentraltech.flowcentral.common.business.policies.ChildListEditPolicy;
 import com.flowcentraltech.flowcentral.common.business.policies.SweepingCommitPolicy;
+import com.flowcentraltech.flowcentral.common.data.FormMessage;
+import com.flowcentraltech.flowcentral.common.data.FormMessages;
+import com.flowcentraltech.flowcentral.common.data.PageLoadDetails;
 import com.tcdng.unify.core.UnifyException;
 import com.tcdng.unify.core.criterion.Restriction;
 import com.tcdng.unify.core.database.Entity;
 import com.tcdng.unify.core.database.Query;
+import com.tcdng.unify.core.util.DataUtils;
 import com.tcdng.unify.core.util.StringUtils;
 import com.tcdng.unify.web.ui.widget.EventHandler;
 
@@ -66,6 +71,10 @@ public class EntryTablePage {
     private String displayItemCounterClass;
 
     private BeanTable entryBeanTable;
+
+    private String entryCaption;
+
+    private List<FormMessage> validationErrors;
 
     public EntryTablePage(AppletContext ctx, List<EventHandler> entrySwitchOnChangeHandlers,
             SweepingCommitPolicy sweepingCommitPolicy, EntityClassDef entityClassDef, String baseField, Object baseId,
@@ -118,6 +127,30 @@ public class EntryTablePage {
         this.displayItemCounter = displayItemCounter;
     }
 
+    public String getEntryCaption() {
+        return entryCaption;
+    }
+
+    public void setEntryCaption(String entryCaption) {
+        this.entryCaption = entryCaption;
+    }
+
+    public List<FormMessage> getValidationErrors() {
+        return validationErrors;
+    }
+
+    public void addValidationError(FormMessage message) {
+        if (validationErrors == null) {
+            validationErrors = new ArrayList<FormMessage>();
+        }
+
+        validationErrors.add(message);
+    }
+
+    public boolean isWithValidationErrors() {
+        return !DataUtils.isBlank(validationErrors);
+    }
+
     public String getDisplayItemCounterClass() {
         return displayItemCounterClass;
     }
@@ -165,15 +198,31 @@ public class EntryTablePage {
         _beanTable.setSwitchOnChangeHandlers(entrySwitchOnChangeHandlers);
         _beanTable.setSourceObject(resultList);
         _beanTable.setFixedAssignment(true);
+
+        if (entryEditPolicy != null) {
+            PageLoadDetails pageLoadDetails = ctx.getAu().getComponent(ChildListEditPolicy.class, entryEditPolicy)
+                    .getOnLoadDetails((Class<? extends Entity>) entityClassDef.getEntityClass(), baseField, baseId);
+            entryCaption = pageLoadDetails != null && pageLoadDetails.getCaption() != null
+                    ? pageLoadDetails.getCaption()
+                    : entryCaption;
+        }
     }
 
     @SuppressWarnings("unchecked")
     public void commitEntryList(boolean reload) throws UnifyException {
-        List<? extends Entity> assignedList = (List<? extends Entity>) getEntryBeanTable().getSourceObject();
+        List<? extends Entity> entryList = (List<? extends Entity>) getEntryBeanTable().getSourceObject();
         ctx.getEnvironment().updateEntryList(sweepingCommitPolicy, entryEditPolicy,
-                (Class<? extends Entity>) entityClassDef.getEntityClass(), baseField, baseId, assignedList);
+                (Class<? extends Entity>) entityClassDef.getEntityClass(), baseField, baseId, entryList);
         if (reload) {
             loadEntryList();
+        }
+
+        validationErrors = null;
+        if (entryEditPolicy != null) {
+            FormMessages messages = ctx.getAu().getComponent(ChildListEditPolicy.class, entryEditPolicy)
+                    .validateEntries((Class<? extends Entity>) entityClassDef.getEntityClass(), baseField, baseId,
+                            entryList);
+            validationErrors = messages != null ? messages.getMessages() : null;
         }
     }
 }

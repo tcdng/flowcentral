@@ -19,7 +19,10 @@ package com.flowcentraltech.flowcentral.organization.business.policies;
 import java.util.List;
 import java.util.Set;
 
+import com.flowcentraltech.flowcentral.common.annotation.EntityReferences;
 import com.flowcentraltech.flowcentral.common.business.policies.AbstractChildListEditPolicy;
+import com.flowcentraltech.flowcentral.common.data.FormMessages;
+import com.flowcentraltech.flowcentral.common.data.PageLoadDetails;
 import com.flowcentraltech.flowcentral.organization.business.OrganizationModuleService;
 import com.tcdng.unify.core.UnifyException;
 import com.tcdng.unify.core.annotation.Component;
@@ -33,6 +36,7 @@ import com.tcdng.unify.core.database.Entity;
  * @author FlowCentral Technologies Limited
  * @since 1.0
  */
+@EntityReferences({"organization.rolePrivilege"})
 @Component("roleprivilge-assignmenteditpolicy")
 public class RolePrivilegeAssignmentEditPolicy extends AbstractChildListEditPolicy {
 
@@ -63,6 +67,18 @@ public class RolePrivilegeAssignmentEditPolicy extends AbstractChildListEditPoli
 
     @Override
     public void onEntryTableChange(ValueStore valueStore, Set<Integer> selected) throws UnifyException {
+        
+    }
+
+    @Override
+    public PageLoadDetails getOnLoadDetails(Class<? extends Entity> entityClass, String baseFieldName, Object baseId)
+            throws UnifyException {
+        return null;
+    }
+
+    @Override
+    protected void validateEntries(FormMessages messages, Class<? extends Entity> entityClass, String baseFieldName,
+            Object baseId, List<?> instList) throws UnifyException {
         
     }
 

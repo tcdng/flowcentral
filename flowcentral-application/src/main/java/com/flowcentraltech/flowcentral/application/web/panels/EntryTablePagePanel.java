@@ -22,6 +22,7 @@ import com.tcdng.unify.core.annotation.Component;
 import com.tcdng.unify.core.annotation.UplBinding;
 import com.tcdng.unify.web.annotation.Action;
 import com.tcdng.unify.web.ui.widget.AbstractPanel;
+import com.tcdng.unify.web.ui.widget.data.Hint.MODE;
 
 /**
  * Entry table page panel.
@@ -47,12 +48,18 @@ public class EntryTablePagePanel extends AbstractPanel {
             entryTablePage.setDisplayItemCounter(
                     resolveSessionMessage("$m{entrytablepage.viewing}"));
         }
+        
+        setVisible("entryPanelCaption", entryTablePage.getEntryCaption() != null);
     }
 
     @Action
     public void saveEntry() throws UnifyException {
         EntryTablePage entryTablePage = getValue(EntryTablePage.class);
         entryTablePage.commitEntryList(true);
-        hintUser("$m{entityformapplet.entrytable.success.hint}", entryTablePage.getSubTitle());
+        if (entryTablePage.isWithValidationErrors()) {
+            hintUser(MODE.ERROR, "$m{entityformapplet.entrytable.errors.hint}", entryTablePage.getSubTitle());
+        } else {
+            hintUser("$m{entityformapplet.entrytable.success.hint}", entryTablePage.getSubTitle());
+        }
     }
 }

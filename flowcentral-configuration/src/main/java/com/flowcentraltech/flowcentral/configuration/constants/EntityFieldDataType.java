@@ -163,7 +163,7 @@ public enum EntityFieldDataType implements EnumConst {
             "RF",
             DataType.LONG,
             false,
-            false,
+            true,
             true,
             true,
             true),
