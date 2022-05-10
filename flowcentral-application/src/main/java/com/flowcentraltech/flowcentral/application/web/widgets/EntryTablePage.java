@@ -29,6 +29,7 @@ import com.flowcentraltech.flowcentral.common.business.policies.ChildListEditPol
 import com.flowcentraltech.flowcentral.common.business.policies.SweepingCommitPolicy;
 import com.flowcentraltech.flowcentral.common.data.FormMessage;
 import com.flowcentraltech.flowcentral.common.data.FormMessages;
+import com.flowcentraltech.flowcentral.common.data.PageLoadDetails;
 import com.tcdng.unify.core.UnifyException;
 import com.tcdng.unify.core.criterion.Restriction;
 import com.tcdng.unify.core.database.Entity;
@@ -197,6 +198,14 @@ public class EntryTablePage {
         _beanTable.setSwitchOnChangeHandlers(entrySwitchOnChangeHandlers);
         _beanTable.setSourceObject(resultList);
         _beanTable.setFixedAssignment(true);
+
+        if (entryEditPolicy != null) {
+            PageLoadDetails pageLoadDetails = ctx.getAu().getComponent(ChildListEditPolicy.class, entryEditPolicy)
+                    .getOnLoadDetails((Class<? extends Entity>) entityClassDef.getEntityClass(), baseField, baseId);
+            entryCaption = pageLoadDetails != null && pageLoadDetails.getCaption() != null
+                    ? pageLoadDetails.getCaption()
+                    : entryCaption;
+        }
     }
 
     @SuppressWarnings("unchecked")
