@@ -18,6 +18,7 @@ package com.flowcentraltech.flowcentral.common.business.policies;
 
 import java.util.List;
 
+import com.flowcentraltech.flowcentral.common.data.FormMessages;
 import com.tcdng.unify.core.UnifyException;
 import com.tcdng.unify.core.database.Entity;
 
@@ -60,4 +61,22 @@ public interface ChildListEditPolicy extends EntryTablePolicy {
      */
     void postEntryUpdate(Class<? extends Entity> entityClass, String baseFieldName, Object baseId, List<?> instList)
             throws UnifyException;
+
+    /**
+     * Validate entries,
+     * 
+     * @param entityClass
+     *                      the entity class
+     * @param baseFieldName
+     *                      the base field name
+     * @param baseId
+     *                      the base (parent) object ID
+     * @param instList
+     *                      the entry list
+     * @return Error message
+     * @throws UnifyException
+     *                        if an error occurs
+     */
+    FormMessages validateEntries(Class<? extends Entity> entityClass, String baseFieldName, Object baseId,
+            List<?> instList) throws UnifyException;
 }

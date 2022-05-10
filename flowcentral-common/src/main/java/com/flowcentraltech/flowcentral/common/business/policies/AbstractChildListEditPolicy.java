@@ -16,10 +16,14 @@
 
 package com.flowcentraltech.flowcentral.common.business.policies;
 
+import java.util.List;
+
 import com.flowcentraltech.flowcentral.common.business.EnvironmentService;
+import com.flowcentraltech.flowcentral.common.data.FormMessages;
 import com.tcdng.unify.core.AbstractUnifyComponent;
 import com.tcdng.unify.core.UnifyException;
 import com.tcdng.unify.core.annotation.Configurable;
+import com.tcdng.unify.core.database.Entity;
 
 /**
  * Convenient abstract base class for child list edit policies.
@@ -37,6 +41,14 @@ public abstract class AbstractChildListEditPolicy extends AbstractUnifyComponent
     }
 
     @Override
+    public final FormMessages validateEntries(Class<? extends Entity> entityClass, String baseFieldName, Object baseId,
+            List<?> instList) throws UnifyException {
+        FormMessages messages = new FormMessages();
+        validateEntries(messages, entityClass, baseFieldName, baseId, instList);
+        return messages;
+    }
+
+    @Override
     protected void onInitialize() throws UnifyException {
 
     }
@@ -49,5 +61,8 @@ public abstract class AbstractChildListEditPolicy extends AbstractUnifyComponent
     protected EnvironmentService environment() {
         return environmentService;
     }
+
+    protected abstract void validateEntries(FormMessages messages, Class<? extends Entity> entityClass,
+            String baseFieldName, Object baseId, List<?> instList) throws UnifyException;
 
 }

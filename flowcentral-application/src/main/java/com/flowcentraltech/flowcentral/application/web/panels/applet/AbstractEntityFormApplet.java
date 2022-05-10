@@ -421,6 +421,8 @@ public abstract class AbstractEntityFormApplet extends AbstractApplet implements
         saveCurrentForm();
         entryTablePage = constructNewEntryPage(_appletDef.getEntity(), entryTable, entryTablePolicy,
                 assgnFilter, baseField, id, subTitle);
+        String caption = _appletDef.getLabel() != null ? _appletDef.getLabel().toUpperCase() : null;
+        entryTablePage.setEntryCaption(caption);
         entryTablePage.loadEntryList();
         viewMode = ViewMode.ENTRY_TABLE_PAGE;
     }

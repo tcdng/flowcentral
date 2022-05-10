@@ -222,14 +222,20 @@ public class TableWriter extends AbstractControlWriter {
                             writer.write(" class = \"sort\"");
                         }
                     }
-                    writer.write(">");
+
                     String caption = tableDef.getFieldLabel(index);
+                    if (caption != null && (sysHeaderUppercase || tableDef.isHeaderToUpperCase())) {
+                        caption = caption.toUpperCase();
+                    }
+                    
                     if (caption != null) {
-                        if (sysHeaderUppercase || tableDef.isHeaderToUpperCase()) {
-                            writer.writeWithHtmlEscape(caption.toUpperCase());
-                        } else {
-                            writer.writeWithHtmlEscape(caption);
-                        }
+                        writer.write(" title=\"").writeWithHtmlEscape(caption).write("\"");
+                    }
+                     
+                    writer.write(">");
+                    
+                    if (caption != null) {
+                        writer.writeWithHtmlEscape(caption);
                     } else {
                         writer.writeHtmlFixedSpace();
                     }
