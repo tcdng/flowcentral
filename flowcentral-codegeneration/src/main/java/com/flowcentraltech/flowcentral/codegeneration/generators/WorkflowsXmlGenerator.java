@@ -199,6 +199,7 @@ public class WorkflowsXmlGenerator extends AbstractStaticArtifactGenerator {
                                         wfStepUserAction.getLabel());
 
                                 wfUserActionConfig.setCommentRequirement(wfStepUserAction.getCommentRequirement());
+                                wfUserActionConfig.setHighlightType(wfStepUserAction.getHighlightType());
                                 wfUserActionConfig.setName(wfStepUserAction.getName());
                                 wfUserActionConfig.setDescription("$m{" + descKey + "}");
                                 wfUserActionConfig.setLabel("$m{" + labelKey + "}");

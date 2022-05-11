@@ -260,11 +260,11 @@ public class WorkflowModuleServiceImpl extends AbstractFlowCentralService
 
                         for (WfStepUserAction wfStepUserAction : wfStep.getUserActionList()) {
                             wsdb.addWfUserActionDef(wfStepUserAction.getCommentRequirement(),
-                                    wfStepUserAction.getName(), wfStepUserAction.getDescription(),
-                                    wfStepUserAction.getLabel(), wfStepUserAction.getSymbol(),
-                                    wfStepUserAction.getStyleClass(), wfStepUserAction.getNextStepName(),
-                                    wfStepUserAction.getOrderIndex(), wfStepUserAction.isValidatePage(),
-                                    wfStepUserAction.isForwarderPreferred());
+                                    wfStepUserAction.getHighlightType(), wfStepUserAction.getName(),
+                                    wfStepUserAction.getDescription(), wfStepUserAction.getLabel(),
+                                    wfStepUserAction.getSymbol(), wfStepUserAction.getStyleClass(),
+                                    wfStepUserAction.getNextStepName(), wfStepUserAction.getOrderIndex(),
+                                    wfStepUserAction.isValidatePage(), wfStepUserAction.isForwarderPreferred());
                         }
 
                         for (WfStepAlert wfStepAlert : wfStep.getAlertList()) {
@@ -809,7 +809,7 @@ public class WorkflowModuleServiceImpl extends AbstractFlowCentralService
         transitionItem.setVariable(ProcessVariable.FORWARDED_BY.variableKey(), wfItem.getForwardedBy());
         transitionItem.setVariable(ProcessVariable.FORWARD_TO.variableKey(), wfItem.getForwardTo());
         transitionItem.setVariable(ProcessVariable.HELD_BY.variableKey(), wfItem.getHeldBy());
-        
+
         wfItem.setHeldBy(null);
         try {
             logDebug("Transitioning item [{0}] in step [{1}] of type [{2}]...", wfItem.getWfItemDesc(),
@@ -1131,7 +1131,7 @@ public class WorkflowModuleServiceImpl extends AbstractFlowCentralService
         private boolean updated;
 
         private boolean deleted;
-        
+
         public TransitionItem(WfItem wfItem, WfDef wfDef, WorkEntity wfInst) {
             this.wfItem = wfItem;
             this.wfDef = wfDef;
@@ -1170,7 +1170,7 @@ public class WorkflowModuleServiceImpl extends AbstractFlowCentralService
         public void setVariable(String key, Object val) {
             variables.put(key, val);
         }
-        
+
         public boolean isUpdated() {
             return updated;
         }

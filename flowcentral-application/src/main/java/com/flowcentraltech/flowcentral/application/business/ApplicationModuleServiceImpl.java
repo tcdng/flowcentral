@@ -888,11 +888,12 @@ public class ApplicationModuleServiceImpl extends AbstractFlowCentralService
                     }
 
                     for (AppFormAction appFormAction : appForm.getActionList()) {
-                        fdb.addFormAction(appFormAction.getType(), appFormAction.getName(),
-                                appFormAction.getDescription(), resolveApplicationMessage(appFormAction.getLabel()),
-                                appFormAction.getSymbol(), appFormAction.getStyleClass(), appFormAction.getPolicy(),
-                                appFormAction.getOrderIndex(), appFormAction.isShowOnCreate(),
-                                appFormAction.isShowOnMaintain(), appFormAction.isValidateForm());
+                        fdb.addFormAction(appFormAction.getType(), appFormAction.getHighlightType(),
+                                appFormAction.getName(), appFormAction.getDescription(),
+                                resolveApplicationMessage(appFormAction.getLabel()), appFormAction.getSymbol(),
+                                appFormAction.getStyleClass(), appFormAction.getPolicy(), appFormAction.getOrderIndex(),
+                                appFormAction.isShowOnCreate(), appFormAction.isShowOnMaintain(),
+                                appFormAction.isValidateForm());
                     }
 
                     for (AppFormRelatedList appFormRelatedList : appForm.getRelatedList()) {
@@ -3646,6 +3647,7 @@ public class ApplicationModuleServiceImpl extends AbstractFlowCentralService
                 if (oldAppFormAction == null) {
                     AppFormAction appFormAction = new AppFormAction();
                     appFormAction.setType(formActionConfig.getType());
+                    appFormAction.setHighlightType(formActionConfig.getHighlightType());
                     appFormAction.setName(formActionConfig.getName());
                     appFormAction.setDescription(description);
                     appFormAction.setLabel(label);
@@ -3661,6 +3663,7 @@ public class ApplicationModuleServiceImpl extends AbstractFlowCentralService
                 } else {
                     if (ConfigUtils.isSetInstall(oldAppFormAction)) {
                         oldAppFormAction.setType(formActionConfig.getType());
+                        oldAppFormAction.setHighlightType(formActionConfig.getHighlightType());
                         oldAppFormAction.setDescription(description);
                         oldAppFormAction.setLabel(label);
                         oldAppFormAction.setSymbol(formActionConfig.getSymbol());

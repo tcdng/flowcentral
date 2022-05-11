@@ -26,6 +26,7 @@ import java.util.Set;
 
 import com.flowcentraltech.flowcentral.application.data.AppletDef;
 import com.flowcentraltech.flowcentral.application.data.FormActionDef;
+import com.flowcentraltech.flowcentral.configuration.constants.HighlightType;
 import com.flowcentraltech.flowcentral.configuration.constants.NotificationType;
 import com.flowcentraltech.flowcentral.configuration.constants.RecordActionType;
 import com.flowcentraltech.flowcentral.configuration.constants.UIActionType;
@@ -124,9 +125,9 @@ public class WfStepDef {
         if (!DataUtils.isBlank(userActions)) {
             this.formActionDefList = new ArrayList<FormActionDef>();
             for (WfUserActionDef wfUserActionDef : userActions.values()) {
-                this.formActionDefList.add(new FormActionDef(UIActionType.BUTTON, wfUserActionDef.getName(),
-                        wfUserActionDef.getDescription(), wfUserActionDef.getLabel(), wfUserActionDef.getSymbol(),
-                        wfUserActionDef.getStyleClass(), wfUserActionDef.getOrderIndex(),
+                this.formActionDefList.add(new FormActionDef(UIActionType.BUTTON, wfUserActionDef.getHighlightType(),
+                        wfUserActionDef.getName(), wfUserActionDef.getDescription(), wfUserActionDef.getLabel(),
+                        wfUserActionDef.getSymbol(), wfUserActionDef.getStyleClass(), wfUserActionDef.getOrderIndex(),
                         wfUserActionDef.isValidatePage()));
             }
         }
@@ -407,8 +408,8 @@ public class WfStepDef {
             this.forwarderPreferred = forwarderPreferred;
         }
 
-        public Builder addWfUserActionDef(RequirementType commentRequirement, String name, String description,
-                String label, String symbol, String styleClass, String nextStepName, int orderIndex,
+        public Builder addWfUserActionDef(RequirementType commentRequirement, HighlightType highlightType, String name,
+                String description, String label, String symbol, String styleClass, String nextStepName, int orderIndex,
                 boolean validatePage, boolean forwarderPreferred) {
             if (userActionList == null) {
                 userActionList = new LinkedHashMap<String, WfUserActionDef>();
@@ -422,8 +423,8 @@ public class WfStepDef {
                 throw new RuntimeException("Can not add user action policy to step type [" + type + "].");
             }
 
-            userActionList.put(name, new WfUserActionDef(commentRequirement, name, description, label, symbol,
-                    styleClass, nextStepName, orderIndex, validatePage, forwarderPreferred));
+            userActionList.put(name, new WfUserActionDef(commentRequirement, highlightType, name, description, label,
+                    symbol, styleClass, nextStepName, orderIndex, validatePage, forwarderPreferred));
             return this;
         }
 

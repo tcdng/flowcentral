@@ -19,7 +19,9 @@ package com.flowcentraltech.flowcentral.configuration.xml;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
+import com.flowcentraltech.flowcentral.configuration.constants.HighlightType;
 import com.flowcentraltech.flowcentral.configuration.constants.UIActionType;
+import com.flowcentraltech.flowcentral.configuration.xml.adapter.HighlightTypeXmlAdapter;
 import com.flowcentraltech.flowcentral.configuration.xml.adapter.UIActionTypeXmlAdapter;
 
 /**
@@ -31,6 +33,8 @@ import com.flowcentraltech.flowcentral.configuration.xml.adapter.UIActionTypeXml
 public class FormActionConfig extends BaseNameConfig {
 
     private UIActionType type;
+    
+    private HighlightType highlightType;
 
     private String policy;
 
@@ -54,6 +58,16 @@ public class FormActionConfig extends BaseNameConfig {
     @XmlAttribute(required = true)
     public void setType(UIActionType type) {
         this.type = type;
+    }
+
+    public HighlightType getHighlightType() {
+        return highlightType;
+    }
+
+    @XmlJavaTypeAdapter(HighlightTypeXmlAdapter.class)
+    @XmlAttribute(name = "highlight")
+    public void setHighlightType(HighlightType highlightType) {
+        this.highlightType = highlightType;
     }
 
     public String getPolicy() {

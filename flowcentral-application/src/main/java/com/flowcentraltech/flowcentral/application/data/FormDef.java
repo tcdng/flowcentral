@@ -31,6 +31,7 @@ import com.flowcentraltech.flowcentral.configuration.constants.FormColumnsType;
 import com.flowcentraltech.flowcentral.configuration.constants.FormReviewType;
 import com.flowcentraltech.flowcentral.configuration.constants.FormStatePolicyType;
 import com.flowcentraltech.flowcentral.configuration.constants.FormType;
+import com.flowcentraltech.flowcentral.configuration.constants.HighlightType;
 import com.flowcentraltech.flowcentral.configuration.constants.TabContentType;
 import com.flowcentraltech.flowcentral.configuration.constants.UIActionType;
 import com.tcdng.unify.core.UnifyException;
@@ -506,9 +507,9 @@ public class FormDef extends BaseApplicationEntityDef {
             return this;
         }
 
-        public Builder addFormAction(UIActionType type, String name, String description, String label, String symbol,
-                String styleClass, String policy, int orderIndex, boolean showOnCreate, boolean showOnMaintain,
-                boolean validateForm) {
+        public Builder addFormAction(UIActionType type, HighlightType highlightType, String name, String description,
+                String label, String symbol, String styleClass, String policy, int orderIndex, boolean showOnCreate,
+                boolean showOnMaintain, boolean validateForm) {
             if (actionNames.contains(name)) {
                 throw new RuntimeException(
                         "Action with name [" + name + "] already exists on this form[" + longName + "].");
@@ -518,8 +519,8 @@ public class FormDef extends BaseApplicationEntityDef {
                 formActionList = new ArrayList<FormActionDef>();
             }
 
-            formActionList.add(new FormActionDef(type, name, description, label, symbol, styleClass, policy, orderIndex,
-                    showOnCreate, showOnMaintain, validateForm));
+            formActionList.add(new FormActionDef(type, highlightType, name, description, label, symbol, styleClass,
+                    policy, orderIndex, showOnCreate, showOnMaintain, validateForm));
             return this;
         }
 
@@ -591,8 +592,8 @@ public class FormDef extends BaseApplicationEntityDef {
             return this;
         }
 
-        public Builder addRelatedList(String name, String description, String label, String appletName,
-                String filter, String editAction) {
+        public Builder addRelatedList(String name, String description, String label, String appletName, String filter,
+                String editAction) {
             if (formRelatedListDefList == null) {
                 formRelatedListDefList = new LinkedHashMap<String, FormRelatedListDef>();
             }

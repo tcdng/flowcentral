@@ -1195,6 +1195,9 @@
 			<field name="type" label="$m{application.appformaction.type}"
 				type="enum_ref" references="uiactiontypelist"
 				inputWidget="application.enumlist" />
+			<field name="highlightType" label="$m{application.appformaction.highlighttype}"
+				type="enum_ref" references="highlighttypelist"
+				inputWidget="application.enumlist" nullable="true"/>
 			<field name="label" label="$m{application.appformaction.label}"
 				type="string" />
 			<field name="policy"
@@ -1210,6 +1213,9 @@
 			<field name="typeDesc"
 				label="$m{application.appformaction.typedesc}" type="list_only"
 				key="type" property="description" />
+			<field name="highlightTypeDesc"
+				label="$m{application.appformaction.highlighttypedesc}" type="list_only"
+				key="highlightType" property="description" />
 			<uniqueConstraint name="nameUc"
 				description="$m{application.appformaction.uc.name}"
 				fieldList="appFormId,name" />

@@ -205,6 +205,12 @@ textarea:focus {outline: none !important;box-shadow: 0 0 6px #5194f3;}
 .fc-orangebutton {background-color:#f0ad4e; font-weight:bold; color: #FFF; border: 1px solid #e09d3e;}
 .fc-orangebutton:hover:enabled {background-color:#e09d3e;color: #FFF;}
 
+.fc-redbutton {background-color:#c83234; font-weight:bold; color: #FFF; border: 1px solid #b82224;}
+.fc-redbutton:hover:enabled {background-color:#b82224;color: #FFF;}
+
+.fc-graybutton {background-color:#c8c8c8; font-weight:bold; color: #FFF; border: 1px solid #b8b8b8;}
+.fc-graybutton:hover:enabled {background-color:#b8b8b8;color: #FFF;}
+
 
 /** Chart */
 .fc-chart {}
