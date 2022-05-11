@@ -42,7 +42,7 @@ public enum HighlightType implements EnumConst {
             "fc-orangebutton"),
     RED(
             "RED",
-            "redbutton"),
+            "fc-redbutton"),
     GRAY(
             "GRA",
             "fc-graybutton");
