@@ -19,6 +19,7 @@ package com.flowcentraltech.flowcentral.application.util;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import java.util.Arrays;
 import java.util.Calendar;
@@ -55,7 +56,7 @@ public class InputWidgetUtilsTest extends AbstractUnifyComponentTest {
         assertEquals("NL]0]name]\r\n", definition);
 
         definition = InputWidgetUtils.getFilterDefinition(new Equals("name", "Amina"));
-        assertEquals("EQ]0]name]Amina]\r\n", definition);
+        assertTrue(Arrays.asList("EQ]0]name]Amina]\r\n", "EQ]0]name]Amina]\n").contains(definition));
 
         Calendar cal = Calendar.getInstance();
         cal.set(2021, 11, 25);
@@ -65,17 +66,20 @@ public class InputWidgetUtilsTest extends AbstractUnifyComponentTest {
         Date date2 = CalendarUtils.getMidnightDate(cal.getTime());
 
         definition = InputWidgetUtils.getFilterDefinition(new Between("birthDt", date1, date2));
-        assertEquals("BT]0]birthDt]2021-12-25 00:00:00.000]2021-11-04 00:00:00.000]\r\n", definition);
+        assertTrue(Arrays.asList("BT]0]birthDt]2021-12-25 00:00:00.000]2021-11-04 00:00:00.000]\r\n",
+                "BT]0]birthDt]2021-12-25 00:00:00.000]2021-11-04 00:00:00.000]\n").contains(definition));
 
         definition = InputWidgetUtils.getFilterDefinition(new Amongst("name", Arrays.asList("Amina", "Zainab")));
-        assertEquals("IN]0]name]Amina|Zainab]\r\n", definition);
+        assertTrue(Arrays.asList("IN]0]name]Amina|Zainab]\r\n", "IN]0]name]Amina|Zainab]\n").contains(definition));
     }
 
     @Test
     public void testFilterDefinitionFromCompoundRestriction() throws UnifyException {
         String definition = InputWidgetUtils
                 .getFilterDefinition(new And().add(new IsNull("name")).add(new Equals("name", "Amina")));
-        assertEquals("AND]0]\r\nNL]1]name]\r\nEQ]1]name]Amina]\r\n", definition);
+        assertTrue(
+                Arrays.asList("AND]0]\r\nNL]1]name]\r\nEQ]1]name]Amina]\r\n", "AND]0]\nNL]1]name]\nEQ]1]name]Amina]\n")
+                        .contains(definition));
     }
 
     @Test
@@ -88,9 +92,10 @@ public class InputWidgetUtilsTest extends AbstractUnifyComponentTest {
         String definition = InputWidgetUtils.getFilterDefinition(new And().add(new IsNull("name"))
                 .add(new Equals("name", "Amina")).add(new Or().add(new Between("birthDt", date1, date2))
                         .add(new Amongst("name", Arrays.asList("Amina", "Zainab")))));
-        assertEquals(
+        assertTrue(Arrays.asList(
                 "AND]0]\r\nNL]1]name]\r\nEQ]1]name]Amina]\r\nOR]1]\r\nBT]2]birthDt]2021-12-25 00:00:00.000]2021-11-04 00:00:00.000]\r\nIN]2]name]Amina|Zainab]\r\n",
-                definition);
+                "AND]0]\nNL]1]name]\nEQ]1]name]Amina]\r\nOR]1]\nBT]2]birthDt]2021-12-25 00:00:00.000]2021-11-04 00:00:00.000]\nIN]2]name]Amina|Zainab]\n")
+                .contains(definition));
     }
 
     @Test
