@@ -251,6 +251,9 @@
 			<field name="commentRequirement"
 				label="$m{workflow.stepuseraction.commentrequirement}" type="enum_ref"
 				references="requirementtypelist" inputWidget="application.enumlist" />
+			<field name="highlightType"
+				label="$m{workflow.stepuseraction.highlighttype}" type="enum_ref"
+				references="highlighttypelist" inputWidget="application.enumlist" nullable = "true" />
 			<field name="label" label="$m{workflow.stepuseraction.label}"
 				type="string" maxLen="96"  />
 			<field name="nextStepName"
@@ -264,6 +267,9 @@
 			<field name="commentRequirementDesc"
 				label="$m{workflow.stepuseraction.commentrequirementdesc}" type="list_only"
 				key="commentRequirement" property="description" />
+			<field name="highlightTypeDesc"
+				label="$m{workflow.stepuseraction.highlighttypedesc}" type="list_only"
+				key="highlightType" property="description" />
 		</entity>
 		<entity name="wfStepAlert" description="$m{workflow.stepalert}"
 			label="$m{workflow.stepalert.label}"

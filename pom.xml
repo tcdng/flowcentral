@@ -6,7 +6,7 @@
 
 	<groupId>com.flowcentraltech.flowcentral</groupId>
 	<artifactId>flowcentral</artifactId>
-	<version>1.0.15</version>
+	<version>1.0.16-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<name>flowcentral</name>
@@ -56,7 +56,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
-		<unify.version>2.1.23</unify.version>
+		<unify.version>2.1.24</unify.version>
 	</properties>
 
 	<scm>
@@ -129,7 +129,7 @@
 						<configuration>
 							<serverId>sonatype-nexus-staging</serverId>
 							<nexusUrl>https://s01.oss.sonatype.org/</nexusUrl>
-							<autoReleaseAfterClose>false</autoReleaseAfterClose>
+							<autoReleaseAfterClose>true</autoReleaseAfterClose>
 							<stagingProgressTimeoutMinutes>10</stagingProgressTimeoutMinutes>
 						</configuration>
 					</plugin>

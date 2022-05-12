@@ -17,6 +17,7 @@
 package com.flowcentraltech.flowcentral.application.data;
 
 import com.flowcentraltech.flowcentral.application.util.PrivilegeNameUtils;
+import com.flowcentraltech.flowcentral.configuration.constants.HighlightType;
 import com.flowcentraltech.flowcentral.configuration.constants.UIActionType;
 
 /**
@@ -28,6 +29,8 @@ import com.flowcentraltech.flowcentral.configuration.constants.UIActionType;
 public class FormActionDef {
 
     private UIActionType type;
+
+    private HighlightType highlightType;
 
     private String name;
 
@@ -51,9 +54,10 @@ public class FormActionDef {
 
     private boolean validateForm;
 
-    public FormActionDef(UIActionType type, String name, String description, String label, String symbol,
-            String styleClass, int orderIndex, boolean validateForm) {
+    public FormActionDef(UIActionType type, HighlightType highlightType, String name, String description, String label,
+            String symbol, String styleClass, int orderIndex, boolean validateForm) {
         this.type = type;
+        this.highlightType = highlightType;
         this.name = name;
         this.description = description;
         this.label = label;
@@ -65,10 +69,11 @@ public class FormActionDef {
         this.showOnMaintain = true;
     }
 
-    public FormActionDef(UIActionType type, String name, String description, String label, String symbol,
-            String styleClass, String policy, int orderIndex, boolean showOnCreate, boolean showOnMaintain,
-            boolean validateForm) {
+    public FormActionDef(UIActionType type, HighlightType highlightType, String name, String description, String label,
+            String symbol, String styleClass, String policy, int orderIndex, boolean showOnCreate,
+            boolean showOnMaintain, boolean validateForm) {
         this.type = type;
+        this.highlightType = highlightType;
         this.name = name;
         this.description = description;
         this.label = label;
@@ -84,6 +89,10 @@ public class FormActionDef {
 
     public UIActionType getType() {
         return type;
+    }
+
+    public HighlightType getHighlightType() {
+        return highlightType;
     }
 
     public String getName() {
@@ -103,7 +112,7 @@ public class FormActionDef {
     }
 
     public String getStyleClass() {
-        return styleClass;
+        return highlightType != null ? highlightType.buttonClass() : styleClass;
     }
 
     public String getPolicy() {

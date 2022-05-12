@@ -16,6 +16,7 @@
 
 package com.flowcentraltech.flowcentral.workflow.data;
 
+import com.flowcentraltech.flowcentral.configuration.constants.HighlightType;
 import com.tcdng.unify.core.constant.RequirementType;
 
 /**
@@ -27,6 +28,8 @@ import com.tcdng.unify.core.constant.RequirementType;
 public class WfUserActionDef {
 
     private RequirementType commentRequirement;
+
+    private HighlightType highlightType;
 
     private String name;
 
@@ -46,10 +49,11 @@ public class WfUserActionDef {
 
     private boolean forwarderPreferred;
 
-    public WfUserActionDef(RequirementType commentRequirement, String name, String description, String label,
-            String symbol, String styleClass, String nextStepName, int orderIndex, boolean validatePage,
-            boolean forwarderPreferred) {
+    public WfUserActionDef(RequirementType commentRequirement, HighlightType highlightType, String name,
+            String description, String label, String symbol, String styleClass, String nextStepName, int orderIndex,
+            boolean validatePage, boolean forwarderPreferred) {
         this.commentRequirement = commentRequirement;
+        this.highlightType = highlightType;
         this.name = name;
         this.description = description;
         this.label = label;
@@ -63,6 +67,10 @@ public class WfUserActionDef {
 
     public RequirementType getCommentRequirement() {
         return commentRequirement;
+    }
+
+    public HighlightType getHighlightType() {
+        return highlightType;
     }
 
     public String getName() {

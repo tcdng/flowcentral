@@ -385,6 +385,7 @@ public class ApplicationWorkflowInstallerImpl extends AbstractApplicationArtifac
                     .getWfUserActionConfigList()) {
                 WfStepUserAction wfStepUserAction = new WfStepUserAction();
                 wfStepUserAction.setCommentRequirement(wfUserActionConfig.getCommentRequirement());
+                wfStepUserAction.setHighlightType(wfUserActionConfig.getHighlightType());
                 wfStepUserAction.setName(wfUserActionConfig.getName());
                 wfStepUserAction.setDescription(resolveApplicationMessage(wfUserActionConfig.getDescription()));
                 wfStepUserAction.setLabel(resolveApplicationMessage(wfUserActionConfig.getLabel()));

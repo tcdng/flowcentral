@@ -17,6 +17,7 @@
 package com.flowcentraltech.flowcentral.workflow.entities;
 
 import com.flowcentraltech.flowcentral.common.entities.BaseNamedEntity;
+import com.flowcentraltech.flowcentral.configuration.constants.HighlightType;
 import com.tcdng.unify.core.annotation.Column;
 import com.tcdng.unify.core.annotation.ForeignKey;
 import com.tcdng.unify.core.annotation.ListOnly;
@@ -40,6 +41,9 @@ public class WfStepUserAction extends BaseNamedEntity {
     @ForeignKey
     private RequirementType commentRequirement;
 
+    @ForeignKey(nullable = true)
+    private HighlightType highlightType;
+    
     @Column(name = "USERACTION_LABEL", length = 96)
     private String label;
 
@@ -66,6 +70,9 @@ public class WfStepUserAction extends BaseNamedEntity {
 
     @ListOnly(key = "commentRequirement", property = "description")
     private String commentRequirementDesc;
+
+    @ListOnly(key = "highlightType", property = "description")
+    private String highlightTypeDesc;
 
     public Long getWfStepId() {
         return wfStepId;
@@ -153,6 +160,22 @@ public class WfStepUserAction extends BaseNamedEntity {
 
     public void setCommentRequirementDesc(String commentRequirementDesc) {
         this.commentRequirementDesc = commentRequirementDesc;
+    }
+
+    public HighlightType getHighlightType() {
+        return highlightType;
+    }
+
+    public void setHighlightType(HighlightType highlightType) {
+        this.highlightType = highlightType;
+    }
+
+    public String getHighlightTypeDesc() {
+        return highlightTypeDesc;
+    }
+
+    public void setHighlightTypeDesc(String highlightTypeDesc) {
+        this.highlightTypeDesc = highlightTypeDesc;
     }
 
 }

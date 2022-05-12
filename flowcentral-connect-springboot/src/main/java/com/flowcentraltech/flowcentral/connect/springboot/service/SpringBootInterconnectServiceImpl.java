@@ -109,6 +109,7 @@ public class SpringBootInterconnectServiceImpl implements SpringBootInterconnect
     @SuppressWarnings("unchecked")
     @Override
     public <T> T findById(EntityInfo entityInfo, Object id) throws Exception {
+        LOGGER.log(Level.INFO, "Finding entity [{0}] by ID [{1}]...", new Object[] {entityInfo.getName(), id});
         PlatformInfo platform = getPlatform(entityInfo);
         T result = null;
         EntityManager em = null;
@@ -121,6 +122,7 @@ public class SpringBootInterconnectServiceImpl implements SpringBootInterconnect
             tx.commit();
             em.close();
         } catch (Exception e) {
+            LOGGER.log(Level.SEVERE, "Datasource request processing failure.", e);
             if (tx != null) {
                 tx.rollback();
             }
@@ -274,6 +276,7 @@ public class SpringBootInterconnectServiceImpl implements SpringBootInterconnect
                 tx.commit();
                 em.close();
             } catch (Exception e) {
+                LOGGER.log(Level.SEVERE, "Datasource request processing failure.", e);
                 if (tx != null) {
                     tx.rollback();
                 }

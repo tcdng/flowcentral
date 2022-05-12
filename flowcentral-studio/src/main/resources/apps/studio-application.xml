@@ -1112,6 +1112,8 @@
 				widthRatio="1" />
 			<column field="typeDesc" renderWidget="application.text"
 				label="$m{application.appformaction.type}" widthRatio="1" />
+			<column field="highlightTypeDesc" renderWidget="application.text"
+				label="$m{application.appformaction.highlighttypedesc}" widthRatio="1" />
 		</table>
 		<table name="appFormRelatedListTable"
 			description="$m{studio.appformrelatedlist.table}"
@@ -1251,6 +1253,10 @@
 			<column field="commentRequirementDesc"
 				renderWidget="application.text"
 				label="$m{workflow.stepuseraction.commentrequirement}"
+				widthRatio="1" />
+			<column field="highlightTypeDesc"
+				renderWidget="application.text"
+				label="$m{workflow.stepuseraction.highlighttype}"
 				widthRatio="1" />
 		</table>
 		<table name="wfStepAlertTable"
@@ -3026,6 +3032,8 @@
 						required="true" />
 					<field name="type" inputWidget="application.enumlist"
 						column="1" required="true" />
+					<field name="highlightType" inputWidget="application.enumlist"
+						column="1" />
 					<field name="policy" inputWidget="application.text"
 						column="1" required="true" />
 					<field name="orderIndex" inputWidget="application.integer"
@@ -3580,6 +3588,8 @@
 					<field name="label" inputWidget="application.text" column="0" />
 					<field name="commentRequirement"
 						inputWidget="application.enumlist" column="1" required="true" />
+					<field name="highlightType"
+						inputWidget="application.enumlist" column="1"/>
 					<field name="nextStepName"
 						inputWidget="studio.wfsteproutetolist" column="1" required="true" />
 					<field name="orderIndex" inputWidget="application.integer"

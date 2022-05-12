@@ -16,6 +16,7 @@
 package com.flowcentraltech.flowcentral.application.entities;
 
 import com.flowcentraltech.flowcentral.common.entities.BaseConfigNamedEntity;
+import com.flowcentraltech.flowcentral.configuration.constants.HighlightType;
 import com.flowcentraltech.flowcentral.configuration.constants.UIActionType;
 import com.tcdng.unify.core.annotation.Column;
 import com.tcdng.unify.core.annotation.ForeignKey;
@@ -38,6 +39,9 @@ public class AppFormAction extends BaseConfigNamedEntity {
     @ForeignKey(name = "FORMACTION_TY")
     private UIActionType type;
 
+    @ForeignKey(name = "HIGHLIGHT_TY", nullable = true)
+    private HighlightType highlightType;
+    
     @Column(name = "FORMACTION_LABEL", length = 96)
     private String label;
 
@@ -64,6 +68,9 @@ public class AppFormAction extends BaseConfigNamedEntity {
 
     @ListOnly(key = "type", property = "description")
     private String typeDesc;
+
+    @ListOnly(key = "highlightType", property = "description")
+    private String highlightTypeDesc;
 
     public Long getAppFormId() {
         return appFormId;
@@ -151,6 +158,22 @@ public class AppFormAction extends BaseConfigNamedEntity {
 
     public void setTypeDesc(String typeDesc) {
         this.typeDesc = typeDesc;
+    }
+
+    public HighlightType getHighlightType() {
+        return highlightType;
+    }
+
+    public void setHighlightType(HighlightType highlightType) {
+        this.highlightType = highlightType;
+    }
+
+    public String getHighlightTypeDesc() {
+        return highlightTypeDesc;
+    }
+
+    public void setHighlightTypeDesc(String highlightTypeDesc) {
+        this.highlightTypeDesc = highlightTypeDesc;
     }
 
 }

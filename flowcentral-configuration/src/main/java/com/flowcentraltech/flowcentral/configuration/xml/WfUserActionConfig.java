@@ -19,6 +19,8 @@ package com.flowcentraltech.flowcentral.configuration.xml;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
+import com.flowcentraltech.flowcentral.configuration.constants.HighlightType;
+import com.flowcentraltech.flowcentral.configuration.xml.adapter.HighlightTypeXmlAdapter;
 import com.tcdng.unify.core.constant.RequirementType;
 import com.tcdng.unify.core.util.xml.adapter.RequirementTypeXmlAdapter;
 
@@ -33,6 +35,8 @@ public class WfUserActionConfig extends BaseNameConfig {
     private String nextStepName;
 
     private RequirementType commentRequirement;
+
+    private HighlightType highlightType;
 
     private int orderIndex;
 
@@ -62,6 +66,16 @@ public class WfUserActionConfig extends BaseNameConfig {
     @XmlAttribute(name = "commentRequirement")
     public void setCommentRequirement(RequirementType commentRequirement) {
         this.commentRequirement = commentRequirement;
+    }
+
+    public HighlightType getHighlightType() {
+        return highlightType;
+    }
+
+    @XmlJavaTypeAdapter(HighlightTypeXmlAdapter.class)
+    @XmlAttribute(name = "highlight")
+    public void setHighlightType(HighlightType highlightType) {
+        this.highlightType = highlightType;
     }
 
     public int getOrderIndex() {
