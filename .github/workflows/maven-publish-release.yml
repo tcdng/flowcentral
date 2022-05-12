@@ -34,10 +34,24 @@ jobs:
             "id": "sonatype-nexus-staging",
             "username": "${{ secrets.REPO_USERNAME }}",
             "password": "${{ secrets.REPO_PASSWORD }}"
+            }{
+            "id": "s01-sonatype-nexus-staging",
+            "username": "${{ secrets.REPO_USERNAME }}",
+            "password": "${{ secrets.REPO_PASSWORD }}"
             }] 
           repositories: |
             [{
             "id": "sonatype-nexus-staging",
+            "name": "Sonatype Nexus Staging",
+            "url": "http://oss.sonatype.org/service/local/staging/deploy/maven2/",
+            "releases": {
+            "enabled": "false"
+            },
+            "snapshots": {
+            "enabled": "false"
+            }
+            },{
+            "id": "s01-sonatype-nexus-staging",
             "name": "Sonatype Nexus Staging 2",
             "url": "http://s01.oss.sonatype.org/service/local/staging/deploy/maven2/",
             "releases": {
