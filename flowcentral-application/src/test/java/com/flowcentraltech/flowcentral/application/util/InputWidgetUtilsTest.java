@@ -94,7 +94,7 @@ public class InputWidgetUtilsTest extends AbstractUnifyComponentTest {
                         .add(new Amongst("name", Arrays.asList("Amina", "Zainab")))));
         assertTrue(Arrays.asList(
                 "AND]0]\r\nNL]1]name]\r\nEQ]1]name]Amina]\r\nOR]1]\r\nBT]2]birthDt]2021-12-25 00:00:00.000]2021-11-04 00:00:00.000]\r\nIN]2]name]Amina|Zainab]\r\n",
-                "AND]0]\nNL]1]name]\nEQ]1]name]Amina]\r\nOR]1]\nBT]2]birthDt]2021-12-25 00:00:00.000]2021-11-04 00:00:00.000]\nIN]2]name]Amina|Zainab]\n")
+                "AND]0]\nNL]1]name]\nEQ]1]name]Amina]\nOR]1]\nBT]2]birthDt]2021-12-25 00:00:00.000]2021-11-04 00:00:00.000]\nIN]2]name]Amina|Zainab]\n")
                 .contains(definition));
     }
 
