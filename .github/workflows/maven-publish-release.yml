@@ -31,26 +31,12 @@ jobs:
         with:
           servers: |
             [{
-            "id": "sonatype-nexus-staging",
-            "username": "${{ secrets.REPO_USERNAME }}",
-            "password": "${{ secrets.REPO_PASSWORD }}"
-            },{
             "id": "s01-sonatype-nexus-staging",
             "username": "${{ secrets.REPO_USERNAME }}",
             "password": "${{ secrets.REPO_PASSWORD }}"
             }] 
           repositories: |
             [{
-            "id": "sonatype-nexus-staging",
-            "name": "Sonatype Nexus Staging",
-            "url": "http://oss.sonatype.org/service/local/staging/deploy/maven2/",
-            "releases": {
-            "enabled": "true"
-            },
-            "snapshots": {
-            "enabled": "false"
-            }
-            },{
             "id": "s01-sonatype-nexus-staging",
             "name": "Sonatype Nexus Staging 2",
             "url": "http://s01.oss.sonatype.org/service/local/staging/deploy/maven2/",
@@ -61,6 +47,12 @@ jobs:
             "enabled": "false"
             }
             }] 
+          mirrors: |
+            [{
+              "id": "maven-central-mirror",
+              "mirrorOf":"central",
+              "url":"https://repo1.maven.org/maven2"
+            }]
           
       - name: Import GPG Key
         uses: crazy-max/ghaction-import-gpg@v1
