@@ -53,7 +53,7 @@ public class InputWidgetUtilsTest extends AbstractUnifyComponentTest {
     @Test
     public void testFilterDefinitionFromSimpleRestriction() throws UnifyException {
         String definition = InputWidgetUtils.getFilterDefinition(new IsNull("name"));
-        assertEquals("NL]0]name]\r\n", definition);
+        assertTrue(Arrays.asList("NL]0]name]\r\n", "NL]0]name]\n").contains(definition));
 
         definition = InputWidgetUtils.getFilterDefinition(new Equals("name", "Amina"));
         assertTrue(Arrays.asList("EQ]0]name]Amina]\r\n", "EQ]0]name]Amina]\n").contains(definition));
