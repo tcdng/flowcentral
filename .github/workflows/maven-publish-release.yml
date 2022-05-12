@@ -51,7 +51,7 @@ jobs:
             [{
               "id": "maven-central-mirror",
               "mirrorOf":"central",
-              "url":"https://repo1.maven.org/maven2"
+              "url":"https://repo.maven.apache.org/maven2"
             }]
           
       - name: Import GPG Key
